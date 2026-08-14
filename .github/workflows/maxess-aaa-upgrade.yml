@@ -1,4 +1,4 @@
-name: MAXESS AAA Upgrade
+name: MAXESS AAA Release Pipeline
 
 on:
   push:
@@ -10,26 +10,49 @@ permissions:
   contents: write
 
 jobs:
-  upgrade:
+  release:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Apply AAA UX and resilience patch
+      - name: Apply core AAA UX and resilience patch
         run: python3 tools/maxess_aaa_upgrade.py
 
-      - name: Apply AAA v2 visible UX and cleanup pass
+      - name: Apply idempotent visible assessment craft pass
         run: python3 tools/aaa_patch.py
 
-      - name: Commit upgrade
+      - name: Repair results V4 patch anchor
+        run: python3 tools/fix_results_v4_anchor.py
+
+      - name: Apply Results Experience V4
+        run: python3 tools/results_experience_v4.py
+
+      - name: Verify generated MAXESS source
         run: |
-          git config user.name "MAXESS AAA Release Bot"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          python3 - <<'PY'
+          from pathlib import Path
+          s = Path('code').read_text(encoding='utf-8')
+          assert s.count('maxess-aaa-pass') == 1
+          assert s.count('id="questionCountChip"') == 1
+          assert s.count('id="aaaStepLabel"') == 1
+          assert s.count('AI_AREAS = [') == 1
+          assert s.count('id:"') >= 15
+          assert 'MAXESS RESULTS EXPERIENCE V4' in s
+          assert 'resultsV4Opening' in s
+          assert 'resultsV4MasterKeyTitle' in s
+          assert 'resultsV4MethodDetail' in s
+          print('MAXESS AAA release invariants passed')
+          PY
+
+      - name: Commit generated release
+        run: |
           if git diff --quiet -- code; then
             echo "No code changes required."
             exit 0
           fi
+          git config user.name "MAXESS AAA Release Bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -- code
-          git commit -m "feat(maxess): deliver visible AAA assessment upgrade"
+          git commit -m "feat(maxess): deliver AAA results experience"
           git push
