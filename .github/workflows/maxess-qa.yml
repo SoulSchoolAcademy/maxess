@@ -1,10 +1,6 @@
 name: MAXESS QA
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - "code"
   workflow_dispatch:
 
 permissions:
