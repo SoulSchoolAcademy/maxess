@@ -1,0 +1,32 @@
+name: MAXESS AAA Upgrade
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "code"
+
+permissions:
+  contents: write
+
+jobs:
+  upgrade:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Apply AAA UX and resilience patch
+        run: python3 tools/maxess_aaa_upgrade.py
+
+      - name: Commit upgrade
+        run: |
+          git config user.name "MAXESS AAA Release Bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet -- code; then
+            echo "No code changes required."
+            exit 0
+          fi
+          git add -- code
+          git commit -m "feat(maxess): apply AAA assessment UX and resilience upgrade"
+          git push
