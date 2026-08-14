@@ -34,8 +34,8 @@ rail_css = '''\n/* =========================================================\n  
 s, _ = replace_once(s, '/* =========================================================\n   QUESTION\n========================================================= */', rail_css + '\n\n/* =========================================================\n   QUESTION\n========================================================= */')
 
 # 4. Add a semantic status rail to the question stage. This is intentionally additive.
-html_anchor = '<div class="question-area"\n  id="questionArea"\n>'
-html_new = '''<div class="aaa-status-rail" aria-live="polite">\n  <span><strong id="aaaStepLabel">STEP 01</strong> · BUILDING YOUR AI PROFILE</span>\n  <span class="aaa-live">ASSESSMENT ACTIVE</span>\n</div>\n\n<div class="question-area"\n  id="questionArea"\n>'''
+html_anchor = '<div class="question-area"'
+html_new = '''<div class="aaa-status-rail" aria-live="polite">\n  <span><strong id="aaaStepLabel">STEP 01</strong> · BUILDING YOUR AI PROFILE</span>\n  <span class="aaa-live">ASSESSMENT ACTIVE</span>\n</div>\n\n<div class="question-area"'''
 s, _ = replace_once(s, html_anchor, html_new)
 
 # 5. Give the rail enough room on small screens while keeping it quiet.
