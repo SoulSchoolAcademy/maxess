@@ -31,6 +31,9 @@ jobs:
       - name: Normalize Results Experience V4 layout
         run: python3 tools/fix_results_v4_layout.py
 
+      - name: Add contextual Naya results layer
+        run: python3 tools/fix_results_v4_personal_coach.py
+
       - name: Verify generated MAXESS source
         run: |
           python3 - <<'PY'
@@ -48,6 +51,8 @@ jobs:
           assert 'resultsV4MasterKeyTitle' in s
           assert 'resultsV4MethodDetail' in s
           assert '.results-v4-steps{display:flex' in s
+          assert 'resultsV4NayaTitle' in s
+          assert 'resultsV4Playground' in s
           assert 'No pressure.' in s
           assert 'They do not change your score' in s
           js=re.search(r'<script>([\s\S]*)</script>', s)
