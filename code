@@ -7,6 +7,7 @@
 <meta name="color-scheme" content="dark">
 <title>MAXESS — AI Mastery Assessment</title>
 <meta name="maxess-build" content="AAA-2026-08-14">
+<meta name="maxess-build" content="AAA-2026-08-14">
 
 <style>
 :root{
@@ -203,6 +204,21 @@ button:disabled{
 
 .brand-ess{
   color:#b58cff;
+}
+
+.question-count-chip{
+  justify-self:end;
+  min-width:128px;
+  padding:9px 12px;
+  border:1px solid rgba(181,140,255,.24);
+  border-radius:999px;
+  background:rgba(138,92,255,.055);
+  color:#bdb4ce;
+  font-size:9px;
+  font-weight:950;
+  letter-spacing:.10em;
+  text-align:center;
+  white-space:nowrap;
 }
 
 .question-count-chip{
@@ -2260,6 +2276,17 @@ button:disabled{
   .score-number{
     font-size:62px;
   }
+}
+
+@media(max-height:820px) and (min-width:761px){
+  .app-inner{padding-top:8px;padding-bottom:10px;}
+  .topbar{padding-bottom:9px;}
+  .board-content{padding-top:22px;padding-bottom:20px;}
+  .command-row{margin-bottom:16px;}
+  .question-title{font-size:36px;}
+  .answers{gap:7px;margin-top:15px;}
+  .answer{min-height:56px;}
+  .jewel{width:45px;height:45px;}
 }
 
 @media(max-height:820px) and (min-width:761px){
