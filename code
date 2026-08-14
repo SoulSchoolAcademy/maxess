@@ -225,6 +225,8 @@ button:disabled{
 
 
 
+
+
 .question-count-chip{
   justify-self:end;
   min-width:128px;
@@ -2305,6 +2307,7 @@ button:disabled{
   .answer{min-height:56px;}
   .jewel{width:45px;height:45px;}
 }
+
 
 
 
