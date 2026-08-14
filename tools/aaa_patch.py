@@ -106,6 +106,13 @@ v3_css = r'''
 }
 @media(prefers-reduced-motion:reduce){.answer:hover{transform:none;}}
 '''
+
+# If a prior workflow already inserted this exact pass, collapse it to one copy.
+while s.count(v3_css) > 1:
+    first = s.find(v3_css)
+    second = s.find(v3_css, first + len(v3_css))
+    s = s[:second] + s[second + len(v3_css):]
+
 s, _ = replace_once(s, '</style>', v3_css + '\n</style>')
 
 # Replace the prior status rail copy with clearer human-facing copy.
