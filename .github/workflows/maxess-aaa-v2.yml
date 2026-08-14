@@ -7,6 +7,7 @@ on:
       - 'code'
       - 'tools/aaa_patch.py'
       - 'tools/results_experience_v4.py'
+      - 'tools/fix_results_v4_anchor.py'
       - '.github/workflows/maxess-aaa-v2.yml'
 
 permissions:
@@ -21,6 +22,9 @@ jobs:
 
       - name: Apply idempotent assessment craft patch
         run: python3 tools/aaa_patch.py
+
+      - name: Repair V4 patch anchor if needed
+        run: python3 tools/fix_results_v4_anchor.py
 
       - name: Apply idempotent results experience V4 patch
         run: python3 tools/results_experience_v4.py
