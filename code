@@ -11,7 +11,9 @@
 
 
 
+
 <meta name="maxess-build" content="AAA-2026-08-14">
+<meta name="maxess-aaa-pass" content="2026-08-14-v2">
 
 <style>
 :root{
@@ -209,6 +211,8 @@ button:disabled{
 .brand-ess{
   color:#b58cff;
 }
+
+
 
 
 
@@ -621,6 +625,16 @@ button:disabled{
 .continue-button:hover:not(:disabled) .button-arrow{
   transform:translateX(3px);
 }
+
+
+
+/* =========================================================
+   AAA STATUS RAIL
+========================================================= */
+.aaa-status-rail{width:min(860px,100%);margin:0 auto 14px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 12px;border:1px solid rgba(255,255,255,.075);border-radius:12px;background:rgba(255,255,255,.025);color:#918d9b;font-size:9px;font-weight:850;letter-spacing:.10em;text-transform:uppercase;}
+.aaa-status-rail strong{color:#d7c9f6;font-weight:950;}
+.aaa-status-rail .aaa-live{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;}
+.aaa-status-rail .aaa-live::before{content:"";width:6px;height:6px;border-radius:50%;background:#35e39b;box-shadow:0 0 10px rgba(53,227,155,.7);}
 
 
 /* =========================================================
@@ -2049,6 +2063,9 @@ button:disabled{
 
 @media(max-width:760px){
 
+  .aaa-status-rail{margin-bottom:10px;padding:7px 9px;font-size:8px;}
+
+
   .app-inner{
     padding:
       max(7px,env(safe-area-inset-top))
@@ -2288,60 +2305,11 @@ button:disabled{
   .jewel{width:45px;height:45px;}
 }
 
-@media(max-height:820px) and (min-width:761px){
-  .app-inner{padding-top:8px;padding-bottom:10px;}
-  .topbar{padding-bottom:9px;}
-  .board-content{padding-top:22px;padding-bottom:20px;}
-  .command-row{margin-bottom:16px;}
-  .question-title{font-size:36px;}
-  .answers{gap:7px;margin-top:15px;}
-  .answer{min-height:56px;}
-  .jewel{width:45px;height:45px;}
-}
 
-@media(max-height:820px) and (min-width:761px){
-  .app-inner{padding-top:8px;padding-bottom:10px;}
-  .topbar{padding-bottom:9px;}
-  .board-content{padding-top:22px;padding-bottom:20px;}
-  .command-row{margin-bottom:16px;}
-  .question-title{font-size:36px;}
-  .answers{gap:7px;margin-top:15px;}
-  .answer{min-height:56px;}
-  .jewel{width:45px;height:45px;}
-}
 
-@media(max-height:820px) and (min-width:761px){
-  .app-inner{padding-top:8px;padding-bottom:10px;}
-  .topbar{padding-bottom:9px;}
-  .board-content{padding-top:22px;padding-bottom:20px;}
-  .command-row{margin-bottom:16px;}
-  .question-title{font-size:36px;}
-  .answers{gap:7px;margin-top:15px;}
-  .answer{min-height:56px;}
-  .jewel{width:45px;height:45px;}
-}
 
-@media(max-height:820px) and (min-width:761px){
-  .app-inner{padding-top:8px;padding-bottom:10px;}
-  .topbar{padding-bottom:9px;}
-  .board-content{padding-top:22px;padding-bottom:20px;}
-  .command-row{margin-bottom:16px;}
-  .question-title{font-size:36px;}
-  .answers{gap:7px;margin-top:15px;}
-  .answer{min-height:56px;}
-  .jewel{width:45px;height:45px;}
-}
 
-@media(max-height:820px) and (min-width:761px){
-  .app-inner{padding-top:8px;padding-bottom:10px;}
-  .topbar{padding-bottom:9px;}
-  .board-content{padding-top:22px;padding-bottom:20px;}
-  .command-row{margin-bottom:16px;}
-  .question-title{font-size:36px;}
-  .answers{gap:7px;margin-top:15px;}
-  .answer{min-height:56px;}
-  .jewel{width:45px;height:45px;}
-}
+
 
 @media(max-width:420px){
 
@@ -2503,6 +2471,11 @@ button:disabled{
 
 </div>
 
+
+<div class="aaa-status-rail" aria-live="polite">
+  <span><strong id="aaaStepLabel">STEP 01</strong> · BUILDING YOUR AI PROFILE</span>
+  <span class="aaa-live">ASSESSMENT ACTIVE</span>
+</div>
 
 <div
   class="question-area"
@@ -3641,6 +3614,9 @@ const DOM = {
   questionCountChip:
     document.getElementById("questionCountChip"),
 
+  aaaStepLabel:
+    document.getElementById("aaaStepLabel"),
+
   nayaButton:
     document.getElementById("nayaButton"),
 
@@ -3879,6 +3855,11 @@ function updateProgress(){
 
   DOM.questionCountChip.textContent=
     `QUESTION ${current} OF ${total}`;
+
+  if(DOM.aaaStepLabel){
+    DOM.aaaStepLabel.textContent=
+      `STEP ${String(current).padStart(2,"0")}`;
+  }
 
 }
 
@@ -4417,6 +4398,7 @@ function showInterestSelection(){
   DOM.progressFill.style.width="100%";
   DOM.progressPercent.textContent="100%";
   if(DOM.questionCountChip) DOM.questionCountChip.textContent="FINAL STEP";
+  if(DOM.aaaStepLabel) DOM.aaaStepLabel.textContent="STEP 16 · COMPLETE";
 
   state.interestBoard=0;
 
