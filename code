@@ -9,6 +9,9 @@
 <meta name="maxess-build" content="AAA-2026-08-14-v3">
 <meta name="maxess-aaa-pass" content="2026-08-14-v3">
 
+<meta name="maxess-build" content="AAA-2026-08-14-v3">
+<meta name="maxess-aaa-pass" content="2026-08-14-v3">
+
 
 
 
@@ -215,6 +218,8 @@ button:disabled{
 .brand-ess{
   color:#b58cff;
 }
+
+
 
 
 
@@ -2312,6 +2317,7 @@ button:disabled{
   .answer{min-height:56px;}
   .jewel{width:45px;height:45px;}
 }
+
 
 
 
