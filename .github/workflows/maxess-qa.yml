@@ -1,0 +1,36 @@
+name: MAXESS QA
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "code"
+      - "tools/**"
+      - ".github/workflows/**"
+
+permissions:
+  contents: read
+
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Structural validation
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          s=Path('code').read_text(encoding='utf-8')
+          assert s.count('id:"') >= 15, 'question configuration appears incomplete'
+          assert 'AI_AREAS = [' in s, 'AI area configuration missing'
+          assert s.count('color:"') >= 18, 'AI area configuration appears incomplete'
+          assert 'questionCountChip' in s, 'question counter missing'
+          assert 'meta name="maxess-build"' in s, 'build marker missing'
+          js=re.search(r'<script>([\\s\\S]*)</script>', s)
+          assert js, 'application script missing'
+          Path('/tmp/maxess.js').write_text(js.group(1), encoding='utf-8')
+          print('MAXESS structural checks passed')
+          PY
+      - name: JavaScript syntax validation
+        run: node --check /tmp/maxess.js
