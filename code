@@ -10,6 +10,7 @@
 
 
 
+
 <meta name="maxess-build" content="AAA-2026-08-14">
 
 <style>
@@ -208,6 +209,8 @@ button:disabled{
 .brand-ess{
   color:#b58cff;
 }
+
+
 
 
 
@@ -2272,6 +2275,17 @@ button:disabled{
   .score-number{
     font-size:62px;
   }
+}
+
+@media(max-height:820px) and (min-width:761px){
+  .app-inner{padding-top:8px;padding-bottom:10px;}
+  .topbar{padding-bottom:9px;}
+  .board-content{padding-top:22px;padding-bottom:20px;}
+  .command-row{margin-bottom:16px;}
+  .question-title{font-size:36px;}
+  .answers{gap:7px;margin-top:15px;}
+  .answer{min-height:56px;}
+  .jewel{width:45px;height:45px;}
 }
 
 @media(max-height:820px) and (min-width:761px){
