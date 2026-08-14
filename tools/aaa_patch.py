@@ -46,6 +46,7 @@ s, _ = replace_once(s, '  questionCountChip:\n    document.getElementById("quest
 s, _ = replace_once(s, '  DOM.questionCountChip.textContent=\n    `QUESTION ${current} OF ${total}`;', '  DOM.questionCountChip.textContent=\n    `QUESTION ${current} OF ${total}`;\n\n  if(DOM.aaaStepLabel){\n    DOM.aaaStepLabel.textContent=\n      `STEP ${String(current).padStart(2,"0")}`;\n  }')
 s, _ = replace_once(s, '  if(DOM.questionCountChip) DOM.questionCountChip.textContent="FINAL STEP";', '  if(DOM.questionCountChip) DOM.questionCountChip.textContent="FINAL STEP";\n  if(DOM.aaaStepLabel) DOM.aaaStepLabel.textContent="STEP 16 · COMPLETE";')
 
+# Release QA trigger: this file is also used by the release gate.
 if s == original:
     print('No changes required; AAA v2 is already applied.')
 else:
