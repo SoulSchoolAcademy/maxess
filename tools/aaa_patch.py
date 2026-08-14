@@ -15,13 +15,14 @@ def replace_once(text, old, new):
 s = PATH.read_text(encoding='utf-8')
 original = s
 
-# RELEASE IDENTITY
-for old in [
-    '<meta name="maxess-build" content="AAA-2026-08-14">',
-    '<meta name="maxess-aaa-pass" content="2026-08-14-v2">',
-]:
-    s = s.replace(old, '')
-s, _ = replace_once(s, '<title>MAXESS — AI Mastery Assessment</title>', '<title>MAXESS — AI Mastery Assessment</title>\n<meta name="maxess-build" content="AAA-2026-08-14-v3">\n' + MARKER)
+# Normalize all prior MAXESS release metadata, then write exactly one V3 pair.
+s = re.sub(r'^\s*<meta name="maxess-build" content="[^"]+">\s*\n?', '', s, flags=re.M)
+s = re.sub(r'^\s*<meta name="maxess-aaa-pass" content="[^"]+">\s*\n?', '', s, flags=re.M)
+s, _ = replace_once(
+    s,
+    '<title>MAXESS — AI Mastery Assessment</title>',
+    '<title>MAXESS — AI Mastery Assessment</title>\n<meta name="maxess-build" content="AAA-2026-08-14-v3">\n' + MARKER
+)
 
 # V3 visible design pass.
 v3_css = r'''
@@ -106,20 +107,14 @@ v3_css = r'''
 }
 @media(prefers-reduced-motion:reduce){.answer:hover{transform:none;}}
 '''
-
-# If a prior workflow already inserted this exact pass, collapse it to one copy.
 while s.count(v3_css) > 1:
-    first = s.find(v3_css)
-    second = s.find(v3_css, first + len(v3_css))
-    s = s[:second] + s[second + len(v3_css):]
-
+    first=s.find(v3_css);second=s.find(v3_css,first+len(v3_css));s=s[:second]+s[second+len(v3_css):]
 s, _ = replace_once(s, '</style>', v3_css + '\n</style>')
 
-# Replace the prior status rail copy with clearer human-facing copy.
+# Replace prior status rail copy with clearer human-facing copy.
 old_rail='''<div class="aaa-status-rail" aria-live="polite">\n  <span><strong id="aaaStepLabel">STEP 01</strong> · BUILDING YOUR AI PROFILE</span>\n  <span class="aaa-live">ASSESSMENT ACTIVE</span>\n</div>'''
 new_rail='''<div class="aaa-status-rail" aria-live="polite">\n  <span><strong id="aaaStepLabel">STEP 01</strong> · BUILDING YOUR AI PROFILE</span>\n  <span class="aaa-live">LIVE · NO WRONG ANSWERS</span>\n</div>'''
-if old_rail in s:
-    s=s.replace(old_rail,new_rail,1)
+if old_rail in s: s=s.replace(old_rail,new_rail,1)
 
 # Add guidance once, immediately before the answer grid.
 needle='<div\n  class="answers"'
