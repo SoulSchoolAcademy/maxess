@@ -243,6 +243,8 @@ button:disabled{
 
 
 
+
+
 .question-count-chip{
   justify-self:end;
   min-width:128px;
@@ -2343,6 +2345,7 @@ button:disabled{
 
 
 
+
 @media(max-width:420px){
 
   .naya-copy span{
@@ -2487,6 +2490,28 @@ button:disabled{
 @media(max-width:760px){.results-v4-naya{grid-template-columns:1fr;padding:23px 20px}.results-v4-naya-orb{width:44px;height:44px}.results-v4-naya p{font-size:13px}}
 
 
+
+/* =========================================================
+   MAXESS RESULTS EXPERIENCE MASTER V2 — PERSONAL INTELLIGENCE
+   Purpose: deepen meaning without replacing existing MAXESS DNA.
+========================================================= */
+.results-master-v2{margin-top:18px;padding:28px;border:1px solid rgba(184,149,255,.22);border-radius:30px;background:radial-gradient(circle at 92% 0,rgba(78,140,255,.10),transparent 42%),linear-gradient(145deg,rgba(138,92,255,.075),rgba(255,255,255,.018));box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 18px 45px rgba(0,0,0,.26)}
+.results-master-v2-kicker{margin:0;color:#b895ff;font-size:10px;line-height:1;letter-spacing:.18em;text-transform:uppercase;font-weight:950}
+.results-master-v2-title{margin:8px 0 0;font-size:clamp(25px,3.6vw,38px);line-height:1.05;letter-spacing:-.035em;font-weight:950;color:#fff}
+.results-master-v2-intro{max-width:760px;margin:11px 0 0;color:#bdb7c5;font-size:14px;line-height:1.58;font-weight:600}
+.results-master-v2-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:20px}
+.results-master-v2-card{min-width:0;padding:18px;border:1px solid rgba(255,255,255,.09);border-radius:22px;background:rgba(255,255,255,.025)}
+.results-master-v2-card strong{display:block;color:#fff;font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:950}
+.results-master-v2-card p{margin:8px 0 0;color:#bcb7c4;font-size:12px;line-height:1.55;font-weight:600}
+.results-master-v2-evidence strong{color:#b895ff}.results-master-v2-meaning strong{color:#3ca8ff}.results-master-v2-next strong{color:#35e39b}
+.results-master-v2-disclosure{margin-top:14px;padding-top:13px;border-top:1px solid rgba(255,255,255,.07);color:#8f8997;font-size:10px;line-height:1.55}
+.results-master-v2-disclosure b{color:#c9c2d1}
+.results-master-v2-territories{margin-top:14px;display:flex;flex-wrap:wrap;gap:7px}
+.results-master-v2-territory{padding:7px 10px;border:1px solid rgba(184,149,255,.20);border-radius:999px;background:rgba(138,92,255,.07);color:#d6cee4;font-size:10px;font-weight:850}
+@media(max-width:760px){.results-master-v2{padding:23px 20px}.results-master-v2-grid{grid-template-columns:1fr}.results-master-v2-card{padding:16px}.results-master-v2-intro{font-size:13px}}
+@media(prefers-reduced-motion:reduce){.results-master-v2{animation:none}}
+
+
 /* =========================================================
    MAXESS AAA V3 — VISIBLE CRAFT PASS
 ========================================================= */
@@ -2567,27 +2592,6 @@ button:disabled{
   .aaa-guidance{font-size:10px;margin-top:9px;padding:0 12px}
 }
 @media(prefers-reduced-motion:reduce){.answer:hover{transform:none;}}
-
-
-/* =========================================================
-   MAXESS RESULTS EXPERIENCE MASTER V2 — PERSONAL INTELLIGENCE
-   Purpose: deepen meaning without replacing existing MAXESS DNA.
-========================================================= */
-.results-master-v2{margin-top:18px;padding:28px;border:1px solid rgba(184,149,255,.22);border-radius:30px;background:radial-gradient(circle at 92% 0,rgba(78,140,255,.10),transparent 42%),linear-gradient(145deg,rgba(138,92,255,.075),rgba(255,255,255,.018));box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 18px 45px rgba(0,0,0,.26)}
-.results-master-v2-kicker{margin:0;color:#b895ff;font-size:10px;line-height:1;letter-spacing:.18em;text-transform:uppercase;font-weight:950}
-.results-master-v2-title{margin:8px 0 0;font-size:clamp(25px,3.6vw,38px);line-height:1.05;letter-spacing:-.035em;font-weight:950;color:#fff}
-.results-master-v2-intro{max-width:760px;margin:11px 0 0;color:#bdb7c5;font-size:14px;line-height:1.58;font-weight:600}
-.results-master-v2-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:20px}
-.results-master-v2-card{min-width:0;padding:18px;border:1px solid rgba(255,255,255,.09);border-radius:22px;background:rgba(255,255,255,.025)}
-.results-master-v2-card strong{display:block;color:#fff;font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:950}
-.results-master-v2-card p{margin:8px 0 0;color:#bcb7c4;font-size:12px;line-height:1.55;font-weight:600}
-.results-master-v2-evidence strong{color:#b895ff}.results-master-v2-meaning strong{color:#3ca8ff}.results-master-v2-next strong{color:#35e39b}
-.results-master-v2-disclosure{margin-top:14px;padding-top:13px;border-top:1px solid rgba(255,255,255,.07);color:#8f8997;font-size:10px;line-height:1.55}
-.results-master-v2-disclosure b{color:#c9c2d1}
-.results-master-v2-territories{margin-top:14px;display:flex;flex-wrap:wrap;gap:7px}
-.results-master-v2-territory{padding:7px 10px;border:1px solid rgba(184,149,255,.20);border-radius:999px;background:rgba(138,92,255,.07);color:#d6cee4;font-size:10px;font-weight:850}
-@media(max-width:760px){.results-master-v2{padding:23px 20px}.results-master-v2-grid{grid-template-columns:1fr}.results-master-v2-card{padding:16px}.results-master-v2-intro{font-size:13px}}
-@media(prefers-reduced-motion:reduce){.results-master-v2{animation:none}}
 
 </style>
 </head>
