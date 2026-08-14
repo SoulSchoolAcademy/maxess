@@ -6,6 +6,7 @@
 <meta name="theme-color" content="#020204">
 <meta name="color-scheme" content="dark">
 <title>MAXESS — AI Mastery Assessment</title>
+<meta name="maxess-build" content="AAA-2026-08-14">
 
 <style>
 :root{
@@ -65,6 +66,13 @@ body{
 
 button{
   font:inherit;
+  -webkit-tap-highlight-color:transparent;
+}
+
+button,.answer,.interest-area{
+  touch-action:manipulation;
+  user-select:none;
+  -webkit-user-select:none;
 }
 
 button:focus-visible{
@@ -195,6 +203,21 @@ button:disabled{
 
 .brand-ess{
   color:#b58cff;
+}
+
+.question-count-chip{
+  justify-self:end;
+  min-width:128px;
+  padding:9px 12px;
+  border:1px solid rgba(181,140,255,.24);
+  border-radius:999px;
+  background:rgba(138,92,255,.055);
+  color:#bdb4ce;
+  font-size:9px;
+  font-weight:950;
+  letter-spacing:.10em;
+  text-align:center;
+  white-space:nowrap;
 }
 
 
@@ -376,6 +399,8 @@ button:disabled{
 ========================================================= */
 
 .command-row{
+  position:relative;
+  z-index:4;
   display:flex;
   align-items:center;
   justify-content:space-between;
@@ -624,9 +649,10 @@ button:disabled{
 }
 
 .question-title{
-  margin:0;
+  margin:0 auto;
   color:#fff;
-  font-size:clamp(26px,4vw,48px);
+  max-width:860px;
+  font-size:clamp(25px,3.35vw,42px);
   line-height:1.08;
   letter-spacing:-.035em;
   font-weight:900;
@@ -655,7 +681,7 @@ button:disabled{
 
 .answers{
   width:min(860px,100%);
-  margin:clamp(18px,2.4vw,28px) auto 0;
+  margin:clamp(16px,2vw,23px) auto 0;
   display:grid;
   gap:9px;
   flex:1 1 auto;
@@ -666,7 +692,7 @@ button:disabled{
   --accent:#fff;
   position:relative;
   width:100%;
-  min-height:66px;
+  min-height:62px;
   display:grid;
   grid-template-columns:52px minmax(0,1fr) 30px;
   align-items:center;
@@ -2026,6 +2052,8 @@ button:disabled{
     font-size:16px;
   }
 
+  .question-count-chip{display:none;}
+
   .progress-hud{
     justify-self:end;
     width:auto;
@@ -2234,6 +2262,17 @@ button:disabled{
   }
 }
 
+@media(max-height:820px) and (min-width:761px){
+  .app-inner{padding-top:8px;padding-bottom:10px;}
+  .topbar{padding-bottom:9px;}
+  .board-content{padding-top:22px;padding-bottom:20px;}
+  .command-row{margin-bottom:16px;}
+  .question-title{font-size:36px;}
+  .answers{gap:7px;margin-top:15px;}
+  .answer{min-height:56px;}
+  .jewel{width:45px;height:45px;}
+}
+
 @media(max-width:420px){
 
   .naya-copy span{
@@ -2322,7 +2361,7 @@ button:disabled{
 
   </div>
 
-  <div></div>
+  <div class="question-count-chip" id="questionCountChip" aria-live="polite">QUESTION 1 OF 15</div>
 
 </header>
 
@@ -3529,6 +3568,9 @@ const DOM = {
   progressPercent:
     document.getElementById("progressPercent"),
 
+  questionCountChip:
+    document.getElementById("questionCountChip"),
+
   nayaButton:
     document.getElementById("nayaButton"),
 
@@ -3764,6 +3806,9 @@ function updateProgress(){
 
   DOM.progressPercent.textContent=
     `${percentage}%`;
+
+  DOM.questionCountChip.textContent=
+    `QUESTION ${current} OF ${total}`;
 
 }
 
@@ -4297,6 +4342,11 @@ function showInterestSelection(){
   DOM.interestsView.classList.add(
     "visible"
   );
+
+  DOM.progressLabel.textContent="PERSONALIZE YOUR REPORT";
+  DOM.progressFill.style.width="100%";
+  DOM.progressPercent.textContent="100%";
+  if(DOM.questionCountChip) DOM.questionCountChip.textContent="FINAL STEP";
 
   state.interestBoard=0;
 
@@ -4966,6 +5016,9 @@ let nayaSpeechUtterance=null;
 function playNaya(){
 
   if(!("speechSynthesis" in window)){
+    DOM.nayaPrimary.textContent="Audio unavailable";
+    DOM.nayaSecondary.textContent="Speech is not supported here";
+    setTimeout(stopNaya,2200);
     return;
   }
 
