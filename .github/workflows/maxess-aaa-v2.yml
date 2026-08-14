@@ -1,4 +1,4 @@
-name: MAXESS AAA v2
+name: MAXESS AAA v4 Results
 
 on:
   push:
@@ -6,6 +6,7 @@ on:
     paths:
       - 'code'
       - 'tools/aaa_patch.py'
+      - 'tools/results_experience_v4.py'
       - '.github/workflows/maxess-aaa-v2.yml'
 
 permissions:
@@ -18,22 +19,25 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Apply idempotent AAA v2 patch
+      - name: Apply idempotent assessment craft patch
         run: python3 tools/aaa_patch.py
 
-      - name: Commit and push if changed
+      - name: Apply idempotent results experience V4 patch
+        run: python3 tools/results_experience_v4.py
+
+      - name: Commit and push generated code if changed
         run: |
           if git diff --quiet -- code; then
-            echo 'No code changes required.'
-            exit 0
+            echo 'No generated code changes required.'
+          else
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git add code
+            git commit -m 'feat(maxess): deliver results experience v4'
+            git push
           fi
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add code
-          git commit -m 'feat(maxess): deliver visible AAA v2 UX pass'
-          git push
 
-      - name: Verify source invariants
+      - name: Verify MAXESS source invariants
         run: |
           python3 - <<'PY'
           from pathlib import Path
@@ -46,5 +50,9 @@ jobs:
           assert s.count('id="aaaStepLabel"') == 1
           assert s.count('AI_AREAS = [') == 1
           assert s.count('id:"') >= 15
-          print('MAXESS AAA v2 invariants passed')
+          assert 'MAXESS RESULTS EXPERIENCE V4' in s
+          assert 'resultsV4Opening' in s
+          assert 'resultsV4MasterKeyTitle' in s
+          assert 'resultsV4MethodDetail' in s
+          print('MAXESS AAA v4 source invariants passed')
           PY
