@@ -8,6 +8,11 @@ def sub(a, b, n=1):
     global s
     s = s.replace(a, b, n)
 
+# Normalize the build marker first so repeated automated passes remain idempotent.
+marker = '<meta name="maxess-build" content="AAA-2026-08-14">'
+while s.count(marker) > 1:
+    s = s.replace(marker, '', 1)
+
 sub('button{\n  font:inherit;\n}', 'button{\n  font:inherit;\n  -webkit-tap-highlight-color:transparent;\n}\n\nbutton,.answer,.interest-area{\n  touch-action:manipulation;\n  user-select:none;\n  -webkit-user-select:none;\n}')
 sub('.command-row{\n  display:flex;', '.command-row{\n  position:relative;\n  z-index:4;\n  display:flex;')
 sub('.question-title{\n  margin:0;\n  color:#fff;\n  font-size:clamp(26px,4vw,48px);', '.question-title{\n  margin:0 auto;\n  color:#fff;\n  max-width:860px;\n  font-size:clamp(25px,3.35vw,42px);')
@@ -22,6 +27,10 @@ sub('@media(max-width:420px){', '@media(max-height:820px) and (min-width:761px){
 sub('  if(!("speechSynthesis" in window)){\n    return;\n  }', '  if(!("speechSynthesis" in window)){\n    DOM.nayaPrimary.textContent="Audio unavailable";\n    DOM.nayaSecondary.textContent="Speech is not supported here";\n    setTimeout(stopNaya,2200);\n    return;\n  }')
 sub('  DOM.interestsView.classList.add(\n    "visible"\n  );\n\n  state.interestBoard=0;', '  DOM.interestsView.classList.add(\n    "visible"\n  );\n\n  DOM.progressLabel.textContent="PERSONALIZE YOUR REPORT";\n  DOM.progressFill.style.width="100%";\n  DOM.progressPercent.textContent="100%";\n  if(DOM.questionCountChip) DOM.questionCountChip.textContent="FINAL STEP";\n\n  state.interestBoard=0;')
 sub('<title>MAXESS — AI Mastery Assessment</title>', '<title>MAXESS — AI Mastery Assessment</title>\n<meta name="maxess-build" content="AAA-2026-08-14">')
+
+# Guarantee exactly one marker after every pass.
+while s.count(marker) > 1:
+    s = s.replace(marker, '', 1)
 
 if s != orig:
     p.write_text(s, encoding='utf-8')
