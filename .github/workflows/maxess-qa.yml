@@ -25,9 +25,9 @@ jobs:
           assert s.count('id:"') >= 15, 'question configuration appears incomplete'
           assert 'AI_AREAS = [' in s, 'AI area configuration missing'
           assert s.count('color:"') >= 18, 'AI area configuration appears incomplete'
+          assert s.count('meta name="maxess-build"') == 1, 'build marker must exist exactly once'
           assert 'questionCountChip' in s, 'question counter missing'
-          assert 'meta name="maxess-build"' in s, 'build marker missing'
-          js=re.search(r'<script>([\\s\\S]*)</script>', s)
+          js=re.search(r'<script>([\s\S]*)</script>', s)
           assert js, 'application script missing'
           Path('/tmp/maxess.js').write_text(js.group(1), encoding='utf-8')
           print('MAXESS structural checks passed')
