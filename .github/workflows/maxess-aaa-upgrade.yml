@@ -35,19 +35,29 @@ jobs:
         run: |
           python3 - <<'PY'
           from pathlib import Path
+          import re
           s = Path('code').read_text(encoding='utf-8')
           assert s.count('maxess-aaa-pass') == 1
           assert s.count('id="questionCountChip"') == 1
           assert s.count('id="aaaStepLabel"') == 1
           assert s.count('AI_AREAS = [') == 1
           assert s.count('id:"') >= 15
+          assert s.count('color:"') >= 18
           assert 'MAXESS RESULTS EXPERIENCE V4' in s
           assert 'resultsV4Opening' in s
           assert 'resultsV4MasterKeyTitle' in s
           assert 'resultsV4MethodDetail' in s
           assert '.results-v4-steps{display:flex' in s
+          assert 'No pressure.' in s
+          assert 'They do not change your score' in s
+          js=re.search(r'<script>([\s\S]*)</script>', s)
+          assert js, 'application script missing'
+          Path('/tmp/maxess.js').write_text(js.group(1),encoding='utf-8')
           print('MAXESS AAA release invariants passed')
           PY
+
+      - name: Validate JavaScript syntax
+        run: node --check /tmp/maxess.js
 
       - name: Commit generated release
         run: |
