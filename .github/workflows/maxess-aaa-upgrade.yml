@@ -19,6 +19,9 @@ jobs:
       - name: Apply AAA UX and resilience patch
         run: python3 tools/maxess_aaa_upgrade.py
 
+      - name: Apply AAA v2 visible UX and cleanup pass
+        run: python3 tools/aaa_patch.py
+
       - name: Commit upgrade
         run: |
           git config user.name "MAXESS AAA Release Bot"
@@ -28,5 +31,5 @@ jobs:
             exit 0
           fi
           git add -- code
-          git commit -m "feat(maxess): apply AAA assessment UX and resilience upgrade"
+          git commit -m "feat(maxess): deliver visible AAA assessment upgrade"
           git push
