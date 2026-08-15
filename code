@@ -255,6 +255,8 @@ button:disabled{
 
 
 
+
+
 .question-count-chip{
   justify-self:end;
   min-width:128px;
@@ -2361,6 +2363,7 @@ button:disabled{
 
 
 
+
 @media(max-width:420px){
 
   .naya-copy span{
@@ -2835,6 +2838,7 @@ button:disabled{
   .maxess-expert-name{font-size:15px}
   .maxess-treasure-title{font-size:32px}
 }
+
 
 
 /* =========================================================
