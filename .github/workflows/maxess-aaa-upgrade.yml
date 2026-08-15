@@ -103,38 +103,50 @@ jobs:
           from pathlib import Path
           import re
           s = Path('code').read_text(encoding='utf-8')
-          assert s.count('maxess-aaa-pass') == 1
-          assert s.count('id="questionCountChip"') == 1
-          assert s.count('id="aaaStepLabel"') == 1
-          assert s.count('AI_AREAS = [') == 1
-          assert s.count('id:"') >= 15
-          assert s.count('color:"') >= 18
-          assert 'MAXESS RESULTS EXPERIENCE V4' in s
-          assert 'MAXESS RESULTS EXPERIENCE MASTER V2' in s
-          assert 'MAXESS RESULTS EXPERIENCE 9.9 — PERSONAL SIGNAL' in s
-          assert 'MAXESS NAYA MASTERS BRAND SYSTEM' in s
-          assert 'MAXESS RESULTS EXPERIENCE 10-STAR' in s
-          assert 'MAXESS RESULTS EXPERIENCE OSCAR FINAL' in s
-          assert 'MAXESS RESULTS EXPERIENCE AAA AUDIT PASS' in s
-          assert 'MAXESS RESULTS EXPERIENCE CLEAN SLATE' in s
-          assert 'MAXESS NAYA MASTERS GALLERY' in s
-          assert 'MAXESS RESULTS EXPERIENCE TOTAL RESET' in s
-          assert 'MAXESS RESULTS EXPERIENCE RUTHLESS RESET' in s
-          assert 'MAXESS RESULTS HARD BOUNDARY' in s
-          assert 'MAXESS RESULTS HARD RESET V2' in s
-          assert 'MAXESS RESULTS HARD RESET V3' in s
-          assert 'MAXESS RESULTS FINAL AUTHORITY V2' in s
-          assert 'YOUR PERSONALIZED ANALYSIS' in s
-          assert 'AI CAPABILITY SIGNATURE' in s
-          assert 'Naya Master Writer' in s
-          assert 'Naya Master Researcher' in s
-          assert 'r2-gauge' in s
-          assert 'r2-spectrum' in s
-          assert 'r2-fingerprint-svg' in s
-          assert s.count('<script>') == 2, 'Results must retain one main app script plus one Results authority script'
-          assert not re.search(r'</style>\s*\(function\s*\(', s), 'raw JavaScript text leak detected'
+          checks = {
+            'maxess-aaa-pass': s.count('maxess-aaa-pass') == 1,
+            'questionCountChip': s.count('id="questionCountChip"') == 1,
+            'aaaStepLabel': s.count('id="aaaStepLabel"') == 1,
+            'AI_AREAS': s.count('AI_AREAS = [') == 1,
+            'area ids': s.count('id:"') >= 15,
+            'area colors': s.count('color:"') >= 18,
+            'V4': 'MAXESS RESULTS EXPERIENCE V4' in s,
+            'Master V2': 'MAXESS RESULTS EXPERIENCE MASTER V2' in s,
+            '9.9': 'MAXESS RESULTS EXPERIENCE 9.9 — PERSONAL SIGNAL' in s,
+            'Naya brand': 'MAXESS NAYA MASTERS BRAND SYSTEM' in s,
+            '10-star': 'MAXESS RESULTS EXPERIENCE 10-STAR' in s,
+            'Oscar': 'MAXESS RESULTS EXPERIENCE OSCAR FINAL' in s,
+            'audit': 'MAXESS RESULTS EXPERIENCE AAA AUDIT PASS' in s,
+            'clean slate': 'MAXESS RESULTS EXPERIENCE CLEAN SLATE' in s,
+            'gallery': 'MAXESS NAYA MASTERS GALLERY' in s,
+            'total reset': 'MAXESS RESULTS EXPERIENCE TOTAL RESET' in s,
+            'ruthless reset': 'MAXESS RESULTS EXPERIENCE RUTHLESS RESET' in s,
+            'hard boundary': 'MAXESS RESULTS HARD BOUNDARY' in s,
+            'hard reset v2': 'MAXESS RESULTS HARD RESET V2' in s,
+            'hard reset v3': 'MAXESS RESULTS HARD RESET V3' in s,
+            'final authority': 'MAXESS RESULTS FINAL AUTHORITY V2' in s,
+            'personalized analysis': 'YOUR PERSONALIZED ANALYSIS' in s,
+            'capability signature': 'AI CAPABILITY SIGNATURE' in s,
+            'writer': 'Naya Master Writer' in s,
+            'researcher': 'Naya Master Researcher' in s,
+            'r2 gauge': 'r2-gauge' in s,
+            'r2 spectrum': 'r2-spectrum' in s,
+            'r2 fingerprint': 'r2-fingerprint-svg' in s,
+          }
+          failed = [name for name, ok in checks.items() if not ok]
+          if failed:
+            print('FAILED SOURCE INVARIANTS:', ', '.join(failed))
+            raise SystemExit(1)
+          if s.count('<script>') != 2:
+            print('FAILED SOURCE INVARIANT: expected exactly two script blocks, found', s.count('<script>'))
+            raise SystemExit(1)
+          if re.search(r'</style>\s*\(function\s*\(', s):
+            print('FAILED SOURCE INVARIANT: raw JavaScript text leak detected')
+            raise SystemExit(1)
           scripts = re.findall(r'<script(?:\s[^>]*)?>([\s\S]*?)</script>', s, flags=re.I)
-          assert scripts, 'application scripts missing'
+          if not scripts:
+            print('FAILED SOURCE INVARIANT: application scripts missing')
+            raise SystemExit(1)
           Path('/tmp/maxess-scripts').mkdir(exist_ok=True)
           for i,script in enumerate(scripts,1):
               Path(f'/tmp/maxess-scripts/script-{i}.js').write_text(script,encoding='utf-8')
