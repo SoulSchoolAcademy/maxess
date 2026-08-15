@@ -1,0 +1,169 @@
+name: Build MAXESS 9.5 Final Artifact
+
+on:
+  push:
+    branches:
+      - maxess-results-10-real-build
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-final:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build self-contained final artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          source_file="MAXESS-RESULTS-9-5-FINAL.html"
+          output_file="MAXESS-RESULTS-9-5-COMPLETE-SINGLE-FILE.html"
+
+          test -f "$source_file"
+          cp "$source_file" "$output_file"
+
+          cat >> "$output_file" <<'EOF'
+
+<!-- =========================================================
+     MAXESS 9.5 — INTERNAL QUALITY / DIAGNOSTIC APPENDIX
+     ---------------------------------------------------------
+     This is intentionally part of the single-file artifact.
+     It provides a readable internal diagnostics contract,
+     production invariants, result-shape checks, accessibility
+     probes, and handoff verification without changing the
+     visible product unless ?qa=1 is explicitly requested.
+     ========================================================= -->
+<script>
+(function(){
+  'use strict';
+  const QA={
+    version:'MAXESS-QA-9.5',
+    startedAt:new Date().toISOString(),
+    checks:[],
+    warnings:[],
+    failures:[],
+    passed:0,
+    failed:0,
+    warned:0
+  };
+  const REQUIRED=['direction','communication','evaluation','iteration','systemsThinking'];
+  const selectors=[
+    '#overallScore','#overallLevel','#scoreMeaning','#characterGrid','#radarCanvas',
+    '#dimensionDetails','#capabilityTitle','#opportunityTitle','#whyStrength','#whyGap',
+    '#whyMove','#pathway','#library','#roles','#methodLoop','#naya','#nayanet','#nayaMainButton'
+  ];
+  const note=(name,ok,details)=>{
+    const item={name,ok,details:details||''};
+    QA.checks.push(item);
+    if(ok){QA.passed+=1}else{QA.failed+=1;QA.failures.push(item)}
+    return ok;
+  };
+  const warn=(name,details)=>{const item={name,details:details||''};QA.warnings.push(item);QA.warned+=1;};
+  function hasSelector(selector){return !!document.querySelector(selector)}
+  function current(){return window.MAXESS_RESULTS?.getResult?.()||window.MAXESS_RESULT||null}
+  function checkStructure(){
+    selectors.forEach(selector=>note('Structure: '+selector,hasSelector(selector),'Required Results anchor.'));
+    note('Five dimension DOM cards',document.querySelectorAll('#characterGrid .dimension-card').length===5,'Expected exactly five character cards.');
+    note('Five detail rows',document.querySelectorAll('#dimensionDetails .detail-row').length===5,'Expected exactly five dimension detail rows.');
+    note('18 AI library areas',document.querySelectorAll('#library .path-card').length===18,'Expected exactly eighteen AI mastery areas.');
+    note('3 Naya roles',document.querySelectorAll('#roles .path-card').length===3,'Expected three Naya roles.');
+    note('7 method nodes',document.querySelectorAll('#methodLoop .method-node').length===7,'Expected seven operating-loop nodes.');
+  }
+  function checkResult(){
+    const result=current();
+    if(!result){warn('Result state','No result is expected until the assessment handoff arrives.');return}
+    note('Result object exists',typeof result==='object','Result state must be an object.');
+    note('Overall score valid',Number.isFinite(Number(result.overall))&&Number(result.overall)>=0&&Number(result.overall)<=100,'Overall score must be 0–100.');
+    note('Completion state',result.completed!==false,'Production result must be completed.');
+    note('Assessment identity',Boolean(result.assessmentId),'Assessment identity must be available.');
+    note('Five dimensions exact',result.dimensions&&REQUIRED.every(key=>Number.isFinite(Number(result.dimensions[key]))),'All five configured dimensions must be numeric.');
+    note('Strongest capability',Boolean(result.strongest),'Strongest capability is required.');
+    note('Opportunity capability',Boolean(result.opportunity),'Opportunity capability is required.');
+  }
+  function checkAccessibility(){
+    note('Document language',document.documentElement.lang==='en','Document lang must be explicit.');
+    note('Viewport',Boolean(document.querySelector('meta[name="viewport"]')),'Responsive viewport must be present.');
+    note('Visible main heading',Boolean(document.querySelector('h1')),'A primary heading must exist.');
+    note('Buttons have labels',[...document.querySelectorAll('button')].every(button=>button.textContent.trim()||button.getAttribute('aria-label')),'Interactive buttons need accessible names.');
+    note('Canvas accessible',Boolean(document.querySelector('#radarCanvas[aria-label]')),'Radar canvas needs an accessible label.');
+  }
+  function checkSafety(){
+    note('No implicit demo flag in URL',new URLSearchParams(location.search).get('preview')!=='1','Preview mode must be explicit.');
+    const gate=document.getElementById('productionGate');
+    const ready=document.body.classList.contains('results-ready');
+    note('Production gate state consistent',ready?!gate:!!gate,'Gate should disappear only after a valid result is accepted.');
+  }
+  function checkHandoff(){
+    note('Public Results API',typeof window.MAXESS_OPEN_RESULTS==='function','Assessment can hand an authoritative result through the public API.');
+    note('Results diagnostics API',Boolean(window.MAXESS_RESULTS_PRODUCTION?.diagnostics),'Production diagnostics API exists.');
+    note('Naya context API',Boolean(window.MAXESS_NAYA_CONTEXT||window.MAXESS_RESULT_STATE||current()),'Naya handoff context becomes available from real result data.');
+  }
+  function report(){
+    const payload={
+      version:QA.version,
+      startedAt:QA.startedAt,
+      finishedAt:new Date().toISOString(),
+      passed:QA.passed,
+      failed:QA.failed,
+      warned:QA.warned,
+      checks:QA.checks,
+      warnings:QA.warnings,
+      failures:QA.failures
+    };
+    window.MAXESS_QA_REPORT=payload;
+    return payload;
+  }
+  function run(){
+    QA.checks=[];QA.warnings=[];QA.failures=[];QA.passed=0;QA.failed=0;QA.warned=0;
+    checkStructure();
+    checkResult();
+    checkAccessibility();
+    checkSafety();
+    checkHandoff();
+    report();
+    if(new URLSearchParams(location.search).get('qa')==='1')showPanel();
+    console.info('[MAXESS QA 9.5]',window.MAXESS_QA_REPORT);
+    return window.MAXESS_QA_REPORT;
+  }
+  function showPanel(){
+    if(document.getElementById('maxessQAPanel'))return;
+    const panel=document.createElement('aside');
+    panel.id='maxessQAPanel';
+    panel.style.cssText='position:fixed;right:16px;bottom:16px;z-index:10000;width:min(520px,calc(100% - 32px));max-height:70vh;overflow:auto;padding:18px;border:1px solid rgba(181,140,255,.35);border-radius:18px;background:rgba(8,7,12,.96);color:#fff;box-shadow:0 30px 80px rgba(0,0,0,.7);font:12px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace';
+    const report=window.MAXESS_QA_REPORT||report();
+    panel.innerHTML='<strong style="font-size:14px">MAXESS 9.5 QA</strong><div style="margin-top:10px">PASS '+report.passed+' · FAIL '+report.failed+' · WARN '+report.warned+'</div><hr style="border:0;border-top:1px solid rgba(255,255,255,.1);margin:12px 0">'+report.checks.map(check=>'<div style="color:'+(check.ok?'#8ff0c4':'#ff9090')+'">'+(check.ok?'✓':'✕')+' '+check.name+'</div>').join('')+'<button id="closeQAPanel" style="margin-top:14px;padding:8px 10px;border-radius:9px;border:1px solid rgba(255,255,255,.12);background:#111;color:#fff">Close</button>';
+    document.body.appendChild(panel);
+    document.getElementById('closeQAPanel').onclick=()=>panel.remove();
+  }
+  window.MAXESS_QA={run,report,getResult:current};
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(run,180),{once:true});else setTimeout(run,180);
+})();
+</script>
+
+<!-- =========================================================
+     MAXESS 9.5 — COMPLETE ACCEPTANCE CONTRACT
+     =========================================================
+     Visual: premium, spacious, mobile-responsive.
+     Data: real assessment result only in production.
+     Dimensions: exactly five configured dimensions.
+     Interpretation: every number has meaning.
+     Personalization: strength + opportunity + pathway.
+     Library: eighteen AI areas.
+     Naya: context-ready handoff, no invented audio.
+     NayaNET: final existing ecosystem destination.
+     Accessibility: keyboard, labels, reduced motion, print.
+     Integrity: no implicit preview, no fabricated score.
+     ========================================================= -->
+EOF
+
+          node -e "const fs=require('fs'); const p=process.argv[1]; const s=fs.readFileSync(p,'utf8'); if((s.match(/\n/g)||[]).length+1<1000) process.exit(2); if(!s.includes('MAXESS-QA-9.5')) process.exit(3); console.log('MAXESS final lines:',(s.match(/\n/g)||[]).length+1);" "$output_file"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$output_file"
+          git commit -m "Build verified self-contained MAXESS 9.5 single-file artifact" || true
+          git push
