@@ -1,39 +1,8 @@
-name: Release Polished MAXESS Results
+name: Legacy Polished MAXESS Results (disabled)
 on:
-  push:
-    branches: [main]
-permissions:
-  contents: write
+  workflow_dispatch:
 jobs:
-  release:
+  disabled:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Compose polished standalone Results
-        run: |
-          python3 - <<'PY'
-          from pathlib import Path
-          import re
-          src=Path('MAXESS-RESULTS-9-5-GROOVE.html').read_text(encoding='utf-8')
-          workflow=Path('.github/workflows/build-maxess-results.yml').read_text(encoding='utf-8')
-          m=re.search(r"polish = r'''(.*?)'''",workflow,re.S)
-          if not m: raise SystemExit('POLISH SOURCE NOT FOUND')
-          polish=m.group(1)
-          final=src.replace('</body>',polish+'\\n</body>',1)
-          Path('MAXESS-RESULTS-10-GROOVE.html').write_text(final,encoding='utf-8')
-          lines=final.count('\\n')+1
-          print('POLISHED RESULTS:',lines,'lines',len(final.encode()),'bytes')
-          if lines < 2500: raise SystemExit('SUBSTANCE GATE FAILED')
-          required=['m10-hero','m10-fingerprint','m10-insight','m10-path','m10-method','m10-naya','m10-gauge-card','m10-radar','m10Progress','nayanet.xyz','KNOW','TELL','ASK','CREATE','SCORE','IMPROVE','REPEAT']
-          missing=[x for x in required if x not in final]
-          if missing: raise SystemExit('INVENTORY GATE FAILED: '+','.join(missing))
-          if final.count('<section') < 10: raise SystemExit('SECTION GATE FAILED')
-          if final.count('<script') < 2: raise SystemExit('FUNCTIONALITY GATE FAILED')
-          print('STRUCTURAL SCORECARD PASS: complete Results layer + mature NayaNET source preserved')
-          PY
-      - name: Commit verified raw Groove artifact
-        run: |
-          git config user.name 'MAXESS Release System'
-          git config user.email 'actions@github.com'
-          git add MAXESS-RESULTS-10-GROOVE.html
-          git diff --cached --quiet || (git commit -m 'Release polished MAXESS Results Groove artifact' && git push)
+      - run: echo 'Disabled. The authoritative Results publisher is build-final-results-groove.yml.'
