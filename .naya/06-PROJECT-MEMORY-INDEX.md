@@ -5,16 +5,24 @@ READ NEXT: `.naya/NAYA-WORK-PROTOCOL.md`
 This file is the map of durable project memory. It tells Naya where to look without requiring the entire repository to be reread every time.
 
 ## GOVERNANCE
-- `.naya/NAYA-GOVERNANCE.md` — master entrypoint and reading chain.
+- `.naya/NAYA-GOVERNANCE.md` — master entrypoint, trigger phrases, and reading chain.
 - `.naya/01-PRIME-DIRECTIVE.md` — purpose, human-first principles, truth, accountability.
 - `.naya/02-LAWS-AND-RULES.md` — non-negotiable operating laws.
 - `.naya/03-SYSTEM-DESIGN-LAWS.md` — architecture and engineering laws.
 - `.naya/04-EXECUTION-PROCEDURE.md` — action sequence.
 - `.naya/05-QUALITY-AND-OSCAR.md` — adversarial QA and release gate.
+- `.naya/NAYA-WORK-PROTOCOL.md` — startup sequence and delivery protocol.
 
 ## PRODUCT / SYSTEM MEMORY
-When creating durable product decisions, add or update a clearly named file under `docs/` or `.naya/memory/` and add it here.
+When creating durable product decisions, add or update a clearly named file under `.naya/memory/` and add it here.
 
+### Assessment family
+- `.naya/memory/07-MAX-ASSESSMENT-FAMILY.md` — locked AI MAX / MAX LIFE / MAX PERCEPTION family, naming architecture, MAX PERCEPTION philosophy, five perception dimensions, shared engine law.
+
+### Results experience
+- `.naya/memory/08-MAXESS-RESULTS-MASTER-SPEC.md` — locked MAXESS Results product architecture, psychological journey, five AI character dimensions, personalization, result contract, Naya transition, AAA standard.
+
+### Future memory categories
 Recommended categories:
 - Product vision and positioning
 - Architecture and data contracts
