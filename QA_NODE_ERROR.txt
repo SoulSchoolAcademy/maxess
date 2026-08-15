@@ -1,12 +1,11 @@
 === /tmp/maxess-scripts/script-1.js ===
-/tmp/maxess-scripts/script-1.js:2510
-<script>
-^
+=== /tmp/maxess-scripts/script-2.js ===
+/tmp/maxess-scripts/script-2.js:75
+    const track=`M ${startPoint[0]} ${startPoint[1]} A ${r} ${r} 0 1 1 ${endPoint[0]} ${endPoint[1]}`;
+                 ^
 
-SyntaxError: Unexpected token '<'
+SyntaxError: Unexpected identifier 'M'
     at wrapSafe (node:internal/modules/cjs/loader:1713:18)
     at checkSyntax (node:internal/main/check_syntax:78:3)
 
 Node.js v22.23.2
-=== /tmp/maxess-scripts/script-2.js ===
-=== /tmp/maxess-scripts/script-3.js ===
