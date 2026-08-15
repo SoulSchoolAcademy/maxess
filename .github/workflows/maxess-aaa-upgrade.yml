@@ -6,6 +6,7 @@ on:
     paths-ignore:
       - "code"
       - "QA_NODE_ERROR.txt"
+      - "QA_TRIGGER.txt"
 
 permissions:
   contents: write
@@ -65,24 +66,33 @@ jobs:
           assert 'No pressure.' in s
           assert 'They do not change your score' in s
           assert 'Evidence comes directly from your assessment responses' in s
-          js=re.search(r'<script>([\s\S]*)</script>', s)
-          assert js, 'application script missing'
-          Path('/tmp/maxess.js').write_text(js.group(1),encoding='utf-8')
-          print('MAXESS AAA release invariants passed')
+          scripts=re.findall(r'<script(?:\s[^>]*)?>([\s\S]*?)</script>', s, flags=re.I)
+          assert scripts, 'application scripts missing'
+          Path('/tmp/maxess-scripts').mkdir(exist_ok=True)
+          for i,script in enumerate(scripts,1):
+              Path(f'/tmp/maxess-scripts/script-{i}.js').write_text(script,encoding='utf-8')
+          print(f'MAXESS AAA release invariants passed; found {len(scripts)} script blocks')
           PY
 
-      - name: Validate JavaScript syntax
-        id: js_syntax
+      - name: Validate every JavaScript block independently
         run: |
           set +e
-          node --check /tmp/maxess.js > /tmp/node-check.out 2>&1
-          status=$?
-          cat /tmp/node-check.out
-          cp /tmp/node-check.out QA_NODE_ERROR.txt
+          : > QA_NODE_ERROR.txt
+          status=0
+          for file in /tmp/maxess-scripts/*.js; do
+            echo "=== $file ===" >> QA_NODE_ERROR.txt
+            node --check "$file" >> QA_NODE_ERROR.txt 2>&1
+            rc=$?
+            if [ $rc -ne 0 ]; then status=$rc; fi
+          done
+          cat QA_NODE_ERROR.txt
+          if ! grep -q "SyntaxError" QA_NODE_ERROR.txt; then
+            : > QA_NODE_ERROR.txt
+          fi
           exit $status
 
       - name: Publish QA diagnostic when syntax validation fails
-        if: always()
+        if: failure()
         run: |
           if [ -s QA_NODE_ERROR.txt ]; then
             git config user.name "MAXESS QA Bot"
