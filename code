@@ -251,6 +251,8 @@ button:disabled{
 
 
 
+
+
 .question-count-chip{
   justify-self:end;
   min-width:128px;
@@ -2355,6 +2357,7 @@ button:disabled{
 
 
 
+
 @media(max-width:420px){
 
   .naya-copy span{
@@ -2575,6 +2578,30 @@ button:disabled{
 
 
 
+
+/* =========================================================
+   MAXESS RESULTS EXPERIENCE 9.9 — PERSONAL SIGNAL
+   Purpose: give the Results Experience one clear human spine
+   before the deeper layers appear.
+========================================================= */
+.maxess-signal{position:relative;margin:24px auto 0;max-width:980px;padding:clamp(28px,4vw,42px);border:1px solid rgba(184,149,255,.30);border-radius:32px;background:radial-gradient(circle at 50% 0,rgba(138,92,255,.18),transparent 48%),linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.018));box-shadow:0 25px 70px rgba(0,0,0,.38),inset 0 1px 0 rgba(255,255,255,.10);text-align:center}
+.maxess-signal::before{content:"";position:absolute;left:12%;right:12%;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(216,192,255,.68),transparent);box-shadow:0 0 22px rgba(138,92,255,.25)}
+.maxess-signal-kicker{color:#b895ff;font-size:10px;line-height:1;letter-spacing:.20em;text-transform:uppercase;font-weight:950}
+.maxess-signal h3{max-width:760px;margin:12px auto 0;color:#fff;font-size:clamp(25px,4vw,40px);line-height:1.06;letter-spacing:-.035em;font-weight:950}
+.maxess-signal-lead{max-width:680px;margin:13px auto 0;color:#aaa5b3;font-size:14px;line-height:1.58;font-weight:600}
+.maxess-signal-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;max-width:720px;margin:24px auto 0}
+.maxess-signal-item{min-width:0;padding:19px 20px;border:1px solid rgba(255,255,255,.09);border-radius:22px;background:rgba(255,255,255,.025);text-align:left}
+.maxess-signal-item span{display:block;font-size:9px;letter-spacing:.16em;text-transform:uppercase;font-weight:950}
+.maxess-signal-item strong{display:block;margin-top:7px;color:#fff;font-size:14px;line-height:1.4;font-weight:850}
+.maxess-signal-keep span{color:#35e39b}.maxess-signal-build span{color:#ffd45a}
+.maxess-signal-note{max-width:650px;margin:16px auto 0;color:#8f8997;font-size:11px;line-height:1.55}
+.maxess-signal-note b{color:#c9c2d1}
+.maxess-signal-next{display:inline-flex;align-items:center;justify-content:center;gap:8px;margin-top:16px;padding:10px 14px;border:1px solid rgba(184,149,255,.20);border-radius:999px;background:rgba(138,92,255,.06);color:#d6cee4;font-size:10px;font-weight:900}
+.maxess-signal-next .dot{width:6px;height:6px;border-radius:50%;background:#35e39b;box-shadow:0 0 10px rgba(53,227,155,.7)}
+@media(max-width:760px){.maxess-signal{padding:25px 19px;border-radius:28px}.maxess-signal h3{font-size:27px}.maxess-signal-lead{font-size:13px}.maxess-signal-grid{grid-template-columns:1fr;gap:9px;margin-top:20px}.maxess-signal-item{padding:16px 17px}}
+@media(prefers-reduced-motion:reduce){.maxess-signal{animation:none}}
+
+
 /* =========================================================
    MAXESS AAA V3 — VISIBLE CRAFT PASS
 ========================================================= */
@@ -2658,26 +2685,234 @@ button:disabled{
 
 
 /* =========================================================
-   MAXESS RESULTS EXPERIENCE 9.9 — PERSONAL SIGNAL
-   Purpose: give the Results Experience one clear human spine
-   before the deeper layers appear.
+   MAXESS RESULTS EXPERIENCE VISUAL REFINEMENT
+   Black + purple first. Naya is the brand. Reduce UI noise.
 ========================================================= */
-.maxess-signal{position:relative;margin:24px auto 0;max-width:980px;padding:clamp(28px,4vw,42px);border:1px solid rgba(184,149,255,.30);border-radius:32px;background:radial-gradient(circle at 50% 0,rgba(138,92,255,.18),transparent 48%),linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.018));box-shadow:0 25px 70px rgba(0,0,0,.38),inset 0 1px 0 rgba(255,255,255,.10);text-align:center}
-.maxess-signal::before{content:"";position:absolute;left:12%;right:12%;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(216,192,255,.68),transparent);box-shadow:0 0 22px rgba(138,92,255,.25)}
-.maxess-signal-kicker{color:#b895ff;font-size:10px;line-height:1;letter-spacing:.20em;text-transform:uppercase;font-weight:950}
-.maxess-signal h3{max-width:760px;margin:12px auto 0;color:#fff;font-size:clamp(25px,4vw,40px);line-height:1.06;letter-spacing:-.035em;font-weight:950}
-.maxess-signal-lead{max-width:680px;margin:13px auto 0;color:#aaa5b3;font-size:14px;line-height:1.58;font-weight:600}
-.maxess-signal-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;max-width:720px;margin:24px auto 0}
-.maxess-signal-item{min-width:0;padding:19px 20px;border:1px solid rgba(255,255,255,.09);border-radius:22px;background:rgba(255,255,255,.025);text-align:left}
-.maxess-signal-item span{display:block;font-size:9px;letter-spacing:.16em;text-transform:uppercase;font-weight:950}
-.maxess-signal-item strong{display:block;margin-top:7px;color:#fff;font-size:14px;line-height:1.4;font-weight:850}
-.maxess-signal-keep span{color:#35e39b}.maxess-signal-build span{color:#ffd45a}
-.maxess-signal-note{max-width:650px;margin:16px auto 0;color:#8f8997;font-size:11px;line-height:1.55}
-.maxess-signal-note b{color:#c9c2d1}
-.maxess-signal-next{display:inline-flex;align-items:center;justify-content:center;gap:8px;margin-top:16px;padding:10px 14px;border:1px solid rgba(184,149,255,.20);border-radius:999px;background:rgba(138,92,255,.06);color:#d6cee4;font-size:10px;font-weight:900}
-.maxess-signal-next .dot{width:6px;height:6px;border-radius:50%;background:#35e39b;box-shadow:0 0 10px rgba(53,227,155,.7)}
-@media(max-width:760px){.maxess-signal{padding:25px 19px;border-radius:28px}.maxess-signal h3{font-size:27px}.maxess-signal-lead{font-size:13px}.maxess-signal-grid{grid-template-columns:1fr;gap:9px;margin-top:20px}.maxess-signal-item{padding:16px 17px}}
-@media(prefers-reduced-motion:reduce){.maxess-signal{animation:none}}
+.results-v4-card,
+.results-master-v2,
+.results-v4-naya,
+.results-master-v2-card,
+.maxess-signal-item{
+  background:linear-gradient(145deg,rgba(255,255,255,.035),rgba(138,92,255,.028) 58%,rgba(0,0,0,.22));
+  border-color:rgba(184,149,255,.16);
+}
+
+.results-v4-strength strong,
+.maxess-signal-keep span,
+.results-master-v2-next strong{
+  color:#b895ff;
+}
+
+.results-v4-opportunity strong,
+.maxess-signal-build span{
+  color:#b895ff;
+}
+
+.results-v4-card h4,
+.results-master-v2-kicker,
+.maxess-signal-kicker,
+.results-v4-naya h4{
+  color:#b895ff;
+}
+
+.results-v4-truth strong,
+.results-master-v2-title,
+.maxess-signal h3{
+  color:#fff;
+}
+
+.results-v4-card p,
+.results-master-v2-card p,
+.results-master-v2-intro,
+.maxess-signal-lead,
+.results-v4-truth>span{
+  color:#bdb7c5;
+}
+
+/* The personal analysis section is meant to feel human, not clinical. */
+.analysis-cloud{
+  padding:clamp(26px,4vw,38px);
+  border-color:rgba(184,149,255,.20);
+  background:
+    radial-gradient(circle at 22% 0,rgba(138,92,255,.11),transparent 42%),
+    linear-gradient(145deg,#0c0a11,#050507);
+  box-shadow:0 22px 58px rgba(0,0,0,.38),inset 0 1px 0 rgba(255,255,255,.07);
+}
+.analysis-cloud::before{
+  content:"NAYA'S READING";
+  display:block;
+  margin-bottom:13px;
+  color:#b895ff;
+  font-size:10px;
+  font-weight:950;
+  letter-spacing:.19em;
+}
+.analysis-cloud p{
+  max-width:850px;
+  color:#e5e0ea;
+  font-size:clamp(15px,1.7vw,18px);
+  line-height:1.68;
+}
+
+/* Naya is the identity, not a decorative orb. */
+.results-v4-naya{
+  padding:clamp(24px,4vw,36px);
+  grid-template-columns:auto minmax(0,1fr);
+  background:radial-gradient(circle at 8% 0,rgba(138,92,255,.13),transparent 45%),linear-gradient(145deg,#0b0910,#050507);
+}
+.results-v4-naya-orb{
+  width:58px;
+  height:58px;
+  background:#050507;
+  border:1px solid rgba(184,149,255,.65);
+  box-shadow:0 0 26px rgba(138,92,255,.22),inset 0 1px 0 rgba(255,255,255,.12);
+  display:grid;
+  place-items:center;
+}
+.results-v4-naya-orb::before{
+  content:"N";
+  color:#fff;
+  font-weight:1000;
+  font-size:18px;
+  letter-spacing:-.04em;
+}
+.results-v4-naya h4::before{
+  content:"NAYA · ";
+  color:#fff;
+}
+
+/* Replace the blocky expert grid with a quiet Naya command-center feel. */
+.maxess-treasure{
+  border-color:rgba(184,149,255,.24);
+  background:
+    radial-gradient(circle at 50% -12%,rgba(138,92,255,.15),transparent 34%),
+    radial-gradient(circle at 10% 88%,rgba(90,50,190,.10),transparent 34%),
+    linear-gradient(145deg,#09070d,#020204 70%);
+  box-shadow:0 34px 100px rgba(0,0,0,.62),0 0 80px rgba(138,92,255,.08),inset 0 1px 0 rgba(255,255,255,.08);
+}
+.maxess-treasure::before{display:none}
+.maxess-treasure-kicker{color:#b895ff}
+.maxess-treasure-title span{
+  background:linear-gradient(90deg,#fff,#d6c4ff,#b895ff,#fff);
+  background-size:220% auto;
+}
+.maxess-value-chip{
+  border-color:rgba(184,149,255,.16);
+  background:rgba(138,92,255,.045);
+  color:#d9d1e5;
+}
+
+.maxess-expert-header{
+  margin-top:42px;
+  text-align:center;
+}
+.maxess-expert-header h4{
+  color:#fff;
+  font-size:clamp(24px,3.5vw,36px);
+  letter-spacing:-.03em;
+}
+.maxess-expert-header h4::before{
+  content:"NAYA · ";
+  color:#b895ff;
+}
+.maxess-expert-header p{
+  max-width:730px;
+  margin:10px auto 0;
+  color:#9f98aa;
+  font-size:13px;
+}
+.maxess-expert-grid{
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:11px;
+  margin-top:22px;
+}
+.maxess-expert-card{
+  min-height:0;
+  padding:19px 18px;
+  border-color:rgba(184,149,255,.15);
+  border-radius:20px;
+  background:linear-gradient(145deg,rgba(255,255,255,.035),rgba(138,92,255,.045) 60%,rgba(0,0,0,.22));
+}
+.maxess-expert-card:hover{
+  border-color:rgba(184,149,255,.34);
+  box-shadow:0 14px 30px rgba(0,0,0,.38),0 0 25px rgba(138,92,255,.10);
+}
+.maxess-expert-icon{
+  width:36px;
+  height:36px;
+  margin-bottom:11px;
+  border-radius:12px;
+  border:1px solid rgba(184,149,255,.34);
+  background:linear-gradient(145deg,#17121f,#07060a);
+  color:#b895ff;
+  box-shadow:0 0 18px rgba(138,92,255,.12);
+}
+.maxess-expert-icon::before{
+  content:"N";
+  font-size:13px;
+  font-weight:1000;
+}
+.maxess-expert-icon{font-size:0}
+.maxess-expert-name{
+  color:#fff;
+  font-size:14px;
+  line-height:1.25;
+  font-weight:950;
+}
+.maxess-expert-type{
+  margin-top:5px;
+  color:#8f879b;
+  font-size:9px;
+  letter-spacing:.07em;
+}
+
+.maxess-three-step{
+  gap:12px;
+}
+.maxess-step-card{
+  border-color:rgba(184,149,255,.13);
+  background:rgba(255,255,255,.018);
+}
+.maxess-step-no{color:#b895ff}
+.maxess-step-card p{font-size:13px;color:#aba5b4}
+
+.maxess-offer{
+  border-color:rgba(184,149,255,.30);
+  background:linear-gradient(145deg,rgba(138,92,255,.10),rgba(255,255,255,.02) 55%,rgba(0,0,0,.18));
+  box-shadow:0 0 55px rgba(138,92,255,.08),inset 0 1px 0 rgba(255,255,255,.09);
+}
+.maxess-offer-badge{
+  background:rgba(138,92,255,.10);
+  border-color:rgba(184,149,255,.25);
+  color:#d7c7f4;
+}
+.maxess-cta-primary{
+  color:#fff;
+  background:linear-gradient(180deg,#17121f,#08070b);
+  border-color:rgba(184,149,255,.68)!important;
+  box-shadow:0 15px 38px rgba(0,0,0,.32),0 0 28px rgba(138,92,255,.12);
+}
+.maxess-cta-secondary{
+  background:linear-gradient(180deg,#0f0d14,#050507);
+  border-color:rgba(184,149,255,.42)!important;
+}
+.maxess-cta-primary:hover,
+.maxess-cta-secondary:hover{
+  border-color:#cbb5ff!important;
+  box-shadow:0 18px 40px rgba(0,0,0,.42),0 0 30px rgba(138,92,255,.18);
+}
+.maxess-cta-fine{color:#81798f!important}
+.maxess-ecosystem{border-top-color:rgba(184,149,255,.10);color:#8f8898}
+
+@media(max-width:900px){
+  .maxess-expert-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:620px){
+  .maxess-expert-grid{grid-template-columns:1fr;gap:9px}
+  .maxess-expert-card{padding:17px}
+  .maxess-expert-name{font-size:15px}
+  .maxess-treasure-title{font-size:32px}
+}
 
 </style>
 </head>
@@ -5957,8 +6192,8 @@ document.addEventListener("keydown", event=>{
     if(resultsView.querySelector(".maxess-treasure")) return;
     const logo="https://i.postimg.cc/QCJTLMd8/Maximus-2.png";
     const areas=typeof AI_AREAS !== "undefined" && Array.isArray(AI_AREAS) ? AI_AREAS : [];
-    const specialized=areas.slice(0,18).map((area,i)=>({name:area&&area.name?area.name:`AI Expert ${i+1}`,type:"Specialized Naya"}));
-    const core=[{name:"Naya Prime",type:"Master intelligence"},{name:"Naya Orchestrator",type:"Coordinates the experts"},{name:"Naya Oscar",type:"Elite quality judge"}];
+    const specialized=areas.slice(0,18).map((area,i)=>({name:`Naya Elite ${area&&area.name?area.name.replace(/\s*&\s*/g," & "): `Expert ${i+1}`}`,type:"Elite Naya Expert"}));
+    const core=[{name:"Naya Prime",type:"Master Intelligence"},{name:"Naya Orchestrator",type:"Expert Coordination"},{name:"Naya Oscar",type:"Elite Quality Judge"}];
     const experts=[...specialized,...core].slice(0,21);
     const fallback=["Naya Architect","Naya Writer","Naya Designer","Naya Video","Naya Researcher","Naya Marketer","Naya Strategist"];
     while(experts.length<21){experts.splice(Math.max(0,experts.length-3),0,{name:fallback[experts.length%fallback.length],type:"Specialized Naya"});}
@@ -5967,7 +6202,7 @@ document.addEventListener("keydown", event=>{
     const offer=document.createElement("section");
     offer.className="maxess-treasure results-v4-reveal";
     offer.setAttribute("aria-labelledby","maxessTreasureTitle");
-    offer.innerHTML=`<div class="maxess-treasure-inner"><img class="maxess-treasure-logo" src="${logo}" alt="Human Maximus" loading="lazy"><div class="maxess-treasure-kicker">YOU FOUND THE NEXT LEVEL</div><h3 class="maxess-treasure-title" id="maxessTreasureTitle">I got you. <span>Now let's end the frustration of not getting the results you want from AI.</span></h3><p class="maxess-treasure-sub">Your report showed you where you are. This is the simple system for learning how to get exceptional AI results — without having to figure the whole thing out yourself.</p><div class="maxess-value-line"><span class="maxess-value-chip">18 specialized Master Key blueprints</span><span class="maxess-value-chip">18 specialized Naya experts</span><span class="maxess-value-chip">AI Master Activation Rolodex</span><span class="maxess-value-chip">Master AI · Be Your Max · Get Paid</span></div><div class="maxess-expert-header"><h4>Your AI expert team</h4><p>Think of this as your ready-made team of AI specialists. Choose the area you want to master, give Naya the right blueprint, activate the expert role, and follow the process.</p></div><div class="maxess-expert-grid" aria-label="21 AI expert roles">${cards}</div><div class="maxess-expert-header"><h4>Three steps. That's it.</h4><p>The system is deliberately simple: give AI the big picture, choose the specialty, then activate the expert.</p></div><div class="maxess-three-step"><article class="maxess-step-card"><div class="maxess-step-no">01 · MASTER KEY</div><h5>Give Naya the blueprint</h5><p>The universal Master Key teaches the overall process for directing, evaluating, improving, and systematizing AI.</p></article><article class="maxess-step-card"><div class="maxess-step-no">02 · SPECIALIZED KEY</div><h5>Choose what you want to master</h5><p>Match the universal blueprint with the specialized key for the exact territory you want to work in.</p></article><article class="maxess-step-card"><div class="maxess-step-no">03 · ACTIVATE THE EXPERT</div><h5>Make Naya the master</h5><p>Use the activation Rolodex to give your AI the role, expertise, standards, and operating instructions for that specialty.</p></article></div><div class="maxess-offer"><div class="maxess-offer-badge">✦ YOUR INVITATION · START FREE</div><h4>Stop fighting with AI. Start directing it.</h4><p>Get the Master Key system, the specialized expert blueprints, the activation tools, and the AI Masterclass — then step into the Human Maximus ecosystem and start building capability you can actually use.</p><div class="maxess-cta-actions"><button type="button" class="maxess-cta-primary" id="maxessTreasureFree">Start My Free AI Masterclass <span class="button-arrow">→</span></button><button type="button" class="maxess-cta-secondary" id="maxessTreasureNaya">Meet Naya <span class="button-arrow">→</span></button></div><p class="maxess-cta-fine">No complicated setup. No scavenger hunt. Copy · paste · activate · follow the process.</p></div><div class="maxess-ecosystem"><img src="${logo}" alt="Human Maximus" loading="lazy"><span>Welcome to the Human Maximus ecosystem — where the goal is simple: master AI, become your MAX, and create more value in the world.</span></div></div>`;
+    offer.innerHTML=`<div class="maxess-treasure-inner"><img class="maxess-treasure-logo" src="${logo}" alt="Human Maximus" loading="lazy"><div class="maxess-treasure-kicker">YOU FOUND THE NEXT LEVEL</div><h3 class="maxess-treasure-title" id="maxessTreasureTitle">I got you. <span>Now let's end the frustration of not getting the results you want from AI.</span></h3><p class="maxess-treasure-sub">Your report showed you where you are. This is the simple system for learning how to get exceptional AI results — without having to figure the whole thing out yourself.</p><div class="maxess-value-line"><span class="maxess-value-chip">18 specialized Master Key blueprints</span><span class="maxess-value-chip">18 specialized Naya experts</span><span class="maxess-value-chip">AI Master Activation Rolodex</span><span class="maxess-value-chip">Master AI · Be Your Max · Get Paid</span></div><div class="maxess-expert-header"><h4>Your AI expert team</h4><p>Think of this as your ready-made team of AI specialists. Choose the area you want to master, give Naya the right blueprint, activate the expert role, and follow the process.</p></div><div class="maxess-expert-grid" aria-label="21 AI expert roles">${cards}</div><div class="maxess-expert-header"><h4>Three steps. That's it.</h4><p>The system is deliberately simple: give AI the big picture, choose the specialty, then activate the expert.</p></div><div class="maxess-three-step"><article class="maxess-step-card"><div class="maxess-step-no">01 · MASTER KEY</div><h5>Give Naya the blueprint</h5><p>The universal Master Key teaches the overall process for directing, evaluating, improving, and systematizing AI.</p></article><article class="maxess-step-card"><div class="maxess-step-no">02 · SPECIALIZED KEY</div><h5>Choose what you want to master</h5><p>Match the universal blueprint with the specialized key for the exact territory you want to work in.</p></article><article class="maxess-step-card"><div class="maxess-step-no">03 · ACTIVATE THE EXPERT</div><h5>Make Naya the master</h5><p>Use the activation Rolodex to give your AI the role, expertise, standards, and operating instructions for that specialty.</p></article></div><div class="maxess-offer"><div class="maxess-offer-badge">✦ YOUR NAYA INVITATION · START FREE</div><h4>Stop fighting with AI. Start directing it.</h4><p>Get the Master Key system, the specialized expert blueprints, the activation tools, and the AI Masterclass — then step into the Human Maximus ecosystem and start building capability you can actually use.</p><div class="maxess-cta-actions"><button type="button" class="maxess-cta-primary" id="maxessTreasureFree">Start My Free AI Masterclass <span class="button-arrow">→</span></button><button type="button" class="maxess-cta-secondary" id="maxessTreasureNaya">Meet Naya <span class="button-arrow">→</span></button></div><p class="maxess-cta-fine">No complicated setup. No scavenger hunt. Copy · paste · activate · follow the process.</p></div><div class="maxess-ecosystem"><img src="${logo}" alt="Human Maximus" loading="lazy"><span>Welcome to the Human Maximus ecosystem — where the goal is simple: master AI, become your MAX, and create more value in the world.</span></div></div>`;
     const actionFree=document.getElementById("freeTrialButton");
     const actionNaya=document.getElementById("enterNayaButton");
     offer.querySelector("#maxessTreasureFree").addEventListener("click",()=>{if(actionFree) actionFree.click();});
