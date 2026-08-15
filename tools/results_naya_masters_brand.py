@@ -130,8 +130,8 @@ CSS = r'''
 if MARKER not in s:
     s = s.replace('</style>', CSS + '\n</style>', 1)
 
-JS_ANCHOR = '    const specialized=areas.slice(0,18).map((area,i)=>({name:area&&area.name?area.name:`AI Expert ${i+1}`,type:"Specialized Naya"}));'
-JS_REPLACEMENT = '''    const masterNames={
+JS_ANCHOR = 'const specialized=areas.slice(0,18).map((area,i)=>({name:area&&area.name?area.name:`AI Expert ${i+1}`,type:"Specialized Naya"}));'
+JS_REPLACEMENT = '''const masterNames={
       "Writing & Communication":"Naya Master Writer",
       "Research & Information":"Naya Master Researcher",
       "Brainstorming & Ideas":"Naya Master Idea Strategist",
@@ -164,7 +164,6 @@ s=s.replace(
     'const core=[{name:"Naya Prime",type:"Naya Master · Core Intelligence"},{name:"Naya Orchestrator",type:"Naya Master · Expert Coordination"},{name:"Naya Oscar",type:"Naya Master · Quality & Excellence"}];'
 )
 
-# Replace the tiny/anonymous icon treatment with larger jewel initials and explicit Naya branding.
 s=s.replace(
     'const iconFor=(name)=>{const letters=String(name).replace(/^Naya\\s*/i,"").trim().split(/\\s+/).filter(Boolean).slice(0,2).map(x=>x[0]).join("").toUpperCase();return letters||"N";};',
     'const iconFor=(name)=>{const words=String(name).replace(/^Naya\\s*/i,"").split(/\\s+/).filter(w=>w.length>2 && !/^Master$/i.test(w));const letters=words.slice(0,2).map(x=>x[0]).join("").toUpperCase();return letters||"NY";};'
@@ -173,11 +172,8 @@ s=s.replace(
     '<div class="maxess-expert-name">${escapeHtmlSafe(e.name)}</div><div class="maxess-expert-type">${escapeHtmlSafe(e.type)}</div>',
     '<div class="maxess-expert-name">${escapeHtmlSafe(e.name)}</div><div class="naya-master-label">NAYA · MASTER SPECIALIST</div><div class="maxess-expert-type">${escapeHtmlSafe(e.type)}</div>'
 )
-
-# Strongly de-emphasize the old multicolor presentation inside this treasure section.
-s=s.replace('radial-gradient(circle at 0% 80%,rgba(138,92,255,.18),transparent 35%)','radial-gradient(circle at 0% 80%,rgba(84,36,181,.10),transparent 35%)')
-
 if s==original:
-    raise SystemExit('No Naya Masters changes were applied')
-p.write_text(s,encoding='utf-8')
-print('Naya Masters brand presentation applied')
+    print('Naya Masters transform already applied; continuing safely')
+else:
+    p.write_text(s,encoding='utf-8')
+    print('Naya Masters brand presentation applied')
