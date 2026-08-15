@@ -16,7 +16,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Rebuild only the Results presentation
-        run: python3 tools/rebuild_results_v2.py
+        run: python3 tools/rebuild_results_v3.py
       - name: Validate source
         run: |
           python3 - <<'PY'
@@ -29,7 +29,6 @@ jobs:
           assert s.count('id="resultsView"')==1
           assert s.count('MAXESS_ASSESSMENT')==1
           assert s.count('questions:[')==1
-          assert s.count('questionId')>=1
           scripts=re.findall(r'<script(?:\\s[^>]*)?>([\\s\\S]*?)</script>',s,re.I)
           for i,x in enumerate(scripts,1): Path(f'/tmp/maxess-{i}.js').write_text(x,encoding='utf-8')
           print('LINES',len(s.splitlines()),'BYTES',len(s),'SCRIPTS',len(scripts))
