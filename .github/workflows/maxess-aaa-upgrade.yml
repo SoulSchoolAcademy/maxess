@@ -27,8 +27,8 @@ jobs:
           assert s.count('<html')==1 and s.count('</html>')==1
           assert 'MAXESS RESULTS — FRESH FLAGSHIP 2026-08-15' in s
           assert s.count('id="resultsView"')==1
-          assert s.count('MAXESS_ASSESSMENT')==1
           assert s.count('questions:[')==1
+          assert 'questionId' in s
           scripts=re.findall(r'<script(?:\\s[^>]*)?>([\\s\\S]*?)</script>',s,re.I)
           for i,x in enumerate(scripts,1): Path(f'/tmp/maxess-{i}.js').write_text(x,encoding='utf-8')
           print('LINES',len(s.splitlines()),'BYTES',len(s),'SCRIPTS',len(scripts))
