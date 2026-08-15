@@ -52,6 +52,9 @@ jobs:
       - name: Apply Naya Masters brand presentation
         run: python3 tools/results_naya_masters_brand.py
 
+      - name: Apply 10-star cinematic Results Experience
+        run: python3 tools/results_experience_10_star.py
+
       - name: Verify generated MAXESS source
         run: |
           python3 - <<'PY'
@@ -68,6 +71,7 @@ jobs:
           assert 'MAXESS RESULTS EXPERIENCE MASTER V2' in s
           assert 'MAXESS RESULTS EXPERIENCE 9.9 — PERSONAL SIGNAL' in s
           assert 'MAXESS NAYA MASTERS BRAND SYSTEM' in s
+          assert 'MAXESS RESULTS EXPERIENCE 10-STAR' in s
           assert 'maxessSignalTitle' in s
           assert 'resultsV4Opening' in s
           assert 'resultsV4MasterKeyTitle' in s
