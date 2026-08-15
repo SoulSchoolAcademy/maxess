@@ -97,9 +97,6 @@ jobs:
       - name: Make clean Results renderer the final presentation authority
         run: python3 tools/results_final_authority.py
 
-      - name: Embed logical Results hierarchy and truthful gauge
-        run: python3 tools/results_logic_embedded.py
-
       - name: Verify generated MAXESS source
         run: |
           python3 - <<'PY'
@@ -126,15 +123,14 @@ jobs:
           assert 'MAXESS RESULTS HARD BOUNDARY' in s
           assert 'MAXESS RESULTS HARD RESET V2' in s
           assert 'MAXESS RESULTS HARD RESET V3' in s
-          assert 'MAXESS RESULTS FINAL AUTHORITY' in s
-          assert 'MAXESS RESULTS LOGIC EMBEDDED' in s
+          assert 'MAXESS RESULTS FINAL AUTHORITY V2' in s
           assert 'YOUR PERSONALIZED ANALYSIS' in s
-          assert 'AI is the engine.' in s
+          assert 'AI CAPABILITY SIGNATURE' in s
           assert 'Naya Master Writer' in s
           assert 'Naya Master Researcher' in s
-          assert 'rf-gauge' in s
-          assert 'rf-process-line' in s
-          assert 'rf-logical-gauge' in s
+          assert 'r2-gauge' in s
+          assert 'r2-spectrum' in s
+          assert 'r2-fingerprint-svg' in s
           assert s.count('<script>') == 2, 'Results must retain one main app script plus one Results authority script'
           assert not re.search(r'</style>\s*\(function\s*\(', s), 'raw JavaScript text leak detected'
           scripts = re.findall(r'<script(?:\s[^>]*)?>([\s\S]*?)</script>', s, flags=re.I)
@@ -172,7 +168,7 @@ jobs:
           fi
 
       - name: Commit generated release
-        if: success()
+        if: success() && github.ref == 'refs/heads/main'
         run: |
           rm -f QA_NODE_ERROR.txt QA_TRIGGER.txt
           if git diff --quiet -- code; then
@@ -183,21 +179,17 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -- code
           git commit -m "feat(maxess): deliver AAA results experience"
-          if [ "$GITHUB_REF_NAME" = "main" ]; then
-            STASHED=0
-            if ! git diff --quiet || [ -n "$(git ls-files --others --exclude-standard)" ]; then
-              git stash push --include-untracked -m "maxess-release-generated-worktree"
-              STASHED=1
-            fi
-            git pull --rebase origin main
-            if [ "$STASHED" -eq 1 ]; then
-              git stash pop
-              git add -- code
-              if ! git diff --cached --quiet; then
-                git commit -m "chore(maxess): preserve generated release changes"
-              fi
+          STASHED=0
+          if ! git diff --quiet || [ -n "$(git ls-files --others --exclude-standard)" ]; then
+            git stash push --include-untracked -m "maxess-release-generated-worktree"
+            STASHED=1
+          fi
+          git pull --rebase origin main
+          if [ "$STASHED" -eq 1 ]; then
+            git stash pop
+            git add -- code
+            if ! git diff --cached --quiet; then
+              git commit -m "chore(maxess): preserve generated release changes"
             fi
           fi
-          git push origin "$GITHUB_REF_NAME"
-
-      # Retry note: checkout must start from the latest main because the source and workflow are intentionally generated together.
+          git push
