@@ -28,73 +28,7 @@ jobs:
       - name: Apply idempotent visible assessment craft pass
         run: python3 tools/aaa_patch.py
 
-      - name: Repair results V4 patch anchor
-        run: python3 tools/fix_results_v4_anchor.py
-
-      - name: Apply Results Experience V4
-        run: python3 tools/results_experience_v4.py
-
-      - name: Normalize Results Experience V4 layout
-        run: python3 tools/fix_results_v4_layout.py
-
-      - name: Add contextual Naya results layer
-        run: python3 tools/fix_results_v4_personal_coach.py
-
-      - name: Apply Results Experience Master V2 refinement
-        run: python3 tools/results_experience_master_v2.py
-
-      - name: Apply final 9.9 Results Experience refinement
-        run: python3 tools/results_experience_9_9.py
-
-      - name: Apply visual system and Naya expert refinement
-        run: python3 tools/results_experience_visual_refinement.py
-
-      - name: Apply Naya Masters brand presentation
-        run: python3 tools/results_naya_masters_brand.py
-
-      - name: Apply 10-star cinematic Results Experience
-        run: python3 tools/results_experience_10_star.py
-
-      - name: Apply Oscar final Results Experience presentation pass
-        run: python3 tools/results_experience_oscar_final.py
-
-      - name: Apply AAA presentation-density audit pass
-        run: python3 tools/results_experience_aaa_audit_pass.py
-
-      - name: Collapse Results Experience to canonical composition
-        run: python3 tools/results_experience_canonical_cleanup.py
-
-      - name: Rebuild Results Experience from clean slate
-        run: python3 tools/results_experience_clean_slate.py
-
-      - name: Refine canonical opening hierarchy
-        run: python3 tools/results_experience_opening_refinement.py
-
-      - name: Apply cinematic score and AI mastery polish
-        run: python3 tools/results_experience_cinematic_polish.py
-
-      - name: Apply premium Naya Masters gallery
-        run: python3 tools/results_experience_naya_gallery.py
-
-      - name: Rebuild lower Results experience from total reset
-        run: python3 tools/results_experience_total_reset.py
-
-      - name: Enforce ruthless Results presentation reset
-        run: python3 tools/results_experience_ruthless_reset.py
-
-      - name: Enforce hard Results presentation boundary
-        run: python3 tools/results_hard_boundary.py
-
-      - name: Enforce final clean-slate Results presentation
-        run: python3 tools/results_hard_reset_v2.py
-
-      - name: Replace entire Results DOM with clean-slate V3
-        run: python3 tools/results_hard_reset_v3.py
-
-      - name: Repair final authority transformer
-        run: python3 tools/results_final_authority_fix.py
-
-      - name: Make clean Results renderer the final presentation authority
+      - name: Build fresh MAXESS Results experience
         run: python3 tools/results_final_authority.py
 
       - name: Verify generated MAXESS source
@@ -110,27 +44,24 @@ jobs:
             'AI_AREAS': s.count('AI_AREAS = [') == 1,
             'area ids': s.count('id:"') >= 15,
             'area colors': s.count('color:"') >= 18,
-            'V4': 'MAXESS RESULTS EXPERIENCE V4' in s,
-            'Master V2': 'MAXESS RESULTS EXPERIENCE MASTER V2' in s,
-            '9.9': 'MAXESS RESULTS EXPERIENCE 9.9 — PERSONAL SIGNAL' in s,
-            'Naya brand': 'MAXESS NAYA MASTERS BRAND SYSTEM' in s,
-            '10-star': 'MAXESS RESULTS EXPERIENCE 10-STAR' in s,
-            'Oscar': 'MAXESS RESULTS EXPERIENCE OSCAR FINAL' in s,
-            'audit': 'MAXESS RESULTS EXPERIENCE AAA AUDIT PASS' in s,
-            'clean slate': 'MAXESS RESULTS EXPERIENCE CLEAN SLATE' in s,
-            'gallery': 'MAXESS NAYA MASTERS GALLERY' in s,
-            'total reset': 'MAXESS RESULTS EXPERIENCE TOTAL RESET' in s,
-            'ruthless reset': 'MAXESS RESULTS EXPERIENCE RUTHLESS RESET' in s,
-            'hard boundary': 'MAXESS RESULTS HARD BOUNDARY' in s,
-            'hard reset v2': 'MAXESS RESULTS HARD RESET V2' in s,
-            'hard reset v3': 'MAXESS RESULTS HARD RESET V3' in s,
-            'final authority': 'MAXESS RESULTS FINAL AUTHORITY V2' in s,
-            'personalized analysis': 'YOUR PERSONALIZED ANALYSIS' in s,
-            'capability signature': 'AI CAPABILITY SIGNATURE' in s,
-            'master data model': "masters=[['Writing','Words & Communication','p','W'],['Research','Evidence & Discovery','b','R']" in s,
-            'r2 gauge': 'r2-gauge' in s,
-            'r2 spectrum': 'r2-spectrum' in s,
-            'r2 fingerprint': 'r2-fingerprint-svg' in s,
+            'fresh Results authority': 'MAXESS RESULTS FRESH AUTHORITY V3' in s,
+            'your MAXESS result': 'Your MAXESS Result' in s,
+            'personalized analysis': 'Your Personalized Analysis' in s,
+            'score meaning': 'What Your Score Tells You' in s,
+            'capability signature': 'AI Capability Signature' in s,
+            'natural advantage': 'Your Natural Advantage' in s,
+            'highest leverage': 'Your Highest-Leverage Opportunity' in s,
+            'oh why': 'The “OH… THAT’S WHY” Discovery' in s,
+            'report': 'Your MAXESS Report' in s,
+            'naya': 'I GOT YOU.' in s,
+            'masters': 'Naya Master Intelligence' in s,
+            'three keys': 'The Three-Key System' in s,
+            'master ai': 'MASTER AI →' in s,
+            'naya image': 'Naya-and-shawn-ok-0.png' in s,
+            'gauge': 'mxr-gauge' in s,
+            'fingerprint': 'mxr-constellation' in s,
+            'portal language': 'Highest-Leverage Opportunity' in s,
+            'fresh authority only': s.count('<!-- MAXESS RESULTS FRESH AUTHORITY V3 -->') == 1,
           }
           failed = [name for name, ok in checks.items() if not ok]
           if failed:
@@ -149,7 +80,7 @@ jobs:
           Path('/tmp/maxess-scripts').mkdir(exist_ok=True)
           for i,script in enumerate(scripts,1):
               Path(f'/tmp/maxess-scripts/script-{i}.js').write_text(script,encoding='utf-8')
-          print(f'MAXESS AAA release invariants passed; found {len(scripts)} script blocks')
+          print(f'MAXESS Results fresh-source invariants passed; found {len(scripts)} script blocks')
           PY
 
       - name: Validate every JavaScript block independently
