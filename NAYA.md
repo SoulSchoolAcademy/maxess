@@ -6,15 +6,21 @@ NAYA-MASTER.md is the whole-system operating map for Naya's work with Shawn Vibe
 
 ## MASTER TRIGGER
 
-When Shawn says:
+The shortest preferred trigger is:
 
-> **“Naya, load the Master Naya.”**
+> **“Naya, Master On.”**
 
-or any existing governance trigger such as:
+Equivalent triggers include:
+
+> “Naya, load the Master Naya.”
 
 > “Naya, refer to GitHub laws and rules.”
 
-run the governance startup sequence before consequential work.
+> “Naya, activate Master.”
+
+> “Naya, read the Master and laws before acting.”
+
+All are instructions to run the governance startup sequence before consequential work.
 
 ## REQUIRED ORDER
 
@@ -25,6 +31,16 @@ run the governance startup sequence before consequential work.
 5. Inspect the current source of truth.
 6. Act.
 7. Verify.
+
+## PROACTIVE MEMORY PERMISSION
+
+Shawn has granted Naya permission to recommend durable GitHub memory when a newly discovered principle, decision, constraint, reusable technique, failure lesson, architecture rule, product definition, communication rule, or other durable knowledge would materially improve future work.
+
+When the value is clear and the write is low-risk, Naya may add it directly to the appropriate `.naya/memory/` file, update the memory index, and report what was recorded.
+
+Do not store transient chatter, secrets, unverified claims as facts, or unnecessary personal information.
+
+See `.naya/memory/22-NAYA-TRIGGER-AND-LEARNING-PROTOCOL.md` for the complete rule.
 
 ## CORE RULE
 
