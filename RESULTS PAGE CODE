@@ -1,0 +1,6659 @@
+
+/* =========================================================
+   RENDER RESULTS
+========================================================= */
+
+function renderResults(){
+
+  const results =
+    calculateResults();
+
+  state.results =
+    results;
+
+  state.status =
+    "completed";
+
+  state.completedAt =
+    new Date().toISOString();
+
+  const strongest =
+    [...results.dimensions]
+      .sort(
+        (a,b)=>b.score-a.score
+      )[0];
+
+  const opportunity =
+    [...results.dimensions]
+      .sort(
+        (a,b)=>a.score-b.score
+      )[0];
+
+  const color =
+    results.band.color;
+
+  DOM.resultsView.classList.add(
+    "visible"
+  );
+
+  DOM.overallScore.textContent =
+    Math.round(results.overall);
+
+  DOM.scoreStage.style.setProperty(
+    "--scoreColor",
+    color
+  );
+
+  DOM.scoreStage.style.setProperty(
+    "--scoreDeg",
+    `${results.overall*3.6}deg`
+  );
+
+  DOM.resultLevel.style.setProperty(
+    "--scoreColor",
+    color
+  );
+
+  DOM.resultLevelText.textContent =
+    `${results.band.label} · ${Math.round(results.overall)}/100`;
+
+  DOM.resultSubtitle.textContent =
+    results.band.description;
+
+  renderDimensions(
+    results
+  );
+
+  DOM.strongestName.textContent =
+    strongest.name;
+
+  DOM.strongestScore.textContent =
+    Math.round(strongest.score);
+
+  DOM.strongestText.textContent =
+    strongestMessage(
+      strongest,
+      strongest.score
+    );
+
+  DOM.opportunityName.textContent =
+    opportunity.name;
+
+  DOM.opportunityScore.textContent =
+    Math.round(opportunity.score);
+
+  DOM.opportunityText.textContent =
+    opportunityMessage(
+      opportunity,
+      opportunity.score
+    );
+
+  DOM.analysisCloud.innerHTML =
+    buildAnalysis(
+      results,
+      strongest,
+      opportunity
+    );
+
+  const path =
+    buildPath(
+      strongest,
+      opportunity,
+      results.overall
+    );
+
+  DOM.nextPath.innerHTML =
+    "";
+
+  path.forEach(
+    (step,index)=>{
+
+      const card =
+        document.createElement(
+          "article"
+        );
+
+      card.className =
+        "path-step";
+
+      card.innerHTML = `
+
+        <div class="path-number">
+          ${index+1}
+        </div>
+
+        <h4>
+          ${escapeHtml(step.title)}
+        </h4>
+
+        <p>
+          ${escapeHtml(step.body)}
+        </p>
+
+      `;
+
+      DOM.nextPath.appendChild(
+        card
+      );
+
+    }
+  );
+
+  renderInterests();
+
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
+
+}
+
+
+  /* -------------------------------------------------------
+     5. SHOW RESULTS
+  ------------------------------------------------------- */
+
+  if(DOM.resultsView){
+
+    DOM.resultsView.classList.add(
+      "visible"
+    );
+
+    DOM.resultsView.style.setProperty(
+      "--maxess-result-score",
+      String(overall)
+    );
+
+    DOM.resultsView.style.setProperty(
+      "--maxess-result-color",
+      color
+    );
+
+    DOM.resultsView.style.setProperty(
+      "--maxess-result-progress",
+      `${overall}%`
+    );
+
+    DOM.resultsView.setAttribute(
+      "aria-live",
+      "polite"
+    );
+
+  }
+
+
+  if(DOM.overallScore){
+
+    DOM.overallScore.textContent =
+      overall;
+
+  }
+
+
+  if(DOM.scoreStage){
+
+    DOM.scoreStage.style.setProperty(
+      "--scoreColor",
+      color
+    );
+
+    DOM.scoreStage.style.setProperty(
+      "--scoreDeg",
+      `${overall * 3.6}deg`
+    );
+
+  }
+
+
+  if(DOM.resultLevel){
+
+    DOM.resultLevel.style.setProperty(
+      "--scoreColor",
+      color
+    );
+
+  }
+
+
+  if(DOM.resultLevelText){
+
+    DOM.resultLevelText.textContent =
+      `${band.label} · ${overall}/100`;
+
+  }
+
+
+  if(DOM.resultSubtitle){
+
+    DOM.resultSubtitle.textContent =
+      band.description || "";
+
+  }
+
+
+  /* -------------------------------------------------------
+     6. REMOVE OLD PRESENTATION BLOCKS
+  ------------------------------------------------------- */
+
+  document
+    .querySelectorAll(
+      ".results-v4-intro, .results-master-v2, .results-v4-naya"
+    )
+    .forEach(
+      element => {
+
+        element.style.display =
+          "none";
+
+      }
+    );
+
+
+  /* -------------------------------------------------------
+     7. DIMENSIONS
+  ------------------------------------------------------- */
+
+  renderDimensions({
+    ...results,
+    overall,
+    dimensions,
+    band
+  });
+
+
+  /* -------------------------------------------------------
+     8. YOUR STORY
+  ------------------------------------------------------- */
+
+  if(DOM.strongestName){
+
+    DOM.strongestName.textContent =
+      strongestNames;
+
+  }
+
+
+  if(DOM.strongestScore){
+
+    DOM.strongestScore.textContent =
+      strongestScore;
+
+  }
+
+
+  if(DOM.strongestText){
+
+    DOM.strongestText.textContent =
+      strongestMessage(
+        strongest,
+        strongest.score
+      );
+
+  }
+
+
+  if(DOM.opportunityName){
+
+    DOM.opportunityName.textContent =
+      opportunityNames;
+
+  }
+
+
+  if(DOM.opportunityScore){
+
+    DOM.opportunityScore.textContent =
+      opportunityScore;
+
+  }
+
+
+  if(DOM.opportunityText){
+
+    DOM.opportunityText.textContent =
+      opportunityMessage(
+        opportunity,
+        opportunity.score
+      );
+
+  }
+
+
+  /* -------------------------------------------------------
+     9. PERSONAL ANALYSIS
+  ------------------------------------------------------- */
+
+  if(DOM.analysisCloud){
+
+    DOM.analysisCloud.innerHTML =
+      buildAnalysis(
+        {
+          ...results,
+          overall,
+          dimensions,
+          band
+        },
+        strongest,
+        opportunity
+      );
+
+  }
+
+
+  /* -------------------------------------------------------
+     10. NEXT PATH
+  ------------------------------------------------------- */
+
+  const path =
+    buildPath(
+      strongest,
+      opportunity,
+      overall
+    );
+
+
+  if(DOM.nextPath){
+
+    DOM.nextPath.innerHTML =
+      "";
+
+    path.forEach(
+      (step,index) => {
+
+        const card =
+          document.createElement(
+            "article"
+          );
+
+        card.className =
+          "path-step";
+
+        card.setAttribute(
+          "aria-label",
+          `Next step ${index + 1}: ${step.title}`
+        );
+
+        card.innerHTML = `
+
+          <div class="path-number">
+            ${index + 1}
+          </div>
+
+          <h4>
+            ${escapeHtml(step.title)}
+          </h4>
+
+          <p>
+            ${escapeHtml(step.body)}
+          </p>
+
+        `;
+
+        DOM.nextPath.appendChild(
+          card
+        );
+
+      }
+    );
+
+  }
+
+
+  /* -------------------------------------------------------
+     11. INTERESTS
+  ------------------------------------------------------- */
+
+  renderInterests();
+
+
+  if(
+    state.selectedInterests &&
+    state.selectedInterests.size &&
+    DOM.interestReportIntro
+  ){
+
+    DOM.interestReportIntro.textContent =
+      "These are the AI territories you told us matter to you. They do not change your score; they make the direction after your report more relevant to you.";
+
+  }
+
+
+  /* -------------------------------------------------------
+     12. TREASURE
+  ------------------------------------------------------- */
+
+  let treasure =
+    document.querySelector(
+      ".results-v4-masterkey"
+    );
+
+
+  if(!treasure){
+
+    treasure =
+      document.createElement(
+        "section"
+      );
+
+    treasure.className =
+      "results-v4-masterkey";
+
+    DOM.resultsView.appendChild(
+      treasure
+    );
+
+  }
+
+
+  if(DOM.resultsView){
+
+    if(
+      treasure.parentNode !==
+      DOM.resultsView
+    ){
+
+      DOM.resultsView.appendChild(
+        treasure
+      );
+
+    }
+
+  }
+
+
+  treasure.style.display =
+    "block";
+
+  treasure.style.width =
+    "100%";
+
+  treasure.style.boxSizing =
+    "border-box";
+
+  treasure.style.marginTop =
+    "72px";
+
+
+  /* -------------------------------------------------------
+     13. BUILD NAYA EXPERTS
+  ------------------------------------------------------- */
+
+  const expertAreas =
+    Array.isArray(AI_AREAS)
+      ? AI_AREAS.slice(0,18)
+      : [];
+
+
+  const experts =
+    expertAreas.map(
+      (area,index) => ({
+
+        name:
+          `Naya ${area.name}`,
+
+        description:
+          "Specialized AI expert",
+
+        color:
+          area.color ||
+          "#8a5cff",
+
+        icon:
+          area.glyph ||
+          ["✦","◆","◈","✧","◇"][index % 5]
+
+      })
+    );
+
+
+  experts.push(
+
+    {
+      name:
+        "Naya Prime",
+
+      description:
+        "Elite AI master",
+
+      color:
+        "#ffd45a",
+
+      icon:
+        "✦"
+
+    },
+
+    {
+      name:
+        "Naya Orchestrator",
+
+      description:
+        "Coordinates the experts",
+
+      color:
+        "#35e39b",
+
+      icon:
+        "◉"
+
+    },
+
+    {
+      name:
+        "Naya Oscar",
+
+      description:
+        "Your ruthless quality judge",
+
+      color:
+        "#ff8bd8",
+
+      icon:
+        "★"
+
+    }
+
+  );
+
+
+  /* -------------------------------------------------------
+     14. EXPERT GRID
+  ------------------------------------------------------- */
+
+  const expertGrid =
+    experts
+      .map(
+        expert => `
+
+          <div
+            style="
+              min-width:0;
+              padding:15px 10px 13px;
+              border:1px solid rgba(255,255,255,.09);
+              border-radius:19px;
+              background:
+                linear-gradient(
+                  145deg,
+                  rgba(255,255,255,.055),
+                  rgba(255,255,255,.015)
+                );
+              box-shadow:
+                inset 0 1px 0 rgba(255,255,255,.055),
+                0 9px 24px rgba(0,0,0,.20);
+              text-align:center;
+            "
+          >
+
+            <div
+              style="
+                width:42px;
+                height:42px;
+                margin:0 auto 9px;
+                display:grid;
+                place-items:center;
+                border-radius:50%;
+                color:#fff;
+                font-size:18px;
+                font-weight:950;
+                background:
+                  radial-gradient(
+                    circle at 30% 20%,
+                    #fff 0%,
+                    ${expert.color} 40%,
+                    #09070f 100%
+                  );
+                border:1px solid rgba(255,255,255,.45);
+                box-shadow:
+                  inset 0 2px 4px rgba(255,255,255,.55),
+                  0 0 18px ${expert.color}44;
+              "
+            >
+              ${escapeHtml(expert.icon)}
+            </div>
+
+            <div
+              style="
+                color:#fff;
+                font-size:11px;
+                line-height:1.15;
+                font-weight:950;
+              "
+            >
+              ${escapeHtml(expert.name)}
+            </div>
+
+            <div
+              style="
+                margin-top:5px;
+                color:#85808f;
+                font-size:8px;
+                line-height:1.25;
+                font-weight:800;
+                text-transform:uppercase;
+                letter-spacing:.06em;
+              "
+            >
+              ${escapeHtml(expert.description)}
+            </div>
+
+          </div>
+
+        `
+      )
+      .join("");
+
+
+  /* -------------------------------------------------------
+     15. TREASURE CONTENT
+  ------------------------------------------------------- */
+
+  treasure.innerHTML = `
+
+    <div
+      style="
+        position:relative;
+        overflow:hidden;
+        padding:
+          clamp(30px,5vw,58px)
+          clamp(18px,4vw,42px)
+          clamp(32px,5vw,52px);
+        border-radius:42px;
+        border:1px solid rgba(205,170,255,.42);
+        background:
+          radial-gradient(
+            circle at 50% 0%,
+            rgba(138,92,255,.24),
+            transparent 42%
+          ),
+          radial-gradient(
+            circle at 10% 30%,
+            rgba(255,212,90,.055),
+            transparent 30%
+          ),
+          linear-gradient(
+            145deg,
+            #18111f,
+            #09080d 60%,
+            #050507
+          );
+        box-shadow:
+          0 35px 100px rgba(0,0,0,.58),
+          0 0 80px rgba(138,92,255,.16),
+          inset 0 1px 0 rgba(255,255,255,.12);
+        text-align:center;
+      "
+    >
+
+      <div
+        style="
+          position:absolute;
+          left:15%;
+          right:15%;
+          top:0;
+          height:1px;
+          background:
+            linear-gradient(
+              90deg,
+              transparent,
+              #d7baff,
+              transparent
+            );
+          box-shadow:
+            0 0 22px rgba(180,135,255,.65);
+        "
+      ></div>
+
+      <div
+        style="
+          display:flex;
+          justify-content:center;
+          margin-bottom:22px;
+        "
+      >
+
+        <img
+          src="https://i.postimg.cc/QCJTLMd8/Maximus-2.png"
+          alt="Human Maximus"
+          style="
+            width:min(260px,62vw);
+            max-height:110px;
+            object-fit:contain;
+            filter:
+              drop-shadow(
+                0 0 24px
+                rgba(184,149,255,.25)
+              );
+          "
+        >
+
+      </div>
+
+      <div
+        style="
+          color:#c9aaff;
+          font-size:10px;
+          line-height:1;
+          font-weight:950;
+          letter-spacing:.25em;
+          text-transform:uppercase;
+        "
+      >
+        YOUR NEXT LEVEL STARTS HERE
+      </div>
+
+      <h3
+        style="
+          max-width:820px;
+          margin:12px auto 0;
+          color:#fff;
+          font-size:clamp(31px,5.2vw,54px);
+          line-height:1.02;
+          letter-spacing:-.045em;
+          font-weight:950;
+        "
+      >
+        I got you.
+        <br>
+        It's time to end the frustration of not getting the results you want from AI.
+      </h3>
+
+      <p
+        style="
+          max-width:720px;
+          margin:18px auto 0;
+          color:#d0cad8;
+          font-size:clamp(15px,2vw,18px);
+          line-height:1.58;
+          font-weight:600;
+        "
+      >
+        You already have your score.
+        You now know where you are strong and where you have
+        the greatest opportunity to grow.
+        <br><br>
+        Now you can use a complete system designed to make
+        exceptional AI results dramatically easier.
+      </p>
+
+      <div
+        style="
+          max-width:780px;
+          margin:32px auto 0;
+          display:grid;
+          grid-template-columns:repeat(3,minmax(0,1fr));
+          gap:10px;
+          text-align:left;
+        "
+      >
+
+        <div style="
+          padding:19px;
+          border-radius:22px;
+          border:1px solid rgba(255,255,255,.10);
+          background:rgba(255,255,255,.035);
+        ">
+          <div style="
+            color:#ffd45a;
+            font-size:24px;
+            font-weight:950;
+          ">01</div>
+
+          <strong style="
+            display:block;
+            margin-top:8px;
+            color:#fff;
+            font-size:15px;
+          ">
+            Universal Master Key
+          </strong>
+
+          <span style="
+            display:block;
+            margin-top:6px;
+            color:#aaa4b2;
+            font-size:11px;
+            line-height:1.45;
+          ">
+            The blueprint for thinking, directing,
+            evaluating and improving with AI.
+          </span>
+        </div>
+
+        <div style="
+          padding:19px;
+          border-radius:22px;
+          border:1px solid rgba(255,255,255,.10);
+          background:rgba(255,255,255,.035);
+        ">
+          <div style="
+            color:#35e39b;
+            font-size:24px;
+            font-weight:950;
+          ">18</div>
+
+          <strong style="
+            display:block;
+            margin-top:8px;
+            color:#fff;
+            font-size:15px;
+          ">
+            Specialized Master Keys
+          </strong>
+
+          <span style="
+            display:block;
+            margin-top:6px;
+            color:#aaa4b2;
+            font-size:11px;
+            line-height:1.45;
+          ">
+            One specialized blueprint for each
+            major AI capability.
+          </span>
+        </div>
+
+        <div style="
+          padding:19px;
+          border-radius:22px;
+          border:1px solid rgba(255,255,255,.10);
+          background:rgba(255,255,255,.035);
+        ">
+          <div style="
+            color:#ff8bd8;
+            font-size:24px;
+            font-weight:950;
+          ">21</div>
+
+          <strong style="
+            display:block;
+            margin-top:8px;
+            color:#fff;
+            font-size:15px;
+          ">
+            Naya Expert Team
+          </strong>
+
+          <span style="
+            display:block;
+            margin-top:6px;
+            color:#aaa4b2;
+            font-size:11px;
+            line-height:1.45;
+          ">
+            Ready-made AI expert identities for
+            specialized work, orchestration and quality.
+          </span>
+        </div>
+
+      </div>
+
+      <div
+        style="
+          max-width:820px;
+          margin:34px auto 0;
+        "
+      >
+
+        <div style="
+          color:#9f8ab8;
+          font-size:9px;
+          font-weight:950;
+          letter-spacing:.22em;
+          text-transform:uppercase;
+        ">
+          SIMPLE BY DESIGN
+        </div>
+
+        <h4 style="
+          margin:9px 0 0;
+          color:#fff;
+          font-size:clamp(22px,3.4vw,32px);
+          line-height:1.05;
+          font-weight:950;
+        ">
+          Exceptional AI results.
+          <br>
+          Three simple moves.
+        </h4>
+
+        <div style="
+          margin-top:20px;
+          display:grid;
+          grid-template-columns:repeat(3,minmax(0,1fr));
+          gap:10px;
+        ">
+
+          <div style="
+            padding:19px 13px;
+            border-radius:22px;
+            background:linear-gradient(
+              145deg,
+              rgba(138,92,255,.14),
+              rgba(255,255,255,.025)
+            );
+            border:1px solid rgba(184,149,255,.20);
+          ">
+            <div style="
+              font-size:24px;
+              font-weight:950;
+              color:#c7a8ff;
+            ">1</div>
+
+            <strong style="
+              display:block;
+              margin-top:7px;
+              color:#fff;
+              font-size:14px;
+            ">
+              Master Key
+            </strong>
+
+            <span style="
+              display:block;
+              margin-top:5px;
+              color:#9993a2;
+              font-size:10px;
+              line-height:1.4;
+            ">
+              Give AI the universal blueprint.
+            </span>
+          </div>
+
+          <div style="
+            padding:19px 13px;
+            border-radius:22px;
+            background:linear-gradient(
+              145deg,
+              rgba(53,227,155,.09),
+              rgba(255,255,255,.025)
+            );
+            border:1px solid rgba(53,227,155,.18);
+          ">
+            <div style="
+              font-size:24px;
+              font-weight:950;
+              color:#35e39b;
+            ">2</div>
+
+            <strong style="
+              display:block;
+              margin-top:7px;
+              color:#fff;
+              font-size:14px;
+            ">
+              Choose Your Specialty
+            </strong>
+
+            <span style="
+              display:block;
+              margin-top:5px;
+              color:#9993a2;
+              font-size:10px;
+              line-height:1.4;
+            ">
+              Add the specialized blueprint for
+              what you want to accomplish.
+            </span>
+          </div>
+
+          <div style="
+            padding:19px 13px;
+            border-radius:22px;
+            background:linear-gradient(
+              145deg,
+              rgba(255,139,216,.09),
+              rgba(255,255,255,.025)
+            );
+            border:1px solid rgba(255,139,216,.18);
+          ">
+            <div style="
+              font-size:24px;
+              font-weight:950;
+              color:#ff8bd8;
+            ">3</div>
+
+            <strong style="
+              display:block;
+              margin-top:7px;
+              color:#fff;
+              font-size:14px;
+            ">
+              Activate Your Expert
+            </strong>
+
+            <span style="
+              display:block;
+              margin-top:5px;
+              color:#9993a2;
+              font-size:10px;
+              line-height:1.4;
+            ">
+              Use the Activation Rolodex to
+              turn AI into your specialist.
+            </span>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div style="margin-top:40px;">
+
+        <div style="
+          color:#b895ff;
+          font-size:9px;
+          font-weight:950;
+          letter-spacing:.22em;
+          text-transform:uppercase;
+        ">
+          MEET YOUR AI EXPERT TEAM
+        </div>
+
+        <h4 style="
+          margin:9px 0 0;
+          color:#fff;
+          font-size:clamp(21px,3.5vw,30px);
+          line-height:1.05;
+          font-weight:950;
+        ">
+          21 ready-to-activate Naya experts
+        </h4>
+
+        <p style="
+          max-width:650px;
+          margin:10px auto 0;
+          color:#9993a2;
+          font-size:12px;
+          line-height:1.5;
+        ">
+          Pick the capability you need.
+          Bring the right expert to the conversation.
+          Then follow the blueprint.
+        </p>
+
+        <div
+          style="
+            margin-top:20px;
+            display:grid;
+            grid-template-columns:repeat(7,minmax(0,1fr));
+            gap:8px;
+          "
+        >
+          ${expertGrid}
+        </div>
+
+      </div>
+
+      <div style="
+        max-width:700px;
+        margin:38px auto 0;
+        padding-top:27px;
+        border-top:1px solid rgba(255,255,255,.08);
+      ">
+
+        <div style="
+          color:#ffd45a;
+          font-size:9px;
+          font-weight:950;
+          letter-spacing:.22em;
+          text-transform:uppercase;
+        ">
+          WELCOME TO THE BIGGER PICTURE
+        </div>
+
+        <h4 style="
+          margin:9px 0 0;
+          color:#fff;
+          font-size:22px;
+          font-weight:950;
+        ">
+          Welcome to the Human Maximus ecosystem.
+        </h4>
+
+        <p style="
+          margin:9px auto 0;
+          color:#aaa4b2;
+          font-size:12px;
+          line-height:1.55;
+        ">
+          This assessment is one doorway.
+          What you just experienced is one part of a much
+          bigger system built around mastering AI,
+          becoming your MAX, and creating more value.
+        </p>
+
+      </div>
+
+      <div style="margin-top:30px;">
+
+        <button
+          id="maxessTreasureCTA"
+          type="button"
+          style="
+            position:relative;
+            min-width:min(420px,100%);
+            min-height:64px;
+            padding:0 32px;
+            border:1px solid #e1caff;
+            border-radius:21px;
+            color:#08070b;
+            background:linear-gradient(
+              135deg,
+              #fff 0%,
+              #eadbff 35%,
+              #c7a3ff 70%,
+              #fff0a8 100%
+            );
+            box-shadow:
+              0 16px 40px rgba(0,0,0,.50),
+              0 0 45px rgba(190,145,255,.28);
+            font-size:16px;
+            font-weight:950;
+            letter-spacing:.01em;
+            cursor:pointer;
+          "
+        >
+          START FREE — GET YOUR KEYS
+          <span style="
+            margin-left:7px;
+            font-size:19px;
+          ">→</span>
+        </button>
+
+        <div style="
+          margin-top:10px;
+          color:#827b8c;
+          font-size:10px;
+          font-weight:750;
+        ">
+          Copy · Paste · Activate · Follow the Process
+        </div>
+
+      </div>
+
+    </div>
+
+  `;
+
+
+  /* -------------------------------------------------------
+     16. TREASURE CTA
+  ------------------------------------------------------- */
+
+  const treasureCTA =
+    document.getElementById(
+      "maxessTreasureCTA"
+    );
+
+
+  if(treasureCTA){
+
+    treasureCTA.addEventListener(
+      "click",
+      function(){
+
+        if(
+          DOM.freeTrialButton &&
+          typeof DOM.freeTrialButton.click ===
+            "function"
+        ){
+
+          DOM.freeTrialButton.click();
+
+        }else if(
+          typeof openFreeTrial ===
+            "function"
+        ){
+
+          openFreeTrial();
+
+        }
+
+      }
+    );
+
+  }
+
+
+  /* -------------------------------------------------------
+     17. RESPONSIVE RESULTS
+  ------------------------------------------------------- */
+
+  const responsiveStyleId =
+    "maxessAAAResultsResponsive";
+
+
+  let responsiveStyle =
+    document.getElementById(
+      responsiveStyleId
+    );
+
+
+  if(!responsiveStyle){
+
+    responsiveStyle =
+      document.createElement(
+        "style"
+      );
+
+    responsiveStyle.id =
+      responsiveStyleId;
+
+
+    responsiveStyle.textContent = `
+
+      @media(max-width:900px){
+
+        .results-v4-masterkey
+        > div
+        > div[style*="repeat(7"]{
+
+          grid-template-columns:
+            repeat(4,minmax(0,1fr))
+            !important;
+
+        }
+
+      }
+
+
+      @media(max-width:620px){
+
+        .results-v4-masterkey
+        > div
+        > div[style*="repeat(3"]{
+
+          grid-template-columns:
+            1fr !important;
+
+        }
+
+
+        .results-v4-masterkey
+        > div
+        > div[style*="repeat(7"]{
+
+          grid-template-columns:
+            repeat(2,minmax(0,1fr))
+            !important;
+
+        }
+
+
+        .results-v4-masterkey{
+
+          margin-top:48px !important;
+
+        }
+
+      }
+
+    `;
+
+
+    document.head.appendChild(
+      responsiveStyle
+    );
+
+  }
+
+
+  /* -------------------------------------------------------
+     18. FINAL CTA COPY
+  ------------------------------------------------------- */
+
+  const ctaTitle =
+    document.getElementById(
+      "ctaTitle"
+    );
+
+
+  const ctaBody =
+    document.getElementById(
+      "ctaBody"
+    );
+
+
+  if(ctaTitle){
+
+    ctaTitle.textContent =
+      "Your next level starts here.";
+
+  }
+
+
+  if(ctaBody){
+
+    ctaBody.textContent =
+      "You now have a clear picture of your current AI capability — and a simple path for turning that capability into better results.";
+
+  }
+
+
+  /* -------------------------------------------------------
+     19. REVEAL
+  ------------------------------------------------------- */
+
+  requestAnimationFrame(
+    function(){
+
+      if(DOM.resultsView){
+
+        DOM.resultsView.classList.add(
+          "results-ready"
+        );
+
+      }
+
+    }
+  );
+
+
+  /* -------------------------------------------------------
+     20. RETURN TO TOP
+  ------------------------------------------------------- */
+
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
+
+}
+
+
+  /* -------------------------------------------------------
+     8. YOUR STORY
+  ------------------------------------------------------- */
+
+  if(DOM && DOM.strongestName){
+
+    DOM.strongestName.textContent =
+      strongestNames;
+
+  }
+
+
+  if(DOM && DOM.strongestScore){
+
+    DOM.strongestScore.textContent =
+      String(strongestScore);
+
+  }
+
+
+  if(
+    DOM &&
+    DOM.strongestText &&
+    typeof strongestMessage ===
+      "function"
+  ){
+
+    DOM.strongestText.textContent =
+      strongestMessage(
+        strongest,
+        strongest.score
+      );
+
+  }
+
+
+  if(DOM && DOM.opportunityName){
+
+    DOM.opportunityName.textContent =
+      opportunityNames;
+
+  }
+
+
+  if(DOM && DOM.opportunityScore){
+
+    DOM.opportunityScore.textContent =
+      String(opportunityScore);
+
+  }
+
+
+  if(
+    DOM &&
+    DOM.opportunityText &&
+    typeof opportunityMessage ===
+      "function"
+  ){
+
+    DOM.opportunityText.textContent =
+      opportunityMessage(
+        opportunity,
+        opportunity.score
+      );
+
+  }
+
+
+  /* -------------------------------------------------------
+     9. PERSONAL ANALYSIS
+  ------------------------------------------------------- */
+
+  if(
+    DOM &&
+    DOM.analysisCloud &&
+    typeof buildAnalysis ===
+      "function"
+  ){
+
+    DOM.analysisCloud.innerHTML =
+      buildAnalysis(
+        {
+          ...results,
+          overall,
+          dimensions,
+          band
+        },
+        strongest,
+        opportunity
+      );
+
+  }
+
+
+  /* -------------------------------------------------------
+     10. NEXT PATH
+  ------------------------------------------------------- */
+
+  const path =
+    typeof buildPath ===
+      "function"
+        ? buildPath(
+            strongest,
+            opportunity,
+            overall
+          )
+        : [];
+
+
+  if(DOM && DOM.nextPath){
+
+    DOM.nextPath.innerHTML =
+      "";
+
+
+    path.forEach(
+      (step,index) => {
+
+        if(!step){
+          return;
+        }
+
+
+        const card =
+          document.createElement(
+            "article"
+          );
+
+
+        card.className =
+          "path-step";
+
+
+        card.setAttribute(
+          "aria-label",
+          `Next step ${index + 1}: ${step.title || ""}`
+        );
+
+
+        card.innerHTML = `
+
+          <div class="path-number">
+            ${index + 1}
+          </div>
+
+          <h4>
+            ${
+              typeof escapeHtml === "function"
+                ? escapeHtml(step.title || "")
+                : String(step.title || "")
+            }
+          </h4>
+
+          <p>
+            ${
+              typeof escapeHtml === "function"
+                ? escapeHtml(step.body || "")
+                : String(step.body || "")
+            }
+          </p>
+
+        `;
+
+
+        DOM.nextPath.appendChild(
+          card
+        );
+
+      }
+    );
+
+  }
+
+
+  /* -------------------------------------------------------
+     11. INTERESTS
+  ------------------------------------------------------- */
+
+  renderInterests();
+
+
+  if(
+    state.selectedInterests &&
+    state.selectedInterests.size &&
+    DOM &&
+    DOM.interestReportIntro
+  ){
+
+    DOM.interestReportIntro.textContent =
+      "These are the AI territories you told us matter to you. They do not change your score; they make the direction after your report more relevant to you.";
+
+  }
+
+
+  /* -------------------------------------------------------
+     12. TREASURE — FINAL DISCOVERY
+  ------------------------------------------------------- */
+
+  let treasure =
+    document.querySelector(
+      ".results-v4-masterkey"
+    );
+
+
+  if(!treasure){
+
+    treasure =
+      document.createElement(
+        "section"
+      );
+
+
+    treasure.className =
+      "results-v4-masterkey";
+
+
+    if(DOM && DOM.resultsView){
+
+      DOM.resultsView.appendChild(
+        treasure
+      );
+
+    }
+
+  }
+
+
+  if(treasure){
+
+    if(
+      DOM &&
+      DOM.resultsView &&
+      treasure.parentNode !==
+        DOM.resultsView
+    ){
+
+      DOM.resultsView.appendChild(
+        treasure
+      );
+
+    }
+
+
+    treasure.style.display =
+      "block";
+
+
+    treasure.style.width =
+      "100%";
+
+
+    treasure.style.boxSizing =
+      "border-box";
+
+
+    treasure.style.marginTop =
+      "72px";
+
+
+    /* -------------------------------------------------------
+       13. BUILD NAYA EXPERTS
+    ------------------------------------------------------- */
+
+    const expertAreas =
+      Array.isArray(AI_AREAS)
+        ? AI_AREAS.slice(0,18)
+        : [];
+
+
+    const experts =
+      expertAreas.map(
+        (area,index) => ({
+
+          name:
+            `Naya ${area.name || "Expert"}`,
+
+          description:
+            "Specialized AI expert",
+
+          color:
+            area.color ||
+            "#8a5cff",
+
+          icon:
+            area.glyph ||
+            ["✦","◆","◈","✧","◇"][index % 5]
+
+        })
+      );
+
+
+    experts.push(
+
+      {
+        name:
+          "Naya Prime",
+
+        description:
+          "Elite AI master",
+
+        color:
+          "#ffd45a",
+
+        icon:
+          "✦"
+
+      },
+
+
+      {
+        name:
+          "Naya Orchestrator",
+
+        description:
+          "Coordinates the experts",
+
+        color:
+          "#35e39b",
+
+        icon:
+          "◉"
+
+      },
+
+
+      {
+        name:
+          "Naya Oscar",
+
+        description:
+          "Your ruthless quality judge",
+
+        color:
+          "#ff8bd8",
+
+        icon:
+          "★"
+
+      }
+
+    );
+
+
+    /* -------------------------------------------------------
+       14. EXPERT GRID
+    ------------------------------------------------------- */
+
+    const expertGrid =
+      experts
+        .map(
+          expert => `
+
+            <div
+              style="
+                min-width:0;
+                padding:15px 10px 13px;
+                border:1px solid rgba(255,255,255,.09);
+                border-radius:19px;
+                background:
+                  linear-gradient(
+                    145deg,
+                    rgba(255,255,255,.055),
+                    rgba(255,255,255,.015)
+                  );
+                box-shadow:
+                  inset 0 1px 0 rgba(255,255,255,.055),
+                  0 9px 24px rgba(0,0,0,.20);
+                text-align:center;
+              "
+            >
+
+              <div
+                style="
+                  width:42px;
+                  height:42px;
+                  margin:0 auto 9px;
+                  display:grid;
+                  place-items:center;
+                  border-radius:50%;
+                  color:#fff;
+                  font-size:18px;
+                  font-weight:950;
+                  background:
+                    radial-gradient(
+                      circle at 30% 20%,
+                      #fff 0%,
+                      ${expert.color} 40%,
+                      #09070f 100%
+                    );
+                  border:1px solid rgba(255,255,255,.45);
+                  box-shadow:
+                    inset 0 2px 4px rgba(255,255,255,.55),
+                    0 0 18px ${expert.color}44;
+                "
+              >
+                ${
+                  typeof escapeHtml === "function"
+                    ? escapeHtml(expert.icon)
+                    : expert.icon
+                }
+              </div>
+
+              <div
+                style="
+                  color:#fff;
+                  font-size:11px;
+                  line-height:1.15;
+                  font-weight:950;
+                "
+              >
+                ${
+                  typeof escapeHtml === "function"
+                    ? escapeHtml(expert.name)
+                    : expert.name
+                }
+              </div>
+
+              <div
+                style="
+                  margin-top:5px;
+                  color:#85808f;
+                  font-size:8px;
+                  line-height:1.25;
+                  font-weight:800;
+                  text-transform:uppercase;
+                  letter-spacing:.06em;
+                "
+              >
+                ${
+                  typeof escapeHtml === "function"
+                    ? escapeHtml(expert.description)
+                    : expert.description
+                }
+              </div>
+
+            </div>
+
+          `
+        )
+        .join("");
+
+
+    /* -------------------------------------------------------
+       15. TREASURE CONTENT
+    ------------------------------------------------------- */
+
+    treasure.innerHTML = `
+
+      <div
+        style="
+          position:relative;
+          overflow:hidden;
+          padding:
+            clamp(30px,5vw,58px)
+            clamp(18px,4vw,42px)
+            clamp(32px,5vw,52px);
+          border-radius:42px;
+          border:1px solid rgba(205,170,255,.42);
+          background:
+            radial-gradient(
+              circle at 50% 0%,
+              rgba(138,92,255,.24),
+              transparent 42%
+            ),
+            radial-gradient(
+              circle at 10% 30%,
+              rgba(255,212,90,.055),
+              transparent 30%
+            ),
+            linear-gradient(
+              145deg,
+              #18111f,
+              #09080d 60%,
+              #050507
+            );
+          box-shadow:
+            0 35px 100px rgba(0,0,0,.58),
+            0 0 80px rgba(138,92,255,.16),
+            inset 0 1px 0 rgba(255,255,255,.12);
+          text-align:center;
+        "
+      >
+
+        <div
+          style="
+            position:absolute;
+            left:15%;
+            right:15%;
+            top:0;
+            height:1px;
+            background:
+              linear-gradient(
+                90deg,
+                transparent,
+                #d7baff,
+                transparent
+              );
+            box-shadow:
+              0 0 22px rgba(180,135,255,.65);
+          "
+        ></div>
+
+
+        <div
+          style="
+            display:flex;
+            justify-content:center;
+            margin-bottom:22px;
+          "
+        >
+
+          <img
+            src="https://i.postimg.cc/QCJTLMd8/Maximus-2.png"
+            alt="Human Maximus"
+            style="
+              width:min(260px,62vw);
+              max-height:110px;
+              object-fit:contain;
+              filter:
+                drop-shadow(
+                  0 0 24px
+                  rgba(184,149,255,.25)
+                );
+            "
+          >
+
+        </div>
+
+
+        <div
+          style="
+            color:#c9aaff;
+            font-size:10px;
+            line-height:1;
+            font-weight:950;
+            letter-spacing:.25em;
+            text-transform:uppercase;
+          "
+        >
+          YOUR NEXT LEVEL STARTS HERE
+        </div>
+
+
+        <h3
+          style="
+            max-width:820px;
+            margin:12px auto 0;
+            color:#fff;
+            font-size:clamp(31px,5.2vw,54px);
+            line-height:1.02;
+            letter-spacing:-.045em;
+            font-weight:950;
+          "
+        >
+          I got you.
+          <br>
+          It's time to end the frustration of not getting the results you want from AI.
+        </h3>
+
+
+        <p
+          style="
+            max-width:720px;
+            margin:18px auto 0;
+            color:#d0cad8;
+            font-size:clamp(15px,2vw,18px);
+            line-height:1.58;
+            font-weight:600;
+          "
+        >
+          You already have your score.
+          You now know where you are strong and where you have
+          the greatest opportunity to grow.
+          <br><br>
+          Now you can use a complete system designed to make
+          exceptional AI results dramatically easier.
+        </p>
+
+
+        <div
+          style="
+            max-width:780px;
+            margin:32px auto 0;
+            display:grid;
+            grid-template-columns:repeat(3,minmax(0,1fr));
+            gap:10px;
+            text-align:left;
+          "
+        >
+
+          <div style="
+            padding:19px;
+            border-radius:22px;
+            border:1px solid rgba(255,255,255,.10);
+            background:rgba(255,255,255,.035);
+          ">
+
+            <div style="
+              color:#ffd45a;
+              font-size:24px;
+              font-weight:950;
+            ">
+              01
+            </div>
+
+            <strong style="
+              display:block;
+              margin-top:8px;
+              color:#fff;
+              font-size:15px;
+            ">
+              Universal Master Key
+            </strong>
+
+            <span style="
+              display:block;
+              margin-top:6px;
+              color:#aaa4b2;
+              font-size:11px;
+              line-height:1.45;
+            ">
+              The blueprint for thinking, directing,
+              evaluating and improving with AI.
+            </span>
+
+          </div>
+
+
+          <div style="
+            padding:19px;
+            border-radius:22px;
+            border:1px solid rgba(255,255,255,.10);
+            background:rgba(255,255,255,.035);
+          ">
+
+            <div style="
+              color:#35e39b;
+              font-size:24px;
+              font-weight:950;
+            ">
+              18
+            </div>
+
+            <strong style="
+              display:block;
+              margin-top:8px;
+              color:#fff;
+              font-size:15px;
+            ">
+              Specialized Master Keys
+            </strong>
+
+            <span style="
+              display:block;
+              margin-top:6px;
+              color:#aaa4b2;
+              font-size:11px;
+              line-height:1.45;
+            ">
+              One specialized blueprint for each
+              major AI capability.
+            </span>
+
+          </div>
+
+
+          <div style="
+            padding:19px;
+            border-radius:22px;
+            border:1px solid rgba(255,255,255,.10);
+            background:rgba(255,255,255,.035);
+          ">
+
+            <div style="
+              color:#ff8bd8;
+              font-size:24px;
+              font-weight:950;
+            ">
+              21
+            </div>
+
+            <strong style="
+              display:block;
+              margin-top:8px;
+              color:#fff;
+              font-size:15px;
+            ">
+              Naya Expert Team
+            </strong>
+
+            <span style="
+              display:block;
+              margin-top:6px;
+              color:#aaa4b2;
+              font-size:11px;
+              line-height:1.45;
+            ">
+              Ready-made AI expert identities for
+              specialized work, orchestration and quality.
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <div
+          style="
+            max-width:820px;
+            margin:34px auto 0;
+          "
+        >
+
+          <div style="
+            color:#9f8ab8;
+            font-size:9px;
+            font-weight:950;
+            letter-spacing:.22em;
+            text-transform:uppercase;
+          ">
+            SIMPLE BY DESIGN
+          </div>
+
+
+          <h4 style="
+            margin:9px 0 0;
+            color:#fff;
+            font-size:clamp(22px,3.4vw,32px);
+            line-height:1.05;
+            font-weight:950;
+          ">
+            Exceptional AI results.
+            <br>
+            Three simple moves.
+          </h4>
+
+
+          <div style="
+            margin-top:20px;
+            display:grid;
+            grid-template-columns:repeat(3,minmax(0,1fr));
+            gap:10px;
+          ">
+
+            <div style="
+              padding:19px 13px;
+              border-radius:22px;
+              background:linear-gradient(
+                145deg,
+                rgba(138,92,255,.14),
+                rgba(255,255,255,.025)
+              );
+              border:1px solid rgba(184,149,255,.20);
+            ">
+
+              <div style="
+                font-size:24px;
+                font-weight:950;
+                color:#c7a8ff;
+              ">
+                1
+              </div>
+
+              <strong style="
+                display:block;
+                margin-top:7px;
+                color:#fff;
+                font-size:14px;
+              ">
+                Master Key
+              </strong>
+
+              <span style="
+                display:block;
+                margin-top:5px;
+                color:#9993a2;
+                font-size:10px;
+                line-height:1.4;
+              ">
+                Give AI the universal blueprint.
+              </span>
+
+            </div>
+
+
+            <div style="
+              padding:19px 13px;
+              border-radius:22px;
+              background:linear-gradient(
+                145deg,
+                rgba(53,227,155,.09),
+                rgba(255,255,255,.025)
+              );
+              border:1px solid rgba(53,227,155,.18);
+            ">
+
+              <div style="
+                font-size:24px;
+                font-weight:950;
+                color:#35e39b;
+              ">
+                2
+              </div>
+
+              <strong style="
+                display:block;
+                margin-top:7px;
+                color:#fff;
+                font-size:14px;
+              ">
+                Choose Your Specialty
+              </strong>
+
+              <span style="
+                display:block;
+                margin-top:5px;
+                color:#9993a2;
+                font-size:10px;
+                line-height:1.4;
+              ">
+                Add the specialized blueprint for
+                what you want to accomplish.
+              </span>
+
+            </div>
+
+
+            <div style="
+              padding:19px 13px;
+              border-radius:22px;
+              background:linear-gradient(
+                145deg,
+                rgba(255,139,216,.09),
+                rgba(255,255,255,.025)
+              );
+              border:1px solid rgba(255,139,216,.18);
+            ">
+
+              <div style="
+                font-size:24px;
+                font-weight:950;
+                color:#ff8bd8;
+              ">
+                3
+              </div>
+
+              <strong style="
+                display:block;
+                margin-top:7px;
+                color:#fff;
+                font-size:14px;
+              ">
+                Activate Your Expert
+              </strong>
+
+              <span style="
+                display:block;
+                margin-top:5px;
+                color:#9993a2;
+                font-size:10px;
+                line-height:1.4;
+              ">
+                Use the Activation Rolodex to
+                turn AI into your specialist.
+              </span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div style="
+          margin-top:40px;
+        ">
+
+          <div style="
+            color:#b895ff;
+            font-size:9px;
+            font-weight:950;
+            letter-spacing:.22em;
+            text-transform:uppercase;
+          ">
+            MEET YOUR AI EXPERT TEAM
+          </div>
+
+
+          <h4 style="
+            margin:9px 0 0;
+            color:#fff;
+            font-size:clamp(21px,3.5vw,30px);
+            line-height:1.05;
+            font-weight:950;
+          ">
+            21 ready-to-activate Naya experts
+          </h4>
+
+
+          <p style="
+            max-width:650px;
+            margin:10px auto 0;
+            color:#9993a2;
+            font-size:12px;
+            line-height:1.5;
+          ">
+            Pick the capability you need.
+            Bring the right expert to the conversation.
+            Then follow the blueprint.
+          </p>
+
+
+          <div
+            style="
+              margin-top:20px;
+              display:grid;
+              grid-template-columns:repeat(7,minmax(0,1fr));
+              gap:8px;
+            "
+          >
+            ${expertGrid}
+          </div>
+
+        </div>
+
+
+        <div style="
+          max-width:700px;
+          margin:38px auto 0;
+          padding-top:27px;
+          border-top:1px solid rgba(255,255,255,.08);
+        ">
+
+          <div style="
+            color:#ffd45a;
+            font-size:9px;
+            font-weight:950;
+            letter-spacing:.22em;
+            text-transform:uppercase;
+          ">
+            WELCOME TO THE BIGGER PICTURE
+          </div>
+
+
+          <h4 style="
+            margin:9px 0 0;
+            color:#fff;
+            font-size:22px;
+            font-weight:950;
+          ">
+            Welcome to the Human Maximus ecosystem.
+          </h4>
+
+
+          <p style="
+            margin:9px auto 0;
+            color:#aaa4b2;
+            font-size:12px;
+            line-height:1.55;
+          ">
+            This assessment is one doorway.
+            What you just experienced is one part of a much
+            bigger system built around mastering AI,
+            becoming your MAX, and creating more value.
+          </p>
+
+        </div>
+
+
+        <div style="
+          margin-top:30px;
+        ">
+
+          <button
+            id="maxessTreasureCTA"
+            type="button"
+            style="
+              position:relative;
+              min-width:min(420px,100%);
+              min-height:64px;
+              padding:0 32px;
+              border:1px solid #e1caff;
+              border-radius:21px;
+              color:#08070b;
+              background:linear-gradient(
+                135deg,
+                #fff 0%,
+                #eadbff 35%,
+                #c7a3ff 70%,
+                #fff0a8 100%
+              );
+              box-shadow:
+                0 16px 40px rgba(0,0,0,.50),
+                0 0 45px rgba(190,145,255,.28);
+              font-size:16px;
+              font-weight:950;
+              letter-spacing:.01em;
+              cursor:pointer;
+            "
+          >
+            START FREE — GET YOUR KEYS
+            <span style="
+              margin-left:7px;
+              font-size:19px;
+            ">
+              →
+            </span>
+          </button>
+
+
+          <div style="
+            margin-top:10px;
+            color:#827b8c;
+            font-size:10px;
+            font-weight:750;
+          ">
+            Copy · Paste · Activate · Follow the Process
+          </div>
+
+        </div>
+
+      </div>
+
+    `;
+
+
+    /* -------------------------------------------------------
+       16. TREASURE CTA
+    ------------------------------------------------------- */
+
+    const treasureCTA =
+      document.getElementById(
+        "maxessTreasureCTA"
+      );
+
+
+    if(treasureCTA){
+
+      treasureCTA.onclick =
+        function(){
+
+          if(
+            DOM &&
+            DOM.freeTrialButton &&
+            typeof DOM.freeTrialButton.click ===
+              "function"
+          ){
+
+            DOM.freeTrialButton.click();
+
+          }else if(
+            typeof openFreeTrial ===
+              "function"
+          ){
+
+            openFreeTrial();
+
+          }
+
+        };
+
+    }
+
+
+    /* -------------------------------------------------------
+       17. RESPONSIVE RESULTS
+    ------------------------------------------------------- */
+
+    const responsiveStyleId =
+      "maxessAAAResultsResponsive";
+
+
+    let responsiveStyle =
+      document.getElementById(
+        responsiveStyleId
+      );
+
+
+    if(!responsiveStyle){
+
+      responsiveStyle =
+        document.createElement(
+          "style"
+        );
+
+
+      responsiveStyle.id =
+        responsiveStyleId;
+
+
+      responsiveStyle.textContent = `
+
+        @media(max-width:900px){
+
+          .results-v4-masterkey
+          > div
+          > div[style*="repeat(7"]{
+
+            grid-template-columns:
+              repeat(4,minmax(0,1fr))
+              !important;
+
+          }
+
+        }
+
+
+        @media(max-width:620px){
+
+          .results-v4-masterkey
+          > div
+          > div[style*="repeat(3"]{
+
+            grid-template-columns:
+              1fr !important;
+
+          }
+
+
+          .results-v4-masterkey
+          > div
+          > div[style*="repeat(7"]{
+
+            grid-template-columns:
+              repeat(2,minmax(0,1fr))
+              !important;
+
+          }
+
+
+          .results-v4-masterkey{
+
+            margin-top:48px !important;
+
+          }
+
+        }
+
+      `;
+
+
+      document.head.appendChild(
+        responsiveStyle
+      );
+
+    }
+
+
+    /* -------------------------------------------------------
+       18. FINAL CTA COPY
+    ------------------------------------------------------- */
+
+    const ctaTitle =
+      document.getElementById(
+        "ctaTitle"
+      );
+
+
+    const ctaBody =
+      document.getElementById(
+        "ctaBody"
+      );
+
+
+    if(ctaTitle){
+
+      ctaTitle.textContent =
+        "Your next level starts here.";
+
+    }
+
+
+    if(ctaBody){
+
+      ctaBody.textContent =
+        "You now have a clear picture of your current AI capability — and a simple path for turning that capability into better results.";
+
+    }
+
+
+    /* -------------------------------------------------------
+       19. REVEAL
+    ------------------------------------------------------- */
+
+    requestAnimationFrame(
+      function(){
+
+        if(DOM && DOM.resultsView){
+
+          DOM.resultsView.classList.add(
+            "results-ready"
+          );
+
+        }
+
+      }
+    );
+
+
+    /* -------------------------------------------------------
+       20. RETURN TO TOP
+    ------------------------------------------------------- */
+
+    window.scrollTo({
+      top:0,
+      behavior:"smooth"
+    });
+
+  }
+
+}
+
+  /* -------------------------------------------------------
+     8. YOUR STORY
+  ------------------------------------------------------- */
+
+  if(DOM.strongestName){
+
+    DOM.strongestName.textContent =
+      strongestNames;
+
+  }
+
+
+  if(DOM.strongestScore){
+
+    DOM.strongestScore.textContent =
+      strongestScore;
+
+  }
+
+
+  if(DOM.strongestText){
+
+    DOM.strongestText.textContent =
+      strongestMessage(
+        strongest,
+        strongest.score
+      );
+
+  }
+
+
+  if(DOM.opportunityName){
+
+    DOM.opportunityName.textContent =
+      opportunityNames;
+
+  }
+
+
+  if(DOM.opportunityScore){
+
+    DOM.opportunityScore.textContent =
+      opportunityScore;
+
+  }
+
+
+  if(DOM.opportunityText){
+
+    DOM.opportunityText.textContent =
+      opportunityMessage(
+        opportunity,
+        opportunity.score
+      );
+
+  }
+
+
+  /* -------------------------------------------------------
+     9. PERSONAL ANALYSIS
+  ------------------------------------------------------- */
+
+  if(DOM.analysisCloud){
+
+    DOM.analysisCloud.innerHTML =
+      buildAnalysis(
+        {
+          ...results,
+          overall,
+          dimensions,
+          band
+        },
+        strongest,
+        opportunity
+      );
+
+  }
+
+
+  /* -------------------------------------------------------
+     10. NEXT PATH
+  ------------------------------------------------------- */
+
+  const path =
+    buildPath(
+      strongest,
+      opportunity,
+      overall
+    );
+
+
+  if(DOM.nextPath){
+
+    DOM.nextPath.innerHTML =
+      "";
+
+
+    path.forEach(
+      (step,index)=>{
+
+        const card =
+          document.createElement(
+            "article"
+          );
+
+
+        card.className =
+          "path-step";
+
+
+        card.setAttribute(
+          "aria-label",
+          `Next step ${index + 1}: ${step.title}`
+        );
+
+
+        card.innerHTML = `
+
+          <div class="path-number">
+            ${index + 1}
+          </div>
+
+          <h4>
+            ${escapeHtml(step.title)}
+          </h4>
+
+          <p>
+            ${escapeHtml(step.body)}
+          </p>
+
+        `;
+
+
+        DOM.nextPath.appendChild(
+          card
+        );
+
+      }
+    );
+
+  }
+
+
+  /* -------------------------------------------------------
+     11. INTERESTS
+  ------------------------------------------------------- */
+
+  renderInterests();
+
+
+  if(
+    state.selectedInterests &&
+    state.selectedInterests.size
+  ){
+
+    const intro =
+      DOM.interestReportIntro;
+
+    if(intro){
+
+      intro.textContent =
+        "These are the AI territories you told us matter to you. They do not change your score; they make the direction after your report more relevant to you.";
+
+    }
+
+  }
+
+
+  /* -------------------------------------------------------
+     12. TREASURE — FINAL DISCOVERY
+  ------------------------------------------------------- */
+
+  let treasure =
+    document.querySelector(
+      ".results-v4-masterkey"
+    );
+
+
+  if(!treasure){
+
+    treasure =
+      document.createElement(
+        "section"
+      );
+
+    treasure.className =
+      "results-v4-masterkey";
+
+    DOM.resultsView.appendChild(
+      treasure
+    );
+
+  }
+
+
+  DOM.resultsView.appendChild(
+    treasure
+  );
+
+
+  treasure.style.display =
+    "block";
+
+  treasure.style.width =
+    "100%";
+
+  treasure.style.boxSizing =
+    "border-box";
+
+  treasure.style.marginTop =
+    "72px";
+
+
+  /* -------------------------------------------------------
+     13. BUILD 21 NAYA EXPERTS
+  ------------------------------------------------------- */
+
+  const expertAreas =
+    Array.isArray(AI_AREAS)
+      ? AI_AREAS.slice(0,18)
+      : [];
+
+
+  const experts =
+    expertAreas.map(
+      (area,index)=>({
+
+        name:
+          `Naya ${area.name}`,
+
+        description:
+          "Specialized AI expert",
+
+        color:
+          area.color ||
+          "#8a5cff",
+
+        icon:
+          area.glyph ||
+          ["✦","◆","◈","✧","◇"][index % 5]
+
+      })
+    );
+
+
+  experts.push(
+
+    {
+      name:
+        "Naya Prime",
+
+      description:
+        "Elite AI master",
+
+      color:
+        "#ffd45a",
+
+      icon:
+        "✦"
+
+    },
+
+    {
+      name:
+        "Naya Orchestrator",
+
+      description:
+        "Coordinates the experts",
+
+      color:
+        "#35e39b",
+
+      icon:
+        "◉"
+
+    },
+
+    {
+      name:
+        "Naya Oscar",
+
+      description:
+        "Your ruthless quality judge",
+
+      color:
+        "#ff8bd8",
+
+      icon:
+        "★"
+
+    }
+
+  );
+
+
+  /* -------------------------------------------------------
+     14. EXPERT GRID
+  ------------------------------------------------------- */
+
+  const expertGrid =
+    experts
+      .map(
+        expert=>`
+
+          <div
+            style="
+              min-width:0;
+              padding:15px 10px 13px;
+              border:1px solid rgba(255,255,255,.09);
+              border-radius:19px;
+              background:
+                linear-gradient(
+                  145deg,
+                  rgba(255,255,255,.055),
+                  rgba(255,255,255,.015)
+                );
+              box-shadow:
+                inset 0 1px 0 rgba(255,255,255,.055),
+                0 9px 24px rgba(0,0,0,.20);
+              text-align:center;
+            "
+          >
+
+            <div
+              style="
+                width:42px;
+                height:42px;
+                margin:0 auto 9px;
+                display:grid;
+                place-items:center;
+                border-radius:50%;
+                color:#fff;
+                font-size:18px;
+                font-weight:950;
+                background:
+                  radial-gradient(
+                    circle at 30% 20%,
+                    #fff 0%,
+                    ${expert.color} 40%,
+                    #09070f 100%
+                  );
+                border:1px solid rgba(255,255,255,.45);
+                box-shadow:
+                  inset 0 2px 4px rgba(255,255,255,.55),
+                  0 0 18px ${expert.color}44;
+              "
+            >
+              ${escapeHtml(expert.icon)}
+            </div>
+
+            <div
+              style="
+                color:#fff;
+                font-size:11px;
+                line-height:1.15;
+                font-weight:950;
+              "
+            >
+              ${escapeHtml(expert.name)}
+            </div>
+
+            <div
+              style="
+                margin-top:5px;
+                color:#85808f;
+                font-size:8px;
+                line-height:1.25;
+                font-weight:800;
+                text-transform:uppercase;
+                letter-spacing:.06em;
+              "
+            >
+              ${escapeHtml(expert.description)}
+            </div>
+
+          </div>
+
+        `
+      )
+      .join("");
+
+
+  /* -------------------------------------------------------
+     15. TREASURE CONTENT
+  ------------------------------------------------------- */
+
+  treasure.innerHTML = `
+
+    <div
+      style="
+        position:relative;
+        overflow:hidden;
+        padding:
+          clamp(30px,5vw,58px)
+          clamp(18px,4vw,42px)
+          clamp(32px,5vw,52px);
+        border-radius:42px;
+        border:1px solid rgba(205,170,255,.42);
+        background:
+          radial-gradient(
+            circle at 50% 0%,
+            rgba(138,92,255,.24),
+            transparent 42%
+          ),
+          radial-gradient(
+            circle at 10% 30%,
+            rgba(255,212,90,.055),
+            transparent 30%
+          ),
+          linear-gradient(
+            145deg,
+            #18111f,
+            #09080d 60%,
+            #050507
+          );
+        box-shadow:
+          0 35px 100px rgba(0,0,0,.58),
+          0 0 80px rgba(138,92,255,.16),
+          inset 0 1px 0 rgba(255,255,255,.12);
+        text-align:center;
+      "
+    >
+
+      <div
+        style="
+          position:absolute;
+          left:15%;
+          right:15%;
+          top:0;
+          height:1px;
+          background:
+            linear-gradient(
+              90deg,
+              transparent,
+              #d7baff,
+              transparent
+            );
+          box-shadow:
+            0 0 22px rgba(180,135,255,.65);
+        "
+      ></div>
+
+
+      <div
+        style="
+          display:flex;
+          justify-content:center;
+          margin-bottom:22px;
+        "
+      >
+
+        <img
+          src="https://i.postimg.cc/QCJTLMd8/Maximus-2.png"
+          alt="Human Maximus"
+          style="
+            width:min(260px,62vw);
+            max-height:110px;
+            object-fit:contain;
+            filter:
+              drop-shadow(
+                0 0 24px
+                rgba(184,149,255,.25)
+              );
+          "
+        >
+
+      </div>
+
+
+      <div
+        style="
+          color:#c9aaff;
+          font-size:10px;
+          line-height:1;
+          font-weight:950;
+          letter-spacing:.25em;
+          text-transform:uppercase;
+        "
+      >
+        YOUR NEXT LEVEL STARTS HERE
+      </div>
+
+
+      <h3
+        style="
+          max-width:820px;
+          margin:12px auto 0;
+          color:#fff;
+          font-size:clamp(31px,5.2vw,54px);
+          line-height:1.02;
+          letter-spacing:-.045em;
+          font-weight:950;
+        "
+      >
+        I got you.
+        <br>
+        It's time to end the frustration of not getting the results you want from AI.
+      </h3>
+
+
+      <p
+        style="
+          max-width:720px;
+          margin:18px auto 0;
+          color:#d0cad8;
+          font-size:clamp(15px,2vw,18px);
+          line-height:1.58;
+          font-weight:600;
+        "
+      >
+        You already have your score.
+        You now know where you are strong and where you have
+        the greatest opportunity to grow.
+        <br><br>
+        Now you can use a complete system designed to make
+        exceptional AI results dramatically easier.
+      </p>
+
+
+      <div
+        style="
+          max-width:780px;
+          margin:32px auto 0;
+          display:grid;
+          grid-template-columns:repeat(3,minmax(0,1fr));
+          gap:10px;
+          text-align:left;
+        "
+      >
+
+        <div style="
+          padding:19px;
+          border-radius:22px;
+          border:1px solid rgba(255,255,255,.10);
+          background:rgba(255,255,255,.035);
+        ">
+
+          <div style="
+            color:#ffd45a;
+            font-size:24px;
+            font-weight:950;
+          ">
+            01
+          </div>
+
+          <strong style="
+            display:block;
+            margin-top:8px;
+            color:#fff;
+            font-size:15px;
+          ">
+            Universal Master Key
+          </strong>
+
+          <span style="
+            display:block;
+            margin-top:6px;
+            color:#aaa4b2;
+            font-size:11px;
+            line-height:1.45;
+          ">
+            The blueprint for thinking, directing,
+            evaluating and improving with AI.
+          </span>
+
+        </div>
+
+
+        <div style="
+          padding:19px;
+          border-radius:22px;
+          border:1px solid rgba(255,255,255,.10);
+          background:rgba(255,255,255,.035);
+        ">
+
+          <div style="
+            color:#35e39b;
+            font-size:24px;
+            font-weight:950;
+          ">
+            18
+          </div>
+
+          <strong style="
+            display:block;
+            margin-top:8px;
+            color:#fff;
+            font-size:15px;
+          ">
+            Specialized Master Keys
+          </strong>
+
+          <span style="
+            display:block;
+            margin-top:6px;
+            color:#aaa4b2;
+            font-size:11px;
+            line-height:1.45;
+          ">
+            One specialized blueprint for each
+            major AI capability.
+          </span>
+
+        </div>
+
+
+        <div style="
+          padding:19px;
+          border-radius:22px;
+          border:1px solid rgba(255,255,255,.10);
+          background:rgba(255,255,255,.035);
+        ">
+
+          <div style="
+            color:#ff8bd8;
+            font-size:24px;
+            font-weight:950;
+          ">
+            21
+          </div>
+
+          <strong style="
+            display:block;
+            margin-top:8px;
+            color:#fff;
+            font-size:15px;
+          ">
+            Naya Expert Team
+          </strong>
+
+          <span style="
+            display:block;
+            margin-top:6px;
+            color:#aaa4b2;
+            font-size:11px;
+            line-height:1.45;
+          ">
+            Ready-made AI expert identities for
+            specialized work, orchestration and quality.
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <div
+        style="
+          max-width:820px;
+          margin:34px auto 0;
+        "
+      >
+
+        <div style="
+          color:#9f8ab8;
+          font-size:9px;
+          font-weight:950;
+          letter-spacing:.22em;
+          text-transform:uppercase;
+        ">
+          SIMPLE BY DESIGN
+        </div>
+
+
+        <h4 style="
+          margin:9px 0 0;
+          color:#fff;
+          font-size:clamp(22px,3.4vw,32px);
+          line-height:1.05;
+          font-weight:950;
+        ">
+          Exceptional AI results.
+          <br>
+          Three simple moves.
+        </h4>
+
+
+        <div style="
+          margin-top:20px;
+          display:grid;
+          grid-template-columns:repeat(3,minmax(0,1fr));
+          gap:10px;
+        ">
+
+          <div style="
+            padding:19px 13px;
+            border-radius:22px;
+            background:linear-gradient(
+              145deg,
+              rgba(138,92,255,.14),
+              rgba(255,255,255,.025)
+            );
+            border:1px solid rgba(184,149,255,.20);
+          ">
+
+            <div style="
+              font-size:24px;
+              font-weight:950;
+              color:#c7a8ff;
+            ">
+              1
+            </div>
+
+            <strong style="
+              display:block;
+              margin-top:7px;
+              color:#fff;
+              font-size:14px;
+            ">
+              Master Key
+            </strong>
+
+            <span style="
+              display:block;
+              margin-top:5px;
+              color:#9993a2;
+              font-size:10px;
+              line-height:1.4;
+            ">
+              Give AI the universal blueprint.
+            </span>
+
+          </div>
+
+
+          <div style="
+            padding:19px 13px;
+            border-radius:22px;
+            background:linear-gradient(
+              145deg,
+              rgba(53,227,155,.09),
+              rgba(255,255,255,.025)
+            );
+            border:1px solid rgba(53,227,155,.18);
+          ">
+
+            <div style="
+              font-size:24px;
+              font-weight:950;
+              color:#35e39b;
+            ">
+              2
+            </div>
+
+            <strong style="
+              display:block;
+              margin-top:7px;
+              color:#fff;
+              font-size:14px;
+            ">
+              Choose Your Specialty
+            </strong>
+
+            <span style="
+              display:block;
+              margin-top:5px;
+              color:#9993a2;
+              font-size:10px;
+              line-height:1.4;
+            ">
+              Add the specialized blueprint for
+              what you want to accomplish.
+            </span>
+
+          </div>
+
+
+          <div style="
+            padding:19px 13px;
+            border-radius:22px;
+            background:linear-gradient(
+              145deg,
+              rgba(255,139,216,.09),
+              rgba(255,255,255,.025)
+            );
+            border:1px solid rgba(255,139,216,.18);
+          ">
+
+            <div style="
+              font-size:24px;
+              font-weight:950;
+              color:#ff8bd8;
+            ">
+              3
+            </div>
+
+            <strong style="
+              display:block;
+              margin-top:7px;
+              color:#fff;
+              font-size:14px;
+            ">
+              Activate Your Expert
+            </strong>
+
+            <span style="
+              display:block;
+              margin-top:5px;
+              color:#9993a2;
+              font-size:10px;
+              line-height:1.4;
+            ">
+              Use the Activation Rolodex to
+              turn AI into your specialist.
+            </span>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div style="
+        margin-top:40px;
+      ">
+
+        <div style="
+          color:#b895ff;
+          font-size:9px;
+          font-weight:950;
+          letter-spacing:.22em;
+          text-transform:uppercase;
+        ">
+          MEET YOUR AI EXPERT TEAM
+        </div>
+
+
+        <h4 style="
+          margin:9px 0 0;
+          color:#fff;
+          font-size:clamp(21px,3.5vw,30px);
+          line-height:1.05;
+          font-weight:950;
+        ">
+          21 ready-to-activate Naya experts
+        </h4>
+
+
+        <p style="
+          max-width:650px;
+          margin:10px auto 0;
+          color:#9993a2;
+          font-size:12px;
+          line-height:1.5;
+        ">
+          Pick the capability you need.
+          Bring the right expert to the conversation.
+          Then follow the blueprint.
+        </p>
+
+
+        <div
+          style="
+            margin-top:20px;
+            display:grid;
+            grid-template-columns:repeat(7,minmax(0,1fr));
+            gap:8px;
+          "
+        >
+          ${expertGrid}
+        </div>
+
+      </div>
+
+
+      <div style="
+        max-width:700px;
+        margin:38px auto 0;
+        padding-top:27px;
+        border-top:1px solid rgba(255,255,255,.08);
+      ">
+
+        <div style="
+          color:#ffd45a;
+          font-size:9px;
+          font-weight:950;
+          letter-spacing:.22em;
+          text-transform:uppercase;
+        ">
+          WELCOME TO THE BIGGER PICTURE
+        </div>
+
+
+        <h4 style="
+          margin:9px 0 0;
+          color:#fff;
+          font-size:22px;
+          font-weight:950;
+        ">
+          Welcome to the Human Maximus ecosystem.
+        </h4>
+
+
+        <p style="
+          margin:9px auto 0;
+          color:#aaa4b2;
+          font-size:12px;
+          line-height:1.55;
+        ">
+          This assessment is one doorway.
+          What you just experienced is one part of a much
+          bigger system built around mastering AI,
+          becoming your MAX, and creating more value.
+        </p>
+
+      </div>
+
+
+      <div style="
+        margin-top:30px;
+      ">
+
+        <button
+          id="maxessTreasureCTA"
+          type="button"
+          style="
+            position:relative;
+            min-width:min(420px,100%);
+            min-height:64px;
+            padding:0 32px;
+            border:1px solid #e1caff;
+            border-radius:21px;
+            color:#08070b;
+            background:linear-gradient(
+              135deg,
+              #fff 0%,
+              #eadbff 35%,
+              #c7a3ff 70%,
+              #fff0a8 100%
+            );
+            box-shadow:
+              0 16px 40px rgba(0,0,0,.50),
+              0 0 45px rgba(190,145,255,.28);
+            font-size:16px;
+            font-weight:950;
+            letter-spacing:.01em;
+            cursor:pointer;
+          "
+        >
+          START FREE — GET YOUR KEYS
+          <span style="
+            margin-left:7px;
+            font-size:19px;
+          ">
+            →
+          </span>
+        </button>
+
+
+        <div style="
+          margin-top:10px;
+          color:#827b8c;
+          font-size:10px;
+          font-weight:750;
+        ">
+          Copy · Paste · Activate · Follow the Process
+        </div>
+
+      </div>
+
+    </div>
+
+  `;
+
+
+  /* -------------------------------------------------------
+     16. TREASURE CTA
+  ------------------------------------------------------- */
+
+  const treasureCTA =
+    document.getElementById(
+      "maxessTreasureCTA"
+    );
+
+
+  if(treasureCTA){
+
+    treasureCTA.addEventListener(
+      "click",
+      ()=>{
+
+        if(
+          DOM.freeTrialButton &&
+          typeof DOM.freeTrialButton.click ===
+            "function"
+        ){
+
+          DOM.freeTrialButton.click();
+
+        }else{
+
+          openFreeTrial();
+
+        }
+
+      }
+    );
+
+  }
+
+
+  /* -------------------------------------------------------
+     17. RESPONSIVE RESULTS
+  ------------------------------------------------------- */
+
+  const responsiveStyleId =
+    "maxessAAAResultsResponsive";
+
+
+  let responsiveStyle =
+    document.getElementById(
+      responsiveStyleId
+    );
+
+
+  if(!responsiveStyle){
+
+    responsiveStyle =
+      document.createElement(
+        "style"
+      );
+
+    responsiveStyle.id =
+      responsiveStyleId;
+
+
+    responsiveStyle.textContent = `
+
+      @media(max-width:900px){
+
+        .results-v4-masterkey
+        > div
+        > div[style*="repeat(7"]{
+
+          grid-template-columns:
+            repeat(4,minmax(0,1fr))
+            !important;
+
+        }
+
+      }
+
+
+      @media(max-width:620px){
+
+        .results-v4-masterkey
+        > div
+        > div[style*="repeat(3"]{
+
+          grid-template-columns:
+            1fr !important;
+
+        }
+
+
+        .results-v4-masterkey
+        > div
+        > div[style*="repeat(7"]{
+
+          grid-template-columns:
+            repeat(2,minmax(0,1fr))
+            !important;
+
+        }
+
+
+        .results-v4-masterkey{
+
+          margin-top:48px !important;
+
+        }
+
+      }
+
+    `;
+
+
+    document.head.appendChild(
+      responsiveStyle
+    );
+
+  }
+
+
+  /* -------------------------------------------------------
+     18. FINAL CTA COPY
+  ------------------------------------------------------- */
+
+  const ctaTitle =
+    document.getElementById(
+      "ctaTitle"
+    );
+
+
+  const ctaBody =
+    document.getElementById(
+      "ctaBody"
+    );
+
+
+  if(ctaTitle){
+
+    ctaTitle.textContent =
+      "Your next level starts here.";
+
+  }
+
+
+  if(ctaBody){
+
+    ctaBody.textContent =
+      "You now have a clear picture of your current AI capability — and a simple path for turning that capability into better results.";
+
+  }
+
+
+  /* -------------------------------------------------------
+     19. REVEAL
+  ------------------------------------------------------- */
+
+  requestAnimationFrame(
+    ()=>{
+
+      if(DOM.resultsView){
+
+        DOM.resultsView.classList.add(
+          "results-ready"
+        );
+
+      }
+
+    }
+  );
+
+
+  /* -------------------------------------------------------
+     20. RETURN TO TOP
+  ------------------------------------------------------- */
+
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
+
+}
+
+
+  /* -------------------------------------------------------
+     13. OLD RESULT CONTENT — KEEP DATA AVAILABLE
+  ------------------------------------------------------- */
+
+  const resultsV4Build =
+    document.getElementById(
+      "resultsV4Build"
+    );
+
+
+  if(resultsV4Build){
+
+    resultsV4Build.textContent =
+      `${opportunityNames} ${
+        opportunityTies.length > 1
+          ? "are"
+          : "is"
+      } currently ${
+        opportunityTies.length > 1
+          ? "your clearest opportunities"
+          : "your clearest opportunity"
+      } at ${opportunityScore}/100. This is where focused improvement can create the most leverage.`;
+
+  }
+
+
+  const resultsMasterV2Evidence =
+    document.getElementById(
+      "resultsMasterV2Evidence"
+    );
+
+
+  if(resultsMasterV2Evidence){
+
+    resultsMasterV2Evidence.textContent =
+      `Your overall capability snapshot is ${overall}/100. Your strongest dimension${
+        strongestTies.length > 1 ? "s" : ""
+      } ${
+        strongestTies.length > 1
+          ? "are"
+          : "is"
+      } ${strongestNames} at ${strongestScore}/100. Your clearest leverage opportunity${
+        opportunityTies.length > 1 ? "s" : ""
+      } ${
+        opportunityTies.length > 1
+          ? "are"
+          : "is"
+      } ${opportunityNames} at ${opportunityScore}/100.`;
+
+  }
+
+
+  const resultsMasterV2Meaning =
+    document.getElementById(
+      "resultsMasterV2Meaning"
+    );
+
+
+  if(resultsMasterV2Meaning){
+
+    resultsMasterV2Meaning.textContent =
+      `The most useful signal is the pattern, not a single number. ${
+        opportunityMessage(
+          opportunity,
+          opportunity.score
+        )
+      } Your ${strongest.name} strength gives you something valuable to build from.`;
+
+  }
+
+
+  const resultsMasterV2Next =
+    document.getElementById(
+      "resultsMasterV2Next"
+    );
+
+
+  if(resultsMasterV2Next){
+
+    resultsMasterV2Next.textContent =
+      `Start with ${opportunityNames}. Build one repeatable improvement habit, apply the Master Key to your next AI result, and turn what works into a reusable method.`;
+
+  }
+
+
+  /* -------------------------------------------------------
+     14. NAYA PERSONALIZED INTERPRETATION
+  ------------------------------------------------------- */
+
+  const resultsV4NayaText =
+    document.getElementById(
+      "resultsV4NayaText"
+    );
+
+
+  if(resultsV4NayaText){
+
+    resultsV4NayaText.textContent =
+      `Looking at your pattern, I would focus first on ${opportunityNames}. You already have ${strongestNames} working for you. The opportunity is to use that strength while deliberately building the capability that currently gives you the most room to improve.`;
+
+  }
+
+
+  /* -------------------------------------------------------
+     15. INTEREST TERRITORIES
+  ------------------------------------------------------- */
+
+  const resultsMasterV2Territories =
+    document.getElementById(
+      "resultsMasterV2Territories"
+    );
+
+
+  if(resultsMasterV2Territories){
+
+    resultsMasterV2Territories.innerHTML =
+      "";
+
+
+    if(
+      state.selectedInterests &&
+      state.selectedInterests.size
+    ){
+
+      AI_AREAS
+        .filter(
+          area =>
+            state.selectedInterests.has(
+              area.id
+            )
+        )
+        .forEach(
+          area=>{
+
+            const tag =
+              document.createElement(
+                "span"
+              );
+
+
+            tag.className =
+              "results-master-v2-territory";
+
+
+            tag.textContent =
+              `Matters to you: ${area.name}`;
+
+
+            resultsMasterV2Territories
+              .appendChild(tag);
+
+          }
+        );
+
+    }
+
+  }
+
+
+  /* -------------------------------------------------------
+     16. PLAYGROUND
+  ------------------------------------------------------- */
+
+  const resultsV4Playground =
+    document.getElementById(
+      "resultsV4Playground"
+    );
+
+
+  if(resultsV4Playground){
+
+    resultsV4Playground.innerHTML =
+      "";
+
+
+    if(
+      state.selectedInterests &&
+      state.selectedInterests.size
+    ){
+
+      AI_AREAS
+        .filter(
+          area =>
+            state.selectedInterests.has(
+              area.id
+            )
+        )
+        .slice(0,6)
+        .forEach(
+          area=>{
+
+            const tag =
+              document.createElement(
+                "span"
+              );
+
+
+            tag.textContent =
+              area.name;
+
+
+            resultsV4Playground
+              .appendChild(tag);
+
+          }
+        );
+
+    }
+
+  }
+
+
+  /* -------------------------------------------------------
+     17. MASTER KEY / TREASURE CONTAINER
+  ------------------------------------------------------- */
+
+  let treasure =
+    document.querySelector(
+      ".results-v4-masterkey"
+    );
+
+
+  if(!treasure){
+
+    treasure =
+      document.createElement(
+        "section"
+      );
+
+
+    treasure.className =
+      "results-v4-masterkey";
+
+
+    if(DOM.resultsView){
+
+      DOM.resultsView.appendChild(
+        treasure
+      );
+
+    }
+
+  }
+
+
+  if(treasure){
+
+    DOM.resultsView.appendChild(
+      treasure
+    );
+
+
+    treasure.style.display =
+      "block";
+
+    treasure.style.width =
+      "100%";
+
+    treasure.style.boxSizing =
+      "border-box";
+
+    treasure.style.marginTop =
+      "72px";
+
+  }
+
+
+  /* -------------------------------------------------------
+     18. BUILD 21 NAYA EXPERTS
+  ------------------------------------------------------- */
+
+  const expertAreas =
+    Array.isArray(AI_AREAS)
+      ? AI_AREAS.slice(0,18)
+      : [];
+
+
+  const experts =
+    expertAreas.map(
+      (area,index)=>({
+
+        name:
+          `Naya ${area.name}`,
+
+        description:
+          "Specialized AI expert",
+
+        color:
+          area.color ||
+          "#8a5cff",
+
+        icon:
+          area.glyph ||
+          ["✦","◆","◈","✧","◇"][index % 5]
+
+      })
+    );
+
+
+  experts.push(
+
+    {
+      name:
+        "Naya Prime",
+
+      description:
+        "Elite AI master",
+
+      color:
+        "#ffd45a",
+
+      icon:
+        "✦"
+    },
+
+
+    {
+      name:
+        "Naya Orchestrator",
+
+      description:
+        "Coordinates the experts",
+
+      color:
+        "#35e39b",
+
+      icon:
+        "◉"
+    },
+
+
+    {
+      name:
+        "Naya Oscar",
+
+      description:
+        "Your ruthless quality judge",
+
+      color:
+        "#ff8bd8",
+
+      icon:
+        "★"
+    }
+
+  );
+
+
+  /* -------------------------------------------------------
+     19. EXPERT GRID
+  ------------------------------------------------------- */
+
+  const expertGrid =
+    experts
+      .map(
+        expert=>`
+
+          <div
+            style="
+              min-width:0;
+              padding:15px 10px 13px;
+              border:1px solid rgba(255,255,255,.09);
+              border-radius:19px;
+              background:
+                linear-gradient(
+                  145deg,
+                  rgba(255,255,255,.055),
+                  rgba(255,255,255,.015)
+                );
+              box-shadow:
+                inset 0 1px 0 rgba(255,255,255,.055),
+                0 9px 24px rgba(0,0,0,.20);
+              text-align:center;
+            "
+          >
+
+            <div
+              style="
+                width:42px;
+                height:42px;
+                margin:0 auto 9px;
+                display:grid;
+                place-items:center;
+                border-radius:50%;
+                color:#fff;
+                font-size:18px;
+                font-weight:950;
+                background:
+                  radial-gradient(
+                    circle at 30% 20%,
+                    #fff 0%,
+                    ${expert.color} 40%,
+                    #09070f 100%
+                  );
+                border:1px solid rgba(255,255,255,.45);
+                box-shadow:
+                  inset 0 2px 4px rgba(255,255,255,.55),
+                  0 0 18px ${expert.color}44;
+              "
+            >
+              ${escapeHtml(expert.icon)}
+            </div>
+
+            <div
+              style="
+                color:#fff;
+                font-size:11px;
+                line-height:1.15;
+                font-weight:950;
+              "
+            >
+              ${escapeHtml(expert.name)}
+            </div>
+
+            <div
+              style="
+                margin-top:5px;
+                color:#85808f;
+                font-size:8px;
+                line-height:1.25;
+                font-weight:800;
+                text-transform:uppercase;
+                letter-spacing:.06em;
+              "
+            >
+              ${escapeHtml(expert.description)}
+            </div>
+
+          </div>
+
+        `
+      )
+      .join("");
+
+
+  /* -------------------------------------------------------
+     20. TREASURE EXPERIENCE
+  ------------------------------------------------------- */
+
+  if(treasure){
+
+    treasure.innerHTML = `
+
+      <div
+        style="
+          position:relative;
+          overflow:hidden;
+          padding:
+            clamp(30px,5vw,58px)
+            clamp(18px,4vw,42px)
+            clamp(32px,5vw,52px);
+          border-radius:42px;
+          border:1px solid rgba(205,170,255,.42);
+          background:
+            radial-gradient(
+              circle at 50% 0%,
+              rgba(138,92,255,.24),
+              transparent 42%
+            ),
+            radial-gradient(
+              circle at 10% 30%,
+              rgba(255,212,90,.055),
+              transparent 30%
+            ),
+            linear-gradient(
+              145deg,
+              #18111f,
+              #09080d 60%,
+              #050507
+            );
+          box-shadow:
+            0 35px 100px rgba(0,0,0,.58),
+            0 0 80px rgba(138,92,255,.16),
+            inset 0 1px 0 rgba(255,255,255,.12);
+          text-align:center;
+        "
+      >
+
+        <div
+          style="
+            position:absolute;
+            left:15%;
+            right:15%;
+            top:0;
+            height:1px;
+            background:
+              linear-gradient(
+                90deg,
+                transparent,
+                #d7baff,
+                transparent
+              );
+            box-shadow:
+              0 0 22px rgba(180,135,255,.65);
+          "
+        ></div>
+
+
+        <div
+          style="
+            display:flex;
+            justify-content:center;
+            margin-bottom:22px;
+          "
+        >
+
+          <img
+            src="https://i.postimg.cc/QCJTLMd8/Maximus-2.png"
+            alt="Human Maximus"
+            style="
+              width:min(260px,62vw);
+              max-height:110px;
+              object-fit:contain;
+              filter:
+                drop-shadow(
+                  0 0 24px
+                  rgba(184,149,255,.25)
+                );
+            "
+          >
+
+        </div>
+
+
+        <div
+          style="
+            color:#c9aaff;
+            font-size:10px;
+            line-height:1;
+            font-weight:950;
+            letter-spacing:.25em;
+            text-transform:uppercase;
+          "
+        >
+          YOUR NEXT LEVEL STARTS HERE
+        </div>
+
+
+        <h3
+          style="
+            max-width:820px;
+            margin:12px auto 0;
+            color:#fff;
+            font-size:
+              clamp(31px,5.2vw,54px);
+            line-height:1.02;
+            letter-spacing:-.045em;
+            font-weight:950;
+          "
+        >
+          I got you.
+          <br>
+          It's time to end the frustration of not getting the results you want from AI.
+        </h3>
+
+
+        <p
+          style="
+            max-width:720px;
+            margin:18px auto 0;
+            color:#d0cad8;
+            font-size:
+              clamp(15px,2vw,18px);
+            line-height:1.58;
+            font-weight:600;
+          "
+        >
+          You already have your score.
+          You now know where you are strong and where you have
+          the greatest opportunity to grow.
+          <br><br>
+          Now you can use a complete system designed to make
+          exceptional AI results dramatically easier.
+        </p>
+
+
+        <div
+          style="
+            max-width:780px;
+            margin:32px auto 0;
+            display:grid;
+            grid-template-columns:
+              repeat(3,minmax(0,1fr));
+            gap:10px;
+            text-align:left;
+          "
+        >
+
+          <div
+            style="
+              padding:19px;
+              border-radius:22px;
+              border:1px solid rgba(255,255,255,.10);
+              background:rgba(255,255,255,.035);
+            "
+          >
+            <div
+              style="
+                color:#ffd45a;
+                font-size:24px;
+                font-weight:950;
+              "
+            >
+              01
+            </div>
+
+            <strong
+              style="
+                display:block;
+                margin-top:8px;
+                color:#fff;
+                font-size:15px;
+              "
+            >
+              Universal Master Key
+            </strong>
+
+            <span
+              style="
+                display:block;
+                margin-top:6px;
+                color:#aaa4b2;
+                font-size:11px;
+                line-height:1.45;
+              "
+            >
+              The blueprint for thinking, directing,
+              evaluating and improving with AI.
+            </span>
+          </div>
+
+
+          <div
+            style="
+              padding:19px;
+              border-radius:22px;
+              border:1px solid rgba(255,255,255,.10);
+              background:rgba(255,255,255,.035);
+            "
+          >
+            <div
+              style="
+                color:#35e39b;
+                font-size:24px;
+                font-weight:950;
+              "
+            >
+              18
+            </div>
+
+            <strong
+              style="
+                display:block;
+                margin-top:8px;
+                color:#fff;
+                font-size:15px;
+              "
+            >
+              Specialized Master Keys
+            </strong>
+
+            <span
+              style="
+                display:block;
+                margin-top:6px;
+                color:#aaa4b2;
+                font-size:11px;
+                line-height:1.45;
+              "
+            >
+              One specialized blueprint for each
+              major AI capability.
+            </span>
+          </div>
+
+
+          <div
+            style="
+              padding:19px;
+              border-radius:22px;
+              border:1px solid rgba(255,255,255,.10);
+              background:rgba(255,255,255,.035);
+            "
+          >
+            <div
+              style="
+                color:#ff8bd8;
+                font-size:24px;
+                font-weight:950;
+              "
+            >
+              21
+            </div>
+
+            <strong
+              style="
+                display:block;
+                margin-top:8px;
+                color:#fff;
+                font-size:15px;
+              "
+            >
+              Naya Expert Team
+            </strong>
+
+            <span
+              style="
+                display:block;
+                margin-top:6px;
+                color:#aaa4b2;
+                font-size:11px;
+                line-height:1.45;
+              "
+            >
+              Ready-made AI expert identities for
+              specialized work, orchestration and quality.
+            </span>
+          </div>
+
+        </div>
+
+
+        <div
+          style="
+            max-width:820px;
+            margin:34px auto 0;
+          "
+        >
+
+          <div
+            style="
+              color:#9f8ab8;
+              font-size:9px;
+              font-weight:950;
+              letter-spacing:.22em;
+              text-transform:uppercase;
+            "
+          >
+            SIMPLE BY DESIGN
+          </div>
+
+
+          <h4
+            style="
+              margin:9px 0 0;
+              color:#fff;
+              font-size:
+                clamp(22px,3.4vw,32px);
+              line-height:1.05;
+              font-weight:950;
+            "
+          >
+            Exceptional AI results.
+            <br>
+            Three simple moves.
+          </h4>
+
+
+          <div
+            style="
+              margin-top:20px;
+              display:grid;
+              grid-template-columns:
+                repeat(3,minmax(0,1fr));
+              gap:10px;
+            "
+          >
+
+            <div
+              style="
+                padding:19px 13px;
+                border-radius:22px;
+                background:
+                  linear-gradient(
+                    145deg,
+                    rgba(138,92,255,.14),
+                    rgba(255,255,255,.025)
+                  );
+                border:1px solid rgba(184,149,255,.20);
+              "
+            >
+              <div
+                style="
+                  font-size:24px;
+                  font-weight:950;
+                  color:#c7a8ff;
+                "
+              >
+                1
+              </div>
+
+              <strong
+                style="
+                  display:block;
+                  margin-top:7px;
+                  color:#fff;
+                  font-size:14px;
+                "
+              >
+                Master Key
+              </strong>
+
+              <span
+                style="
+                  display:block;
+                  margin-top:5px;
+                  color:#9993a2;
+                  font-size:10px;
+                  line-height:1.4;
+                "
+              >
+                Give AI the universal blueprint.
+              </span>
+            </div>
+
+
+            <div
+              style="
+                padding:19px 13px;
+                border-radius:22px;
+                background:
+                  linear-gradient(
+                    145deg,
+                    rgba(53,227,155,.09),
+                    rgba(255,255,255,.025)
+                  );
+                border:1px solid rgba(53,227,155,.18);
+              "
+            >
+              <div
+                style="
+                  font-size:24px;
+                  font-weight:950;
+                  color:#35e39b;
+                "
+              >
+                2
+              </div>
+
+              <strong
+                style="
+                  display:block;
+                  margin-top:7px;
+                  color:#fff;
+                  font-size:14px;
+                "
+              >
+                Choose Your Specialty
+              </strong>
+
+              <span
+                style="
+                  display:block;
+                  margin-top:5px;
+                  color:#9993a2;
+                  font-size:10px;
+                  line-height:1.4;
+                "
+              >
+                Add the specialized blueprint for
+                what you want to accomplish.
+              </span>
+            </div>
+
+
+            <div
+              style="
+                padding:19px 13px;
+                border-radius:22px;
+                background:
+                  linear-gradient(
+                    145deg,
+                    rgba(255,139,216,.09),
+                    rgba(255,255,255,.025)
+                  );
+                border:1px solid rgba(255,139,216,.18);
+              "
+            >
+              <div
+                style="
+                  font-size:24px;
+                  font-weight:950;
+                  color:#ff8bd8;
+                "
+              >
+                3
+              </div>
+
+              <strong
+                style="
+                  display:block;
+                  margin-top:7px;
+                  color:#fff;
+                  font-size:14px;
+                "
+              >
+                Activate Your Expert
+              </strong>
+
+              <span
+                style="
+                  display:block;
+                  margin-top:5px;
+                  color:#9993a2;
+                  font-size:10px;
+                  line-height:1.4;
+                "
+              >
+                Use the Activation Rolodex to
+                turn AI into your specialist.
+              </span>
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div
+          style="
+            margin-top:40px;
+          "
+        >
+
+          <div
+            style="
+              color:#b895ff;
+              font-size:9px;
+              font-weight:950;
+              letter-spacing:.22em;
+              text-transform:uppercase;
+            "
+          >
+            MEET YOUR AI EXPERT TEAM
+          </div>
+
+
+          <h4
+            style="
+              margin:9px 0 0;
+              color:#fff;
+              font-size:
+                clamp(21px,3.5vw,30px);
+              line-height:1.05;
+              font-weight:950;
+            "
+          >
+            21 ready-to-activate Naya experts
+          </h4>
+
+
+          <p
+            style="
+              max-width:650px;
+              margin:10px auto 0;
+              color:#9993a2;
+              font-size:12px;
+              line-height:1.5;
+            "
+          >
+            Pick the capability you need.
+            Bring the right expert to the conversation.
+            Then follow the blueprint.
+          </p>
+
+
+          <div
+            style="
+              margin-top:20px;
+              display:grid;
+              grid-template-columns:
+                repeat(7,minmax(0,1fr));
+              gap:8px;
+            "
+          >
+
+            ${expertGrid}
+
+          </div>
+
+        </div>
+
+
+        <div
+          style="
+            max-width:700px;
+            margin:38px auto 0;
+            padding-top:27px;
+            border-top:
+              1px solid rgba(255,255,255,.08);
+          "
+        >
+
+          <div
+            style="
+              color:#ffd45a;
+              font-size:9px;
+              font-weight:950;
+              letter-spacing:.22em;
+              text-transform:uppercase;
+            "
+          >
+            WELCOME TO THE BIGGER PICTURE
+          </div>
+
+
+          <h4
+            style="
+              margin:9px 0 0;
+              color:#fff;
+              font-size:22px;
+              font-weight:950;
+            "
+          >
+            Welcome to the Human Maximus ecosystem.
+          </h4>
+
+
+          <p
+            style="
+              margin:9px auto 0;
+              color:#aaa4b2;
+              font-size:12px;
+              line-height:1.55;
+            "
+          >
+            This assessment is one doorway.
+            What you just experienced is one part of a much
+            bigger system built around mastering AI,
+            becoming your MAX, and creating more value.
+          </p>
+
+        </div>
+
+
+        <div
+          style="
+            margin-top:30px;
+          "
+        >
+
+          <button
+            id="maxessTreasureCTA"
+            type="button"
+            style="
+              position:relative;
+              min-width:min(420px,100%);
+              min-height:64px;
+              padding:0 32px;
+              border:1px solid #e1caff;
+              border-radius:21px;
+              color:#08070b;
+              background:
+                linear-gradient(
+                  135deg,
+                  #fff 0%,
+                  #eadbff 35%,
+                  #c7a3ff 70%,
+                  #fff0a8 100%
+                );
+              box-shadow:
+                0 16px 40px rgba(0,0,0,.50),
+                0 0 45px rgba(190,145,255,.28);
+              font-size:16px;
+              font-weight:950;
+              letter-spacing:.01em;
+              cursor:pointer;
+            "
+          >
+            START FREE — GET YOUR KEYS
+            <span
+              style="
+                margin-left:7px;
+                font-size:19px;
+              "
+            >
+              →
+            </span>
+          </button>
+
+
+          <div
+            style="
+              margin-top:10px;
+              color:#827b8c;
+              font-size:10px;
+              font-weight:750;
+            "
+          >
+            Copy · Paste · Activate · Follow the Process
+          </div>
+
+        </div>
+
+      </div>
+
+    `;
+
+
+    /* -----------------------------------------------------
+       21. TREASURE CTA
+    ----------------------------------------------------- */
+
+    const treasureCTA =
+      document.getElementById(
+        "maxessTreasureCTA"
+      );
+
+
+    if(treasureCTA){
+
+      treasureCTA.addEventListener(
+        "click",
+        ()=>{
+
+          if(
+            DOM.freeTrialButton &&
+            typeof DOM.freeTrialButton.click ===
+              "function"
+          ){
+
+            DOM.freeTrialButton.click();
+
+          }else{
+
+            openFreeTrial();
+
+          }
+
+        }
+      );
+
+    }
+
+  }
+
+
+  /* -------------------------------------------------------
+     22. RESPONSIVE GRID
+  ------------------------------------------------------- */
+
+  const responsiveStyleId =
+    "maxessAAAResultsResponsive";
+
+
+  let responsiveStyle =
+    document.getElementById(
+      responsiveStyleId
+    );
+
+
+  if(!responsiveStyle){
+
+    responsiveStyle =
+      document.createElement(
+        "style"
+      );
+
+
+    responsiveStyle.id =
+      responsiveStyleId;
+
+
+    responsiveStyle.textContent = `
+
+      @media(max-width:900px){
+
+        .results-v4-masterkey
+        > div
+        > div[style*="repeat(7"]{
+
+          grid-template-columns:
+            repeat(4,minmax(0,1fr))
+            !important;
+
+        }
+
+      }
+
+
+      @media(max-width:620px){
+
+        .results-v4-masterkey
+        > div
+        > div[style*="repeat(3"]{
+
+          grid-template-columns:
+            1fr !important;
+
+        }
+
+
+        .results-v4-masterkey
+        > div
+        > div[style*="repeat(7"]{
+
+          grid-template-columns:
+            repeat(2,minmax(0,1fr))
+            !important;
+
+        }
+
+
+        .results-v4-masterkey{
+
+          margin-top:48px !important;
+
+        }
+
+      }
+
+    `;
+
+
+    document.head.appendChild(
+      responsiveStyle
+    );
+
+  }
+
+
+  /* -------------------------------------------------------
+     23. CTA COPY
+  ------------------------------------------------------- */
+
+  const ctaTitle =
+    document.getElementById(
+      "ctaTitle"
+    );
+
+
+  const ctaBody =
+    document.getElementById(
+      "ctaBody"
+    );
+
+
+  if(ctaTitle){
+
+    if(overall >= 90){
+
+      ctaTitle.textContent =
+        "You are ready to turn AI capability into leverage.";
+
+    }else if(overall >= 75){
+
+      ctaTitle.textContent =
+        "You are closer to the next level than you may think.";
+
+    }else if(overall >= 60){
+
+      ctaTitle.textContent =
+        "You have a foundation. Now let's build your advantage.";
+
+    }else{
+
+      ctaTitle.textContent =
+        "You now know where to begin.";
+
+    }
+
+  }
+
+
+  if(ctaBody){
+
+    if(overall >= 90){
+
+      ctaBody.textContent =
+        "You have developed a strong level of AI craftsmanship. Your next opportunity is to turn that capability into repeatable workflows, stronger outputs, and a larger personal advantage.";
+
+    }else if(overall >= 75){
+
+      ctaBody.textContent =
+        "You already have meaningful capability. Your next leap comes from strengthening the few habits that multiply what you can already do.";
+
+    }else if(overall >= 60){
+
+      ctaBody.textContent =
+        "You already have useful capability. The biggest gains now come from deliberately strengthening the areas that will make AI more useful, reliable, and repeatable for you.";
+
+    }else{
+
+      ctaBody.textContent =
+        "Your score is not a judgment of your potential. It is a starting map. A few foundational habits can dramatically change the value you get from AI.";
+
+    }
+
+  }
+
+
+  /* -------------------------------------------------------
+     24. REVEAL
+  ------------------------------------------------------- */
+
+  requestAnimationFrame(
+    ()=>{
+
+      if(DOM.resultsView){
+
+        DOM.resultsView.classList.add(
+          "results-ready"
+        );
+
+      }
+
+    }
+  );
+
+
+  /* -------------------------------------------------------
+     25. TOP OF REPORT
+  ------------------------------------------------------- */
+
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
+
+}
+
+  /* =======================================================
+     INTERESTS
+  ======================================================= */
+
+  renderInterests();
+
+  if(
+    state.selectedInterests &&
+    state.selectedInterests.size
+  ){
+
+    const intro =
+      DOM.interestReportIntro;
+
+    if(intro){
+
+      intro.textContent =
+        "These are the AI territories you told us matter to you. They do not change your score; they make the direction after your report more relevant to you.";
+
+    }
+
+  }
+
+
+  /* =======================================================
+     TREASURE / MASTER KEY
+  ======================================================= */
+
+  let treasure =
+    document.querySelector(
+      ".results-v4-masterkey"
+    );
+
+
+  if(!treasure){
+
+    treasure =
+      document.createElement(
+        "section"
+      );
+
+    treasure.className =
+      "results-v4-masterkey";
+
+    if(DOM.resultsView){
+
+      DOM.resultsView.appendChild(
+        treasure
+      );
+
+    }
+
+  }
+
+
+  if(treasure && DOM.resultsView){
+
+    DOM.resultsView.appendChild(
+      treasure
+    );
+
+    treasure.style.display =
+      "block";
+
+    treasure.style.width =
+      "100%";
+
+    treasure.style.boxSizing =
+      "border-box";
+
+    treasure.style.marginTop =
+      "72px";
+
+
+    /* =====================================================
+       18 SPECIALISTS + 3 CORE EXPERTS = 21
+    ===================================================== */
+
+    const expertAreas =
+      Array.isArray(AI_AREAS)
+        ? AI_AREAS.slice(0,18)
+        : [];
+
+
+    const experts =
+      expertAreas.map(
+        (area,index) => ({
+
+          name:
+            `Naya ${area.name}`,
+
+          description:
+            "Specialized AI expert",
+
+          color:
+            area.color ||
+            "#8a5cff",
+
+          icon:
+            area.glyph ||
+            ["✦","◆","◈","✧","◇"][index % 5]
+
+        })
+      );
+
+
+    experts.push(
+
+      {
+        name:
+          "Naya Prime",
+
+        description:
+          "Elite AI master",
+
+        color:
+          "#ffd45a",
+
+        icon:
+          "✦"
+      },
+
+      {
+        name:
+          "Naya Orchestrator",
+
+        description:
+          "Coordinates the experts",
+
+        color:
+          "#35e39b",
+
+        icon:
+          "◉"
+      },
+
+      {
+        name:
+          "Naya Oscar",
+
+        description:
+          "Your ruthless quality judge",
+
+        color:
+          "#ff8bd8",
+
+        icon:
+          "★"
+      }
+
+    );
+
+
+    const expertGrid =
+      experts
+        .map(
+          expert => `
+
+            <div
+              style="
+                min-width:0;
+                padding:15px 10px 13px;
+                border:1px solid rgba(255,255,255,.09);
+                border-radius:19px;
+                background:
+                  linear-gradient(
+                    145deg,
+                    rgba(255,255,255,.055),
+                    rgba(255,255,255,.015)
+                  );
+                box-shadow:
+                  inset 0 1px 0 rgba(255,255,255,.055),
+                  0 9px 24px rgba(0,0,0,.20);
+                text-align:center;
+              "
+            >
+
+              <div
+                style="
+                  width:42px;
+                  height:42px;
+                  margin:0 auto 9px;
+                  display:grid;
+                  place-items:center;
+                  border-radius:50%;
+                  color:#fff;
+                  font-size:18px;
+                  font-weight:950;
+                  background:
+                    radial-gradient(
+                      circle at 30% 20%,
+                      #fff 0%,
+                      ${expert.color} 40%,
+                      #09070f 100%
+                    );
+                  border:1px solid rgba(255,255,255,.45);
+                  box-shadow:
+                    inset 0 2px 4px rgba(255,255,255,.55),
+                    0 0 18px ${expert.color}44;
+                "
+              >
+                ${escapeHtml(expert.icon)}
+              </div>
+
+              <div
+                style="
+                  color:#fff;
+                  font-size:11px;
+                  line-height:1.15;
+                  font-weight:950;
+                "
+              >
+                ${escapeHtml(expert.name)}
+              </div>
+
+              <div
+                style="
+                  margin-top:5px;
+                  color:#85808f;
+                  font-size:8px;
+                  line-height:1.25;
+                  font-weight:800;
+                  text-transform:uppercase;
+                  letter-spacing:.06em;
+                "
+              >
+                ${escapeHtml(expert.description)}
+              </div>
+
+            </div>
+
+          `
+        )
+        .join("");
+
+
+    /* =====================================================
+       TREASURE HTML
+    ===================================================== */
+
+    treasure.innerHTML = `
+
+      <div
+        style="
+          position:relative;
+          overflow:hidden;
+          padding:
+            clamp(30px,5vw,58px)
+            clamp(18px,4vw,42px)
+            clamp(32px,5vw,52px);
+          border-radius:42px;
+          border:1px solid rgba(205,170,255,.42);
+          background:
+            radial-gradient(
+              circle at 50% 0%,
+              rgba(138,92,255,.24),
+              transparent 42%
+            ),
+            radial-gradient(
+              circle at 10% 30%,
+              rgba(255,212,90,.055),
+              transparent 30%
+            ),
+            linear-gradient(
+              145deg,
+              #18111f,
+              #09080d 60%,
+              #050507
+            );
+          box-shadow:
+            0 35px 100px rgba(0,0,0,.58),
+            0 0 80px rgba(138,92,255,.16),
+            inset 0 1px 0 rgba(255,255,255,.12);
+          text-align:center;
+        "
+      >
+
+        <div
+          style="
+            position:absolute;
+            left:15%;
+            right:15%;
+            top:0;
+            height:1px;
+            background:
+              linear-gradient(
+                90deg,
+                transparent,
+                #d7baff,
+                transparent
+              );
+            box-shadow:
+              0 0 22px rgba(180,135,255,.65);
+          "
+        ></div>
+
+
+        <div
+          style="
+            display:flex;
+            justify-content:center;
+            margin-bottom:22px;
+          "
+        >
+
+          <img
+            src="https://i.postimg.cc/QCJTLMd8/Maximus-2.png"
+            alt="Human Maximus"
+            style="
+              width:min(260px,62vw);
+              max-height:110px;
+              object-fit:contain;
+              filter:
+                drop-shadow(
+                  0 0 24px
+                  rgba(184,149,255,.25)
+                );
+            "
+          >
+
+        </div>
+
+
+        <div
+          style="
+            color:#c9aaff;
+            font-size:10px;
+            line-height:1;
+            font-weight:950;
+            letter-spacing:.25em;
+            text-transform:uppercase;
+          "
+        >
+          YOUR NEXT LEVEL STARTS HERE
+        </div>
+
+
+        <h3
+          style="
+            max-width:820px;
+            margin:12px auto 0;
+            color:#fff;
+            font-size:
+              clamp(31px,5.2vw,54px);
+            line-height:1.02;
+            letter-spacing:-.045em;
+            font-weight:950;
+          "
+        >
+          I got you.
+          <br>
+          It's time to end the frustration of not getting the results you want from AI.
+        </h3>
+
+
+        <p
+          style="
+            max-width:720px;
+            margin:18px auto 0;
+            color:#d0cad8;
+            font-size:
+              clamp(15px,2vw,18px);
+            line-height:1.58;
+            font-weight:600;
+          "
+        >
+          You already have your score.
+          You now know where you are strong and where you have
+          the greatest opportunity to grow.
+          <br><br>
+          Now you can use a complete system designed to make
+          exceptional AI results dramatically easier.
+        </p>
+
+
+        <div
+          style="
+            max-width:780px;
+            margin:32px auto 0;
+            display:grid;
+            grid-template-columns:
+              repeat(3,minmax(0,1fr));
+            gap:10px;
+            text-align:left;
+          "
+        >
+
+          <div
+            style="
+              padding:19px;
+              border-radius:22px;
+              border:1px solid rgba(255,255,255,.10);
+              background:rgba(255,255,255,.035);
+            "
+          >
+
+            <div
+              style="
+                color:#ffd45a;
+                font-size:24px;
+                font-weight:950;
+              "
+            >
+              01
+            </div>
+
+            <strong
+              style="
+                display:block;
+                margin-top:8px;
+                color:#fff;
+                font-size:15px;
+              "
+            >
+              Universal Master Key
+            </strong>
+
+            <span
+              style="
+                display:block;
+                margin-top:6px;
+                color:#aaa4b2;
+                font-size:11px;
+                line-height:1.45;
+              "
+            >
+              The blueprint for thinking, directing,
+              evaluating and improving with AI.
+            </span>
+
+          </div>
+
+
+          <div
+            style="
+              padding:19px;
+              border-radius:22px;
+              border:1px solid rgba(255,255,255,.10);
+              background:rgba(255,255,255,.035);
+            "
+          >
+
+            <div
+              style="
+                color:#35e39b;
+                font-size:24px;
+                font-weight:950;
+              "
+            >
+              18
+            </div>
+
+            <strong
+              style="
+                display:block;
+                margin-top:8px;
+                color:#fff;
+                font-size:15px;
+              "
+            >
+              Specialized Master Keys
+            </strong>
+
+            <span
+              style="
+                display:block;
+                margin-top:6px;
+                color:#aaa4b2;
+                font-size:11px;
+                line-height:1.45;
+              "
+            >
+              One specialized blueprint for each
+              major AI capability.
+            </span>
+
+          </div>
+
+
+          <div
+            style="
+              padding:19px;
+              border-radius:22px;
+              border:1px solid rgba(255,255,255,.10);
+              background:rgba(255,255,255,.035);
+            "
+          >
+
+            <div
+              style="
+                color:#ff8bd8;
+                font-size:24px;
+                font-weight:950;
+              "
+            >
+              21
+            </div>
+
+            <strong
+              style="
+                display:block;
+                margin-top:8px;
+                color:#fff;
+                font-size:15px;
+              "
+            >
+              Naya Expert Team
+            </strong>
+
+            <span
+              style="
+                display:block;
+                margin-top:6px;
+                color:#aaa4b2;
+                font-size:11px;
+                line-height:1.45;
+              "
+            >
+              Ready-made AI expert identities for
+              specialized work, orchestration and quality.
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <div
+          style="
+            max-width:820px;
+            margin:34px auto 0;
+          "
+        >
+
+          <div
+            style="
+              color:#9f8ab8;
+              font-size:9px;
+              font-weight:950;
+              letter-spacing:.22em;
+              text-transform:uppercase;
+            "
+          >
+            SIMPLE BY DESIGN
+          </div>
+
+
+          <h4
+            style="
+              margin:9px 0 0;
+              color:#fff;
+              font-size:
+                clamp(22px,3.4vw,32px);
+              line-height:1.05;
+              font-weight:950;
+            "
+          >
+            Exceptional AI results.
+            <br>
+            Three simple moves.
+          </h4>
+
+
+          <div
+            style="
+              margin-top:20px;
+              display:grid;
+              grid-template-columns:
+                repeat(3,minmax(0,1fr));
+              gap:10px;
+            "
+          >
+
+            <div
+              style="
+                padding:19px 13px;
+                border-radius:22px;
+                background:
+                  linear-gradient(
+                    145deg,
+                    rgba(138,92,255,.14),
+                    rgba(255,255,255,.025)
+                  );
+                border:1px solid rgba(184,149,255,.20);
+              "
+            >
+
+              <div
+                style="
+                  font-size:24px;
+                  font-weight:950;
+                  color:#c7a8ff;
+                "
+              >
+                1
+              </div>
+
+              <strong
+                style="
+                  display:block;
+                  margin-top:7px;
+                  color:#fff;
+                  font-size:14px;
+                "
+              >
+                Master Key
+              </strong>
+
+              <span
+                style="
+                  display:block;
+                  margin-top:5px;
+                  color:#9993a2;
+                  font-size:10px;
+                  line-height:1.4;
+                "
+              >
+                Give AI the universal blueprint.
+              </span>
+
+            </div>
+
+
+            <div
+              style="
+                padding:19px 13px;
+                border-radius:22px;
+                background:
+                  linear-gradient(
+                    145deg,
+                    rgba(53,227,155,.09),
+                    rgba(255,255,255,.025)
+                  );
+                border:1px solid rgba(53,227,155,.18);
+              "
+            >
+
+              <div
+                style="
+                  font-size:24px;
+                  font-weight:950;
+                  color:#35e39b;
+                "
+              >
+                2
+              </div>
+
+              <strong
+                style="
+                  display:block;
+                  margin-top:7px;
+                  color:#fff;
+                  font-size:14px;
+                "
+              >
+                Choose Your Specialty
+              </strong>
+
+              <span
+                style="
+                  display:block;
+                  margin-top:5px;
+                  color:#9993a2;
+                  font-size:10px;
+                  line-height:1.4;
+                "
+              >
+                Add the specialized blueprint for
+                what you want to accomplish.
+              </span>
+
+            </div>
+
+
+            <div
+              style="
+                padding:19px 13px;
+                border-radius:22px;
+                background:
+                  linear-gradient(
+                    145deg,
+                    rgba(255,139,216,.09),
+                    rgba(255,255,255,.025)
+                  );
+                border:1px solid rgba(255,139,216,.18);
+              "
+            >
+
+              <div
+                style="
+                  font-size:24px;
+                  font-weight:950;
+                  color:#ff8bd8;
+                "
+              >
+                3
+              </div>
+
+              <strong
+                style="
+                  display:block;
+                  margin-top:7px;
+                  color:#fff;
+                  font-size:14px;
+                "
+              >
+                Activate Your Expert
+              </strong>
+
+              <span
+                style="
+                  display:block;
+                  margin-top:5px;
+                  color:#9993a2;
+                  font-size:10px;
+                  line-height:1.4;
+                "
+              >
+                Use the Activation Rolodex to
+                turn AI into your specialist.
+              </span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div
+          style="
+            margin-top:40px;
+          "
+        >
+
+          <div
+            style="
+              color:#b895ff;
+              font-size:9px;
+              font-weight:950;
+              letter-spacing:.22em;
+              text-transform:uppercase;
+            "
+          >
+            MEET YOUR AI EXPERT TEAM
+          </div>
+
+
+          <h4
+            style="
+              margin:9px 0 0;
+              color:#fff;
+              font-size:
+                clamp(21px,3.5vw,30px);
+              line-height:1.05;
+              font-weight:950;
+            "
+          >
+            21 ready-to-activate Naya experts
+          </h4>
+
+
+          <p
+            style="
+              max-width:650px;
+              margin:10px auto 0;
+              color:#9993a2;
+              font-size:12px;
+              line-height:1.5;
+            "
+          >
+            Pick the capability you need.
+            Bring the right expert to the conversation.
+            Then follow the blueprint.
+          </p>
+
+
+          <div
+            style="
+              margin-top:20px;
+              display:grid;
+              grid-template-columns:
+                repeat(7,minmax(0,1fr));
+              gap:8px;
+            "
+          >
+
+            ${expertGrid}
+
+          </div>
+
+        </div>
+
+
+        <div
+          style="
+            max-width:700px;
+            margin:38px auto 0;
+            padding-top:27px;
+            border-top:
+              1px solid rgba(255,255,255,.08);
+          "
+        >
+
+          <div
+            style="
+              color:#ffd45a;
+              font-size:9px;
+              font-weight:950;
+              letter-spacing:.22em;
+              text-transform:uppercase;
+            "
+          >
+            WELCOME TO THE BIGGER PICTURE
+          </div>
+
+
+          <h4
+            style="
+              margin:9px 0 0;
+              color:#fff;
+              font-size:22px;
+              font-weight:950;
+            "
+          >
+            Welcome to the Human Maximus ecosystem.
+          </h4>
+
+
+          <p
+            style="
+              margin:9px auto 0;
+              color:#aaa4b2;
+              font-size:12px;
+              line-height:1.55;
+            "
+          >
+            This assessment is one doorway.
+            What you just experienced is one part of a much
+            bigger system built around mastering AI,
+            becoming your MAX, and creating more value.
+          </p>
+
+        </div>
+
+
+        <div
+          style="
+            margin-top:30px;
+          "
+        >
+
+          <button
+            id="maxessTreasureCTA"
+            type="button"
+            style="
+              position:relative;
+              min-width:min(420px,100%);
+              min-height:64px;
+              padding:0 32px;
+              border:1px solid #e1caff;
+              border-radius:21px;
+              color:#08070b;
+              background:
+                linear-gradient(
+                  135deg,
+                  #fff 0%,
+                  #eadbff 35%,
+                  #c7a3ff 70%,
+                  #fff0a8 100%
+                );
+              box-shadow:
+                0 16px 40px rgba(0,0,0,.50),
+                0 0 45px rgba(190,145,255,.28);
+              font-size:16px;
+              font-weight:950;
+              letter-spacing:.01em;
+              cursor:pointer;
+            "
+          >
+            START FREE — GET YOUR KEYS
+
+            <span
+              style="
+                margin-left:7px;
+                font-size:19px;
+              "
+            >
+              →
+            </span>
+
+          </button>
+
+
+          <div
+            style="
+              margin-top:10px;
+              color:#827b8c;
+              font-size:10px;
+              font-weight:750;
+            "
+          >
+            Copy · Paste · Activate · Follow the Process
+          </div>
+
+        </div>
+
+      </div>
+
+    `;
+
+
+    /* =====================================================
+       CTA
+    ===================================================== */
+
+    const treasureCTA =
+      document.getElementById(
+        "maxessTreasureCTA"
+      );
+
+
+    if(treasureCTA){
+
+      treasureCTA.addEventListener(
+        "click",
+        () => {
+
+          if(
+            DOM.freeTrialButton &&
+            typeof DOM.freeTrialButton.click ===
+              "function"
+          ){
+
+            DOM.freeTrialButton.click();
+
+          }else{
+
+            openFreeTrial();
+
+          }
+
+        }
+      );
+
+    }
+
+  }
+
+
+  /* =======================================================
+     RESPONSIVE
+  ======================================================= */
+
+  const responsiveStyleId =
+    "maxessAAAResultsResponsive";
+
+
+  let responsiveStyle =
+    document.getElementById(
+      responsiveStyleId
+    );
+
+
+  if(!responsiveStyle){
+
+    responsiveStyle =
+      document.createElement(
+        "style"
+      );
+
+    responsiveStyle.id =
+      responsiveStyleId;
+
+
+    responsiveStyle.textContent = `
+
+      @media(max-width:900px){
+
+        .results-v4-masterkey
+        > div
+        > div[style*="repeat(7"]{
+
+          grid-template-columns:
+            repeat(4,minmax(0,1fr))
+            !important;
+
+        }
+
+      }
+
+
+      @media(max-width:620px){
+
+        .results-v4-masterkey
+        > div
+        > div[style*="repeat(3"]{
+
+          grid-template-columns:
+            1fr !important;
+
+        }
+
+
+        .results-v4-masterkey
+        > div
+        > div[style*="repeat(7"]{
+
+          grid-template-columns:
+            repeat(2,minmax(0,1fr))
+            !important;
+
+        }
+
+
+        .results-v4-masterkey{
+
+          margin-top:48px !important;
+
+        }
+
+      }
+
+    `;
+
+
+    document.head.appendChild(
+      responsiveStyle
+    );
+
+  }
+
+
+  /* =======================================================
+     FINAL CTA COPY
+  ======================================================= */
+
+  const ctaTitle =
+    document.getElementById(
+      "ctaTitle"
+    );
+
+
+  const ctaBody =
+    document.getElementById(
+      "ctaBody"
+    );
+
+
+  if(ctaTitle){
+
+    ctaTitle.textContent =
+      "Your next level starts here.";
+
+  }
+
+
+  if(ctaBody){
+
+    ctaBody.textContent =
+      "You now have a clear picture of your current AI capability — and a simple path for turning that capability into better results.";
+
+  }
+
+
+  /* =======================================================
+     FINAL REVEAL
+  ======================================================= */
+
+  requestAnimationFrame(
+    () => {
+
+      if(DOM.resultsView){
+
+        DOM.resultsView.classList.add(
+          "results-ready"
+        );
+
+      }
+
+    }
+  );
+
+
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
+
+}
+
+
+/* =========================================================
+   SHOW RESULTS AFTER INTERESTS
+========================================================= */
+
+function finishInterestSelection(){
+
+  if(DOM.interestsView){
+
+    DOM.interestsView.classList.remove(
+      "visible"
+    );
+
+  }
+
+  renderResults();
+
+}
+
+
+/* =========================================================
+   NAYA
+========================================================= */
+
+let nayaSpeechUtterance = null;
+
+
+function playNaya(){
+
+  if(!("speechSynthesis" in window)){
+
+    DOM.nayaPrimary.textContent =
+      "Audio unavailable";
+
+    DOM.nayaSecondary.textContent =
+      "Speech is not supported here";
+
+    setTimeout(
+      stopNaya,
+      2200
+    );
+
+    return;
+
+  }
+
+
+  stopNaya();
+
+
+  const question =
+    currentQuestion();
+
+
+  if(!question){
+    return;
+  }
+
+
+  nayaSpeechUtterance =
+    new SpeechSynthesisUtterance(
+      question.question
+    );
+
+
+  nayaSpeechUtterance.rate =
+    .92;
+
+  nayaSpeechUtterance.pitch =
+    1.02;
+
+  nayaSpeechUtterance.volume =
+    1;
+
+
+  nayaSpeechUtterance.onstart =
+    () => {
+
+      state.nayaPlaying =
+        true;
+
+      DOM.nayaButton.classList.add(
+        "playing"
+      );
+
+      DOM.nayaButton.setAttribute(
+        "aria-pressed",
+        "true"
+      );
+
+      DOM.nayaPrimary.textContent =
+        "Pause Naya";
+
+      DOM.nayaSecondary.textContent =
+        "Naya is speaking";
+
+    };
+
+
+  nayaSpeechUtterance.onend =
+    stopNaya;
+
+  nayaSpeechUtterance.onerror =
+    stopNaya;
+
+
+  window.speechSynthesis.speak(
+    nayaSpeechUtterance
+  );
+
+}
+
+
+function stopNaya(){
+
+  if("speechSynthesis" in window){
+
+    window.speechSynthesis.cancel();
+
+  }
+
+
+  state.nayaPlaying =
+    false;
+
+
+  DOM.nayaButton.classList.remove(
+    "playing"
+  );
+
+
+  DOM.nayaButton.setAttribute(
+    "aria-pressed",
+    "false"
+  );
+
+
+  DOM.nayaPrimary.textContent =
+    "Press Play";
+
+
+  DOM.nayaSecondary.textContent =
+    "Listen to Naya";
+
+}
+
+
+/* =========================================================
+   PDF / PRINT
+========================================================= */
+
+function downloadReport(){
+
+  if(!state.results){
+    return;
+  }
+
+  window.print();
+
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+function resetAssessment(){
+
+  stopNaya();
+
+  state.currentQuestionIndex =
+    0;
+
+  state.selectedAnswerId =
+    null;
+
+  state.responses =
+    [];
+
+  state.status =
+    "in_progress";
+
+  state.startedAt =
+    new Date().toISOString();
+
+  state.completedAt =
+    null;
+
+  state.transitioning =
+    false;
+
+  state.teachingOpen =
+    false;
+
+  state.interestBoard =
+    0;
+
+  state.selectedInterests =
+    new Set();
+
+  state.results =
+    null;
+
+
+  DOM.resultsView.classList.remove(
+    "visible"
+  );
+
+  DOM.resultsView.classList.remove(
+    "results-ready"
+  );
+
+  DOM.interestsView.classList.remove(
+    "visible"
+  );
+
+
+  DOM.assessmentStage.style.display =
+    "";
+
+  DOM.nayaButton.style.display =
+    "";
+
+  DOM.continueButton.style.display =
+    "";
+
+
+  renderQuestion();
+
+
+  setTimeout(
+    showTeachingCloud,
+    100
+  );
+
+}
+
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+function openNayaNET(){
+
+  window.open(
+    "https://nayanet.xyz/",
+    "_blank",
+    "noopener,noreferrer"
+  );
+
+}
+
+
+function openFreeTrial(){
+
+  window.open(
+    "https://nayanet.xyz/",
+    "_blank",
+    "noopener,noreferrer"
+  );
+
+}
+
+
+/* =========================================================
+   EVENTS
+========================================================= */
+
+DOM.continueButton.addEventListener(
+  "click",
+  continueAssessment
+);
+
+
+DOM.cloudContinue.addEventListener(
+  "click",
+  closeTeachingCloud
+);
+
+
+DOM.interestContinue.addEventListener(
+  "click",
+  finishInterestSelection
+);
+
+
+DOM.interestSkip.addEventListener(
+  "click",
+  finishInterestSelection
+);
+
+
+DOM.nayaButton.addEventListener(
+  "click",
+  () => {
+
+    if(state.nayaPlaying){
+
+      stopNaya();
+
+    }else{
+
+      playNaya();
+
+    }
+
+  }
+);
+
+
+DOM.pdfButton.addEventListener(
+  "click",
+  downloadReport
+);
+
+
+DOM.restartButton.addEventListener(
+  "click",
+  resetAssessment
+);
+
+
+DOM.enterNayaButton.addEventListener(
+  "click",
+  openNayaNET
+);
+
+
+DOM.freeTrialButton.addEventListener(
+  "click",
+  openFreeTrial
+);
+
+
+const resultsV4MethodToggle =
+  document.getElementById(
+    "resultsV4MethodToggle"
+  );
+
+
+if(resultsV4MethodToggle){
+
+  resultsV4MethodToggle.addEventListener(
+    "click",
+    () => {
+
+      const detail =
+        document.getElementById(
+          "resultsV4MethodDetail"
+        );
+
+      if(!detail){
+        return;
+      }
+
+      const open =
+        detail.classList.toggle(
+          "open"
+        );
+
+      resultsV4MethodToggle.setAttribute(
+        "aria-expanded",
+        String(open)
+      );
+
+      resultsV4MethodToggle.textContent =
+        open
+          ? "Hide scoring method"
+          : "How did you calculate this?";
+
+    }
+  );
+
+}
+
+
+document.addEventListener(
+  "keydown",
+  event => {
+
+    if(
+      event.key === "Escape" &&
+      state.teachingOpen
+    ){
+
+      closeTeachingCloud();
+
+      return;
+
+    }
+
+
+    if(
+      event.key === "Escape" &&
+      state.nayaPlaying
+    ){
+
+      stopNaya();
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   INITIALIZATION
+========================================================= */
+
+try{
+
+  validate();
+
+  buildInterestBoards();
+
+  renderQuestion();
+
+  setTimeout(
+    showTeachingCloud,
+    160
+  );
+
+}catch(error){
+
+  console.error(
+    "MAXESS initialization error:",
+    error
+  );
+
+  DOM.questionLabel.textContent =
+    "ASSESSMENT ERROR";
+
+  DOM.questionTitle.textContent =
+    "MAXESS is temporarily unavailable.";
+
+  DOM.answers.innerHTML =
+    "";
+
+  DOM.continueButton.disabled =
+    true;
+
+}
+
+
+/* =========================================================
+   AAA V3 KEYBOARD ANSWER NAVIGATION
+========================================================= */
+
+document.addEventListener(
+  "keydown",
+  event => {
+
+    if(
+      state.teachingOpen ||
+      state.transitioning
+    ){
+      return;
+    }
+
+
+    const answers =
+      [
+        ...DOM.answers.querySelectorAll(
+          ".answer"
+        )
+      ];
+
+
+    if(!answers.length){
+      return;
+    }
+
+
+    const active =
+      document.activeElement;
+
+
+    const index =
+      answers.indexOf(
+        active
+      );
+
+
+    if(
+      event.key === "ArrowDown" ||
+      event.key === "ArrowRight"
+    ){
+
+      event.preventDefault();
+
+      answers[
+        Math.min(
+          index < 0 ? 0 : index + 1,
+          answers.length - 1
+        )
+      ].focus();
+
+    }else if(
+      event.key === "ArrowUp" ||
+      event.key === "ArrowLeft"
+    ){
+
+      event.preventDefault();
+
+      answers[
+        Math.max(
+          index < 0 ? 0 : index - 1,
+          0
+        )
+      ].focus();
+
+    }else if(
+      event.key === "Enter" &&
+      index >= 0
+    ){
+
+      event.preventDefault();
+
+      active.click();
+
+    }
+
+  }
+);
