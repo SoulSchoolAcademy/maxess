@@ -1,43 +1,8 @@
-name: Run MAXESS Results Builder
+name: Legacy MAXESS Results Builder (disabled)
 on:
-  push:
-    branches: [main]
-permissions:
-  contents: write
+  workflow_dispatch:
 jobs:
-  build:
+  disabled:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Run existing builder
-        run: |
-          python3 - <<'PY'
-          from pathlib import Path
-          import subprocess
-          p=Path('.github/workflows/build-maxess-results.yml').read_text()
-          # The companion builder is intentionally kept as the single source of build logic.
-          print('MAXESS Results builder present:', len(p), 'bytes')
-          PY
-      - name: Build from mature 9.5 artifact
-        run: |
-          python3 - <<'PY'
-          from pathlib import Path
-          src=Path('MAXESS-RESULTS-9-5-GROOVE.html').read_text(encoding='utf-8')
-          if len(src.splitlines()) < 5000:
-              raise SystemExit('SOURCE QUALITY GATE FAILED: mature Results source is unexpectedly small')
-          marker='</body>'
-          if marker not in src:
-              raise SystemExit('SOURCE QUALITY GATE FAILED: malformed HTML')
-          polish='''<style id="maxess-release-guard">#maxess-release-guard{display:none}</style><div id="maxess-release-guard" aria-hidden="true">MAXESS RESULTS RELEASE</div>'''
-          final=src.replace(marker,polish+'\\n'+marker,1)
-          Path('MAXESS-RESULTS-10-GROOVE.html').write_text(final,encoding='utf-8')
-          lines=final.count('\\n')+1
-          print('MAXESS RESULTS RELEASE:',lines,'lines',len(final.encode()),'bytes')
-          if lines < 5000: raise SystemExit('RELEASE BLOCKED')
-          PY
-      - name: Commit final artifact
-        run: |
-          git config user.name 'MAXESS Build System'
-          git config user.email 'actions@github.com'
-          git add MAXESS-RESULTS-10-GROOVE.html
-          git diff --cached --quiet || (git commit -m 'Publish verified MAXESS Results Groove artifact' && git push)
+      - run: echo 'Disabled. The authoritative Results publisher is build-final-results-groove.yml.'
