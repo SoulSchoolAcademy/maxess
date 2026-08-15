@@ -247,6 +247,8 @@ button:disabled{
 
 
 
+
+
 .question-count-chip{
   justify-self:end;
   min-width:128px;
@@ -2349,6 +2351,7 @@ button:disabled{
 
 
 
+
 @media(max-width:420px){
 
   .naya-copy span{
@@ -2565,6 +2568,7 @@ button:disabled{
 @media(max-width:900px){.maxess-expert-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
 @media(max-width:620px){.maxess-treasure{border-radius:26px;padding:24px 16px}.maxess-expert-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.maxess-expert-card{min-height:100px;padding:11px 8px}.maxess-expert-name{font-size:10px}.maxess-three-step{grid-template-columns:1fr}.maxess-cta-actions{flex-direction:column}.maxess-cta-actions button{width:100%}}
 @media(prefers-reduced-motion:reduce){.maxess-treasure::before,.maxess-treasure-title span{animation:none}}
+
 
 
 /* =========================================================
