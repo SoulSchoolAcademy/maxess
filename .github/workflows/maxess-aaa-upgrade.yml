@@ -55,6 +55,9 @@ jobs:
       - name: Apply 10-star cinematic Results Experience
         run: python3 tools/results_experience_10_star.py
 
+      - name: Replace top signal card with editorial personalized analysis
+        run: python3 tools/results_top_editorial.py
+
       - name: Verify generated MAXESS source
         run: |
           python3 - <<'PY'
@@ -72,6 +75,7 @@ jobs:
           assert 'MAXESS RESULTS EXPERIENCE 9.9 — PERSONAL SIGNAL' in s
           assert 'MAXESS NAYA MASTERS BRAND SYSTEM' in s
           assert 'MAXESS RESULTS EXPERIENCE 10-STAR' in s
+          assert 'MAXESS RESULTS TOP EDITORIAL' in s
           assert 'maxessSignalTitle' in s
           assert 'resultsV4Opening' in s
           assert 'resultsV4MasterKeyTitle' in s
