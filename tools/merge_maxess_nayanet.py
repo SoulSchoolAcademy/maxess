@@ -20,10 +20,31 @@ closing = page.lower().rfind('</body>')
 if closing < 0:
     raise SystemExit('Results file has no closing </body>')
 
-# Keep the NayaNET source physically inside the finished artifact while
-# isolating its CSS from the MAXESS Results application with Shadow DOM.
 source = source.replace('</script', '<\\/script')
-bridge = f'''\n{MARKER}\n<section id="maxess-nayanet-bridge" aria-label="NayaNET experience">\n  <div id="maxess-nayanet-shadow-host"></div>\n</section>\n<script>\n(function(){{\n  const SOURCE = {source!r};\n  const host = document.getElementById('maxess-nayanet-shadow-host');\n  if (!host) return;\n  const root = host.attachShadow ? host.attachShadow({{mode:'open'}}) : host;\n  root.innerHTML = SOURCE;\n  root.querySelectorAll('script').forEach(function(oldScript){{\n    const script = document.createElement('script');\n    for (const attr of oldScript.attributes) script.setAttribute(attr.name, attr.value);\n    script.textContent = oldScript.textContent;\n    oldScript.replaceWith(script);\n  }});\n}})();\n</script>\n'''
+manifest = '''<script type="application/json" id="maxess-build-manifest">
+{
+  "product": "MAXESS AI Mastery Results",
+  "release": "9.5",
+  "architecture": "Results -> NayaNET",
+  "results": "complete personalized results experience",
+  "score": "overall MAXESS score and mastery band",
+  "profile": "five-dimension visual fingerprint",
+  "insight": "strongest capability and next opportunity",
+  "pathway": "personalized three-step improvement path",
+  "method": "KNOW -> TELL -> ASK -> CREATE -> SCORE -> IMPROVE -> REPEAT",
+  "naya": "personalized report entry point",
+  "nayanet": "original cinematic experience preserved",
+  "video": "existing NayaNET cinematic video",
+  "destinations": "Free Gifts, ProMax Player, AI Masterclass, Take Your Power Back",
+  "membership": "One Membership / Everything Included",
+  "responsive": true,
+  "accessible": true,
+  "reducedMotion": true,
+  "sourceOfTruth": "repository master NayaNET source"
+}
+</script>
+'''
+bridge = f'''\n{MARKER}\n{manifest}<section id="maxess-nayanet-bridge" aria-label="NayaNET experience">\n  <div id="maxess-nayanet-shadow-host"></div>\n</section>\n<script>\n(function(){{\n  const SOURCE = {source!r};\n  const host = document.getElementById('maxess-nayanet-shadow-host');\n  if (!host) return;\n  const root = host.attachShadow ? host.attachShadow({{mode:'open'}}) : host;\n  root.innerHTML = SOURCE;\n  root.querySelectorAll('script').forEach(function(oldScript){{\n    const script = document.createElement('script');\n    for (const attr of oldScript.attributes) script.setAttribute(attr.name, attr.value);\n    script.textContent = oldScript.textContent;\n    oldScript.replaceWith(script);\n  }});\n}})();\n</script>\n'''
 
 page = page[:closing] + bridge + page[closing:]
 BASE.write_text(page, encoding='utf-8')
