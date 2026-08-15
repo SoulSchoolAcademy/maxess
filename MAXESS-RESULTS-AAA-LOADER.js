@@ -1,15 +1,13 @@
 /* =====================================================================
-   MAXESS RESULTS AAA — LIVE GROOVE BRIDGE
-   Load this script AFTER the existing MAXESS assessment code.
-
-   It does NOT duplicate assessment scoring. It waits for the existing
-   Results state to appear, captures the rendered real result, loads the
-   complete flagship Results artifact, and mounts the captured data.
+   MAXESS RESULTS — LIVE GROOVE BRIDGE
+   Loads after the existing MAXESS assessment and preserves its real
+   calculated result. The final Results artifact ends with the existing
+   NayaNET experience so the video/buttons/membership remain the endpoint.
    ===================================================================== */
 (function(){
   'use strict';
 
-  const SOURCE='https://cdn.jsdelivr.net/gh/SoulSchoolAcademy/maxess@main/MAXESS-RESULTS-AAA-FULL.html';
+  const SOURCE='https://cdn.jsdelivr.net/gh/SoulSchoolAcademy/maxess@main/MAXESS-RESULTS-NAYANET-FINAL.html';
   let launched=false;
 
   function text(selector){
@@ -29,7 +27,7 @@
       id:`dimension-${i+1}`,
       name:(row.querySelector('.dimension-name')||{}).textContent?.trim()||`Dimension ${i+1}`,
       score:parseFloat((row.querySelector('.dimension-score')||{}).textContent||'0')||0,
-      color:getComputedStyle(row).getPropertyValue('--dimensionColor').trim()||['#ffd45a','#43dfa0','#5ca8ff','#a95cff','#ef62d2'][i]
+      color:getComputedStyle(row).getPropertyValue('--dimensionColor').trim()
     }));
 
     return {
@@ -51,6 +49,7 @@
     if(launched)return;
     launched=true;
     const realResult=readCurrentResult();
+    window.MAXESS_RESULT=realResult;
 
     const response=await fetch(SOURCE,{cache:'no-store'});
     if(!response.ok)throw new Error(`MAXESS Results source failed: ${response.status}`);
@@ -68,18 +67,6 @@
       else script.textContent=oldScript.textContent;
       document.body.appendChild(script);
     });
-
-    let tries=0;
-    const mount=()=>{
-      tries++;
-      if(window.MAXESS_RESULTS&&typeof window.MAXESS_RESULTS.mount==='function'){
-        window.MAXESS_RESULTS.mount(realResult);
-        return;
-      }
-      if(tries<50)setTimeout(mount,50);
-      else console.error('MAXESS Results mount API was not found.');
-    };
-    mount();
   }
 
   function ready(){
@@ -101,7 +88,7 @@
   }
 
   function reportError(error){
-    console.error('MAXESS AAA Results bridge failed:',error);
+    console.error('MAXESS Results bridge failed:',error);
     const box=document.createElement('div');
     box.style.cssText='min-height:70vh;display:grid;place-items:center;background:#030305;color:#fff;font-family:Inter,system-ui,sans-serif;padding:40px;text-align:center';
     box.innerHTML='<div style="max-width:620px"><div style="font-size:11px;letter-spacing:.18em;color:#d4adff;font-weight:900">MAXESS RESULTS</div><h1 style="font-size:42px;margin:12px 0">Your result is ready, but the presentation could not be loaded.</h1><p style="color:#aaa;line-height:1.6">Please refresh once. Your assessment data has not been changed.</p></div>';
