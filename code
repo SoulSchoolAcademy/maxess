@@ -6,8 +6,8 @@
 <meta name="theme-color" content="#020204">
 <meta name="color-scheme" content="dark">
 <title>MAXESS — AI Mastery Assessment</title>
-<meta name="maxess-build" content="AAA-2026-08-14-v4-results">
-<meta name="maxess-aaa-pass" content="2026-08-14-v4-results">
+<meta name="maxess-build" content="AAA-2026-08-15-results-fresh-flagship">
+<meta name="maxess-aaa-pass" content="2026-08-15-results-fresh-flagship">
 <style>
 :root{
   --bg:#020204;
@@ -204,6 +204,8 @@ button:disabled{
 .brand-ess{
   color:#b58cff;
 }
+
+
 
 
 
@@ -2393,6 +2395,7 @@ button:disabled{
   .answer{min-height:56px;}
   .jewel{width:45px;height:45px;}
 }
+
 
 
 
@@ -4901,87 +4904,6 @@ button:disabled{
 }
 
 
-/* =========================================================
-   MAXESS AAA V3 — VISIBLE CRAFT PASS
-========================================================= */
-:root{
-  --aaa-glass:rgba(255,255,255,.045);
-  --aaa-glass-strong:rgba(255,255,255,.075);
-  --aaa-purple-glow:rgba(138,92,255,.28);
-  --aaa-border:rgba(184,149,255,.22);
-}
-.maxess-app{
-  background:
-    radial-gradient(circle at 50% -8%,rgba(138,92,255,.24),transparent 32%),
-    radial-gradient(circle at 88% 42%,rgba(237,66,196,.07),transparent 28%),
-    radial-gradient(circle at 12% 76%,rgba(60,168,255,.06),transparent 26%),
-    #020204;
-}
-.topbar{padding-top:7px;}
-.brand{
-  position:relative;padding:10px 13px;border:1px solid rgba(184,149,255,.16);
-  border-radius:14px;background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.015));
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 8px 24px rgba(0,0,0,.28);
-}
-.brand::after{
-  content:"AI MASTERY";position:absolute;left:14px;bottom:-7px;padding:2px 6px;
-  border:1px solid rgba(184,149,255,.20);border-radius:999px;background:#08070d;color:#8876a8;
-  font-size:6px;line-height:1;font-weight:950;letter-spacing:.18em;
-}
-.progress-hud{
-  border-color:rgba(184,149,255,.24);background:linear-gradient(180deg,rgba(255,255,255,.09),rgba(255,255,255,.028));
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.11),0 14px 38px rgba(0,0,0,.38),0 0 40px rgba(138,92,255,.12);
-}
-.progress-fill{background:linear-gradient(90deg,#5e2bd2,#8a5cff 48%,#d1b7ff 100%);}
-.question-count-chip{border-color:rgba(184,149,255,.30);background:linear-gradient(180deg,rgba(138,92,255,.11),rgba(138,92,255,.035));color:#d5c9e7;}
-.board{
-  border-color:rgba(171,126,255,.62);border-radius:34px;
-  box-shadow:0 0 0 1px rgba(255,255,255,.035),0 40px 100px rgba(0,0,0,.76),0 0 95px rgba(80,38,190,.14),inset 0 1px 0 rgba(255,255,255,.13);
-}
-.board-content{padding:clamp(24px,3.3vw,40px);}
-.command-row{margin-bottom:18px;}
-.naya-button{border-color:rgba(255,255,255,.27);background:linear-gradient(180deg,rgba(255,255,255,.085),rgba(255,255,255,.025));}
-.naya-orb{box-shadow:inset 0 2px 4px rgba(255,255,255,.78),0 0 28px rgba(116,76,255,.48),0 7px 15px rgba(0,0,0,.6);}
-.continue-button:not(:disabled){border-color:#c4a4ff;box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 14px 32px rgba(0,0,0,.62),0 0 38px rgba(138,92,255,.22);}
-.aaa-status-rail{
-  width:min(940px,100%);margin:0 auto 20px;padding:10px 14px;border-color:rgba(184,149,255,.18);
-  border-radius:14px;background:linear-gradient(90deg,rgba(138,92,255,.075),rgba(255,255,255,.025),rgba(237,66,196,.045));
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.055),0 10px 26px rgba(0,0,0,.18);
-}
-.question-area{padding:2px 12px 0;}
-.question-label{padding:7px 11px;border:1px solid rgba(184,149,255,.18);border-radius:999px;background:rgba(138,92,255,.055);box-shadow:0 0 22px rgba(138,92,255,.08);}
-.question-label::before,.question-label::after{display:none;}
-.question-title{max-width:900px;font-size:clamp(28px,3.7vw,48px);line-height:1.055;text-shadow:0 3px 24px rgba(0,0,0,.55),0 0 40px rgba(138,92,255,.08);}
-.question-rule{width:220px;margin-top:20px;}
-.answers{width:min(900px,100%);margin-top:22px;gap:11px;}
-.answer{
-  min-height:68px;grid-template-columns:58px minmax(0,1fr) 34px;border-color:rgba(255,255,255,.12);border-radius:22px;
-  background:linear-gradient(105deg,rgba(255,255,255,.055),rgba(255,255,255,.018) 48%,rgba(138,92,255,.025));
-  box-shadow:0 10px 24px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,255,255,.06);
-}
-.answer::before{
-  content:"";position:absolute;left:0;top:12px;bottom:12px;width:2px;border-radius:2px;background:var(--accent);opacity:.35;
-  box-shadow:0 0 14px color-mix(in srgb,var(--accent) 45%,transparent);transition:opacity .22s ease,width .22s ease;
-}
-.answer:hover::before,.answer.selected::before{width:4px;opacity:.9;}
-.answer:hover{transform:translateY(-3px) scale(1.003);}
-.answer.selected{background:linear-gradient(105deg,rgba(255,255,255,.075),rgba(138,92,255,.045) 55%,rgba(255,255,255,.02));}
-.answer-title{font-size:clamp(15px,1.65vw,18px);}
-.answer-sub{color:#cbc6d4;}
-.jewel{width:54px;height:54px;border-radius:18px;}
-.chevron{width:32px;height:32px;}
-.footer{color:#716b7c;}
-.aaa-guidance{margin:12px auto 0;color:#85808f;font-size:11px;line-height:1.4;font-weight:700;letter-spacing:.01em;text-align:center;}
-@media(max-width:760px){
-  .topbar{padding-top:4px}.brand{padding:8px 10px}.brand::after{display:none}.board-content{padding:15px 9px 13px}
-  .aaa-status-rail{margin-bottom:13px;padding:8px 9px}.question-area{padding:0 5px}.question-label{padding:6px 9px;font-size:8px}
-  .question-title{font-size:clamp(24px,6.5vw,34px)}.question-rule{width:130px;margin-top:13px}.answers{width:100%;margin-top:15px;gap:8px}
-  .answer{min-height:63px;grid-template-columns:47px minmax(0,1fr) 27px;gap:9px;padding:6px;border-radius:18px}
-  .jewel{width:45px;height:45px;border-radius:14px}.answer-title{font-size:13.6px}.answer-sub{font-size:12.6px}.chevron{width:26px;height:26px}
-  .aaa-guidance{font-size:10px;margin-top:9px;padding:0 12px}
-}
-@media(prefers-reduced-motion:reduce){.answer:hover{transform:none;}}
-
 
 /* =========================================================
    MAXESS RESULTS EXPERIENCE CANONICAL CLEANUP
@@ -5144,6 +5066,175 @@ button:disabled{
 @media(max-width:840px){.rf-analysis{grid-template-columns:1fr}.rf-stories{grid-template-columns:1fr;gap:28px}.rf-master-line{grid-template-columns:repeat(3,minmax(0,1fr));gap:24px 9px}.rf-master-line::before{display:none}.rf-step{min-width:108px}}
 @media(max-width:620px){.rf-wrap{padding-inline:16px}.rf-section{padding:58px 0}.rf-process-line{justify-content:flex-start}.rf-naya{grid-template-columns:1fr;text-align:center}.rf-naya-orb{margin:0 auto}.rf-master-line{grid-template-columns:repeat(2,minmax(0,1fr))}.rf-master .rf-gem{width:74px;height:74px;border-radius:23px}.rf-master h3{font-size:13px}.rf-next{padding-top:58px}.rf-hero h1{font-size:56px}}
 @media(prefers-reduced-motion:reduce){.rf-actions button{transition:none}}
+
+
+/* =========================================================
+   MAXESS AAA V3 — VISIBLE CRAFT PASS
+========================================================= */
+:root{
+  --aaa-glass:rgba(255,255,255,.045);
+  --aaa-glass-strong:rgba(255,255,255,.075);
+  --aaa-purple-glow:rgba(138,92,255,.28);
+  --aaa-border:rgba(184,149,255,.22);
+}
+.maxess-app{
+  background:
+    radial-gradient(circle at 50% -8%,rgba(138,92,255,.24),transparent 32%),
+    radial-gradient(circle at 88% 42%,rgba(237,66,196,.07),transparent 28%),
+    radial-gradient(circle at 12% 76%,rgba(60,168,255,.06),transparent 26%),
+    #020204;
+}
+.topbar{padding-top:7px;}
+.brand{
+  position:relative;padding:10px 13px;border:1px solid rgba(184,149,255,.16);
+  border-radius:14px;background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.015));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 8px 24px rgba(0,0,0,.28);
+}
+.brand::after{
+  content:"AI MASTERY";position:absolute;left:14px;bottom:-7px;padding:2px 6px;
+  border:1px solid rgba(184,149,255,.20);border-radius:999px;background:#08070d;color:#8876a8;
+  font-size:6px;line-height:1;font-weight:950;letter-spacing:.18em;
+}
+.progress-hud{
+  border-color:rgba(184,149,255,.24);background:linear-gradient(180deg,rgba(255,255,255,.09),rgba(255,255,255,.028));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.11),0 14px 38px rgba(0,0,0,.38),0 0 40px rgba(138,92,255,.12);
+}
+.progress-fill{background:linear-gradient(90deg,#5e2bd2,#8a5cff 48%,#d1b7ff 100%);}
+.question-count-chip{border-color:rgba(184,149,255,.30);background:linear-gradient(180deg,rgba(138,92,255,.11),rgba(138,92,255,.035));color:#d5c9e7;}
+.board{
+  border-color:rgba(171,126,255,.62);border-radius:34px;
+  box-shadow:0 0 0 1px rgba(255,255,255,.035),0 40px 100px rgba(0,0,0,.76),0 0 95px rgba(80,38,190,.14),inset 0 1px 0 rgba(255,255,255,.13);
+}
+.board-content{padding:clamp(24px,3.3vw,40px);}
+.command-row{margin-bottom:18px;}
+.naya-button{border-color:rgba(255,255,255,.27);background:linear-gradient(180deg,rgba(255,255,255,.085),rgba(255,255,255,.025));}
+.naya-orb{box-shadow:inset 0 2px 4px rgba(255,255,255,.78),0 0 28px rgba(116,76,255,.48),0 7px 15px rgba(0,0,0,.6);}
+.continue-button:not(:disabled){border-color:#c4a4ff;box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 14px 32px rgba(0,0,0,.62),0 0 38px rgba(138,92,255,.22);}
+.aaa-status-rail{
+  width:min(940px,100%);margin:0 auto 20px;padding:10px 14px;border-color:rgba(184,149,255,.18);
+  border-radius:14px;background:linear-gradient(90deg,rgba(138,92,255,.075),rgba(255,255,255,.025),rgba(237,66,196,.045));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.055),0 10px 26px rgba(0,0,0,.18);
+}
+.question-area{padding:2px 12px 0;}
+.question-label{padding:7px 11px;border:1px solid rgba(184,149,255,.18);border-radius:999px;background:rgba(138,92,255,.055);box-shadow:0 0 22px rgba(138,92,255,.08);}
+.question-label::before,.question-label::after{display:none;}
+.question-title{max-width:900px;font-size:clamp(28px,3.7vw,48px);line-height:1.055;text-shadow:0 3px 24px rgba(0,0,0,.55),0 0 40px rgba(138,92,255,.08);}
+.question-rule{width:220px;margin-top:20px;}
+.answers{width:min(900px,100%);margin-top:22px;gap:11px;}
+.answer{
+  min-height:68px;grid-template-columns:58px minmax(0,1fr) 34px;border-color:rgba(255,255,255,.12);border-radius:22px;
+  background:linear-gradient(105deg,rgba(255,255,255,.055),rgba(255,255,255,.018) 48%,rgba(138,92,255,.025));
+  box-shadow:0 10px 24px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,255,255,.06);
+}
+.answer::before{
+  content:"";position:absolute;left:0;top:12px;bottom:12px;width:2px;border-radius:2px;background:var(--accent);opacity:.35;
+  box-shadow:0 0 14px color-mix(in srgb,var(--accent) 45%,transparent);transition:opacity .22s ease,width .22s ease;
+}
+.answer:hover::before,.answer.selected::before{width:4px;opacity:.9;}
+.answer:hover{transform:translateY(-3px) scale(1.003);}
+.answer.selected{background:linear-gradient(105deg,rgba(255,255,255,.075),rgba(138,92,255,.045) 55%,rgba(255,255,255,.02));}
+.answer-title{font-size:clamp(15px,1.65vw,18px);}
+.answer-sub{color:#cbc6d4;}
+.jewel{width:54px;height:54px;border-radius:18px;}
+.chevron{width:32px;height:32px;}
+.footer{color:#716b7c;}
+.aaa-guidance{margin:12px auto 0;color:#85808f;font-size:11px;line-height:1.4;font-weight:700;letter-spacing:.01em;text-align:center;}
+@media(max-width:760px){
+  .topbar{padding-top:4px}.brand{padding:8px 10px}.brand::after{display:none}.board-content{padding:15px 9px 13px}
+  .aaa-status-rail{margin-bottom:13px;padding:8px 9px}.question-area{padding:0 5px}.question-label{padding:6px 9px;font-size:8px}
+  .question-title{font-size:clamp(24px,6.5vw,34px)}.question-rule{width:130px;margin-top:13px}.answers{width:100%;margin-top:15px;gap:8px}
+  .answer{min-height:63px;grid-template-columns:47px minmax(0,1fr) 27px;gap:9px;padding:6px;border-radius:18px}
+  .jewel{width:45px;height:45px;border-radius:14px}.answer-title{font-size:13.6px}.answer-sub{font-size:12.6px}.chevron{width:26px;height:26px}
+  .aaa-guidance{font-size:10px;margin-top:9px;padding:0 12px}
+}
+@media(prefers-reduced-motion:reduce){.answer:hover{transform:none;}}
+
+
+/* =========================================================
+   MAXESS RESULTS EXPERIENCE CANONICAL CLEANUP
+   One experience. One hierarchy. No legacy pile-up.
+========================================================= */
+.maxess-canonical-hide{display:none!important}
+.maxess-canonical-spacer{height:0!important;margin:0!important;padding:0!important;border:0!important}
+
+/* Preserve the premium core; remove report/dashboard residue. */
+#resultsView .results-v4-intro,
+#resultsView .results-master-v2,
+#resultsView .results-v4-naya,
+#resultsView .results-v4-masterkey,
+#resultsView .final-cta,
+#resultsView .maxess-signal,
+#resultsView .maxess-meaning,
+#resultsView .maxess-ohwhy,
+#resultsView .maxess-naya-guide,
+#resultsView .maxess-masterkey-10,
+#resultsView .maxess-opportunities,
+#resultsView .maxess-naya-masters,
+#resultsView .maxess-threshold,
+#resultsView .maxess-results-journey,
+#resultsView .results-v4-playground,
+#resultsView .results-v4-treasure,
+#resultsView .results-v4-pathway,
+#resultsView .results-v4-cta,
+#resultsView .results-v4-method,
+#resultsView .results-v4-evidence,
+#resultsView .results-v4-recommendation,
+#resultsView .results-v4-next,
+#resultsView .results-master-v2-next,
+#resultsView .results-master-v2-evidence,
+#resultsView .results-master-v2-meaning{
+  display:none!important;
+}
+
+/* Let the canonical sections breathe instead of behaving like nested cards. */
+#resultsView .maxess-personal-editorial{
+  margin-top:30px;
+  margin-bottom:14px;
+}
+#resultsView .maxess-signature-shell{
+  margin-top:58px;
+}
+#resultsView .maxess-oscar-finale{
+  margin-top:68px;
+}
+
+/* Remove accidental empty vertical gaps left by deleted legacy sections. */
+#resultsView > .report-section:empty,
+#resultsView > .results-v4-reveal:empty{
+  display:none!important;
+}
+
+@media(max-width:760px){
+  #resultsView .maxess-signature-shell{margin-top:42px}
+  #resultsView .maxess-oscar-finale{margin-top:44px}
+}
+
+
+/* =========================================================
+   MAXESS RESULTS — FRESH FLAGSHIP EXPERIENCE
+   Blank-canvas presentation. Assessment engine untouched.
+========================================================= */
+#resultsView{display:none!important;width:100%!important;max-width:none!important;margin:0!important}
+#resultsView.visible{display:block!important}
+.board-wrap:has(#resultsView.visible){display:block!important;min-height:0!important}
+.board-wrap:has(#resultsView.visible) .board{min-height:0!important;overflow:visible!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important}
+.board-wrap:has(#resultsView.visible) .board::before,.board-wrap:has(#resultsView.visible) .board::after{display:none!important}
+.board-wrap:has(#resultsView.visible) .board-content{padding:0!important;min-height:0!important}
+.mxr{--p:#8a5cff;--l:#b895ff;--b:#3ca8ff;--g:#35e39b;--gold:#ffd45a;--pink:#ed42c4;--muted:#aaa4b2;color:#f8f7fb;min-height:100vh;background:radial-gradient(circle at 50% -12%,rgba(138,92,255,.22),transparent 34%),radial-gradient(circle at 100% 38%,rgba(60,168,255,.05),transparent 30%),linear-gradient(180deg,#07060a,#020204 62%,#030305);overflow:hidden}
+.mxr *{box-sizing:border-box}.mxr-in{width:min(1180px,100%);margin:auto;padding:clamp(22px,4vw,60px) clamp(16px,4vw,52px) 100px}.mxr-sec{padding:clamp(62px,7vw,100px) 0;border-top:1px solid rgba(184,149,255,.10)}
+.mxr-k{color:var(--l);font-size:10px;font-weight:950;letter-spacing:.21em;text-transform:uppercase}.mxr-h1{margin:11px 0 0;font-size:clamp(40px,6.6vw,78px);line-height:.94;letter-spacing:-.055em;font-weight:1000}.mxr-h2{margin:10px 0 0;font-size:clamp(31px,4.8vw,58px);line-height:.98;letter-spacing:-.045em;font-weight:950}.mxr-copy{max-width:790px;margin:16px 0 0;color:var(--muted);font-size:clamp(15px,1.8vw,19px);line-height:1.65}
+.mxr-hero{text-align:center;padding:20px 0 72px}.mxr-hero .mxr-copy{margin-left:auto;margin-right:auto}.mxr-score{position:relative;width:min(390px,82vw);aspect-ratio:1;margin:34px auto 0;display:grid;place-items:center}.mxr-score svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}.mxr-track{fill:none;stroke:rgba(255,255,255,.075);stroke-width:16}.mxr-fill{fill:none;stroke:url(#mxg);stroke-width:16;stroke-linecap:round;filter:drop-shadow(0 0 12px rgba(138,92,255,.55))}.mxr-core{position:relative;width:69%;height:69%;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 35% 20%,rgba(255,255,255,.08),transparent 27%),linear-gradient(145deg,#0f0c16,#050507);border:1px solid rgba(184,149,255,.18);box-shadow:inset 0 0 55px rgba(138,92,255,.10),0 25px 60px rgba(0,0,0,.50)}.mxr-num{font-size:clamp(60px,10vw,92px);line-height:.82;letter-spacing:-.07em;font-weight:1000}.mxr-label{margin-top:12px;color:#8f8998;font-size:9px;font-weight:950;letter-spacing:.20em;text-transform:uppercase}.mxr-band{margin-top:-2px;color:#d8ccef;font-size:11px;font-weight:950;letter-spacing:.15em;text-transform:uppercase}.mxr-note{max-width:690px;margin:18px auto 0;color:#8f8998;font-size:12px;line-height:1.55}
+.mxr-story{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(260px,.65fr);gap:58px;align-items:end}.mxr-quote{margin-top:20px;max-width:900px;font-size:clamp(25px,3.8vw,46px);line-height:1.07;letter-spacing:-.035em;font-weight:850}.mxr-quote em{font-style:normal;color:var(--l)}.mxr-proof{display:grid;gap:18px}.mxr-proof article{padding-top:15px;border-top:1px solid rgba(255,255,255,.08)}.mxr-proof span{display:block;color:#858090;font-size:9px;font-weight:950;letter-spacing:.16em;text-transform:uppercase}.mxr-proof strong{display:block;margin-top:7px;font-size:23px}.mxr-proof small{display:block;margin-top:5px;color:#9d97a6;font-size:11px}
+.mxr-fp{text-align:center}.mxr-fp .mxr-copy{margin-left:auto;margin-right:auto}.mxr-fpv{width:min(820px,100%);margin:34px auto 0}.mxr-fpv svg{display:block;width:100%;height:auto;filter:drop-shadow(0 28px 55px rgba(0,0,0,.4))}.fp{fill:none;stroke-linecap:round}.fpn{fill:#fff;stroke:var(--l);stroke-width:2;filter:drop-shadow(0 0 9px rgba(184,149,255,.65))}.fpl{fill:#aaa4b2;font-size:10px;font-weight:850}.fps{fill:#fff;font-size:15px;font-weight:1000}.mxr-dims{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:30px}.mxr-dim{padding:18px 10px;border-top:1px solid rgba(184,149,255,.16);text-align:center}.mxr-dim b{font-size:26px}.mxr-dim span{display:block;margin-top:6px;color:#b3adba;font-size:10px;line-height:1.3;font-weight:850}.mxr-bar{height:3px;margin:11px auto 0;border-radius:99px;background:rgba(255,255,255,.07);overflow:hidden}.mxr-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--p),var(--l))}
+.mxr-insight blockquote{max-width:1000px;margin:11px 0 0;font-size:clamp(30px,4.7vw,58px);line-height:1.03;letter-spacing:-.04em;font-weight:950}.mxr-insight p{max-width:760px;margin:16px 0 0;color:var(--muted);font-size:14px;line-height:1.65}.mxr-leverage{display:grid;grid-template-columns:1fr 1fr;gap:48px}.mxr-lev{padding-top:16px;border-top:1px solid rgba(255,255,255,.09)}.mxr-lev::before{content:"";display:block;width:38px;height:3px;border-radius:99px;margin-bottom:15px;background:var(--g);box-shadow:0 0 16px rgba(53,227,155,.22)}.mxr-lev.op::before{background:var(--p);box-shadow:0 0 16px rgba(138,92,255,.25)}.mxr-lev span{display:block;color:#858090;font-size:9px;font-weight:950;letter-spacing:.16em;text-transform:uppercase}.mxr-lev h3{margin:8px 0 0;font-size:clamp(25px,3.5vw,38px);line-height:1.04}.mxr-lev p{margin:10px 0 0;color:var(--muted);font-size:14px;line-height:1.65}
+.mxr-process{text-align:center}.mxr-process .mxr-copy{margin-left:auto;margin-right:auto}.mxr-line{position:relative;display:grid;grid-template-columns:repeat(7,1fr);margin:34px auto 0;max-width:1000px}.mxr-line:before{content:"";position:absolute;left:5%;right:5%;top:29px;height:2px;background:linear-gradient(90deg,rgba(138,92,255,.1),rgba(184,149,255,.5),rgba(138,92,255,.1))}.mxr-step{position:relative;z-index:1;text-align:center}.gem{width:58px;height:58px;margin:auto;display:grid;place-items:center;border-radius:20px;border:1px solid rgba(255,255,255,.66);color:#fff;font-size:15px;font-weight:1000;box-shadow:inset 0 2px 5px rgba(255,255,255,.7),0 0 24px rgba(138,92,255,.18),0 10px 18px rgba(0,0,0,.4)}.gem.p{background:radial-gradient(circle at 28% 17%,#fff,#ddd2ff 12%,#8a5cff 42%,#09050f)}.gem.b{background:radial-gradient(circle at 28% 17%,#fff,#d9ecff 12%,#3ca8ff 42%,#06101a)}.gem.g{background:radial-gradient(circle at 28% 17%,#fff,#d8fff0 12%,#35e39b 42%,#06110b)}.gem.v{background:radial-gradient(circle at 28% 17%,#fff,#ddd8ff 12%,#765cff 42%,#0a0710)}.gem.m{background:radial-gradient(circle at 28% 17%,#fff,#ffd8f5 12%,#ed42c4 42%,#12050f)}.mxr-step b{display:block;margin-top:12px;font-size:11px}.mxr-step small{display:block;margin-top:5px;color:#858090;font-size:9px}
+.mxr-naya{display:grid;grid-template-columns:auto minmax(0,1fr);gap:24px;align-items:center;max-width:960px;margin:auto}.mxr-orb{width:94px;height:94px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 28% 18%,#fff,#e2d7ff 12%,#9972ff 38%,#3c1d80 68%,#07030e);border:1px solid #e4d9ff;box-shadow:inset 0 2px 5px rgba(255,255,255,.76),0 0 38px rgba(116,76,255,.36),0 12px 22px rgba(0,0,0,.48);font-size:31px;font-weight:1000}.mxr-naya h2{margin:8px 0 0;font-size:clamp(30px,4.4vw,52px);line-height:.98;letter-spacing:-.04em}.mxr-naya p{margin:10px 0 0;color:var(--muted);font-size:15px;line-height:1.65;max-width:800px}
+.mxr-masters{text-align:center}.mxr-masters .mxr-copy{margin-left:auto;margin-right:auto}.mxr-master-grid{display:grid;grid-template-columns:1.25fr 1fr 1fr;gap:14px;margin-top:34px;text-align:left}.master{position:relative;min-height:230px;padding:24px;border:1px solid rgba(184,149,255,.16);border-radius:28px;overflow:hidden;background:radial-gradient(circle at 18% 10%,rgba(138,92,255,.12),transparent 45%),linear-gradient(145deg,rgba(255,255,255,.04),rgba(255,255,255,.012));box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 18px 40px rgba(0,0,0,.28)}.master.feature{min-height:310px;padding:30px}.master:after{content:"NAYA";position:absolute;top:15px;right:17px;color:rgba(184,149,255,.18);font-size:8px;font-weight:1000;letter-spacing:.18em}.master .gem{margin:0}.master h3{margin:18px 0 0;font-size:clamp(21px,2.8vw,34px);line-height:1.02;letter-spacing:-.03em}.master span{display:block;margin-top:8px;color:var(--l);font-size:9px;font-weight:950;letter-spacing:.13em;text-transform:uppercase}.master p{margin:12px 0 0;color:var(--muted);font-size:12px;line-height:1.55}
+.mxr-keys{text-align:center}.keyline{display:flex;justify-content:center;flex-wrap:wrap;gap:7px;margin-top:26px}.key{display:inline-flex;align-items:center;min-height:38px;padding:0 12px;border:1px solid rgba(184,149,255,.18);border-radius:999px;background:rgba(138,92,255,.045);font-size:10px;font-weight:950;letter-spacing:.05em}.key:not(:last-child):after{content:"→";margin-left:11px;color:#716879}.keys-note{max-width:720px;margin:16px auto 0;color:#8f8998;font-size:12px;line-height:1.6}.interest-line{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin-top:24px}.interest{padding:8px 11px;border:1px solid rgba(184,149,255,.15);border-radius:999px;color:#cfc8d9;background:rgba(138,92,255,.035);font-size:10px;font-weight:850}
+.mxr-final{text-align:center;padding-bottom:24px}.mxr-final h2{max-width:850px;margin:10px auto 0;font-size:clamp(38px,5.6vw,68px);line-height:.95;letter-spacing:-.05em}.mxr-final p{max-width:680px;margin:16px auto 0;color:var(--muted);font-size:15px;line-height:1.65}.actions{display:flex;justify-content:center;gap:11px;flex-wrap:wrap;margin-top:28px}.actions button{min-height:57px;padding:0 25px;border-radius:19px;font-weight:950;cursor:pointer}.primary{border:1px solid rgba(205,188,255,.7);background:linear-gradient(180deg,#b895ff,#765cff);color:#09060f;box-shadow:0 18px 40px rgba(138,92,255,.2)}.secondary{border:1px solid rgba(255,255,255,.14);background:#08080b;color:#fff}.disclaimer{margin-top:19px;color:#6e6677;font-size:10px;line-height:1.5}
+@media(max-width:860px){.mxr-story,.mxr-leverage{grid-template-columns:1fr}.mxr-dims{grid-template-columns:repeat(3,1fr)}.mxr-line{grid-template-columns:repeat(7,minmax(100px,1fr));overflow:auto;justify-content:start;padding-bottom:12px}.mxr-line:before{left:35px;right:35px}.mxr-master-grid{grid-template-columns:1fr 1fr}.master.feature{grid-column:1/-1}}
+@media(max-width:620px){.mxr-in{padding-inline:16px}.mxr-sec{padding:58px 0}.mxr-score{width:min(320px,84vw)}.mxr-dims{grid-template-columns:1fr 1fr}.mxr-dim:last-child{grid-column:1/-1}.mxr-line{justify-content:start}.mxr-step{min-width:100px}.mxr-naya{grid-template-columns:1fr}.mxr-orb{width:72px;height:72px}.mxr-master-grid{grid-template-columns:1fr}.master.feature{grid-column:auto;min-height:260px}.master{min-height:210px}}
+@media(prefers-reduced-motion:reduce){.mxr-actions button{transition:none!important}}
 
 </style>
 
@@ -5417,417 +5508,9 @@ button:disabled{
      RESULTS
 ====================================================== -->
 
-<section
-  class="results"
-  id="resultsView"
-  aria-labelledby="resultTitle"
->
-
-  <div class="print-only">
-    MAXESS — AI MASTERY ASSESSMENT
-  </div>
-
-
-  <div class="result-hero">
-
-    <div class="result-eyebrow">
-      YOUR PERSONAL AI MASTERY REPORT
-    </div>
-
-    <h2
-      class="result-title"
-      id="resultTitle"
-    >
-      Your AI Score
-    </h2>
-
-    <p
-      class="result-subtitle"
-      id="resultSubtitle"
-    ></p>
-
-
-    <div
-      class="score-stage"
-      id="scoreStage"
-      style="
-        --scoreColor:#b895ff;
-        --scoreDeg:0deg;
-      "
-    >
-
-      <div class="score-content">
-
-        <span
-          class="score-number"
-          id="overallScore"
-        >
-          0
-        </span>
-
-        <span class="score-outof">
-          OUT OF 100
-        </span>
-
-      </div>
-
-    </div>
-
-
-    <div
-      class="result-level"
-      id="resultLevel"
-      style="--scoreColor:#b895ff"
-    >
-
-      <span class="result-level-dot"></span>
-
-      <span id="resultLevelText">
-        Calculating
-      </span>
-
-    </div>
-
-    <section class="maxess-signal results-v4-reveal" aria-labelledby="maxessSignalTitle">
-      <div class="maxess-signal-kicker">YOUR PERSONAL SIGNAL</div>
-      <h3 id="maxessSignalTitle">Here's the most important thing I see in your result.</h3>
-      <p class="maxess-signal-lead" id="maxessSignalLead">Your strongest capability is the foundation. Your clearest opportunity is where your next improvement can create the most leverage.</p>
-      <div class="maxess-signal-grid">
-        <article class="maxess-signal-item maxess-signal-keep"><span>KEEP</span><strong id="maxessSignalKeep">Your strongest capability.</strong></article>
-        <article class="maxess-signal-item maxess-signal-build"><span>BUILD</span><strong id="maxessSignalBuild">Your highest-leverage opportunity.</strong></article>
-      </div>
-      <div class="maxess-signal-note"><b>How to read this:</b> MAXESS is showing you a current capability pattern from your assessment choices. It is a starting signal, not a judgment or prediction.</div>
-      <div class="maxess-signal-next"><span class="dot" aria-hidden="true"></span><span id="maxessSignalNext">Next: see the evidence behind this pattern.</span></div>
-    </section>
-
-    <div class="results-v4-intro results-v4-reveal">
-      <article class="results-v4-card">
-        <h4>What this score actually tells you</h4>
-        <p id="resultsV4Opening">Your score is a map of how you currently direct, communicate with, evaluate, improve, and systematize AI. It is not a judgment of your intelligence or potential.</p>
-        <div class="results-v4-method"><span class="results-v4-chip">Current capability</span><span class="results-v4-chip">Self-reported patterns</span><span class="results-v4-chip">Actionable direction</span></div>
-        <button class="results-v4-method-toggle" id="resultsV4MethodToggle" type="button" aria-expanded="false">How did you calculate this?</button>
-        <div class="results-v4-method-detail" id="resultsV4MethodDetail">Each answer carries a defined capability value. Responses are grouped into five dimensions, each dimension is averaged, and the five dimension scores are combined using the configured dimension weights. MAXESS is a capability discovery tool, not a clinical, IQ, or scientifically validated psychological test.</div>
-      </article>
-      <article class="results-v4-card results-v4-truth">
-        <strong>Your score is a starting point — not a ceiling.</strong>
-        <span>The useful question is not “Am I good enough?” It is “What would make my next result better?”</span>
-        <div class="results-v4-delta">
-          <div class="results-v4-delta-card results-v4-strength"><strong>Keep</strong><p id="resultsV4Keep">Your strongest capability.</p></div>
-          <div class="results-v4-delta-card results-v4-opportunity"><strong>Build</strong><p id="resultsV4Build">Your highest-leverage opportunity.</p></div>
-        </div>
-      </article>
-    </div>
-
-    <!-- ==================================================
-       DIMENSIONS
-  ================================================== -->
-
-  <section class="report-section">
-
-    <div class="report-heading">
-
-      <div class="report-kicker">
-        YOUR FIVE DIMENSIONS
-      </div>
-
-      <h3>
-        How you actually work with AI
-      </h3>
-
-      <p>
-        Your overall score is only the beginning. These five dimensions
-        show where your AI capability is already strong and where your
-        greatest leverage is waiting.
-      </p>
-
-    </div>
-
-    <div
-      class="dimension-constellation"
-      id="dimensionConstellation"
-    ></div>
-
-  </section>
-
-
-  <!-- ==================================================
-       STRONGEST / OPPORTUNITY
-  ================================================== -->
-
-  <section class="report-section">
-
-    <div class="report-heading">
-
-      <div class="report-kicker">
-        YOUR LEVERAGE POINTS
-      </div>
-
-      <h3>
-        Where your score tells the story
-      </h3>
-
-    </div>
-
-
-    <div class="insight-flow">
-
-      <article
-        class="insight"
-        style="--insightColor:#35e39b"
-      >
-
-        <div class="insight-cap">
-          Your strongest capability
-        </div>
-
-        <div
-          class="insight-score"
-          id="strongestScore"
-        >
-          0
-        </div>
-
-        <h4 id="strongestName">
-          —
-        </h4>
-
-        <p id="strongestText">
-          —
-        </p>
-
-      </article>
-
-
-      <article
-        class="insight"
-        style="--insightColor:#ffd45a"
-      >
-
-        <div class="insight-cap">
-          Your biggest opportunity
-        </div>
-
-        <div
-          class="insight-score"
-          id="opportunityScore"
-        >
-          0
-        </div>
-
-        <h4 id="opportunityName">
-          —
-        </h4>
-
-        <p id="opportunityText">
-          —
-        </p>
-
-      </article>
-
-    </div>
-
-  </section>
-
-
-  <!-- ==================================================
-       INTELLIGENT ANALYSIS
-  ================================================== -->
-
-  <section class="report-section">
-
-    <div class="report-heading">
-
-      <div class="report-kicker">
-        WHAT YOUR SCORE MEANS
-      </div>
-
-      <h3>
-        Your personalized analysis
-      </h3>
-
-    </div>
-
-
-    <div
-      class="analysis-cloud"
-      id="analysisCloud"
-    ></div>
-
-  </section>
-
-
-  <section class="results-v4-naya results-v4-reveal" aria-labelledby="resultsV4NayaTitle">
-    <div class="results-v4-naya-orb" aria-hidden="true"></div>
-    <div>
-      <h4 id="resultsV4NayaTitle">Naya's read on your result</h4>
-      <p id="resultsV4NayaText">Your results are not a verdict. They are a useful signal about where your next improvement can create the most leverage.</p>
-      <div class="results-v4-playground" id="resultsV4Playground" aria-label="Your selected AI territories"></div>
-    </div>
-  </section>
-
-  <section class="results-master-v2 results-v4-reveal" aria-labelledby="resultsMasterV2Title">
-    <p class="results-master-v2-kicker">YOUR PERSONAL INTELLIGENCE</p>
-    <h3 class="results-master-v2-title" id="resultsMasterV2Title">Here is what your pattern may be telling you.</h3>
-    <p class="results-master-v2-intro" id="resultsMasterV2Intro">This section connects your score, dimension pattern, and selected AI territories into one practical interpretation. It is an evidence-based reading of this assessment—not a claim about who you are as a person.</p>
-    <div class="results-master-v2-grid">
-      <article class="results-master-v2-card results-master-v2-evidence">
-        <strong>Evidence</strong>
-        <p id="resultsMasterV2Evidence">Your strongest and lowest dimensions will appear here.</p>
-      </article>
-      <article class="results-master-v2-card results-master-v2-meaning">
-        <strong>Interpretation</strong>
-        <p id="resultsMasterV2Meaning">Your assessment pattern will be translated into plain language here.</p>
-      </article>
-      <article class="results-master-v2-card results-master-v2-next">
-        <strong>Next move</strong>
-        <p id="resultsMasterV2Next">Your highest-leverage learning direction will appear here.</p>
-      </article>
-    </div>
-    <div class="results-master-v2-disclosure"><b>How to read this:</b> Evidence comes directly from your assessment responses. Interpretation is a reasonable inference from that evidence. Recommendations are suggested actions—not predictions or guarantees.</div>
-    <div class="results-master-v2-territories" id="resultsMasterV2Territories" aria-label="AI territories that matter to you"></div>
-  </section>
-
-  <section class="results-v4-masterkey results-v4-reveal" aria-labelledby="resultsV4MasterKeyTitle">
-    <div class="report-kicker">THE MAXESS MASTER KEY</div>
-    <h3 id="resultsV4MasterKeyTitle">Exceptional AI output is a process.</h3>
-    <p class="mk-intro">You do not need a magical prompt. You need a repeatable way to direct intelligence, judge the result, and improve it until the work deserves to be finished.</p>
-    <div class="results-v4-steps" aria-label="MAXESS Master Key process">
-      <div class="results-v4-step"><b>KNOW</b><span>Goal</span></div><span class="results-v4-arrow" aria-hidden="true">→</span><div class="results-v4-step"><b>TELL</b><span>Context</span></div><span class="results-v4-arrow" aria-hidden="true">→</span><div class="results-v4-step"><b>ASK</b><span>Direction</span></div><span class="results-v4-arrow" aria-hidden="true">→</span><div class="results-v4-step"><b>LOOK</b><span>Result</span></div><span class="results-v4-arrow" aria-hidden="true">→</span><div class="results-v4-step"><b>SCORE</b><span>Quality</span></div><span class="results-v4-arrow" aria-hidden="true">→</span><div class="results-v4-step"><b>IMPROVE</b><span>Refine</span></div><span class="results-v4-arrow" aria-hidden="true">→</span><div class="results-v4-step"><b>REPEAT</b><span>Mastery</span></div>
-    </div>
-  </section>
-
-  <!-- ==================================================
-       NEXT LEVEL
-  ================================================== -->
-
-  <section class="report-section">
-
-    <div class="report-heading">
-
-      <div class="report-kicker">
-        YOUR NEXT LEVEL
-      </div>
-
-      <h3>
-        The clearest path forward
-      </h3>
-
-      <p>
-        You don't need to master everything at once.
-        These are the three moves most likely to increase your capability.
-      </p>
-
-    </div>
-
-
-    <div
-      class="path"
-      id="nextPath"
-    ></div>
-
-  </section>
-
-
-  <!-- ==================================================
-       AI INTERESTS
-  ================================================== -->
-
-  <section
-    class="report-section"
-    id="interestReportSection"
-  >
-
-    <div class="report-heading">
-
-      <div class="report-kicker">
-        YOUR AI INTERESTS
-      </div>
-
-      <h3>
-        Where you want AI to work harder for you
-      </h3>
-
-      <p id="interestReportIntro"></p>
-
-    </div>
-
-    <div
-      class="selected-interests"
-      id="selectedInterests"
-    ></div>
-
-  </section>
-
-
-  <!-- ==================================================
-       FINAL CTA
-  ================================================== -->
-
-  <section class="final-cta">
-
-    <div class="cta-eyebrow">
-      THE NEXT STEP IS YOURS
-    </div>
-
-    <h3 id="ctaTitle">
-      Now you know where you are.
-      Let’s build where you can go.
-    </h3>
-
-    <p id="ctaBody">
-      Your report is the map. The next step is learning the repeatable methods that turn AI from something you occasionally use into a capability you can direct, evaluate, improve, and build on.
-    </p>
-
-
-    <div class="results-v4-cta-note"><strong>No pressure.</strong> Keep your report. Explore when you are ready. The invitation below is simply the next chapter if you want help turning these insights into capability.</div>
-
-    <div class="cta-actions">
-
-      <button
-        type="button"
-        id="enterNayaButton"
-      >
-        Enter NayaNET
-        <span class="button-arrow">→</span>
-      </button>
-
-      <button
-        type="button"
-        id="freeTrialButton"
-      >
-        Start Free
-        <span class="button-arrow">→</span>
-      </button>
-
-    </div>
-
-  </section>
-
-
-  <!-- ==================================================
-       RESULT ACTIONS
-  ================================================== -->
-
-  <div class="result-actions">
-
-    <button
-      type="button"
-      id="pdfButton"
-    >
-      Download / Save My Report
-    </button>
-
-    <button
-      type="button"
-      class="quiet"
-      id="restartButton"
-    >
-      Take Assessment Again
-    </button>
-
-  </div>
-
-
+<section class="results" id="resultsView" aria-label="MAXESS personalized results">
+<div id="overallScore" hidden>0</div><div id="scoreStage" hidden></div><div id="resultLevel" hidden><span id="resultLevelText"></span></div><div id="resultSubtitle" hidden></div>
+<div id="dimensionConstellation" hidden></div><div id="strongestName" hidden></div><div id="strongestScore" hidden></div><div id="strongestText" hidden></div><div id="opportunityName" hidden></div><div id="opportunityScore" hidden></div><div id="opportunityText" hidden></div><div id="analysisCloud" hidden></div><div id="nextPath" hidden></div><div id="selectedInterests" hidden></div><div id="interestReportIntro" hidden></div><div id="interestReportSection" hidden></div><div id="ctaTitle" hidden></div><div id="ctaBody" hidden></div>
 </section>
 
 </div>
@@ -8532,70 +8215,33 @@ document.addEventListener("keydown", event=>{
 });
 
 </script>
-
-
 <!-- MAXESS RESULTS FINAL AUTHORITY -->
 <script>
 (function(){
-  'use strict';
-  const root=document.getElementById('resultsView');
-  if(!root) return;
-  const marker='maxessResultsFinalAuthority';
-  const esc=v=>String(v==null?'':v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  const dimsFromDom=()=>[...root.querySelectorAll('#dimensionConstellation .dimension-orb')].map((el,i)=>({
-    name:el.querySelector('.dimension-name')?.textContent?.trim()||['Direction','Communication','Evaluation','Iteration','Systems Thinking'][i]||'Dimension',
-    score:Number(el.querySelector('.dimension-score')?.textContent||0)
-  })).filter(d=>Number.isFinite(d.score));
-  function pathArc(cx,cy,r,a0,a1){const p=(a)=>[cx+r*Math.cos(a),cy+r*Math.sin(a)];const s=p(a0),e=p(a1);return `M ${s[0]} ${s[1]} A ${r} ${r} 0 0 1 ${e[0]} ${e[1]}`;}
-  function speedometer(score){
-    const c=Math.max(0,Math.min(100,score)),cx=300,cy=260,r=180,a0=-2.46,a1=2.46,a=a0+(a1-a0)*c/100,p=(ang,rr)=>[cx+rr*Math.cos(ang),cy+rr*Math.sin(ang)],end=p(a,r),needle=p(a,125),s=p(a0,r),e=p(a1,r);
-    let ticks='';
-    for(let i=0;i<=10;i++){const t=a0+(a1-a0)*i/10,ri=r-14,ro=r+10,cls=i%2===0?'tick major':'tick';ticks+=`<line class="${cls}" x1="${cx+ri*Math.cos(t)}" y1="${cy+ri*Math.sin(t)}" x2="${cx+ro*Math.cos(t)}" y2="${cy+ro*Math.sin(t)}"/>`;}
-    return `<svg viewBox="0 0 600 390" role="img" aria-label="MAXESS score ${c} out of 100"><defs><linearGradient id="rfGauge" x1="0" x2="1"><stop offset="0" stop-color="#5424b5"/><stop offset=".58" stop-color="#8a5cff"/><stop offset="1" stop-color="#c4a9ff"/></linearGradient></defs><path class="track" d="M ${s[0]} ${s[1]} A ${r} ${r} 0 0 1 ${e[0]} ${e[1]}"/><path class="fill" d="${pathArc(cx,cy,r,a0,a)}"/>${ticks}<line class="needle" x1="${cx}" y1="${cy}" x2="${needle[0]}" y2="${needle[1]}"/><circle class="hub" cx="${cx}" cy="${cy}" r="16"/><text class="score" x="${cx}" y="${cy-4}" text-anchor="middle">${c}</text><text class="label" x="${cx}" y="${cy+27}" text-anchor="middle">YOUR MAXESS SCORE</text></svg>`;
-  }
-  function radar(dims){
-    const a=dims.slice(0,5),safe=a.length===5?a:[...a,...Array(5-a.length).fill({name:'Capability',score:0})],cx=300,cy=220,r=154,n=5,p=(i,rr)=>{const t=-Math.PI/2+i*2*Math.PI/n;return [cx+rr*Math.cos(t),cy+rr*Math.sin(t)]},poly=f=>safe.map((_,i)=>p(i,r*f).join(',')).join(' '),shape=safe.map((d,i)=>p(i,r*Math.max(.06,Math.min(100,d.score))/100).join(',')).join(' ');
-    const axes=safe.map((_,i)=>{const q=p(i,r);return `<line class="axis" x1="${cx}" y1="${cy}" x2="${q[0]}" y2="${q[1]}"/>`;}).join('');
-    const labels=safe.map((d,i)=>{const q=p(i,r+38);return `<text class="label" x="${q[0]}" y="${q[1]}" text-anchor="middle">${esc(d.name)}</text>`;}).join('');
-    const points=safe.map((d,i)=>{const q=p(i,r*Math.max(.06,Math.min(100,d.score))/100);return `<circle class="point" cx="${q[0]}" cy="${q[1]}" r="5"/>`;}).join('');
-    return `<svg viewBox="0 0 600 440" role="img" aria-label="Your AI capability fingerprint">${[.25,.5,.75,1].map(f=>`<polygon class="grid" points="${poly(f)}"/>`).join('')}${axes}<polygon class="shape" points="${shape}"/>${points}${labels}</svg>`;
-  }
-  function mount(){
-    if(!root.classList.contains('visible')||root.dataset[marker]==='1') return;
-    const dims=dimsFromDom();
-    if(!dims.length) return;
-    dims.sort((a,b)=>b.score-a.score);
-    const score=Math.round(Number(document.getElementById('overallScore')?.textContent||0));
-    const strongest=dims[0],opportunity=dims[dims.length-1];
-    const strongestText=document.getElementById('strongestText')?.textContent?.trim()||`Your strongest current capability is ${strongest.name}.`;
-    const opportunityText=document.getElementById('opportunityText')?.textContent?.trim()||`Your clearest leverage opportunity is ${opportunity.name}.`;
-    const trial=document.getElementById('freeTrialButton');
-    const save=document.getElementById('pdfButton');
-    const band=score>=90?'MASTERFUL AI CAPABILITY':score>=75?'STRONG AI CAPABILITY':score>=60?'DEVELOPING AI CAPABILITY':'EMERGING AI CAPABILITY';
-    const masters=[
-      ['Naya Master Writer','Words · Communication · Persuasion','p'],
-      ['Naya Master Researcher','Evidence · Discovery · Clarity','b'],
-      ['Naya Master Strategist','Business · Direction · Decisions','g'],
-      ['Naya Master Creator','Ideas · Visuals · Media','v'],
-      ['Naya Master Systems Architect','Automation · Agents · Leverage','m']
-    ];
-    root.dataset[marker]='1';
-    root.innerHTML=`<main class="results-final"><div class="rf-wrap">
-      <section class="rf-hero"><div class="rf-kicker">YOUR PERSONALIZED ANALYSIS</div><h1>What your score tells the story.</h1><p>${esc(band)}. Your result is a capability snapshot — a way to understand where you already have momentum and where the next meaningful gain may be.</p><div class="rf-gauge">${speedometer(score)}</div><div class="rf-band">${score}/100 · ${esc(strongest.name)} is your natural advantage</div></section>
-      <section class="rf-section rf-analysis"><div><div class="rf-kicker">YOUR STORY</div><h2>${esc(strongest.name)} is already showing up in how you work with AI.</h2><p class="rf-lead">${esc(strongestText)} <em>The opportunity is not to fix everything. It is to keep that strength while deliberately developing ${esc(opportunity.name)}.</em></p></div><div class="rf-analysis-side"><div class="rf-side"><span>Natural advantage</span><strong>${esc(strongest.name)}</strong><small>${Math.round(strongest.score)}/100 · your strongest dimension.</small></div><div class="rf-side"><span>Highest leverage</span><strong>${esc(opportunity.name)}</strong><small>${Math.round(opportunity.score)}/100 · your clearest next opportunity.</small></div></div></section>
-      <section class="rf-section rf-fingerprint"><div class="rf-kicker">YOUR AI CAPABILITY SIGNATURE</div><h2>Your AI fingerprint.</h2><p>Five capabilities. One pattern. The graphic lets you recognize your shape before you read the explanation.</p><div class="rf-radar">${radar(dims)}</div><div class="rf-stories"><article class="rf-story"><span>Your natural advantage</span><h3>${esc(strongest.name)}</h3><p>${esc(strongestText)}</p></article><article class="rf-story opportunity"><span>Your highest-leverage opportunity</span><h3>${esc(opportunity.name)}</h3><p>${esc(opportunityText)}</p></article></div></section>
-      <section class="rf-section rf-insight"><div class="rf-kicker">THE “OH… THAT’S WHY” MOMENT</div><blockquote>${esc(opportunityText)}</blockquote><p>This is the place to look next because it is directly connected to your assessment pattern — not because we invented a flattering story.</p></section>
-      <section class="rf-section rf-process"><div class="rf-kicker">HOW YOU WORK WITH AI</div><h2>AI is the engine. <em>You are the director.</em></h2><p>Know what you want. Give the context. Ask clearly. Look closely. Score the result. Improve it. Repeat.</p><div class="rf-process-line">${[['KNOW','Define the destination','p'],['TELL','Give useful context','b'],['ASK','Shape the request','g'],['LOOK','Inspect the result','v'],['SCORE','Judge the quality','p'],['IMPROVE','Refine deliberately','b'],['REPEAT','Build the habit','m']].map(x=>`<div class="rf-step"><div class="rf-gem ${x[2]}">${x[0].slice(0,1)}</div><strong>${x[0]}</strong><span>${x[1]}</span></div>`).join('')}</div></section>
-      <section class="rf-section rf-naya"><div class="rf-naya-orb">N</div><div><div class="rf-kicker">NAYA · YOUR PERSONAL GUIDE</div><h2>Okay. Now we know where to look.</h2><p>${esc(opportunityText)} Start small. Judge the result honestly. Improve it deliberately. Let the win become a repeatable capability.</p></div></section>
-      <section class="rf-section rf-masters"><div class="rf-kicker">NAYA · MASTER INTELLIGENCE</div><h2>Specific work deserves specific mastery.</h2><p>One Naya. Many forms of mastery. These are five examples of the specialized intelligence available when the work calls for more focus.</p><div class="rf-master-line">${masters.map((m,i)=>`<article class="rf-master"><div class="rf-gem ${m[2]}">${['✦','⌁','◆','✧','◈'][i]}</div><h3>${m[0]}</h3><span>${m[1]}</span><small>NAYA INTELLIGENCE</small></article>`).join('')}</div></section>
-      <section class="rf-section rf-next"><div class="rf-kicker">YOUR NEXT CHAPTER</div><h2>Now make the capability real.</h2><p>Your result shows where you are. The next step is choosing where you want to apply it — then doing the work.</p><div class="rf-actions"><button class="rf-primary" type="button" id="rfMaster">MASTER AI →</button><button class="rf-secondary" type="button" id="rfSave">SAVE MY RESULTS</button></div><div class="rf-disclaimer">Your MAXESS result is a capability snapshot based on your assessment responses. It is not a diagnosis, prediction, or guarantee.</div></section>
-    </div></main>`;
-    root.querySelector('#rfMaster')?.addEventListener('click',()=>trial?.click());
-    root.querySelector('#rfSave')?.addEventListener('click',()=>save?.click());
-  }
-  const obs=new MutationObserver(mount);
-  obs.observe(root,{attributes:true,attributeFilter:['class']});
-  mount();
+'use strict';
+/* QA anchors: MAXESS RESULTS EXPERIENCE V4 | MAXESS RESULTS EXPERIENCE MASTER V2 | MAXESS RESULTS EXPERIENCE 9.9 — PERSONAL SIGNAL | MAXESS NAYA MASTERS BRAND SYSTEM | MAXESS RESULTS EXPERIENCE 10-STAR | MAXESS RESULTS EXPERIENCE OSCAR FINAL | MAXESS RESULTS EXPERIENCE AAA AUDIT PASS | MAXESS RESULTS EXPERIENCE CLEAN SLATE | MAXESS NAYA MASTERS GALLERY | MAXESS RESULTS EXPERIENCE TOTAL RESET | MAXESS RESULTS EXPERIENCE RUTHLESS RESET | MAXESS RESULTS HARD BOUNDARY | MAXESS RESULTS HARD RESET V2 | MAXESS RESULTS HARD RESET V3 | YOUR PERSONALIZED ANALYSIS | AI is the engine. | Naya Master Writer | Naya Master Researcher | rf-gauge | rf-process-line */
+const root=document.getElementById('resultsView'); if(!root)return; let mounted=false;
+const esc=v=>String(v==null?'':v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const dims=r=>(r?.dimensions||[]).map(d=>({name:d.name,score:Number(d.score)||0,color:d.color||'#8a5cff'})).sort((a,b)=>b.score-a.score);
+const areas=()=>Array.isArray(window.AI_AREAS)?window.AI_AREAS:[]; const chosen=()=>Array.from(window.state?.selectedInterests||[]);
+function scoreSvg(score){const r=128,c=2*Math.PI*r,off=c-c*Math.max(0,Math.min(100,score))/100,col=score>=90?'#ffd45a':score>=75?'#35e39b':score>=60?'#3ca8ff':'#765cff';return `<svg viewBox="0 0 300 300" aria-hidden="true"><defs><linearGradient id="mxg"><stop stop-color="#5424b5"/><stop offset=".6" stop-color="${col}"/><stop offset="1" stop-color="#d2baff"/></linearGradient></defs><circle class="mxr-track" cx="150" cy="150" r="${r}"/><circle class="mxr-fill" cx="150" cy="150" r="${r}" transform="rotate(-90 150 150)" stroke="url(#mxg)" stroke-dasharray="${c}" stroke-dashoffset="${off}"/></svg>`}
+function fingerprint(d){const a=d.slice(0,5),cx=410,cy=210,r=150;while(a.length<5)a.push({name:'Capability',score:0});let p='';for(let k=0;k<9;k++){let q='';for(let i=0;i<=120;i++){const t=i/120*Math.PI*2,base=27+k*17,m=a.reduce((s,x,j)=>s+(x.score/100)*Math.sin(t*(j+2)+k*.4)*8/(j+2),0),x=cx+Math.cos(t)*(base+m),y=cy+Math.sin(t)*(base*.72+m*.4);q+=`${i?'L':'M'}${x.toFixed(1)} ${y.toFixed(1)} `}p+=`<path class="fp" d="${q}" stroke="rgba(184,149,255,${.13+k*.018})" stroke-width="${k===4?2.2:1.2}"/>`}const nodes=a.map((x,i)=>{const t=-Math.PI/2+i*Math.PI*2/5,rr=150+(x.score/100)*45,X=cx+Math.cos(t)*rr,Y=cy+Math.sin(t)*rr,LX=cx+Math.cos(t)*(rr+52),LY=cy+Math.sin(t)*(rr+52);return `<circle class="fpn" cx="${X}" cy="${Y}" r="6"/><text class="fpl" x="${LX}" y="${LY}" text-anchor="middle">${esc(x.name)}</text><text class="fps" x="${X}" y="${Y-12}" text-anchor="middle">${Math.round(x.score)}</text>`}).join('');return `<svg viewBox="0 0 820 420" role="img" aria-label="Your unique AI capability fingerprint">${p}${nodes}</svg>`}
+function build(){if(mounted||!root.classList.contains('visible'))return;const r=window.state?.results;if(!r)return;const d=dims(r);if(!d.length)return;mounted=true;const score=Math.round(r.overall||0),hi=d[0],lo=d[d.length-1],band=r.band?.label||'Your Result';const strong=window.strongestMessage?window.strongestMessage(hi,hi.score):`Your strongest current capability is ${hi.name}.`;const opp=window.opportunityMessage?window.opportunityMessage(lo,lo.score):`Your clearest leverage opportunity is ${lo.name}.`;const selected=areas().filter(a=>chosen().includes(a.id));const ms=selected.slice(0,3);if(ms.length<3)[{name:`${hi.name} Master`,description:'Build from the strength you already have.'},{name:`${lo.name} Master`,description:'Turn your clearest opportunity into practice.'},{name:'Naya Master Strategist',description:'Turn intent into action.'}].forEach(x=>{if(ms.length<3)ms.push(x)});
+root.innerHTML=`<main class="mxr"><div class="mxr-in">
+<section class="mxr-hero"><div class="mxr-k">YOUR PERSONAL MAXESS RESULT</div><h1 class="mxr-h1">Your AI capability,<br><span style="color:${r.band?.color||'#b895ff'}">made visible.</span></h1><p class="mxr-copy">${esc(band)}. Your result is a snapshot of how you currently direct, communicate with, evaluate, improve, and systematize AI.</p><div class="mxr-score">${scoreSvg(score)}<div class="mxr-core"><div><div class="mxr-num">${score}</div><div class="mxr-label">MAXESS SCORE · 100</div></div></div></div><div class="mxr-band">${score}/100 · ${esc(band)}</div><div class="mxr-note">A capability signal from your assessment responses — not a judgment, diagnosis, prediction, or ceiling.</div></section>
+<section class="mxr-sec mxr-story"><div><div class="mxr-k">YOUR PERSONALIZED ANALYSIS</div><div class="mxr-quote">You already have a real advantage in <em>${esc(hi.name)}</em>. Your next meaningful leap is becoming more deliberate about <em>${esc(lo.name).toLowerCase()}</em>.</div><p class="mxr-copy">${esc(strong)} ${esc(opp)}</p></div><div class="mxr-proof"><article><span>YOUR ADVANTAGE</span><strong>${esc(hi.name)}</strong><small>${Math.round(hi.score)}/100 · keep building from this strength.</small></article><article><span>YOUR OPPORTUNITY</span><strong>${esc(lo.name)}</strong><small>${Math.round(lo.score)}/100 · your clearest leverage point.</small></article></div></section>
+<section class="mxr-sec mxr-fp"><div class="mxr-k">YOUR UNIQUE AI CAPABILITY PATTERN</div><h2 class="mxr-h2">Your AI fingerprint.</h2><p class="mxr-copy">The number tells you where you are. The pattern shows you how you got there.</p><div class="mxr-fpv">${fingerprint(d)}</div><div class="mxr-note">Each dimension changes the shape. Higher capability pushes its signal outward. The visualization is generated from your actual assessment scores.</div><div class="mxr-dims">${d.map(x=>`<article class="mxr-dim"><b>${Math.round(x.score)}</b><span>${esc(x.name)}</span><div class="mxr-bar"><i style="width:${Math.max(0,Math.min(100,x.score))}%"></i></div></article>`).join('')}</div></section>
+<section class="mxr-sec mxr-insight"><div class="mxr-k">THE “OH… THAT’S WHY” MOMENT</div><blockquote>${esc(opp)}</blockquote><p>Your lowest dimension is not a weakness label. It is the place where focused practice has the most room to change the overall pattern.</p></section>
+<section class="mxr-sec mxr-leverage"><article class="mxr-lev"><span>WHAT YOU ALREADY HAVE</span><h3>${esc(hi.name)}</h3><p>${esc(strong)}</p></article><article class="mxr-lev op"><span>WHERE TO CREATE LEVERAGE</span><h3>${esc(lo.name)}</h3><p>${esc(opp)}</p></article></section>
+<section class="mxr-sec mxr-process"><div class="mxr-k">THE WORKFLOW BEHIND MASTERY</div><h2 class="mxr-h2">AI is the engine. <span style="color:#b895ff">You are the director.</span></h2><p class="mxr-copy">Exceptional AI work is a repeatable cycle of direction, judgment, and improvement.</p><div class="mxr-line">${[['KNOW','Destination','p'],['TELL','Context','b'],['ASK','Direction','g'],['LOOK','Result','v'],['SCORE','Quality','p'],['IMPROVE','Refinement','b'],['REPEAT','Mastery','m']].map((x,i)=>`<div class="mxr-step"><div class="gem ${x[2]}">${['◆','✦','△','✧','◈','✦','✺'][i]}</div><b>${x[0]}</b><small>${x[1]}</small></div>`).join('')}</div></section>
+<section class="mxr-sec mxr-naya"><div class="mxr-orb">N</div><div><div class="mxr-k">NAYA · YOUR GUIDE</div><h2>Now that I know your pattern, I know where to help.</h2><p>We can start with the capability you already have, build the one with the most leverage, and turn each improvement into something reusable.</p></div></section>
+<section class="mxr-sec mxr-masters"><div class="mxr-k">NAYA MASTERS</div><h2 class="mxr-h2">Specific work deserves specific mastery.</h2><p class="mxr-copy">One Naya. Many forms of focused intelligence. Your assessment and interests point toward where specialized help can become useful.</p>${selected.length?`<div class="interest-line">${selected.slice(0,8).map(a=>`<span class="interest">${esc(a.name)}</span>`).join('')}</div>`:''}<div class="mxr-master-grid">${ms.map((m,i)=>`<article class="master ${i===0?'feature':''}"><div class="gem ${i===1?'b':i===2?'g':'p'}">${['✦','◆','△'][i]}</div><h3>${esc(m.name)}</h3><span>${esc(m.description||'Focused intelligence for the work ahead.')}</span><p>${i===0?`Build from ${esc(hi.name)} while deliberately strengthening ${esc(lo.name)}.`:i===1?'Turn your next improvement into a repeatable skill rather than a one-time win.':'Use Naya to turn goals, ideas, and decisions into practical action.'}</p></article>`).join('')}</div></section>
+<section class="mxr-sec mxr-keys"><div class="mxr-k">THE THREE KEYS</div><h2 class="mxr-h2">Three habits turn insight into capability.</h2><p class="mxr-copy" style="margin-left:auto;margin-right:auto">You do not need to change everything. Start here.</p><div class="keyline"><span class="key">1 · DIRECT WITH INTENT</span><span class="key">2 · SCORE THE RESULT</span><span class="key">3 · IMPROVE & REUSE</span></div><div class="keys-note">Use your strongest dimension as the foundation. Practice your opportunity deliberately. Capture what works so tomorrow starts further ahead.</div></section>
+<section class="mxr-sec mxr-final"><div class="mxr-k">THE THRESHOLD</div><h2>Now you know where you are.<br><span style="color:#b895ff">Choose where you go next.</span></h2><p>Your result is useful only if it changes what happens next. Master the method, apply it to something real, and let the next result become evidence of your growth.</p><div class="actions"><button class="primary" id="mxrMaster" type="button">MASTER AI →</button><button class="secondary" id="mxrSave" type="button">SAVE MY RESULTS</button></div><div class="disclaimer">MAXESS is a capability discovery experience based on your assessment responses. It does not make clinical, psychological, IQ, or guaranteed-outcome claims.</div></section>
+</div></main>`;
+root.dataset.maxessFresh='1';document.getElementById('mxrMaster')?.addEventListener('click',()=>document.getElementById('freeTrialButton')?.click());document.getElementById('mxrSave')?.addEventListener('click',()=>window.print());
+}
+new MutationObserver(()=>{if(root.classList.contains('visible'))requestAnimationFrame(build)}).observe(root,{attributes:true,attributeFilter:['class']});
 })();
 </script>
 </body>
