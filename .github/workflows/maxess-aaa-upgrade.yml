@@ -29,7 +29,8 @@ jobs:
           assert s.count('id="resultsView"')==1
           assert s.count('questions:[')==1
           assert 'questionId' in s
-          scripts=re.findall(r'<script(?:\\s[^>]*)?>([\\s\\S]*?)</script>',s,re.I)
+          scripts=re.findall(r'<script(?:\s[^>]*)?>([\s\S]*?)</script>',s,re.I)
+          assert scripts, 'No JavaScript blocks found'
           for i,x in enumerate(scripts,1): Path(f'/tmp/maxess-{i}.js').write_text(x,encoding='utf-8')
           print('LINES',len(s.splitlines()),'BYTES',len(s),'SCRIPTS',len(scripts))
           PY
