@@ -85,6 +85,9 @@ jobs:
       - name: Enforce hard Results presentation boundary
         run: python3 tools/results_hard_boundary.py
 
+      - name: Enforce final clean-slate Results presentation
+        run: python3 tools/results_hard_reset_v2.py
+
       - name: Verify generated MAXESS source
         run: |
           python3 - <<'PY'
@@ -109,6 +112,7 @@ jobs:
           assert 'MAXESS RESULTS EXPERIENCE TOTAL RESET' in s
           assert 'MAXESS RESULTS EXPERIENCE RUTHLESS RESET' in s
           assert 'MAXESS RESULTS HARD BOUNDARY' in s
+          assert 'MAXESS RESULTS HARD RESET V2' in s
           assert 'cr-speedometer' in s
           assert 'HOW YOU WORK WITH AI' in s
           assert 'THE 7 AI PROCESSES' in s
