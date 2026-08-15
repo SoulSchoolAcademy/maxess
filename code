@@ -5885,7 +5885,7 @@ document.addEventListener("keydown", event=>{
     if(legacyCta) legacyCta.classList.add("maxess-legacy-hidden");
     if(resultsView.querySelector(".maxess-treasure")) return;
     const logo="https://i.postimg.cc/QCJTLMd8/Maximus-2.png";
-    const areas=Array.isArray(window.AI_AREAS) ? window.AI_AREAS : [];
+    const areas=typeof AI_AREAS !== "undefined" && Array.isArray(AI_AREAS) ? AI_AREAS : [];
     const specialized=areas.slice(0,18).map((area,i)=>({name:area&&area.name?area.name:`AI Expert ${i+1}`,type:"Specialized Naya"}));
     const core=[{name:"Naya Prime",type:"Master intelligence"},{name:"Naya Orchestrator",type:"Coordinates the experts"},{name:"Naya Oscar",type:"Elite quality judge"}];
     const experts=[...specialized,...core].slice(0,21);
