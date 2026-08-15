@@ -1,0 +1,32 @@
+name: Publish MAXESS Results Now
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build and publish
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          src=Path('MAXESS-RESULTS-9-5-GROOVE.html').read_text(encoding='utf-8')
+          wf=Path('.github/workflows/build-maxess-results.yml').read_text(encoding='utf-8')
+          m=re.search(r"polish = r'''(.*?)'''",wf,re.S)
+          final=src.replace('</body>',m.group(1)+'\\n</body>',1)
+          Path('MAXESS-RESULTS-10-GROOVE.html').write_text(final,encoding='utf-8')
+          lines=final.count('\\n')+1
+          size=len(final.encode())
+          assert lines>=2000 and size>=150000
+          assert all(x in final for x in ['m10-hero','m10-fingerprint','m10-gauge-card','m10-insight','m10-path','m10-method','m10-naya','nayanet.xyz','KNOW','TELL','ASK','CREATE','SCORE','IMPROVE','REPEAT'])
+          print('RELEASE PASS',lines,size)
+          PY
+          git config user.name 'MAXESS Release System'
+          git config user.email 'actions@github.com'
+          git add MAXESS-RESULTS-10-GROOVE.html
+          git commit -m 'Publish final MAXESS Results Groove source'
+          git push --force-with-lease
