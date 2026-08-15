@@ -1,0 +1,23 @@
+name: Prime Naya Results PR QA
+
+on:
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "MAXESS-RESULTS-PRIME-NAYA-10.html"
+      - "qa/prime-results-smoke.mjs"
+      - ".github/workflows/prime-results-pr-qa.yml"
+  workflow_dispatch:
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install Chromium
+        run: npx --yes playwright@1.55.0 install --with-deps chromium
+      - name: Browser smoke test
+        run: node qa/prime-results-smoke.mjs
