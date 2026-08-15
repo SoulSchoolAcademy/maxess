@@ -82,6 +82,9 @@ jobs:
       - name: Enforce ruthless Results presentation reset
         run: python3 tools/results_experience_ruthless_reset.py
 
+      - name: Enforce hard Results presentation boundary
+        run: python3 tools/results_hard_boundary.py
+
       - name: Verify generated MAXESS source
         run: |
           python3 - <<'PY'
@@ -102,11 +105,10 @@ jobs:
           assert 'MAXESS RESULTS EXPERIENCE OSCAR FINAL' in s
           assert 'MAXESS RESULTS EXPERIENCE AAA AUDIT PASS' in s
           assert 'MAXESS RESULTS EXPERIENCE CLEAN SLATE' in s
-          assert 'MAXESS RESULTS EXPERIENCE OPENING REFINEMENT' in s
-          assert 'MAXESS RESULTS EXPERIENCE CINEMATIC POLISH' in s
           assert 'MAXESS NAYA MASTERS GALLERY' in s
           assert 'MAXESS RESULTS EXPERIENCE TOTAL RESET' in s
           assert 'MAXESS RESULTS EXPERIENCE RUTHLESS RESET' in s
+          assert 'MAXESS RESULTS HARD BOUNDARY' in s
           assert 'cr-speedometer' in s
           assert 'HOW YOU WORK WITH AI' in s
           assert 'THE 7 AI PROCESSES' in s
