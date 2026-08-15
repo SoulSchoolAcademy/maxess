@@ -49,6 +49,9 @@ jobs:
       - name: Apply visual system and Naya expert refinement
         run: python3 tools/results_experience_visual_refinement.py
 
+      - name: Apply Naya Masters brand presentation
+        run: python3 tools/results_naya_masters_brand.py
+
       - name: Verify generated MAXESS source
         run: |
           python3 - <<'PY'
@@ -64,7 +67,7 @@ jobs:
           assert 'MAXESS RESULTS EXPERIENCE V4' in s
           assert 'MAXESS RESULTS EXPERIENCE MASTER V2' in s
           assert 'MAXESS RESULTS EXPERIENCE 9.9 — PERSONAL SIGNAL' in s
-          assert 'MAXESS RESULTS EXPERIENCE VISUAL REFINEMENT' in s
+          assert 'MAXESS NAYA MASTERS BRAND SYSTEM' in s
           assert 'maxessSignalTitle' in s
           assert 'resultsV4Opening' in s
           assert 'resultsV4MasterKeyTitle' in s
