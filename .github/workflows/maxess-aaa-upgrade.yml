@@ -91,6 +91,9 @@ jobs:
       - name: Replace entire Results DOM with clean-slate V3
         run: python3 tools/results_hard_reset_v3.py
 
+      - name: Repair final authority transformer
+        run: python3 tools/results_final_authority_fix.py
+
       - name: Make clean Results renderer the final presentation authority
         run: python3 tools/results_final_authority.py
 
@@ -127,7 +130,6 @@ jobs:
           assert 'Naya Master Researcher' in s
           assert 'rf-gauge' in s
           assert 'rf-process-line' in s
-          # The final authority intentionally removes the entire post-core legacy Results script tail.
           first_script_end = s.find('</script>')
           body_idx = s.rfind('</body>')
           assert first_script_end > 0 and body_idx > first_script_end
