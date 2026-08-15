@@ -98,7 +98,7 @@ jobs:
         run: python3 tools/results_final_authority.py
 
       - name: Apply logical Results hierarchy and truthful gauge
-        run: python3 tools/results_logic_refinement.py
+        run: python3 tools/results_logic_refinement_v2.py
 
       - name: Verify generated MAXESS source
         run: |
@@ -127,7 +127,7 @@ jobs:
           assert 'MAXESS RESULTS HARD RESET V2' in s
           assert 'MAXESS RESULTS HARD RESET V3' in s
           assert 'MAXESS RESULTS FINAL AUTHORITY' in s
-          assert 'MAXESS RESULTS LOGIC REFINEMENT' in s
+          assert 'MAXESS RESULTS LOGIC REFINEMENT V2' in s
           assert 'YOUR PERSONALIZED ANALYSIS' in s
           assert 'AI is the engine.' in s
           assert 'Naya Master Writer' in s
