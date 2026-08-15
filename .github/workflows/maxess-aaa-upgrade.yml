@@ -2,7 +2,7 @@ name: MAXESS AAA Release Pipeline
 
 on:
   push:
-    branches: [main]
+    branches: [main, feat/results-logic-10star]
     paths-ignore:
       - "code"
       - "QA_NODE_ERROR.txt"
