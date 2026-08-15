@@ -1,7 +1,8 @@
 /* =====================================================================
    MAXESS RESULTS — LIVE GROOVE BRIDGE · AAA RELEASE
    Source of truth: completed MAXESS assessment result boundary.
-   The Results experience is built BEFORE the existing NayaNET endpoint.
+   Results are built BEFORE the existing NayaNET endpoint.
+   Naya result audio is inserted before the existing NayaNET video.
    The NayaNET video/buttons/membership remain the final destination.
    ===================================================================== */
 (function(){
@@ -9,6 +10,7 @@
 
   const SOURCE='https://cdn.jsdelivr.net/gh/SoulSchoolAcademy/maxess@main/MAXESS-RESULTS-NAYANET-FINAL.html';
   const ENHANCER='https://cdn.jsdelivr.net/gh/SoulSchoolAcademy/maxess@main/MAXESS-RESULTS-AAA-ENHANCER.js';
+  const NAYA_AUDIO='https://cdn.jsdelivr.net/gh/SoulSchoolAcademy/maxess@main/MAXESS-NAYA-RESULT-AUDIO-9.js';
   const RESULT_KEY='MAXESS_RESULT_V1';
   let launched=false;
 
@@ -36,7 +38,7 @@
     try{sessionStorage.setItem(RESULT_KEY,JSON.stringify(result));}catch(e){console.warn('[MAXESS] sessionStorage unavailable',e);}
   }
 
-  function injectScript(src){return new Promise((resolve,reject)=>{const script=document.createElement('script');script.src=src;script.async=false;script.onload=resolve;script.onerror=()=>reject(new Error(`Enhancer failed: ${src}`));document.body.appendChild(script);});}
+  function injectScript(src){return new Promise((resolve,reject)=>{const script=document.createElement('script');script.src=src;script.async=false;script.onload=resolve;script.onerror=()=>reject(new Error(`Script failed: ${src}`));document.body.appendChild(script);});}
 
   async function load(){
     if(launched)return; launched=true;
@@ -59,6 +61,7 @@
       document.body.appendChild(script);
     }
     try{await injectScript(ENHANCER);}catch(error){console.error('[MAXESS AAA] enhancer load failed',error);}
+    try{await injectScript(NAYA_AUDIO);}catch(error){console.error('[MAXESS Naya Audio] audio layer failed',error);}
   }
 
   function ready(){
