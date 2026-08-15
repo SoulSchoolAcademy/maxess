@@ -1,0 +1,40 @@
+<!-- MAXESS RESULTS — FLAGSHIP GROOVE EMBED
+     Paste this entire block into the Groove page after the MAXESS assessment.
+     It loads the versioned flagship Results experience from GitHub and passes the
+     existing MAXESS result object through without changing assessment/scoring logic.
+-->
+<div id="maxessFlagshipResultsMount"></div>
+<script>
+(async function(){
+  const mount=document.getElementById('maxessFlagshipResultsMount');
+  if(!mount)return;
+  const source='https://raw.githubusercontent.com/SoulSchoolAcademy/maxess/results-flagship-aaa/maxess-results-flagship-aaa.html';
+  try{
+    const response=await fetch(source,{cache:'no-store'});
+    if(!response.ok)throw new Error('MAXESS Results source unavailable');
+    const html=await response.text();
+    const doc=new DOMParser().parseFromString(html,'text/html');
+    const styles=[...doc.querySelectorAll('style')];
+    styles.forEach(s=>document.head.appendChild(document.createElement('style')).textContent=s.textContent);
+    const sourceSection=doc.querySelector('#maxessResults');
+    if(!sourceSection)throw new Error('MAXESS Results mount missing');
+    mount.replaceWith(sourceSection);
+    doc.querySelectorAll('script').forEach(oldScript=>{
+      if(oldScript.textContent.includes('MAXESS_RESULTS_RENDERER')){
+        const script=document.createElement('script');
+        script.textContent=oldScript.textContent;
+        document.body.appendChild(script);
+      }
+    });
+    const rerender=()=>{
+      const result=window.MAXESS_RESULT||(window.state&&window.state.results)||null;
+      if(result&&window.MAXESS_RESULTS_RENDERER)window.MAXESS_RESULTS_RENDERER.render(result);
+    };
+    rerender();
+    if(window.MutationObserver)new MutationObserver(rerender).observe(document.body,{subtree:true,childList:true});
+  }catch(error){
+    console.error('MAXESS Results embed error:',error);
+    mount.innerHTML='<div style="padding:40px;text-align:center;color:#aaa;font-family:system-ui">MAXESS Results could not load. Please refresh and try again.</div>';
+  }
+})();
+</script>
