@@ -61,6 +61,9 @@ jobs:
       - name: Apply AAA presentation-density audit pass
         run: python3 tools/results_experience_aaa_audit_pass.py
 
+      - name: Collapse Results Experience to canonical composition
+        run: python3 tools/results_experience_canonical_cleanup.py
+
       - name: Verify generated MAXESS source
         run: |
           python3 - <<'PY'
@@ -80,13 +83,11 @@ jobs:
           assert 'MAXESS RESULTS EXPERIENCE 10-STAR' in s
           assert 'MAXESS RESULTS EXPERIENCE OSCAR FINAL' in s
           assert 'MAXESS RESULTS EXPERIENCE AAA AUDIT PASS' in s
-          assert 'maxessSignalTitle' in s
+          assert 'MAXESS RESULTS EXPERIENCE CANONICAL CLEANUP' in s
           assert 'resultsV4Opening' in s
           assert 'resultsV4MasterKeyTitle' in s
           assert 'resultsV4MethodDetail' in s
-          assert '.results-v4-steps{display:flex' in s
           assert 'resultsV4NayaTitle' in s
-          assert 'resultsV4Playground' in s
           assert 'resultsMasterV2Title' in s
           assert 'resultsMasterV2Evidence' in s
           assert 'resultsMasterV2Meaning' in s
