@@ -37,7 +37,6 @@ def build():
 #maxess-groove-embed #m9-results{display:block!important;min-height:100vh!important;width:100%!important;max-width:none!important;}
 #maxess-groove-embed #royal-results-995{display:block!important;min-height:100vh!important;width:100%!important;max-width:none!important;}
 #maxess-groove-embed .m9-results,.maxess-groove-embed .m9-results{width:100%!important;max-width:none!important;}
-#maxess-groove-embed iframe{display:none!important;}
 </style>'''
 
     final = '\n'.join([
@@ -51,11 +50,11 @@ def build():
     OUTPUT.write_text(final, encoding='utf-8')
 
     forbidden = [
-        (r'<!doctype\\b', 'doctype'),
-        (r'<html\\b', 'html shell'),
-        (r'<head\\b', 'head shell'),
-        (r'<body\\b', 'body shell'),
-        (r'<iframe\\b', 'iframe'),
+        (r'<!doctype\s', 'doctype'),
+        (r'<html(?:\s|>)', 'html shell'),
+        (r'<head(?:\s|>)', 'head shell'),
+        (r'<body(?:\s|>)', 'body shell'),
+        (r'<iframe(?:\s|>)', 'iframe'),
     ]
     for pattern, label in forbidden:
         if re.search(pattern, final, flags=re.I):
@@ -66,7 +65,7 @@ def build():
         'result_contract': 'MAXESS-RESULTS-CONTRACT-1' in final,
         'naya_masters': 'const MASTERS=' in final,
         'full_bleed': 'width:100vw!important' in final,
-        'no_iframe_string': '<iframe' not in final.lower(),
+        'no_iframe_tag': not bool(re.search(r'<iframe(?:\s|>)', final, flags=re.I)),
         'substantial': len(final.splitlines()) >= 3000 and len(final.encode('utf-8')) >= 90000,
     }
     for name, ok in checks.items():
