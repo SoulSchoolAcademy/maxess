@@ -18,6 +18,7 @@ When creating durable product decisions, add or update a clearly named file unde
 
 ### Assessment family
 - `.naya/memory/07-MAX-ASSESSMENT-FAMILY.md` — locked AI MAX / MAX LIFE / MAX PERCEPTION family, naming architecture, MAX PERCEPTION philosophy, five perception dimensions, shared engine law.
+- `.naya/memory/11-AI-MASTER-KEY-AND-AI-MAX-ASSESSMENT.md` — AI MAX assessment purpose, 15-question structure, five scoring dimensions, response-scoring guidance, Results philosophy, Master Key, universal prompts, golden rules, and participant value promise.
 
 ### Results experience
 - `.naya/memory/08-MAXESS-RESULTS-MASTER-SPEC.md` — locked MAXESS Results product architecture, psychological journey, five AI character dimensions, personalization, result contract, Naya transition, AAA standard.
@@ -28,7 +29,7 @@ When creating durable product decisions, add or update a clearly named file unde
 ### Quality / craftsmanship
 - `.naya/memory/10-AAA-OSCAR-MASTER-CRAFTSMAN-PROTOCOL.md` — Cake/Icing/Ice Cream/Cherry/Star, WHY IS THIS NOT A 10?, adversarial QA, release gates, risk-weighted verification, learning loop.
 
-## Future memory categories
+## FUTURE MEMORY CATEGORIES
 Recommended categories:
 - Product vision and positioning
 - Architecture and data contracts
