@@ -1,0 +1,47 @@
+name: MAXESS AAA Results Fix
+on:
+  push:
+    branches:
+      - maxess/aaa-results-treasure
+permissions:
+  contents: write
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fix expert catalog binding and validate scripts
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('code')
+          s=p.read_text(encoding='utf-8')
+          old='const areas=Array.isArray(window.AI_AREAS) ? window.AI_AREAS : [];'
+          new='const areas=typeof AI_AREAS !== "undefined" && Array.isArray(AI_AREAS) ? AI_AREAS : [];'
+          assert old in s, 'Expected expert catalog binding not found'
+          s=s.replace(old,new,1)
+          p.write_text(s,encoding='utf-8')
+          print('Expert catalog binding fixed')
+          PY
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          s=Path('code').read_text(encoding='utf-8')
+          assert 'maxess-treasure' in s
+          assert 'const areas=typeof AI_AREAS' in s
+          assert 'calculateResults' in s
+          assert 'function renderResults' in s
+          assert s.count('</html>')==1
+          scripts=re.findall(r'<script(?:\\s[^>]*)?>(.*?)</script>',s,re.S|re.I)
+          Path('/tmp/maxess-script-count').write_text(str(len(scripts)))
+          print('Found',len(scripts),'script blocks')
+          PY
+          for f in /tmp/maxess-script-count; do cat "$f"; done
+      - name: Commit and remove one-time workflow
+        run: |
+          git config user.name "MAXESS Build Agent"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- code .github/workflows/aaa-results-fix.yml
+          git rm .github/workflows/aaa-results-fix.yml
+          git commit -m "fix: bind AAA results expert catalog to MAXESS data"
+          git push origin HEAD:maxess/aaa-results-treasure
