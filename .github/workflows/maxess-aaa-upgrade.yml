@@ -81,7 +81,7 @@ jobs:
       - name: Validate every JavaScript block independently
         run: |
           set +e
-          : > QA_NODE_ERROR.txt
+          rm -f QA_NODE_ERROR.txt
           status=0
           for file in /tmp/maxess-scripts/*.js; do
             echo "=== $file ===" >> QA_NODE_ERROR.txt
@@ -90,9 +90,7 @@ jobs:
             if [ $rc -ne 0 ]; then status=$rc; fi
           done
           cat QA_NODE_ERROR.txt
-          if ! grep -q "SyntaxError" QA_NODE_ERROR.txt; then
-            : > QA_NODE_ERROR.txt
-          fi
+          if [ $status -eq 0 ]; then rm -f QA_NODE_ERROR.txt; fi
           exit $status
 
       - name: Publish QA diagnostic when syntax validation fails
@@ -110,11 +108,11 @@ jobs:
       - name: Commit generated release
         if: success()
         run: |
+          rm -f QA_NODE_ERROR.txt QA_TRIGGER.txt
           if git diff --quiet -- code; then
             echo "No code changes required."
             exit 0
           fi
-          git restore -- QA_NODE_ERROR.txt || true
           git config user.name "MAXESS AAA Release Bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -- code
