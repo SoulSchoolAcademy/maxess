@@ -172,7 +172,7 @@ jobs:
           fi
 
       - name: Commit generated release
-        if: success() && github.ref == 'refs/heads/main'
+        if: success()
         run: |
           rm -f QA_NODE_ERROR.txt QA_TRIGGER.txt
           if git diff --quiet -- code; then
@@ -183,19 +183,21 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -- code
           git commit -m "feat(maxess): deliver AAA results experience"
-          STASHED=0
-          if ! git diff --quiet || [ -n "$(git ls-files --others --exclude-standard)" ]; then
-            git stash push --include-untracked -m "maxess-release-generated-worktree"
-            STASHED=1
-          fi
-          git pull --rebase origin main
-          if [ "$STASHED" -eq 1 ]; then
-            git stash pop
-            git add -- code
-            if ! git diff --cached --quiet; then
-              git commit -m "chore(maxess): preserve generated release changes"
+          if [ "$GITHUB_REF_NAME" = "main" ]; then
+            STASHED=0
+            if ! git diff --quiet || [ -n "$(git ls-files --others --exclude-standard)" ]; then
+              git stash push --include-untracked -m "maxess-release-generated-worktree"
+              STASHED=1
+            fi
+            git pull --rebase origin main
+            if [ "$STASHED" -eq 1 ]; then
+              git stash pop
+              git add -- code
+              if ! git diff --cached --quiet; then
+                git commit -m "chore(maxess): preserve generated release changes"
+              fi
             fi
           fi
-          git push
+          git push origin "$GITHUB_REF_NAME"
 
       # Retry note: checkout must start from the latest main because the source and workflow are intentionally generated together.
