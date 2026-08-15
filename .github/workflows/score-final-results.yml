@@ -1,72 +1,8 @@
-name: Score MAXESS Results Release
+name: Legacy Score MAXESS Results Release (disabled)
 on:
-  push:
-    branches: [main]
-permissions:
-  contents: write
+  workflow_dispatch:
 jobs:
-  score:
+  disabled:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Select strongest existing Results artifact
-        run: |
-          python3 - <<'PY'
-          from pathlib import Path
-          candidates=[Path('MAXESS-RESULTS-AAA-FULL.html'),Path('MAXESS-RESULTS-NAYANET-FLAGSHIP.html'),Path('MAXESS-RESULTS-9-5-GROOVE.html')]
-          candidates=[p for p in candidates if p.exists()]
-          base=max(candidates,key=lambda p:p.stat().st_size)
-          data=base.read_text(encoding='utf-8')
-          print('CANDIDATE',base.name,'BYTES',len(data.encode()))
-          required=['MAXESS','Naya','Direction','Communication','Evaluation','Iteration','Systems','KNOW','TELL','ASK','CREATE','SCORE','IMPROVE','REPEAT','nayanet.xyz']
-          missing=[x for x in required if x.lower() not in data.lower()]
-          if missing: raise SystemExit('MISSING INVENTORY: '+','.join(missing))
-          Path('/tmp/candidate.html').write_text(data,encoding='utf-8')
-          PY
-      - name: Build readable single-file Groove source
-        run: |
-          python3 - <<'PY'
-          from pathlib import Path
-          import re
-          data=Path('/tmp/candidate.html').read_text(encoding='utf-8')
-          # Preserve the mature artifact, but expand structural boundaries so the raw source is human-auditable.
-          data=re.sub(r'><', '>\\n<', data)
-          data=re.sub(r';(?=[A-Za-z_-]+:)', ';\\n', data)
-          data=re.sub(r'}', '}\\n', data)
-          Path('MAXESS-RESULTS-10-GROOVE.html').write_text(data,encoding='utf-8')
-          lines=data.count('\\n')+1
-          print('FINAL CANDIDATE',lines,'lines',len(data.encode()),'bytes')
-          if lines < 1000: raise SystemExit('HARD GATE FAILED: under 1000 lines')
-          if len(data.encode()) < 45000: raise SystemExit('HARD GATE FAILED: artifact too small')
-          PY
-      - name: Final inventory and syntax gate
-        run: |
-          python3 - <<'PY'
-          from pathlib import Path
-          import re
-          s=Path('MAXESS-RESULTS-10-GROOVE.html').read_text(encoding='utf-8')
-          checks={
-            'doctype':'<!doctype html>' in s.lower(),
-            'score':'score' in s.lower(),
-            'five dimensions':all(x.lower() in s.lower() for x in ['direction','communication','evaluation','iteration','systems']),
-            'gauges':'gauge' in s.lower(),
-            'insight':'oh' in s.lower() and 'why' in s.lower(),
-            'pathway':all(x in s.lower() for x in ['understand','practice','repeat']),
-            'method':all(x in s for x in ['KNOW','TELL','ASK','CREATE','SCORE','IMPROVE','REPEAT']),
-            'naya':'naya' in s.lower(),
-            'nayanet':'nayanet.xyz' in s.lower(),
-            'video':'video' in s.lower(),
-            'membership':'membership' in s.lower(),
-            'closing html':'</html>' in s.lower(),
-            'closing body':'</body>' in s.lower(),
-          }
-          for k,v in checks.items(): print(('PASS' if v else 'FAIL'),k)
-          if not all(checks.values()): raise SystemExit('RELEASE BLOCKED BY INVENTORY GATE')
-          print('RELEASE SCORECARD: structure 9.5, inventory 9.5, integration 9.5, source substance 9.5; visual final requires human Groove inspection')
-          PY
-      - name: Commit scored candidate
-        run: |
-          git config user.name 'MAXESS Scorecard System'
-          git config user.email 'actions@github.com'
-          git add MAXESS-RESULTS-10-GROOVE.html
-          git diff --cached --quiet || (git commit -m 'Publish scorecarded MAXESS Results Groove source' && git push)
+      - run: echo 'Disabled. The authoritative Results publisher is build-final-results-groove.yml.'
