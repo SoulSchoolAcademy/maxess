@@ -10,6 +10,7 @@ OUTPUTS = [
 STYLE_RE = re.compile(r'<style\b[^>]*>.*?</style>', re.I | re.S)
 SCRIPT_RE = re.compile(r'<script\b[^>]*>.*?</script>', re.I | re.S)
 BODY_RE = re.compile(r'<body\b[^>]*>(.*?)</body>', re.I | re.S)
+IFRAME_RE = re.compile(r'<iframe\b[^>]*>.*?</iframe\s*>|<iframe\b[^>]*/>', re.I | re.S)
 
 PREFLIGHT = r'''<!-- MAXESS-RESULTS-CONTRACT-1 | GROOVE-NATIVE | FULL-AUTHORITATIVE-SOURCE | NO-IFRAME -->
 <style id="MAXESS_GROOVE_EMBED_PREFLIGHT">
@@ -78,8 +79,6 @@ BRIDGE = r'''<script id="MAXESS_GROOVE_RESULT_BRIDGE">
     var value=data && data.type==='MAXESS_RESULT'?data.result:(data && data.maxessResult?data.maxessResult:data);
     if(!valid(value)) return;
     remember(value);
-    /* If the result arrived after the renderer booted, reload once so every
-       existing renderer reads the same authoritative contract on startup. */
     try{
       if(!window.__MAXESS_RESULT_BRIDGE_RELOADED){
         window.__MAXESS_RESULT_BRIDGE_RELOADED=true;
@@ -94,9 +93,6 @@ BRIDGE = r'''<script id="MAXESS_GROOVE_RESULT_BRIDGE">
 
 
 def scope_css(style_block: str) -> str:
-    # The authoritative source is a standalone document. Groove is an embed host,
-    # so only the few true document-level selectors are rewritten. Component-level
-    # selectors remain untouched, preserving the original visual system.
     if not style_block.startswith('<style'):
         return style_block
     m = re.match(r'(<style\b[^>]*>)(.*?)(</style>)$', style_block, flags=re.I | re.S)
@@ -129,6 +125,9 @@ def strip_document_shell(page: str):
     if not styles:
         raise SystemExit('No stylesheet blocks found in authoritative Results source')
     body_html = SCRIPT_RE.sub('', body_html)
+    # The authoritative Royal experience is native. Remove only legacy iframe markup
+    # from the preserved source; do not replace it with a loader or a redirect.
+    body_html = IFRAME_RE.sub('', body_html)
     return [scope_css(s) for s in styles], body_html.strip(), scripts
 
 
@@ -150,7 +149,6 @@ def build():
         '</div>',
     ])
 
-    # Validate actual HTML markup, not strings such as JS QA checks containing '<iframe'.
     structural = SCRIPT_RE.sub('', STYLE_RE.sub('', final))
     forbidden = [
         (r'<!doctype\s', 'doctype'),
