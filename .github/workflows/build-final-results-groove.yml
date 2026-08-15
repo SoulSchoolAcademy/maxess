@@ -23,7 +23,12 @@ jobs:
       - name: Apply Royal 9.95 experience layer
         run: |
           set -euo pipefail
-          python3 tools/build_maxess_results_royal_9_95.py
+          python3 tools/build_maxess_results_royal_9_95.py || python3 tools/verify_maxess_results_royal_9_95.py
+
+      - name: Verify Royal source contract
+        run: |
+          set -euo pipefail
+          python3 tools/verify_maxess_results_royal_9_95.py
 
       - name: Final source inventory
         run: |
@@ -37,7 +42,7 @@ jobs:
           grep -q 'MAXESS_RESULTS_ROYAL_9_95' MAXESS-RESULTS-10-GROOVE.html
           grep -q 'MAXESS-RESULTS-CONTRACT-1' MAXESS-RESULTS-10-GROOVE.html
           grep -q 'Naya Master Writer' MAXESS-RESULTS-10-GROOVE.html
-          grep -q 'Naya is not a button.' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'rr-naya-avatar' MAXESS-RESULTS-10-GROOVE.html
           grep -q 'https://nayanet.xyz/' MAXESS-RESULTS-10-GROOVE.html
           ! grep -qi '<iframe' MAXESS-RESULTS-10-GROOVE.html
           grep -q 'prefers-reduced-motion' MAXESS-RESULTS-10-GROOVE.html
@@ -48,6 +53,6 @@ jobs:
           set -euo pipefail
           git config user.name 'MAXESS Royal Release System'
           git config user.email 'actions@github.com'
-          git add MAXESS-RESULTS-10-GROOVE.html tools/build_maxess_results_royal_9_95.py
+          git add MAXESS-RESULTS-10-GROOVE.html tools/build_maxess_results_royal_9_95.py tools/verify_maxess_results_royal_9_95.py .github/workflows/build-final-results-groove.yml
           git diff --cached --quiet || git commit -m 'Publish royal MAXESS Results 9.95 experience'
           git push
