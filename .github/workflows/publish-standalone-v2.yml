@@ -1,43 +1,8 @@
-name: Finalize Standalone MAXESS Results
+name: Legacy Finalize Standalone MAXESS Results (disabled)
 on:
-  push:
-    branches: [main]
-permissions:
-  contents: write
+  workflow_dispatch:
 jobs:
-  publish:
+  disabled:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Build readable standalone Results
-        run: |
-          python3 - <<'PY'
-          from pathlib import Path
-          import re
-          src=Path('MAXESS-RESULTS-AAA-FULL.html').read_text(encoding='utf-8')
-          wf=Path('.github/workflows/build-maxess-results.yml').read_text(encoding='utf-8')
-          polish=re.search(r"polish = r'''(.*?)'''",wf,re.S).group(1)
-          final=src.replace('</body>',polish+'\\n</body>',1)
-          # Expand CSS and JS block boundaries for a genuinely auditable raw source.
-          def fmt(m):
-              tag,body,close=m.group(1),m.group(2),m.group(3)
-              body=re.sub(r'}', '}\\n', body)
-              body=re.sub(r';(?=--?[A-Za-z_-]+:)', ';\\n', body)
-              return tag+'\\n'+body+'\\n'+close
-          final=re.sub(r'(<style[^>]*>)(.*?)(</style>)',fmt,final,flags=re.S)
-          final=re.sub(r'(<script[^>]*>)(.*?)(</script>)',fmt,final,flags=re.S)
-          final=re.sub(r'><', '>\\n<', final)
-          Path('MAXESS-RESULTS-10-GROOVE.html').write_text(final,encoding='utf-8')
-          lines=final.count('\\n')+1
-          size=len(final.encode())
-          print('FINAL STANDALONE:',lines,'lines',size,'bytes')
-          if lines<1000 or size<50000: raise SystemExit('RELEASE GATE FAILED')
-          required=['m10-hero','m10-fingerprint','m10-gauge-card','m10-radar','m10-insight','m10-path','m10-method','m10-naya','Direction','Communication','Evaluation','Iteration','Systems','KNOW','TELL','ASK','CREATE','SCORE','IMPROVE','REPEAT','nayanet.xyz']
-          missing=[x for x in required if x not in final]
-          if missing: raise SystemExit('MISSING: '+','.join(missing))
-          print('AAA STRUCTURAL SCORECARD PASS')
-          PY
-          git config user.name 'MAXESS Final System'
-          git config user.email 'actions@github.com'
-          git add MAXESS-RESULTS-10-GROOVE.html
-          git diff --cached --quiet || (git commit -m 'Publish readable standalone MAXESS Results' && git push --force-with-lease)
+      - run: echo 'Disabled. The authoritative Results publisher is build-final-results-groove.yml.'
