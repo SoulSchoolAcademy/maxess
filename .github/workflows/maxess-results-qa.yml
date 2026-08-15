@@ -1,0 +1,39 @@
+name: MAXESS Results QA
+
+on:
+  push:
+    paths:
+      - 'MAXESS-RESULTS-AAA-LOADER.js'
+      - 'MAXESS-RESULTS-AAA-ENHANCER.js'
+      - 'MAXESS-RESULTS-NAYANET-FINAL.html'
+      - 'MAXESS-RESULTS-AAA-MASTER-OPERATING-DIRECTIVE.md'
+  pull_request:
+    paths:
+      - 'MAXESS-RESULTS-AAA-LOADER.js'
+      - 'MAXESS-RESULTS-AAA-ENHANCER.js'
+      - 'MAXESS-RESULTS-NAYANET-FINAL.html'
+      - 'MAXESS-RESULTS-AAA-MASTER-OPERATING-DIRECTIVE.md'
+
+jobs:
+  syntax-and-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Check JavaScript syntax
+        run: |
+          node --check MAXESS-RESULTS-AAA-LOADER.js
+          node --check MAXESS-RESULTS-AAA-ENHANCER.js
+      - name: Check Results contract
+        run: |
+          grep -q 'id="resultsView"' MAXESS-RESULTS-NAYANET-FINAL.html
+          grep -q 'id="overallScore"' MAXESS-RESULTS-NAYANET-FINAL.html
+          test "$(grep -o 'dimension-orb' MAXESS-RESULTS-NAYANET-FINAL.html | wc -l)" -ge 5
+          grep -q 'class="naya-end"' MAXESS-RESULTS-NAYANET-FINAL.html
+          grep -q 'MAXESS_RESULT' MAXESS-RESULTS-AAA-LOADER.js
+          grep -q 'sessionStorage' MAXESS-RESULTS-AAA-LOADER.js
+          grep -q 'maxessMasteryPath' MAXESS-RESULTS-AAA-ENHANCER.js
+      - name: Report release contract
+        run: echo 'MAXESS Results structural QA passed: JS syntax, result boundary, five dimensions, and NayaNET endpoint are present.'
