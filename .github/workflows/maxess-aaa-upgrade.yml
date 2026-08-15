@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths-ignore:
       - "code"
+      - "QA_NODE_ERROR.txt"
 
 permissions:
   contents: write
@@ -71,9 +72,28 @@ jobs:
           PY
 
       - name: Validate JavaScript syntax
-        run: node --check /tmp/maxess.js
+        id: js_syntax
+        run: |
+          set +e
+          node --check /tmp/maxess.js > /tmp/node-check.out 2>&1
+          status=$?
+          cat /tmp/node-check.out
+          cp /tmp/node-check.out QA_NODE_ERROR.txt
+          exit $status
+
+      - name: Publish QA diagnostic when syntax validation fails
+        if: always()
+        run: |
+          if [ -s QA_NODE_ERROR.txt ]; then
+            git config user.name "MAXESS QA Bot"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add QA_NODE_ERROR.txt
+            git commit -m "chore(maxess): capture JavaScript syntax QA diagnostic" || true
+            git push || true
+          fi
 
       - name: Commit generated release
+        if: success()
         run: |
           if git diff --quiet -- code; then
             echo "No code changes required."
