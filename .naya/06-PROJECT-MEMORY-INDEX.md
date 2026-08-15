@@ -54,6 +54,7 @@ When creating durable product decisions, add or update a clearly named file unde
 ## DEPLOYMENT / DELIVERY
 - `.naya/memory/24-GROOVE-DEPLOYMENT-AND-DELIVERY-LAW.md` — source/deployment separation, Groove-first publishing, raw GitHub delivery link, no alternate hosting by assumption, deployment-state definitions, and handoff diagnostics.
 - `.naya/memory/25-GROOVE-NATIVE-EMBED-TRANSFORM.md` — Groove embeds must be native fragments: extract only the current authoritative CSS, main, and controller; strip document shells, hidden legacy Results DOM, iframes, and stale NayaNET frames; verify the fragment structurally before delivery.
+- `.naya/memory/25-GROOVE-EMBED-ENGINEERING-LAW.md` — comprehensive Groove Embed Engineering Law: documented capabilities vs unknown limits, practical performance budgets, native-fragment architecture, full-bleed/responsive/security/accessibility laws, app-like capabilities, Master/Oscar build loop, 10/10 scorecard, and current MAXESS Groove optimization standard.
 
 ## FUTURE MEMORY CATEGORIES
 Recommended categories:
