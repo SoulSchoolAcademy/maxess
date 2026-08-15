@@ -1,35 +1,8 @@
-name: Release MAXESS Results 10 v3
+name: Legacy MAXESS Results 10 v3 (disabled)
 on:
-  push:
-    branches: [main]
-permissions:
-  contents: write
+  workflow_dispatch:
 jobs:
-  release:
+  disabled:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Build from verified MAXESS 9.5 world-class source
-        shell: bash
-        run: |
-          set -euo pipefail
-          python3 - <<'PY'
-          from pathlib import Path
-          src=Path('MAXESS-RESULTS-9-5-WORLD-CLASS.html')
-          out=Path('MAXESS-RESULTS-10-GROOVE.html')
-          if not src.exists(): raise SystemExit('WORLD_CLASS_SOURCE_MISSING')
-          final=src.read_text(encoding='utf-8')
-          lines=final.count('\n')+1; size=len(final.encode('utf-8'))
-          required=['WHAT AI REALLY SAYS ABOUT YOU','OH… THAT’S WHY','YOUR PERSONALIZED AI MASTERY LIBRARY','Naya Director','Naya Oscar','Naya Architect','KNOW','TELL','ASK','CREATE','SCORE','IMPROVE','REPEAT','nayanet.xyz','MAXESS_OPEN_RESULTS']
-          missing=[x for x in required if x not in final]
-          checks=[lines>=2000,size>=150000,'@media' in final,'focus-visible' in final,'prefers-reduced-motion' in final,not missing,final.lower().count('<html')==1,final.lower().count('</html>')==1]
-          print('MAXESS 9.5 V3 SCORECARD',lines,size)
-          if missing: print('MISSING',missing)
-          assert all(checks), 'RELEASE_GATE_FAILED'
-          out.write_text(final,encoding='utf-8')
-          PY
-          git config user.name 'MAXESS Release System'
-          git config user.email 'actions@github.com'
-          git add MAXESS-RESULTS-10-GROOVE.html
-          git diff --cached --quiet || git commit -m 'Release verified MAXESS 9.5 Results source'
-          git push
+      - run: echo 'Disabled. The authoritative Results publisher is build-final-results-groove.yml.'
