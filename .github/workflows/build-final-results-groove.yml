@@ -1,4 +1,4 @@
-name: Build Authoritative MAXESS 9.9 Results Groove
+name: Build Authoritative MAXESS Royal Results
 
 on:
   push:
@@ -20,30 +20,34 @@ jobs:
           set -euo pipefail
           python3 tools/build_maxess_results_9_9.py
 
+      - name: Apply Royal 9.95 experience layer
+        run: |
+          set -euo pipefail
+          python3 tools/build_maxess_results_royal_9_95.py
+
       - name: Final source inventory
         run: |
           set -euo pipefail
           test -f MAXESS-RESULTS-10-GROOVE.html
           lines=$(wc -l < MAXESS-RESULTS-10-GROOVE.html)
           bytes=$(wc -c < MAXESS-RESULTS-10-GROOVE.html)
-          echo "MAXESS 9.9 artifact: ${lines} lines / ${bytes} bytes"
-          test "$lines" -ge 1000
-          test "$bytes" -ge 70000
-          grep -q 'MAXESS_RESULTS_9_9_TRANSFORMATION' MAXESS-RESULTS-10-GROOVE.html
+          echo "MAXESS Royal artifact: ${lines} lines / ${bytes} bytes"
+          test "$lines" -ge 3000
+          test "$bytes" -ge 90000
+          grep -q 'MAXESS_RESULTS_ROYAL_9_95' MAXESS-RESULTS-10-GROOVE.html
           grep -q 'MAXESS-RESULTS-CONTRACT-1' MAXESS-RESULTS-10-GROOVE.html
-          grep -q 'WHAT AI REALLY SAYS ABOUT YOU' MAXESS-RESULTS-10-GROOVE.html
-          grep -q 'm9Radar' MAXESS-RESULTS-10-GROOVE.html
-          grep -q 'm9Library' MAXESS-RESULTS-10-GROOVE.html
-          grep -q 'm9Roles' MAXESS-RESULTS-10-GROOVE.html
-          grep -q 'm9Naya' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'Naya Master Writer' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'Naya is not a button.' MAXESS-RESULTS-10-GROOVE.html
           grep -q 'https://nayanet.xyz/' MAXESS-RESULTS-10-GROOVE.html
-          echo 'MAXESS 9.9 release gate: PASS'
+          ! grep -qi '<iframe' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'prefers-reduced-motion' MAXESS-RESULTS-10-GROOVE.html
+          echo 'MAXESS Royal 9.95 release gate: PASS'
 
       - name: Commit authoritative artifact
         run: |
           set -euo pipefail
-          git config user.name 'MAXESS 9.9 Release System'
+          git config user.name 'MAXESS Royal Release System'
           git config user.email 'actions@github.com'
-          git add MAXESS-RESULTS-10-GROOVE.html
-          git diff --cached --quiet || git commit -m 'Publish authoritative MAXESS 9.9 Results artifact'
+          git add MAXESS-RESULTS-10-GROOVE.html tools/build_maxess_results_royal_9_95.py
+          git diff --cached --quiet || git commit -m 'Publish royal MAXESS Results 9.95 experience'
           git push
