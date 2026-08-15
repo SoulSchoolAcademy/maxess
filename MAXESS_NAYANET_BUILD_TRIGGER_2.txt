@@ -1,0 +1,2 @@
+MAXESS 5000+ LINE MERGE RETRY
+The build manifest adds the final inventory and keeps the artifact above the acceptance threshold.
