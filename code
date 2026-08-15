@@ -245,6 +245,8 @@ button:disabled{
 
 
 
+
+
 .question-count-chip{
   justify-self:end;
   min-width:128px;
@@ -2346,6 +2348,7 @@ button:disabled{
 
 
 
+
 @media(max-width:420px){
 
   .naya-copy span{
@@ -2512,6 +2515,58 @@ button:disabled{
 @media(prefers-reduced-motion:reduce){.results-master-v2{animation:none}}
 
 
+
+/* =========================================================
+   MAXESS AAA RESULTS — TREASURE EXPERIENCE LAYER
+   Presentation-only layer. Scoring engine and assessment flow
+   remain untouched. This layer elevates the post-assessment UX.
+========================================================= */
+.results-v4-intro.maxess-legacy-hidden,
+.final-cta.maxess-legacy-hidden{display:none!important}
+.maxess-treasure{position:relative;margin:clamp(34px,5vw,72px) 0 12px;padding:clamp(28px,5vw,62px);border:1px solid rgba(255,212,90,.34);border-radius:34px;overflow:hidden;background:radial-gradient(circle at 50% -10%,rgba(255,212,90,.16),transparent 34%),radial-gradient(circle at 0% 80%,rgba(138,92,255,.18),transparent 35%),linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.012) 45%,rgba(138,92,255,.035));box-shadow:0 34px 100px rgba(0,0,0,.55),0 0 90px rgba(255,212,90,.08),inset 0 1px 0 rgba(255,255,255,.11)}
+.maxess-treasure::before{content:"";position:absolute;inset:-35%;pointer-events:none;background:conic-gradient(from 180deg,transparent,rgba(255,212,90,.08),transparent 30%,rgba(138,92,255,.08),transparent 65%);animation:maxessTreasureSpin 18s linear infinite}
+@keyframes maxessTreasureSpin{to{transform:rotate(360deg)}}
+.maxess-treasure-inner{position:relative;z-index:1;max-width:1080px;margin:auto;text-align:center}
+.maxess-treasure-kicker{font-size:10px;font-weight:950;letter-spacing:.22em;color:#ffd45a;text-transform:uppercase}
+.maxess-treasure-title{margin:12px auto 10px;max-width:900px;font-size:clamp(30px,5vw,62px);line-height:.98;letter-spacing:-.045em;font-weight:1000}
+.maxess-treasure-title span{background:linear-gradient(90deg,#fff,#ffd45a,#caa8ff,#fff);background-size:220% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:maxessShimmer 5s linear infinite}
+@keyframes maxessShimmer{to{background-position:220% center}}
+.maxess-treasure-sub{max-width:760px;margin:0 auto;color:#c7c2d0;font-size:clamp(14px,1.7vw,18px);line-height:1.65}
+.maxess-treasure-logo{display:block;width:min(210px,48vw);max-height:92px;object-fit:contain;margin:0 auto 18px;filter:drop-shadow(0 0 24px rgba(255,212,90,.16))}
+.maxess-value-line{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:24px auto 30px}
+.maxess-value-chip{padding:8px 12px;border:1px solid rgba(255,255,255,.13);border-radius:999px;background:rgba(255,255,255,.035);color:#e7e2ed;font-size:10px;font-weight:850;letter-spacing:.04em}
+.maxess-expert-header{margin:42px 0 20px;text-align:left}
+.maxess-expert-header h4{margin:0 0 6px;font-size:clamp(20px,2.5vw,30px);font-weight:950}
+.maxess-expert-header p{margin:0;color:#9f9aa8;line-height:1.6}
+.maxess-expert-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:10px;text-align:left}
+.maxess-expert-card{position:relative;min-height:112px;padding:14px 10px;border:1px solid rgba(255,255,255,.10);border-radius:18px;background:linear-gradient(160deg,rgba(255,255,255,.055),rgba(255,255,255,.015));box-shadow:inset 0 1px 0 rgba(255,255,255,.05);transition:transform .22s var(--ease),border-color .22s ease,box-shadow .22s ease}
+.maxess-expert-card:hover{transform:translateY(-4px);border-color:rgba(255,212,90,.35);box-shadow:0 14px 30px rgba(0,0,0,.35),0 0 25px rgba(138,92,255,.09)}
+.maxess-expert-icon{width:34px;height:34px;display:grid;place-items:center;border-radius:11px;margin-bottom:9px;border:1px solid rgba(255,255,255,.14);background:radial-gradient(circle at 30% 20%,#fff,rgba(181,140,255,.55) 25%,rgba(87,37,178,.55) 62%,rgba(0,0,0,.3));color:#fff;font-size:12px;font-weight:1000;box-shadow:0 0 18px rgba(138,92,255,.15)}
+.maxess-expert-name{font-size:12px;font-weight:950;line-height:1.12;color:#fff}
+.maxess-expert-type{margin-top:5px;font-size:8px;line-height:1.3;letter-spacing:.08em;text-transform:uppercase;color:#9f99aa}
+.maxess-three-step{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:34px 0 0;text-align:left}
+.maxess-step-card{padding:20px;border-radius:22px;border:1px solid rgba(255,255,255,.11);background:rgba(0,0,0,.22)}
+.maxess-step-no{font-size:10px;font-weight:1000;letter-spacing:.16em;color:#ffd45a}
+.maxess-step-card h5{margin:8px 0 6px;font-size:18px}
+.maxess-step-card p{margin:0;color:#aaa5b2;font-size:12px;line-height:1.55}
+.maxess-offer{margin:38px 0 0;padding:clamp(24px,4vw,42px);border-radius:28px;border:1px solid rgba(255,212,90,.45);background:linear-gradient(145deg,rgba(255,212,90,.10),rgba(138,92,255,.10) 55%,rgba(0,0,0,.18));box-shadow:0 0 55px rgba(255,212,90,.08),inset 0 1px 0 rgba(255,255,255,.10)}
+.maxess-offer-badge{display:inline-flex;align-items:center;gap:8px;padding:8px 13px;border-radius:999px;background:rgba(255,212,90,.12);border:1px solid rgba(255,212,90,.28);color:#ffe99b;font-size:9px;font-weight:1000;letter-spacing:.12em;text-transform:uppercase}
+.maxess-offer h4{margin:15px 0 10px;font-size:clamp(25px,3.4vw,42px);line-height:1.05;font-weight:1000}
+.maxess-offer p{max-width:760px;margin:0 auto;color:#c8c2cf;line-height:1.6}
+.maxess-cta-actions{display:flex;justify-content:center;flex-wrap:wrap;gap:12px;margin-top:26px}
+.maxess-cta-actions button{min-height:58px;min-width:220px;padding:0 24px;border-radius:18px;border:1px solid rgba(255,255,255,.24);font-weight:1000;cursor:pointer;transition:transform .2s var(--ease),box-shadow .2s ease,border-color .2s ease}
+.maxess-cta-primary{color:#08070a;background:linear-gradient(180deg,#ffe38a,#ffd45a);box-shadow:0 15px 38px rgba(255,212,90,.20),0 0 30px rgba(255,212,90,.10)}
+.maxess-cta-secondary{color:#fff;background:linear-gradient(180deg,#17141e,#09080c);border-color:rgba(181,140,255,.55)!important}
+.maxess-cta-actions button:hover{transform:translateY(-3px);box-shadow:0 18px 40px rgba(0,0,0,.42),0 0 30px rgba(138,92,255,.18)}
+.maxess-cta-fine{margin-top:13px!important;font-size:10px!important;color:#8f8999!important}
+.maxess-ecosystem{margin-top:34px;padding-top:25px;border-top:1px solid rgba(255,255,255,.09);display:flex;align-items:center;justify-content:center;gap:15px;flex-wrap:wrap;color:#aaa5b2;font-size:10px;letter-spacing:.04em}
+.maxess-ecosystem img{width:76px;max-height:42px;object-fit:contain;opacity:.9}
+.maxess-story-section{margin-top:clamp(24px,3vw,42px)}
+@media(max-width:900px){.maxess-expert-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:620px){.maxess-treasure{border-radius:26px;padding:24px 16px}.maxess-expert-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.maxess-expert-card{min-height:100px;padding:11px 8px}.maxess-expert-name{font-size:10px}.maxess-three-step{grid-template-columns:1fr}.maxess-cta-actions{flex-direction:column}.maxess-cta-actions button{width:100%}}
+@media(prefers-reduced-motion:reduce){.maxess-treasure::before,.maxess-treasure-title span{animation:none}}
+
+
 /* =========================================================
    MAXESS AAA V3 — VISIBLE CRAFT PASS
 ========================================================= */
@@ -2592,57 +2647,6 @@ button:disabled{
   .aaa-guidance{font-size:10px;margin-top:9px;padding:0 12px}
 }
 @media(prefers-reduced-motion:reduce){.answer:hover{transform:none;}}
-
-
-/* =========================================================
-   MAXESS AAA RESULTS — TREASURE EXPERIENCE LAYER
-   Presentation-only layer. Scoring engine and assessment flow
-   remain untouched. This layer elevates the post-assessment UX.
-========================================================= */
-.results-v4-intro.maxess-legacy-hidden,
-.final-cta.maxess-legacy-hidden{display:none!important}
-.maxess-treasure{position:relative;margin:clamp(34px,5vw,72px) 0 12px;padding:clamp(28px,5vw,62px);border:1px solid rgba(255,212,90,.34);border-radius:34px;overflow:hidden;background:radial-gradient(circle at 50% -10%,rgba(255,212,90,.16),transparent 34%),radial-gradient(circle at 0% 80%,rgba(138,92,255,.18),transparent 35%),linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.012) 45%,rgba(138,92,255,.035));box-shadow:0 34px 100px rgba(0,0,0,.55),0 0 90px rgba(255,212,90,.08),inset 0 1px 0 rgba(255,255,255,.11)}
-.maxess-treasure::before{content:"";position:absolute;inset:-35%;pointer-events:none;background:conic-gradient(from 180deg,transparent,rgba(255,212,90,.08),transparent 30%,rgba(138,92,255,.08),transparent 65%);animation:maxessTreasureSpin 18s linear infinite}
-@keyframes maxessTreasureSpin{to{transform:rotate(360deg)}}
-.maxess-treasure-inner{position:relative;z-index:1;max-width:1080px;margin:auto;text-align:center}
-.maxess-treasure-kicker{font-size:10px;font-weight:950;letter-spacing:.22em;color:#ffd45a;text-transform:uppercase}
-.maxess-treasure-title{margin:12px auto 10px;max-width:900px;font-size:clamp(30px,5vw,62px);line-height:.98;letter-spacing:-.045em;font-weight:1000}
-.maxess-treasure-title span{background:linear-gradient(90deg,#fff,#ffd45a,#caa8ff,#fff);background-size:220% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:maxessShimmer 5s linear infinite}
-@keyframes maxessShimmer{to{background-position:220% center}}
-.maxess-treasure-sub{max-width:760px;margin:0 auto;color:#c7c2d0;font-size:clamp(14px,1.7vw,18px);line-height:1.65}
-.maxess-treasure-logo{display:block;width:min(210px,48vw);max-height:92px;object-fit:contain;margin:0 auto 18px;filter:drop-shadow(0 0 24px rgba(255,212,90,.16))}
-.maxess-value-line{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:24px auto 30px}
-.maxess-value-chip{padding:8px 12px;border:1px solid rgba(255,255,255,.13);border-radius:999px;background:rgba(255,255,255,.035);color:#e7e2ed;font-size:10px;font-weight:850;letter-spacing:.04em}
-.maxess-expert-header{margin:42px 0 20px;text-align:left}
-.maxess-expert-header h4{margin:0 0 6px;font-size:clamp(20px,2.5vw,30px);font-weight:950}
-.maxess-expert-header p{margin:0;color:#9f9aa8;line-height:1.6}
-.maxess-expert-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:10px;text-align:left}
-.maxess-expert-card{position:relative;min-height:112px;padding:14px 10px;border:1px solid rgba(255,255,255,.10);border-radius:18px;background:linear-gradient(160deg,rgba(255,255,255,.055),rgba(255,255,255,.015));box-shadow:inset 0 1px 0 rgba(255,255,255,.05);transition:transform .22s var(--ease),border-color .22s ease,box-shadow .22s ease}
-.maxess-expert-card:hover{transform:translateY(-4px);border-color:rgba(255,212,90,.35);box-shadow:0 14px 30px rgba(0,0,0,.35),0 0 25px rgba(138,92,255,.09)}
-.maxess-expert-icon{width:34px;height:34px;display:grid;place-items:center;border-radius:11px;margin-bottom:9px;border:1px solid rgba(255,255,255,.14);background:radial-gradient(circle at 30% 20%,#fff,rgba(181,140,255,.55) 25%,rgba(87,37,178,.55) 62%,rgba(0,0,0,.3));color:#fff;font-size:12px;font-weight:1000;box-shadow:0 0 18px rgba(138,92,255,.15)}
-.maxess-expert-name{font-size:12px;font-weight:950;line-height:1.12;color:#fff}
-.maxess-expert-type{margin-top:5px;font-size:8px;line-height:1.3;letter-spacing:.08em;text-transform:uppercase;color:#9f99aa}
-.maxess-three-step{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:34px 0 0;text-align:left}
-.maxess-step-card{padding:20px;border-radius:22px;border:1px solid rgba(255,255,255,.11);background:rgba(0,0,0,.22)}
-.maxess-step-no{font-size:10px;font-weight:1000;letter-spacing:.16em;color:#ffd45a}
-.maxess-step-card h5{margin:8px 0 6px;font-size:18px}
-.maxess-step-card p{margin:0;color:#aaa5b2;font-size:12px;line-height:1.55}
-.maxess-offer{margin:38px 0 0;padding:clamp(24px,4vw,42px);border-radius:28px;border:1px solid rgba(255,212,90,.45);background:linear-gradient(145deg,rgba(255,212,90,.10),rgba(138,92,255,.10) 55%,rgba(0,0,0,.18));box-shadow:0 0 55px rgba(255,212,90,.08),inset 0 1px 0 rgba(255,255,255,.10)}
-.maxess-offer-badge{display:inline-flex;align-items:center;gap:8px;padding:8px 13px;border-radius:999px;background:rgba(255,212,90,.12);border:1px solid rgba(255,212,90,.28);color:#ffe99b;font-size:9px;font-weight:1000;letter-spacing:.12em;text-transform:uppercase}
-.maxess-offer h4{margin:15px 0 10px;font-size:clamp(25px,3.4vw,42px);line-height:1.05;font-weight:1000}
-.maxess-offer p{max-width:760px;margin:0 auto;color:#c8c2cf;line-height:1.6}
-.maxess-cta-actions{display:flex;justify-content:center;flex-wrap:wrap;gap:12px;margin-top:26px}
-.maxess-cta-actions button{min-height:58px;min-width:220px;padding:0 24px;border-radius:18px;border:1px solid rgba(255,255,255,.24);font-weight:1000;cursor:pointer;transition:transform .2s var(--ease),box-shadow .2s ease,border-color .2s ease}
-.maxess-cta-primary{color:#08070a;background:linear-gradient(180deg,#ffe38a,#ffd45a);box-shadow:0 15px 38px rgba(255,212,90,.20),0 0 30px rgba(255,212,90,.10)}
-.maxess-cta-secondary{color:#fff;background:linear-gradient(180deg,#17141e,#09080c);border-color:rgba(181,140,255,.55)!important}
-.maxess-cta-actions button:hover{transform:translateY(-3px);box-shadow:0 18px 40px rgba(0,0,0,.42),0 0 30px rgba(138,92,255,.18)}
-.maxess-cta-fine{margin-top:13px!important;font-size:10px!important;color:#8f8999!important}
-.maxess-ecosystem{margin-top:34px;padding-top:25px;border-top:1px solid rgba(255,255,255,.09);display:flex;align-items:center;justify-content:center;gap:15px;flex-wrap:wrap;color:#aaa5b2;font-size:10px;letter-spacing:.04em}
-.maxess-ecosystem img{width:76px;max-height:42px;object-fit:contain;opacity:.9}
-.maxess-story-section{margin-top:clamp(24px,3vw,42px)}
-@media(max-width:900px){.maxess-expert-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
-@media(max-width:620px){.maxess-treasure{border-radius:26px;padding:24px 16px}.maxess-expert-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.maxess-expert-card{min-height:100px;padding:11px 8px}.maxess-expert-name{font-size:10px}.maxess-three-step{grid-template-columns:1fr}.maxess-cta-actions{flex-direction:column}.maxess-cta-actions button{width:100%}}
-@media(prefers-reduced-motion:reduce){.maxess-treasure::before,.maxess-treasure-title span{animation:none}}
 
 </style>
 </head>
