@@ -1,91 +1,70 @@
-/* =====================================================================
-   MAXESS RESULTS — LIVE GROOVE BRIDGE · AAA RELEASE
-   Source of truth: completed MAXESS assessment result boundary.
-   Results are built BEFORE the existing NayaNET endpoint.
-   Naya result audio is inserted before the existing NayaNET video.
-   The NayaNET video/buttons/membership remain the final destination.
-   ===================================================================== */
+/*
+ MAXESS 9.5 — PRODUCTION RESULTS BRIDGE
+ Purpose: read the real completed assessment boundary, persist the result,
+ and hand the user to the complete Results experience. The Results page
+ owns the entire journey above the original NayaNET destination.
+*/
 (function(){
   'use strict';
-
-  const SOURCE='https://cdn.jsdelivr.net/gh/SoulSchoolAcademy/maxess@main/MAXESS-RESULTS-NAYANET-FINAL.html';
-  const ENHANCER='https://cdn.jsdelivr.net/gh/SoulSchoolAcademy/maxess@main/MAXESS-RESULTS-AAA-ENHANCER.js';
-  const NAYA_AUDIO='https://cdn.jsdelivr.net/gh/SoulSchoolAcademy/maxess@main/MAXESS-NAYA-RESULT-AUDIO-9.js';
   const RESULT_KEY='MAXESS_RESULT_V1';
+  const RESULTS_URL='https://cdn.jsdelivr.net/gh/SoulSchoolAcademy/maxess@maxess-9-5-production-results/MAXESS-RESULTS-9-5-PRODUCTION.html';
   let launched=false;
 
-  function text(selector){const el=document.querySelector(selector);return el?el.textContent.trim():'';}
-  function number(selector){const n=parseFloat(text(selector).replace(/[^0-9.\-]/g,''));return Number.isFinite(n)?n:0;}
-  function dimensionScore(row){const n=parseFloat((row.querySelector('.dimension-score')?.textContent||'').replace(/[^0-9.\-]/g,''));return Number.isFinite(n)?Math.max(0,Math.min(100,n)):0;}
+  const clamp=v=>Math.max(0,Math.min(100,Math.round(Number(v)||0)));
+  const text=el=>el?el.textContent.trim():'';
+  const numberFrom=el=>{const n=parseFloat(text(el).replace(/[^0-9.\-]/g,''));return Number.isFinite(n)?clamp(n):0};
 
-  function readCurrentResult(){
-    const rows=[...document.querySelectorAll('#dimensionConstellation .dimension-orb')];
-    return {
-      version:'1.0',
-      overallScore:number('#overallScore'),
-      profile:{name:text('#resultLevelText')||text('#resultLevel')||'Your AI Capability Profile',description:text('#resultSubtitle')},
-      dimensions:rows.map((row,i)=>({id:row.dataset.dimension||`dimension-${i+1}`,name:row.querySelector('.dimension-name')?.textContent?.trim()||`Dimension ${i+1}`,score:dimensionScore(row),description:row.querySelector('.dimension-description')?.textContent?.trim()||'',color:getComputedStyle(row).getPropertyValue('--dimensionColor').trim()})),
-      strengths:text('#strongestName')?[{name:text('#strongestName'),score:number('#strongestScore'),description:text('#strongestText')}]:[],
-      opportunities:text('#opportunityName')?[{name:text('#opportunityName'),score:number('#opportunityScore'),description:text('#opportunityText')}]:[],
-      personalizedAnalysis:text('#analysisCloud'),
-      insight:{text:text('#analysisCloud')},
-      metadata:{source:'MAXESS assessment result boundary',capturedAt:new Date().toISOString()}
-    };
+  function readJSON(key){
+    for(const store of [sessionStorage,localStorage]){
+      try{const raw=store.getItem(key);if(raw)return JSON.parse(raw)}catch(e){}
+    }
+    return null;
+  }
+
+  function extract(){
+    if(window.MAXESS_RESULT && typeof window.MAXESS_RESULT==='object')return window.MAXESS_RESULT;
+    for(const key of ['MAXESS_RESULT_V1','MAXESS_RESULT','MAXESS_RESULTS','maxessResult','assessmentResult']){
+      const r=readJSON(key);if(r)return r;
+    }
+
+    const root=document.querySelector('[data-maxess-result],.maxess-results,.results-screen,.result-screen,[data-results]')||document.body;
+    const scoreEl=root.querySelector('[data-overall-score],.overall-score,.max-score,.score-value,.score,[class*="overall"]');
+    const dims={};
+    const rows=root.querySelectorAll('[data-dimension],.dimension-row,.dimension,.dimension-card');
+    rows.forEach(row=>{
+      const name=(row.getAttribute('data-dimension')||row.querySelector('.dimension-name,.dimension-title,h3,h4,strong')?.textContent||'').trim();
+      const value=row.querySelector('[data-score],.dimension-score,.score,.value');
+      if(name&&value)dims[name]=numberFrom(value);
+    });
+    const score=scoreEl?numberFrom(scoreEl):0;
+    if(score||Object.keys(dims).length)return {overall:score,dimensions:dims};
+    return null;
   }
 
   function persist(result){
+    try{sessionStorage.setItem(RESULT_KEY,JSON.stringify(result));localStorage.setItem(RESULT_KEY,JSON.stringify(result))}catch(e){}
     window.MAXESS_RESULT=result;
-    try{sessionStorage.setItem(RESULT_KEY,JSON.stringify(result));}catch(e){console.warn('[MAXESS] sessionStorage unavailable',e);}
   }
 
-  function injectScript(src){return new Promise((resolve,reject)=>{const script=document.createElement('script');script.src=src;script.async=false;script.onload=resolve;script.onerror=()=>reject(new Error(`Script failed: ${src}`));document.body.appendChild(script);});}
-
-  async function load(){
-    if(launched)return; launched=true;
-    const realResult=readCurrentResult(); persist(realResult);
-    let html='';
-    try{const response=await fetch(SOURCE,{cache:'no-store',credentials:'omit'});if(!response.ok)throw new Error(`MAXESS Results source failed: ${response.status}`);html=await response.text();}
-    catch(error){reportError(error,realResult);return;}
-
-    const doc=new DOMParser().parseFromString(html,'text/html');
-    if(!doc.body||!doc.body.children.length){reportError(new Error('Results document was empty'),realResult);return;}
-    document.title='MAXESS — Your AI Mastery Results';
-    document.head.innerHTML=doc.head.innerHTML;
-    document.body.innerHTML=doc.body.innerHTML;
-    window.MAXESS_RESULT=realResult;
-    try{sessionStorage.setItem(RESULT_KEY,JSON.stringify(realResult));}catch(e){}
-
-    for(const oldScript of [...doc.body.querySelectorAll('script')]){
-      const script=document.createElement('script');
-      if(oldScript.src)script.src=oldScript.src;else script.textContent=oldScript.textContent;
-      document.body.appendChild(script);
-    }
-    try{await injectScript(ENHANCER);}catch(error){console.error('[MAXESS AAA] enhancer load failed',error);}
-    try{await injectScript(NAYA_AUDIO);}catch(error){console.error('[MAXESS Naya Audio] audio layer failed',error);}
+  function launch(result){
+    if(launched)return;
+    if(!result)return;
+    launched=true;
+    persist(result);
+    const url=new URL(RESULTS_URL);
+    url.searchParams.set('score',String(clamp(result.overall??result.score??0)));
+    window.location.assign(url.toString());
   }
 
-  function ready(){
-    const results=document.getElementById('resultsView');
-    if(!results)return false;
-    const scoreText=text('#overallScore');
-    const dimensionCount=document.querySelectorAll('#dimensionConstellation .dimension-orb').length;
-    return results.classList.contains('visible')&&scoreText!==''&&dimensionCount>=5;
-  }
+  /* Explicit API: the assessment can call this immediately when it knows it
+     has completed. This is the preferred integration path. */
+  window.MAXESS_OPEN_RESULTS=function(result){launch(result||extract())};
 
-  function watch(){
-    if(ready()){load();return;}
-    const observer=new MutationObserver(()=>{if(ready()){observer.disconnect();load();}});
-    observer.observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:['class','style']});
-    setTimeout(()=>observer.disconnect(),30*60*1000);
-  }
-
-  function reportError(error,result){
-    console.error('MAXESS Results bridge failed:',error,result);
-    const box=document.createElement('div');
-    box.style.cssText='min-height:100vh;display:grid;place-items:center;background:#030305;color:#fff;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;padding:40px;text-align:center';
-    box.innerHTML='<div style="max-width:680px"><div style="font-size:11px;letter-spacing:.18em;color:#d4adff;font-weight:900">MAXESS RESULTS</div><h1 style="font-size:clamp(36px,6vw,62px);line-height:.95;margin:14px 0">Your result is safe.</h1><p style="color:#aaa;line-height:1.65;font-size:16px">The Results presentation could not be loaded. Your completed assessment was preserved. Please refresh once to retry.</p><button id="maxessRetry" style="margin-top:24px;min-height:52px;padding:0 22px;border-radius:15px;border:1px solid #c79bff;background:#0b0810;color:#fff;font-weight:900;cursor:pointer">Retry Results</button></div>';
-    document.body.replaceChildren(box);document.getElementById('maxessRetry')?.addEventListener('click',()=>location.reload());
-  }
-
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',watch);else watch();
+  /* Compatibility path for existing assessment builds: watch for the real
+     result boundary without inventing a result before completion. */
+  function check(){const r=extract();if(r&&((r.overall||0)>0||Object.keys(r.dimensions||{}).length))launch(r)}
+  check();
+  const observer=new MutationObserver(()=>check());
+  observer.observe(document.documentElement,{subtree:true,childList:true,characterData:true});
+  let ticks=0;const timer=setInterval(()=>{check();if(++ticks>360){clearInterval(timer);observer.disconnect()}},500);
 })();
