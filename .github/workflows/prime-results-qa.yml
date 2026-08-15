@@ -1,0 +1,21 @@
+name: Prime Naya Results QA
+
+on:
+  push:
+    branches: ["prime-naya-maxess-results-10"]
+  workflow_dispatch:
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install Playwright
+        run: npm exec --yes playwright@1.55.0 install --with-deps chromium
+      - name: Run browser smoke test
+        run: node qa/prime-results-smoke.mjs
