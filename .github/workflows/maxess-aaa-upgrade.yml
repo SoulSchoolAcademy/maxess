@@ -97,8 +97,8 @@ jobs:
       - name: Make clean Results renderer the final presentation authority
         run: python3 tools/results_final_authority.py
 
-      - name: Apply logical Results hierarchy and truthful gauge
-        run: python3 tools/results_logic_refinement_v2.py
+      - name: Embed logical Results hierarchy and truthful gauge
+        run: python3 tools/results_logic_embedded.py
 
       - name: Verify generated MAXESS source
         run: |
@@ -127,7 +127,7 @@ jobs:
           assert 'MAXESS RESULTS HARD RESET V2' in s
           assert 'MAXESS RESULTS HARD RESET V3' in s
           assert 'MAXESS RESULTS FINAL AUTHORITY' in s
-          assert 'MAXESS RESULTS LOGIC REFINEMENT V2' in s
+          assert 'MAXESS RESULTS LOGIC EMBEDDED' in s
           assert 'YOUR PERSONALIZED ANALYSIS' in s
           assert 'AI is the engine.' in s
           assert 'Naya Master Writer' in s
@@ -135,11 +135,7 @@ jobs:
           assert 'rf-gauge' in s
           assert 'rf-process-line' in s
           assert 'rf-logical-gauge' in s
-          first_script_end = s.find('</script>')
-          body_idx = s.rfind('</body>')
-          assert first_script_end > 0 and body_idx > first_script_end
-          tail = s[first_script_end + len('</script>'):body_idx]
-          assert '<script>' in tail, 'final Results authority script missing'
+          assert s.count('<script>') == 2, 'Results must retain one main app script plus one Results authority script'
           assert not re.search(r'</style>\s*\(function\s*\(', s), 'raw JavaScript text leak detected'
           scripts = re.findall(r'<script(?:\s[^>]*)?>([\s\S]*?)</script>', s, flags=re.I)
           assert scripts, 'application scripts missing'
