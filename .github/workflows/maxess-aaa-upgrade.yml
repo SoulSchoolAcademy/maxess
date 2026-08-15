@@ -101,7 +101,7 @@ jobs:
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git add QA_NODE_ERROR.txt
             git commit -m "chore(maxess): capture JavaScript syntax QA diagnostic" || true
-            git pull --rebase origin main || true
+            git pull --rebase --autostash origin main || true
             git push || true
           fi
 
@@ -117,5 +117,19 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -- code
           git commit -m "feat(maxess): deliver AAA results experience"
+          # Patch scripts can leave generated working-tree changes; stash them
+          # before rebasing so the release cannot be blocked by an unstaged file.
+          STASHED=0
+          if ! git diff --quiet || [ -n "$(git ls-files --others --exclude-standard)" ]; then
+            git stash push --include-untracked -m "maxess-release-generated-worktree"
+            STASHED=1
+          fi
           git pull --rebase origin main
+          if [ "$STASHED" -eq 1 ]; then
+            git stash pop
+            git add -- code
+            if ! git diff --cached --quiet; then
+              git commit -m "chore(maxess): preserve generated release changes"
+            fi
+          fi
           git push
