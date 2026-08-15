@@ -7,6 +7,7 @@ This file is the map of durable project memory. It tells Naya where to look with
 ## MASTER COGNITIVE MAP
 - `NAYA-MASTER.md` — authoritative whole-system map. Read first when the Master Naya trigger is invoked.
 - `.naya/memory/19-NAYA-BEST-FRIEND-AI-KNOWLEDGE.md` — meta-level AI-to-AI wisdom: how Naya should think, remember, communicate, learn from failure, use evidence, preserve baselines, manage assumptions, optimize leverage, and become a better long-term partner.
+- `.naya/memory/22-NAYA-TRIGGER-AND-LEARNING-PROTOCOL.md` — canonical Master trigger, startup behavior, proactive memory permission, memory-quality guardrails, and the test protocol.
 
 ## GOVERNANCE
 - `.naya/NAYA-GOVERNANCE.md` — master entrypoint, trigger phrases, and reading chain.
