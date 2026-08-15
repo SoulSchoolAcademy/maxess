@@ -172,12 +172,11 @@ jobs:
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git add QA_NODE_ERROR.txt
             git commit -m "chore(maxess): capture JavaScript syntax QA diagnostic" || true
-            git pull --rebase --autostash origin main || true
             git push || true
           fi
 
       - name: Commit generated release
-        if: success()
+        if: success() && github.ref == 'refs/heads/main'
         run: |
           rm -f QA_NODE_ERROR.txt QA_TRIGGER.txt
           if git diff --quiet -- code; then
