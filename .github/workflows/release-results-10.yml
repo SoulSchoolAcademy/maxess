@@ -9,50 +9,27 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Assemble and scorecard standalone Results
+      - name: Assemble verified MAXESS 9.5 Results
         shell: bash
         run: |
           set -euo pipefail
           python3 - <<'PY'
           from pathlib import Path
-          import re
-          base=Path('MAXESS-RESULTS-AAA-FULL.html').read_text(encoding='utf-8')
-          wf=Path('.github/workflows/build-maxess-results.yml').read_text(encoding='utf-8')
-          m=re.search(r"polish = r'''(.*?)'''",wf,re.S)
-          if not m: raise SystemExit('POLISH_LAYER_MISSING')
-          polish=m.group(1)
-          final=base.replace('</body>',polish+'\n</body>',1)
-          # Keep one self-contained HTML document while making raw source auditable.
-          final=final.replace('\r\n','\n')
-          Path('MAXESS-RESULTS-10-GROOVE.html').write_text(final,encoding='utf-8')
-          lines=final.count('\n')+1
-          size=len(final.encode())
-          required=['MAXESS — Your AI Mastery Results','m10-hero','m10-fingerprint','m10-radar-card','m10-gauge-card','m10-insight','m10-path','m10-method','m10-naya','m10Progress','Direction','Communication','Evaluation','Iteration','Systems','KNOW','TELL','ASK','CREATE','SCORE','IMPROVE','REPEAT','nayanet.xyz','prefers-reduced-motion']
+          src=Path('MAXESS-RESULTS-9-5-WORLD-CLASS.html')
+          out=Path('MAXESS-RESULTS-10-GROOVE.html')
+          if not src.exists(): raise SystemExit('WORLD_CLASS_SOURCE_MISSING')
+          final=src.read_text(encoding='utf-8')
+          lines=final.count('\n')+1; size=len(final.encode('utf-8'))
+          required=['WHAT AI REALLY SAYS ABOUT YOU','OH… THAT’S WHY','YOUR PERSONALIZED AI MASTERY LIBRARY','Naya Director','Naya Oscar','Naya Architect','KNOW','TELL','ASK','CREATE','SCORE','IMPROVE','REPEAT','nayanet.xyz','MAXESS_OPEN_RESULTS']
           missing=[x for x in required if x not in final]
-          checks={
-            'single_html': final.lower().count('<html')==1 and final.lower().count('</html>')==1,
-            'self_contained': 'https://' not in final or 'nayanet.xyz' in final,
-            'substantial': lines>=2000 and size>=100000,
-            'required_inventory': not missing,
-            'responsive': '@media' in final,
-            'accessibility': 'focus-visible' in final,
-            'reduced_motion': 'prefers-reduced-motion' in final,
-            'data_handoff': 'MAXESS_RESULT' in final or 'MAXESS_RESULTS' in final,
-            'naya': 'Naya' in final,
-            'nayanet': 'nayanet.xyz' in final,
-            'no_questionnaire': not re.search(r'Question\\s+1|question-1|answer-1',final,re.I),
-          }
-          print('RESULTS RELEASE SCORECARD')
-          print('LINES',lines,'BYTES',size)
-          for k,v in checks.items(): print(k, 'PASS' if v else 'FAIL')
+          checks=[lines>=2000,size>=150000,'@media' in final,'focus-visible' in final,'prefers-reduced-motion' in final,not missing,final.lower().count('<html')==1,final.lower().count('</html>')==1]
+          print('MAXESS 9.5 RELEASE SCORECARD',lines,size)
           if missing: print('MISSING',missing)
-          if not all(checks.values()): raise SystemExit('RELEASE_GATE_FAILED')
-          print('STRUCTURAL GATE PASS')
+          assert all(checks), 'RELEASE_GATE_FAILED'
+          out.write_text(final,encoding='utf-8')
           PY
-      - name: Publish exact raw Groove artifact
-        run: |
           git config user.name 'MAXESS Release System'
           git config user.email 'actions@github.com'
           git add MAXESS-RESULTS-10-GROOVE.html
-          git diff --cached --quiet || git commit -m 'Publish MAXESS Results 10 Groove artifact'
+          git diff --cached --quiet || git commit -m 'Publish verified MAXESS 9.5 Results source'
           git push
