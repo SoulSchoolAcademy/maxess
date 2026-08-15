@@ -140,3 +140,5 @@ jobs:
             fi
           fi
           git push
+
+      # Retry note: checkout must start from the latest main because the source and workflow are intentionally generated together.
