@@ -56,6 +56,9 @@ When creating durable product decisions, add or update a clearly named file unde
 - `.naya/memory/25-GROOVE-NATIVE-EMBED-TRANSFORM.md` — Groove embeds must be native fragments: extract only the current authoritative CSS, main, and controller; strip document shells, hidden legacy Results DOM, iframes, and stale NayaNET frames; verify the fragment structurally before delivery.
 - `.naya/memory/25-GROOVE-EMBED-ENGINEERING-LAW.md` — comprehensive Groove Embed Engineering Law: documented capabilities vs unknown limits, practical performance budgets, native-fragment architecture, full-bleed/responsive/security/accessibility laws, app-like capabilities, Master/Oscar build loop, 10/10 scorecard, and current MAXESS Groove optimization standard.
 
+## FUTURE ARCHITECTURE
+- `.naya/memory/26-NAYANET-FUTURE-GITHUB-ORCHESTRATION.md` — future-only NayaNET architecture: GitHub as durable engineering/orchestration memory and control-plane support, portable deployment adapters, mobile-first app direction, intelligent Connection Spaces, user-controlled memory, agent/role orchestration, and human-centered network principles. Not current scope.
+
 ## FUTURE MEMORY CATEGORIES
 Recommended categories:
 - Product vision and positioning
