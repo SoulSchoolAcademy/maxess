@@ -257,6 +257,8 @@ button:disabled{
 
 
 
+
+
 .question-count-chip{
   justify-self:end;
   min-width:128px;
@@ -2364,6 +2366,7 @@ button:disabled{
 
 
 
+
 @media(max-width:420px){
 
   .naya-copy span{
@@ -2538,7 +2541,7 @@ button:disabled{
 ========================================================= */
 .results-v4-intro.maxess-legacy-hidden,
 .final-cta.maxess-legacy-hidden{display:none!important}
-.maxess-treasure{position:relative;margin:clamp(34px,5vw,72px) 0 12px;padding:clamp(28px,5vw,62px);border:1px solid rgba(255,212,90,.34);border-radius:34px;overflow:hidden;background:radial-gradient(circle at 50% -10%,rgba(255,212,90,.16),transparent 34%),radial-gradient(circle at 0% 80%,rgba(138,92,255,.18),transparent 35%),linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.012) 45%,rgba(138,92,255,.035));box-shadow:0 34px 100px rgba(0,0,0,.55),0 0 90px rgba(255,212,90,.08),inset 0 1px 0 rgba(255,255,255,.11)}
+.maxess-treasure{position:relative;margin:clamp(34px,5vw,72px) 0 12px;padding:clamp(28px,5vw,62px);border:1px solid rgba(255,212,90,.34);border-radius:34px;overflow:hidden;background:radial-gradient(circle at 50% -10%,rgba(255,212,90,.16),transparent 34%),radial-gradient(circle at 0% 80%,rgba(84,36,181,.10),transparent 35%),linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.012) 45%,rgba(138,92,255,.035));box-shadow:0 34px 100px rgba(0,0,0,.55),0 0 90px rgba(255,212,90,.08),inset 0 1px 0 rgba(255,255,255,.11)}
 .maxess-treasure::before{content:"";position:absolute;inset:-35%;pointer-events:none;background:conic-gradient(from 180deg,transparent,rgba(255,212,90,.08),transparent 30%,rgba(138,92,255,.08),transparent 65%);animation:maxessTreasureSpin 18s linear infinite}
 @keyframes maxessTreasureSpin{to{transform:rotate(360deg)}}
 .maxess-treasure-inner{position:relative;z-index:1;max-width:1080px;margin:auto;text-align:center}
@@ -2841,6 +2844,7 @@ button:disabled{
 
 
 
+
 /* =========================================================
    MAXESS AAA V3 — VISIBLE CRAFT PASS
 ========================================================= */
@@ -2921,6 +2925,127 @@ button:disabled{
   .aaa-guidance{font-size:10px;margin-top:9px;padding:0 12px}
 }
 @media(prefers-reduced-motion:reduce){.answer:hover{transform:none;}}
+
+
+/* =========================================================
+   MAXESS NAYA MASTERS BRAND SYSTEM
+   Naya is the brand. The specialist is the mastery.
+========================================================= */
+.maxess-treasure{
+  background:
+    radial-gradient(circle at 50% -8%,rgba(138,92,255,.17),transparent 34%),
+    radial-gradient(circle at 12% 80%,rgba(84,36,181,.10),transparent 30%),
+    linear-gradient(145deg,#09070d,#030306 72%);
+  border-color:rgba(184,149,255,.27);
+  box-shadow:0 34px 100px rgba(0,0,0,.62),0 0 90px rgba(138,92,255,.10),inset 0 1px 0 rgba(255,255,255,.08);
+}
+.maxess-treasure::before{opacity:.45;}
+.maxess-treasure-kicker{color:#b895ff;}
+.maxess-treasure-title span{
+  background:linear-gradient(90deg,#fff,#d9c7ff,#8a5cff,#fff);
+  background-size:220% auto;
+}
+.maxess-value-line{margin-bottom:34px;}
+.maxess-value-chip{
+  border-color:rgba(184,149,255,.18);
+  background:rgba(138,92,255,.045);
+  color:#dcd4eb;
+}
+.maxess-expert-header{margin:46px 0 22px;text-align:center;}
+.maxess-expert-header h4{font-size:clamp(24px,3vw,34px);color:#fff;}
+.maxess-expert-header p{max-width:760px;margin:0 auto;color:#aaa5b3;font-size:14px;}
+.maxess-expert-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:14px;
+  text-align:left;
+}
+.maxess-expert-card{
+  position:relative;
+  min-height:178px;
+  padding:19px 18px 18px;
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:26px;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 20% 10%,rgba(138,92,255,.12),transparent 46%),
+    linear-gradient(145deg,rgba(255,255,255,.045),rgba(255,255,255,.012) 58%,rgba(52,24,104,.08));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.055),0 15px 34px rgba(0,0,0,.30);
+  transition:transform .22s var(--ease),border-color .22s ease,box-shadow .22s ease;
+}
+.maxess-expert-card::after{
+  content:"NAYA";
+  position:absolute;
+  right:15px;
+  top:13px;
+  color:rgba(184,149,255,.20);
+  font-size:8px;
+  letter-spacing:.18em;
+  font-weight:1000;
+}
+.maxess-expert-card:hover{
+  transform:translateY(-4px);
+  border-color:rgba(184,149,255,.34);
+  box-shadow:0 18px 40px rgba(0,0,0,.38),0 0 28px rgba(138,92,255,.11);
+}
+.maxess-expert-icon{
+  width:58px;
+  height:58px;
+  margin:0 0 17px;
+  display:grid;
+  place-items:center;
+  border-radius:18px;
+  background:
+    radial-gradient(circle at 30% 18%,#fff 0%,#d8c6ff 11%,#9b74ff 36%,#4a2298 68%,#0d0718 100%);
+  border:1px solid rgba(255,255,255,.72);
+  box-shadow:inset 0 2px 5px rgba(255,255,255,.72),0 0 26px rgba(138,92,255,.22),0 10px 18px rgba(0,0,0,.45);
+  color:#fff;
+  font-size:19px;
+  font-weight:1000;
+  letter-spacing:.02em;
+}
+.maxess-expert-name{
+  max-width:86%;
+  color:#fff;
+  font-size:16px;
+  line-height:1.12;
+  font-weight:950;
+  letter-spacing:-.015em;
+}
+.maxess-expert-type{
+  margin-top:9px;
+  color:#a99fb7;
+  font-size:10px;
+  line-height:1.4;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  font-weight:850;
+}
+.maxess-expert-card .naya-master-label{
+  display:block;
+  margin-top:7px;
+  color:#b895ff;
+  font-size:10px;
+  font-weight:900;
+}
+.maxess-three-step{grid-template-columns:repeat(3,1fr);gap:15px;}
+.maxess-step-card{
+  padding:24px;
+  border-color:rgba(184,149,255,.16);
+  background:linear-gradient(145deg,rgba(138,92,255,.065),rgba(255,255,255,.012));
+}
+.maxess-step-no{color:#b895ff;}
+.maxess-offer{
+  border-color:rgba(184,149,255,.28);
+  background:linear-gradient(145deg,rgba(138,92,255,.10),rgba(70,37,130,.07) 58%,rgba(0,0,0,.18));
+  box-shadow:0 0 55px rgba(138,92,255,.09),inset 0 1px 0 rgba(255,255,255,.08);
+}
+.maxess-offer-badge{background:rgba(138,92,255,.10);border-color:rgba(184,149,255,.24);color:#d8c7ff;}
+.maxess-cta-primary{color:#fff;background:linear-gradient(180deg,#7f55ea,#5a2cb8);box-shadow:0 15px 38px rgba(92,47,190,.24),0 0 28px rgba(138,92,255,.13);}
+.maxess-cta-secondary{border-color:rgba(184,149,255,.42)!important;}
+.maxess-ecosystem img{opacity:.95;filter:drop-shadow(0 0 18px rgba(138,92,255,.20));}
+@media(max-width:900px){.maxess-expert-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
+@media(max-width:620px){.maxess-expert-grid{grid-template-columns:1fr;gap:10px}.maxess-expert-card{min-height:150px;padding:17px}.maxess-expert-icon{width:52px;height:52px;margin-bottom:14px}.maxess-expert-name{font-size:15px}.maxess-expert-header{margin-top:38px}}
 
 </style>
 </head>
@@ -6205,8 +6330,8 @@ document.addEventListener("keydown", event=>{
     const experts=[...specialized,...core].slice(0,21);
     const fallback=["Naya Architect","Naya Writer","Naya Designer","Naya Video","Naya Researcher","Naya Marketer","Naya Strategist"];
     while(experts.length<21){experts.splice(Math.max(0,experts.length-3),0,{name:fallback[experts.length%fallback.length],type:"Specialized Naya"});}
-    const iconFor=(name)=>{const letters=String(name).replace(/^Naya\s*/i,"").trim().split(/\s+/).filter(Boolean).slice(0,2).map(x=>x[0]).join("").toUpperCase();return letters||"N";};
-    const cards=experts.map((e)=>`<article class="maxess-expert-card"><div class="maxess-expert-icon" aria-hidden="true">${escapeHtmlSafe(iconFor(e.name))}</div><div class="maxess-expert-name">${escapeHtmlSafe(e.name)}</div><div class="maxess-expert-type">${escapeHtmlSafe(e.type)}</div></article>`).join("");
+    const iconFor=(name)=>{const words=String(name).replace(/^Naya\s*/i,"").split(/\s+/).filter(w=>w.length>2 && !/^Master$/i.test(w));const letters=words.slice(0,2).map(x=>x[0]).join("").toUpperCase();return letters||"NY";};
+    const cards=experts.map((e)=>`<article class="maxess-expert-card"><div class="maxess-expert-icon" aria-hidden="true">${escapeHtmlSafe(iconFor(e.name))}</div><div class="maxess-expert-name">${escapeHtmlSafe(e.name)}</div><div class="naya-master-label">NAYA · MASTER SPECIALIST</div><div class="maxess-expert-type">${escapeHtmlSafe(e.type)}</div></article>`).join("");
     const offer=document.createElement("section");
     offer.className="maxess-treasure results-v4-reveal";
     offer.setAttribute("aria-labelledby","maxessTreasureTitle");
