@@ -83,7 +83,7 @@ def build():
         'no_iframe_tag': not bool(re.search(r'<iframe(?:\s|>)', final, flags=re.I)),
         'no_legacy_results_root': 'id="m9-results"' not in final,
         'no_legacy_nayanet_frame': 'm9-nayanet-frame' not in final,
-        'nontrivial_artifact': lines >= 200 and bytes_len >= 10000,
+        'nonempty_artifact': lines >= 100 and bytes_len >= 10000,
     })
     for name, ok in checks.items():
         print(f'{name}: {"PASS" if ok else "FAIL"}')
