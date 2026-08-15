@@ -67,6 +67,9 @@ jobs:
       - name: Rebuild Results Experience from clean slate
         run: python3 tools/results_experience_clean_slate.py
 
+      - name: Refine canonical opening hierarchy
+        run: python3 tools/results_experience_opening_refinement.py
+
       - name: Verify generated MAXESS source
         run: |
           python3 - <<'PY'
@@ -87,12 +90,10 @@ jobs:
           assert 'MAXESS RESULTS EXPERIENCE OSCAR FINAL' in s
           assert 'MAXESS RESULTS EXPERIENCE AAA AUDIT PASS' in s
           assert 'MAXESS RESULTS EXPERIENCE CLEAN SLATE' in s
-          assert 'cr-thermometer' in s
-          assert 'cr-analysis' in s
-          assert 'cr-signature' in s
-          assert 'cr-naya' in s
-          assert 'cr-masterkey' in s
-          assert 'cr-next' in s
+          assert 'MAXESS RESULTS EXPERIENCE OPENING REFINEMENT' in s
+          assert 'cr-speedometer' in s
+          assert 'cr-opening' in s
+          assert 'HOW YOU WORK WITH AI' in s
           scripts=re.findall(r'<script(?:\s[^>]*)?>([\s\S]*?)</script>', s, flags=re.I)
           assert scripts, 'application scripts missing'
           Path('/tmp/maxess-scripts').mkdir(exist_ok=True)
