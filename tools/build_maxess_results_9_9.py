@@ -1,456 +1,153 @@
 from pathlib import Path
+import re
 
 SOURCE = Path('MAXESS-RESULTS-AAA-FULL.html')
 OUTPUT = Path('MAXESS-RESULTS-10-GROOVE.html')
 MARKER = 'MAXESS_RESULTS_9_9_TRANSFORMATION'
 
-STYLE = r'''
-<style id="MAXESS_RESULTS_9_9_CSS">
-:root{--m9-bg:#040308;--m9-panel:#0b0911;--m9-text:#fbfaff;--m9-muted:#aaa5b6;--m9-line:rgba(255,255,255,.10);--m9-purple:#9a66ff;--m9-purple2:#c8a8ff;--m9-gold:#ffd866;--m9-green:#55e1aa;--m9-blue:#58aaff;--m9-pink:#ed68d7;--m9-max:1440px}
-body{background:radial-gradient(circle at 50% -12%,rgba(154,102,255,.24),transparent 34%),linear-gradient(180deg,#040308,#06040a 55%,#020203);color:var(--m9-text)}
-#m9-results{display:block;position:relative;z-index:999;min-height:100vh;background:radial-gradient(circle at 50% 0,rgba(154,102,255,.12),transparent 35%)}
-#m9-results .m9-wrap{width:min(var(--m9-max),calc(100% - 44px));margin:auto}
+# Existing source is the baseline. This build adds the 9.9 transformation layer
+# without rewriting or deleting the underlying legacy source, preserving rollback.
+STYLE = r'''<style id="MAXESS_RESULTS_9_9_CSS">/* 9.9 styling is injected by this build. */
+#m9-results{display:block;position:relative;z-index:999;min-height:100vh;background:radial-gradient(circle at 50% 0,rgba(154,102,255,.12),transparent 35%);color:#fbfaff;font-family:Inter,ui-sans-serif,system-ui,sans-serif}
+#m9-results .m9-wrap{width:min(1440px,calc(100% - 44px));margin:auto}
 #m9-results .m9-section{padding:112px 0}
 #m9-results .m9-eyebrow{font-size:10px;font-weight:950;letter-spacing:.20em;text-transform:uppercase;color:#c9a8ff}
-#m9-results .m9-top{min-height:68px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--m9-line)}
-#m9-results .m9-brand{font-size:19px;font-weight:950;letter-spacing:.13em}
-#m9-results .m9-brand span{color:var(--m9-purple2)}
+#m9-results .m9-top{min-height:68px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.1)}
+#m9-results .m9-brand{font-size:19px;font-weight:950;letter-spacing:.13em}.m9-brand span{color:#c8a8ff}
 #m9-results .m9-top-status{font-size:9px;color:#80798a;letter-spacing:.15em;text-transform:uppercase;font-weight:900}
 #m9-results .m9-hero{min-height:calc(100svh - 68px);display:grid;grid-template-columns:1.04fr .96fr;gap:68px;align-items:center;padding:78px 0 100px}
 #m9-results h1{margin:0;font-size:clamp(58px,7.6vw,112px);line-height:.88;letter-spacing:-.075em;font-weight:950}
 #m9-results .m9-gradient{background:linear-gradient(110deg,#fff,#eadbff 38%,#a768ff 75%,#fff);-webkit-background-clip:text;background-clip:text;color:transparent}
-#m9-results .m9-lede{max-width:730px;margin-top:25px;color:var(--m9-muted);font-size:18px;line-height:1.65}
-#m9-results .m9-hero-note{max-width:690px;margin-top:13px;color:#766f81;font-size:11px;line-height:1.6}
+#m9-results .m9-lede{max-width:730px;margin-top:25px;color:#aaa5b6;font-size:18px;line-height:1.65}
 #m9-results .m9-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
-#m9-results .m9-btn{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 20px;border:1px solid var(--m9-line);border-radius:15px;font-size:11px;font-weight:950;text-decoration:none;transition:.22s transform,.22s box-shadow,.22s border-color}
-#m9-results .m9-btn:hover{transform:translateY(-2px);box-shadow:0 17px 38px rgba(0,0,0,.32);border-color:rgba(200,168,255,.45)}
-#m9-results .m9-btn.primary{background:linear-gradient(135deg,#fff,#d8bbff);color:#160c22;border-color:#fff}
-#m9-results .m9-btn.dark{background:rgba(255,255,255,.035);color:#fff}
+#m9-results .m9-btn{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 20px;border:1px solid rgba(255,255,255,.1);border-radius:15px;font-size:11px;font-weight:950;text-decoration:none}
+#m9-results .m9-btn.primary{background:linear-gradient(135deg,#fff,#d8bbff);color:#160c22;border-color:#fff}.m9-btn.dark{background:rgba(255,255,255,.035);color:#fff}
 #m9-results .m9-score-orbit{width:min(510px,86vw);aspect-ratio:1;display:grid;place-items:center;position:relative;margin:auto}
-#m9-results .m9-score-orbit:before{content:"";position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle,rgba(154,102,255,.22),transparent 65%);filter:blur(14px)}
-#m9-results .m9-score-ring{position:absolute;inset:5%;border-radius:50%;border:1px solid rgba(200,168,255,.18);transform:rotate(-12deg)}
-#m9-results .m9-score-ring.two{inset:14%;border-style:dashed;transform:rotate(25deg)}
+#m9-results .m9-score-ring{position:absolute;inset:5%;border-radius:50%;border:1px solid rgba(200,168,255,.18)}
+#m9-results .m9-score-ring.two{inset:14%;border-style:dashed}
 #m9-results .m9-score-core{width:62%;aspect-ratio:1;border-radius:50%;position:relative;display:grid;place-items:center;text-align:center;background:radial-gradient(circle at 35% 20%,#23162f,#08070b 65%,#030305);border:1px solid rgba(210,181,255,.28);box-shadow:inset 0 0 55px rgba(154,102,255,.12),0 0 95px rgba(154,102,255,.18)}
-#m9-results .m9-score{font-size:clamp(92px,12vw,165px);line-height:.82;letter-spacing:-.09em;font-weight:950}
-#m9-results .m9-score small{font-size:.27em;color:#7c7486;vertical-align:top;margin-left:5px}
+#m9-results .m9-score{font-size:clamp(92px,12vw,165px);line-height:.82;letter-spacing:-.09em;font-weight:950}.m9-score small{font-size:.27em;color:#7c7486;vertical-align:top;margin-left:5px}
 #m9-results .m9-score-label{margin-top:15px;font-size:8px;font-weight:950;letter-spacing:.18em;color:#777080;text-transform:uppercase}
 #m9-results .m9-band{display:inline-flex;gap:7px;align-items:center;margin-top:16px;padding:8px 12px;border-radius:999px;border:1px solid rgba(200,168,255,.25);color:#d7bbff;background:rgba(154,102,255,.06);font-size:9px;font-weight:950;letter-spacing:.14em;text-transform:uppercase}
-#m9-results .m9-band i{width:7px;height:7px;border-radius:50%;background:var(--m9-purple2);box-shadow:0 0 13px var(--m9-purple)}
-#m9-results .m9-card{border:1px solid var(--m9-line);border-radius:30px;background:linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.012));box-shadow:0 28px 90px rgba(0,0,0,.46);overflow:hidden}
-#m9-results .m9-profile{display:grid;grid-template-columns:1.12fr .88fr;gap:16px}
-#m9-results .m9-profile-main{min-height:350px;padding:44px;display:flex;flex-direction:column;justify-content:center;position:relative}
-#m9-results .m9-profile-main:after{content:"";position:absolute;width:370px;height:370px;right:-160px;top:-160px;border-radius:50%;background:radial-gradient(circle,rgba(154,102,255,.18),transparent 68%);filter:blur(8px)}
-#m9-results .m9-profile-title{position:relative;font-size:clamp(43px,5vw,72px);line-height:.93;letter-spacing:-.065em;font-weight:950}
-#m9-results .m9-profile-copy{position:relative;max-width:760px;margin-top:18px;color:var(--m9-muted);font-size:16px;line-height:1.65}
-#m9-results .m9-stats{padding:14px;display:grid;gap:10px}
-#m9-results .m9-stat{padding:21px;border-radius:19px;border:1px solid rgba(255,255,255,.08);background:#07060a}
-#m9-results .m9-stat span{display:block;color:#777080;font-size:8px;font-weight:950;letter-spacing:.14em;text-transform:uppercase}
-#m9-results .m9-stat strong{display:block;margin-top:7px;font-size:22px}
-#m9-results .m9-stat p{margin:5px 0 0;color:#a19aaa;font-size:12px;line-height:1.5}
-#m9-results .m9-head{max-width:900px;margin-bottom:42px}
-#m9-results .m9-head h2{margin:10px 0 0;font-size:clamp(44px,5.3vw,78px);line-height:.93;letter-spacing:-.065em;font-weight:950}
-#m9-results .m9-head p{max-width:750px;margin:16px 0 0;color:var(--m9-muted);font-size:16px;line-height:1.65}
-#m9-results .m9-head.center{text-align:center;margin-inline:auto}
-#m9-results .m9-head.center p{margin-inline:auto}
-#m9-results .m9-characters{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
-#m9-results .m9-character{padding:1px;border-radius:24px;background:linear-gradient(145deg,color-mix(in srgb,var(--c) 55%,transparent),rgba(255,255,255,.05));box-shadow:0 24px 65px rgba(0,0,0,.32)}
-#m9-results .m9-character-inner{height:100%;min-height:340px;padding:21px;border-radius:23px;background:linear-gradient(145deg,rgba(255,255,255,.055),rgba(0,0,0,.2));display:flex;flex-direction:column}
-#m9-results .m9-dot{width:12px;height:12px;border-radius:50%;background:var(--c);box-shadow:0 0 16px var(--c)}
-#m9-results .m9-character h3{margin:20px 0 0;font-size:23px;line-height:1;font-weight:950;letter-spacing:-.035em}
-#m9-results .m9-character-score{margin-top:17px;color:var(--c);font-size:58px;line-height:.86;font-weight:950;letter-spacing:-.08em}
-#m9-results .m9-character-score small{font-size:12px;color:#756e80;letter-spacing:0}
-#m9-results .m9-character-tier{margin-top:9px;color:#fff;font-size:8px;font-weight:950;letter-spacing:.14em;text-transform:uppercase}
-#m9-results .m9-character-description{margin-top:auto;padding-top:18px;color:#a9a2b1;font-size:11px;line-height:1.5}
-#m9-results .m9-character-insight{margin-top:9px;color:#fff;font-size:11px;line-height:1.48}
-#m9-results .m9-fingerprint{display:grid;grid-template-columns:1.14fr .86fr;gap:18px;align-items:center}
-#m9-results .m9-radar-card{min-height:590px;display:grid;place-items:center;position:relative}
-#m9-results .m9-radar-card canvas{width:min(640px,95%);height:min(640px,95%)}
-#m9-results .m9-radar-center{position:absolute;text-align:center;pointer-events:none}
-#m9-results .m9-radar-center span{display:block;color:#766f81;font-size:8px;font-weight:950;letter-spacing:.17em}
-#m9-results .m9-radar-center strong{display:block;margin:7px 0;font-size:42px;line-height:.9;font-weight:950}
-#m9-results .m9-radar-center small{color:#766f81;font-size:8px;font-weight:950;letter-spacing:.17em}
-#m9-results .m9-legend{display:grid;gap:9px}
-#m9-results .m9-legend-row{display:grid;grid-template-columns:10px 1fr auto;gap:11px;align-items:center;padding:14px 16px;border:1px solid rgba(255,255,255,.08);border-radius:16px;background:#07060a}
-#m9-results .m9-legend-dot{width:8px;height:8px;border-radius:50%;background:var(--c);box-shadow:0 0 12px var(--c)}
-#m9-results .m9-legend-row strong{font-size:12px}.m9-legend-score{color:#a9a2b1;font-size:12px}
-#m9-results .m9-details{display:grid;gap:10px}
-#m9-results .m9-detail{padding:22px;border:1px solid var(--m9-line);border-radius:20px;background:rgba(255,255,255,.022)}
-#m9-results .m9-detail-top{display:flex;justify-content:space-between;gap:15px}
-#m9-results .m9-detail-name{font-size:18px;font-weight:950}.m9-detail-score{color:var(--c);font-size:23px;font-weight:950}
-#m9-results .m9-bar{height:6px;margin-top:12px;border-radius:999px;background:rgba(255,255,255,.06);overflow:hidden}.m9-bar i{display:block;height:100%;width:calc(var(--v)*1%);background:linear-gradient(90deg,var(--c),#fff);border-radius:inherit}
-#m9-results .m9-detail-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;margin-top:14px}
-#m9-results .m9-detail-grid div{padding:12px;border-radius:14px;border:1px solid rgba(255,255,255,.07);background:#07060a}
-#m9-results .m9-detail-grid span{display:block;color:#766f81;font-size:8px;font-weight:950;letter-spacing:.13em;text-transform:uppercase}
-#m9-results .m9-detail-grid strong{display:block;margin-top:6px;color:#fff;font-size:11px;line-height:1.47}
-#m9-results .m9-leverage{display:grid;grid-template-columns:1fr 1fr;gap:15px}
-#m9-results .m9-leverage-card{min-height:340px;padding:40px;border-radius:30px;border:1px solid var(--m9-line);background:#08070b;position:relative;overflow:hidden}
-#m9-results .m9-leverage-card:after{content:"";position:absolute;right:-100px;bottom:-100px;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,var(--glow),transparent 68%);opacity:.12;filter:blur(10px)}
-#m9-results .m9-leverage-card>*{position:relative;z-index:1}
-#m9-results .m9-leverage-label{color:#766f81;font-size:9px;font-weight:950;letter-spacing:.15em;text-transform:uppercase}
-#m9-results .m9-leverage-name{margin-top:12px;font-size:clamp(36px,4.5vw,62px);line-height:.93;letter-spacing:-.06em;font-weight:950}
-#m9-results .m9-leverage-score{margin-top:23px;color:var(--accent);font-size:68px;line-height:.85;letter-spacing:-.08em;font-weight:950}
-#m9-results .m9-leverage-copy{max-width:720px;margin-top:12px;color:var(--m9-muted);font-size:14px;line-height:1.65}
-#m9-results .m9-action-pill{display:inline-flex;margin-top:17px;padding:8px 11px;border-radius:999px;border:1px solid color-mix(in srgb,var(--accent) 35%,transparent);color:color-mix(in srgb,var(--accent) 70%,white);font-size:9px;font-weight:950;letter-spacing:.12em;text-transform:uppercase}
-#m9-results .m9-insight{padding:clamp(34px,6vw,78px);border:1px solid rgba(190,156,255,.28);border-radius:36px;background:radial-gradient(circle at 50% 0,rgba(154,102,255,.17),transparent 55%),linear-gradient(145deg,rgba(255,255,255,.045),rgba(255,255,255,.012));box-shadow:var(--m9-shadow,0 28px 90px rgba(0,0,0,.46));position:relative;overflow:hidden}
-#m9-results .m9-insight h2{max-width:1120px;margin:14px 0 0;font-size:clamp(40px,5vw,73px);line-height:1.01;letter-spacing:-.055em;font-weight:950}
-#m9-results .m9-insight-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:35px}
-#m9-results .m9-insight-box{min-height:210px;padding:20px;border:1px solid rgba(255,255,255,.08);border-radius:17px;background:#07060a}
-#m9-results .m9-insight-box span{color:#766f81;font-size:8px;font-weight:950;letter-spacing:.15em;text-transform:uppercase}.m9-insight-box strong{display:block;margin-top:10px;font-size:12px;line-height:1.55}
-#m9-results .m9-next{display:grid;grid-template-columns:1.15fr .85fr;gap:15px}
-#m9-results .m9-next-main,#m9-results .m9-next-side{padding:38px;border:1px solid var(--m9-line);border-radius:30px;background:#08070b;box-shadow:var(--m9-shadow,0 28px 90px rgba(0,0,0,.46))}
-#m9-results .m9-next-main h2{margin:10px 0 0;font-size:clamp(42px,5vw,72px);line-height:.93;letter-spacing:-.06em;font-weight:950}
-#m9-results .m9-next-main p{max-width:760px;color:var(--m9-muted);font-size:15px;line-height:1.65}
-#m9-results .m9-next-side{display:flex;flex-direction:column;justify-content:center;gap:7px}.m9-next-side span{color:#766f81;font-size:8px;font-weight:950;letter-spacing:.15em}.m9-next-side strong{font-size:23px;margin-bottom:13px}
-#m9-results .m9-library{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-#m9-results .m9-area{min-height:280px;padding:1px;border-radius:23px;background:linear-gradient(145deg,color-mix(in srgb,var(--c) 50%,transparent),rgba(255,255,255,.05));box-shadow:0 20px 55px rgba(0,0,0,.28)}
-#m9-results .m9-area-inner{height:100%;padding:21px;border-radius:22px;background:linear-gradient(145deg,rgba(255,255,255,.05),rgba(0,0,0,.24));display:flex;flex-direction:column;justify-content:space-between}
-#m9-results .m9-area-head{display:flex;justify-content:space-between;align-items:center;gap:10px}.m9-area-icon{width:35px;height:35px;display:grid;place-items:center;border-radius:11px;border:1px solid color-mix(in srgb,var(--c) 38%,transparent);color:var(--c);font-weight:950;background:#07060a}
-#m9-results .m9-area-priority{font-size:8px;font-weight:950;letter-spacing:.12em;color:#766f81}.m9-area-priority.hot{color:var(--c)}
-#m9-results .m9-area h3{margin:18px 0 8px;font-size:22px;line-height:1.03;letter-spacing:-.035em;font-weight:950}.m9-area p{margin:0;color:#aaa5b6;font-size:11px;line-height:1.55}
-#m9-results .m9-area-score{display:flex;justify-content:space-between;color:#766f81;font-size:9px;margin-top:15px}.m9-area-bar{height:5px;margin-top:6px;border-radius:99px;background:rgba(255,255,255,.06);overflow:hidden}.m9-area-bar i{display:block;height:100%;width:calc(var(--v)*1%);background:var(--c)}
-#m9-results .m9-area-foot{margin-top:11px;color:#fff;font-size:9px;font-weight:850}
-#m9-results .m9-roles{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.m9-role{min-height:290px;padding:28px;border:1px solid var(--m9-line);border-radius:27px;background:linear-gradient(145deg,rgba(255,255,255,.048),rgba(0,0,0,.22));position:relative;overflow:hidden}.m9-role:after{content:"";position:absolute;right:-100px;bottom:-100px;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,var(--c),transparent 68%);opacity:.11}
-#m9-results .m9-role>*{position:relative;z-index:1}.m9-role-icon{width:45px;height:45px;display:grid;place-items:center;border:1px solid color-mix(in srgb,var(--c) 38%,transparent);border-radius:14px;color:var(--c);font-size:19px;font-weight:950}.m9-role h3{margin:20px 0 8px;font-size:28px;line-height:1;font-weight:950}.m9-role p{margin:0;color:#aaa5b6;font-size:12px;line-height:1.6}.m9-role-foot{margin-top:20px;color:#fff;font-size:9px;font-weight:850}
-#m9-results .m9-method{padding:40px;border:1px solid var(--m9-line);border-radius:32px;background:rgba(255,255,255,.025)}.m9-method-steps{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-top:30px}.m9-step{min-height:145px;padding:16px 10px;border:1px solid rgba(255,255,255,.08);border-radius:16px;background:#07060a;text-align:center}.m9-step span{display:block;color:#766f81;font-size:8px;font-weight:950;letter-spacing:.13em}.m9-step strong{display:block;margin-top:9px;font-size:11px;font-weight:950}.m9-step p{margin:7px 0 0;color:#aaa5b6;font-size:9px;line-height:1.45}
-#m9-results .m9-naya{display:grid;grid-template-columns:.86fr 1.14fr;border:1px solid var(--m9-line);border-radius:35px;overflow:hidden;background:#08070b;box-shadow:var(--m9-shadow,0 28px 90px rgba(0,0,0,.46))}.m9-naya-art{min-height:470px;display:grid;place-items:center;background:radial-gradient(circle,rgba(154,102,255,.18),transparent 62%),#07060a;position:relative}.m9-naya-orb{width:min(280px,56vw);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 30% 20%,#fff,#e3d2ff 10%,#9b68ff 38%,#291055 74%,#09040f);border:1px solid rgba(255,255,255,.7);box-shadow:inset 0 8px 18px rgba(255,255,255,.44),0 0 105px rgba(154,102,255,.36)}
-#m9-results .m9-naya-copy{padding:clamp(30px,5vw,66px);display:flex;flex-direction:column;justify-content:center}.m9-naya-copy h2{margin:10px 0 0;font-size:clamp(40px,5vw,69px);line-height:.94;letter-spacing:-.065em;font-weight:950}.m9-naya-copy p{max-width:720px;color:#aaa5b6;font-size:14px;line-height:1.65;margin:18px 0 0}.m9-pills{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px}.m9-pill{padding:7px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.09);color:#888091;font-size:8px;font-weight:950;letter-spacing:.11em;text-transform:uppercase}
-#m9-results .m9-nayanet{padding-top:20px}.m9-nayanet-shell{border:1px solid rgba(200,168,255,.26);border-radius:35px;overflow:hidden;box-shadow:var(--m9-shadow,0 28px 90px rgba(0,0,0,.46))}.m9-nayanet-head,.m9-nayanet-foot{padding:23px 27px;display:flex;align-items:center;justify-content:space-between;gap:16px;background:rgba(255,255,255,.025);border-bottom:1px solid var(--m9-line)}.m9-nayanet-foot{border-top:1px solid var(--m9-line);border-bottom:0}.m9-nayanet-head h3{margin:5px 0 0;font-size:25px}.m9-nayanet-head p,.m9-nayanet-foot p{margin:4px 0 0;color:#aaa5b6;font-size:11px;line-height:1.55}.m9-nayanet-frame{display:block;width:100%;height:min(780px,78vh);min-height:560px;border:0;background:#030204}
+#m9-results .m9-band i{width:7px;height:7px;border-radius:50%;background:#c8a8ff;box-shadow:0 0 13px #9a66ff}
+#m9-results .m9-card{border:1px solid rgba(255,255,255,.1);border-radius:30px;background:linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.012));box-shadow:0 28px 90px rgba(0,0,0,.46);overflow:hidden}
+#m9-results .m9-profile{display:grid;grid-template-columns:1.12fr .88fr;gap:16px}.m9-profile-main{min-height:350px;padding:44px;display:flex;flex-direction:column;justify-content:center;position:relative}.m9-profile-title{position:relative;font-size:clamp(43px,5vw,72px);line-height:.93;letter-spacing:-.065em;font-weight:950}.m9-profile-copy{position:relative;max-width:760px;margin-top:18px;color:#aaa5b6;font-size:16px;line-height:1.65}
+#m9-results .m9-stats{padding:14px;display:grid;gap:10px}.m9-stat{padding:21px;border-radius:19px;border:1px solid rgba(255,255,255,.08);background:#07060a}.m9-stat span{display:block;color:#777080;font-size:8px;font-weight:950;letter-spacing:.14em;text-transform:uppercase}.m9-stat strong{display:block;margin-top:7px;font-size:22px}.m9-stat p{margin:5px 0 0;color:#a19aaa;font-size:12px;line-height:1.5}
+#m9-results .m9-head{max-width:900px;margin-bottom:42px}.m9-head h2{margin:10px 0 0;font-size:clamp(44px,5.3vw,78px);line-height:.93;letter-spacing:-.065em;font-weight:950}.m9-head p{max-width:750px;margin:16px 0 0;color:#aaa5b6;font-size:16px;line-height:1.65}.m9-head.center{text-align:center;margin-inline:auto}.m9-head.center p{margin-inline:auto}
+#m9-results .m9-characters{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}.m9-character{padding:1px;border-radius:24px;background:linear-gradient(145deg,color-mix(in srgb,var(--c) 55%,transparent),rgba(255,255,255,.05))}.m9-character-inner{height:100%;min-height:340px;padding:21px;border-radius:23px;background:linear-gradient(145deg,rgba(255,255,255,.055),rgba(0,0,0,.2));display:flex;flex-direction:column}.m9-dot{width:12px;height:12px;border-radius:50%;background:var(--c);box-shadow:0 0 16px var(--c)}.m9-character h3{margin:20px 0 0;font-size:23px;line-height:1;font-weight:950;letter-spacing:-.035em}.m9-character-score{margin-top:17px;color:var(--c);font-size:58px;line-height:.86;font-weight:950;letter-spacing:-.08em}.m9-character-score small{font-size:12px;color:#756e80;letter-spacing:0}.m9-character-tier{margin-top:9px;color:#fff;font-size:8px;font-weight:950;letter-spacing:.14em;text-transform:uppercase}.m9-character-description{margin-top:auto;padding-top:18px;color:#a9a2b1;font-size:11px;line-height:1.5}.m9-character-insight{margin-top:9px;color:#fff;font-size:11px;line-height:1.48}
+#m9-results .m9-fingerprint{display:grid;grid-template-columns:1.14fr .86fr;gap:18px;align-items:center}.m9-radar-card{min-height:590px;display:grid;place-items:center;position:relative}.m9-radar-card canvas{width:min(640px,95%);height:min(640px,95%)}.m9-radar-center{position:absolute;text-align:center;pointer-events:none}.m9-radar-center span{display:block;color:#766f81;font-size:8px;font-weight:950;letter-spacing:.17em}.m9-radar-center strong{display:block;margin:7px 0;font-size:42px;line-height:.9;font-weight:950}.m9-radar-center small{color:#766f81;font-size:8px;font-weight:950;letter-spacing:.17em}.m9-legend{display:grid;gap:9px}.m9-legend-row{display:grid;grid-template-columns:10px 1fr auto;gap:11px;align-items:center;padding:14px 16px;border:1px solid rgba(255,255,255,.08);border-radius:16px;background:#07060a}.m9-legend-dot{width:8px;height:8px;border-radius:50%;background:var(--c);box-shadow:0 0 12px var(--c)}.m9-legend-row strong{font-size:12px}.m9-legend-score{color:#a9a2b1;font-size:12px}
+#m9-results .m9-details{display:grid;gap:10px}.m9-detail{padding:22px;border:1px solid rgba(255,255,255,.1);border-radius:20px;background:rgba(255,255,255,.022)}.m9-detail-top{display:flex;justify-content:space-between;gap:15px}.m9-detail-name{font-size:18px;font-weight:950}.m9-detail-score{color:var(--c);font-size:23px;font-weight:950}.m9-bar{height:6px;margin-top:12px;border-radius:999px;background:rgba(255,255,255,.06);overflow:hidden}.m9-bar i{display:block;height:100%;width:calc(var(--v)*1%);background:linear-gradient(90deg,var(--c),#fff);border-radius:inherit}.m9-detail-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;margin-top:14px}.m9-detail-grid div{padding:12px;border-radius:14px;border:1px solid rgba(255,255,255,.07);background:#07060a}.m9-detail-grid span{display:block;color:#766f81;font-size:8px;font-weight:950;letter-spacing:.13em;text-transform:uppercase}.m9-detail-grid strong{display:block;margin-top:6px;color:#fff;font-size:11px;line-height:1.47}
+#m9-results .m9-leverage{display:grid;grid-template-columns:1fr 1fr;gap:15px}.m9-leverage-card{min-height:340px;padding:40px;border-radius:30px;border:1px solid rgba(255,255,255,.1);background:#08070b;position:relative;overflow:hidden}.m9-leverage-label{color:#766f81;font-size:9px;font-weight:950;letter-spacing:.15em;text-transform:uppercase}.m9-leverage-name{margin-top:12px;font-size:clamp(36px,4.5vw,62px);line-height:.93;letter-spacing:-.06em;font-weight:950}.m9-leverage-score{margin-top:23px;color:var(--accent);font-size:68px;line-height:.85;letter-spacing:-.08em;font-weight:950}.m9-leverage-copy{max-width:720px;margin-top:12px;color:#aaa5b6;font-size:14px;line-height:1.65}.m9-action-pill{display:inline-flex;margin-top:17px;padding:8px 11px;border-radius:999px;border:1px solid color-mix(in srgb,var(--accent) 35%,transparent);color:color-mix(in srgb,var(--accent) 70%,white);font-size:9px;font-weight:950;letter-spacing:.12em;text-transform:uppercase}
+#m9-results .m9-insight{padding:clamp(34px,6vw,78px);border:1px solid rgba(190,156,255,.28);border-radius:36px;background:radial-gradient(circle at 50% 0,rgba(154,102,255,.17),transparent 55%),linear-gradient(145deg,rgba(255,255,255,.045),rgba(255,255,255,.012));position:relative;overflow:hidden}.m9-insight h2{margin:14px 0 0;font-size:clamp(40px,5vw,73px);line-height:1.01;letter-spacing:-.055em;font-weight:950}.m9-insight-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:35px}.m9-insight-box{min-height:210px;padding:20px;border:1px solid rgba(255,255,255,.08);border-radius:17px;background:#07060a}.m9-insight-box span{color:#766f81;font-size:8px;font-weight:950;letter-spacing:.15em;text-transform:uppercase}.m9-insight-box strong{display:block;margin-top:10px;font-size:12px;line-height:1.55}
+#m9-results .m9-next{display:grid;grid-template-columns:1.15fr .85fr;gap:15px}.m9-next-main,.m9-next-side{padding:38px;border:1px solid rgba(255,255,255,.1);border-radius:30px;background:#08070b}.m9-next-main h2{margin:10px 0 0;font-size:clamp(42px,5vw,72px);line-height:.93;letter-spacing:-.06em;font-weight:950}.m9-next-main p{max-width:760px;color:#aaa5b6;font-size:15px;line-height:1.65}.m9-next-side{display:flex;flex-direction:column;justify-content:center;gap:7px}.m9-next-side span{color:#766f81;font-size:8px;font-weight:950;letter-spacing:.15em}.m9-next-side strong{font-size:23px;margin-bottom:13px}
+#m9-results .m9-library{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.m9-area{min-height:280px;padding:1px;border-radius:23px;background:linear-gradient(145deg,color-mix(in srgb,var(--c) 50%,transparent),rgba(255,255,255,.05))}.m9-area-inner{height:100%;padding:21px;border-radius:22px;background:linear-gradient(145deg,rgba(255,255,255,.05),rgba(0,0,0,.24));display:flex;flex-direction:column;justify-content:space-between}.m9-area-head{display:flex;justify-content:space-between;align-items:center;gap:10px}.m9-area-icon{width:35px;height:35px;display:grid;place-items:center;border-radius:11px;border:1px solid color-mix(in srgb,var(--c) 38%,transparent);color:var(--c);font-weight:950;background:#07060a}.m9-area-priority{font-size:8px;font-weight:950;letter-spacing:.12em;color:#766f81}.m9-area-priority.hot{color:var(--c)}.m9-area h3{margin:18px 0 8px;font-size:22px;line-height:1.03;letter-spacing:-.035em;font-weight:950}.m9-area p{margin:0;color:#aaa5b6;font-size:11px;line-height:1.55}.m9-area-score{display:flex;justify-content:space-between;color:#766f81;font-size:9px;margin-top:15px}.m9-area-bar{height:5px;margin-top:6px;border-radius:99px;background:rgba(255,255,255,.06);overflow:hidden}.m9-area-bar i{display:block;height:100%;width:calc(var(--v)*1%);background:var(--c)}.m9-area-foot{margin-top:11px;color:#fff;font-size:9px;font-weight:850}
+#m9-results .m9-roles{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.m9-role{min-height:290px;padding:28px;border:1px solid rgba(255,255,255,.1);border-radius:27px;background:linear-gradient(145deg,rgba(255,255,255,.048),rgba(0,0,0,.22))}.m9-role-icon{width:45px;height:45px;display:grid;place-items:center;border:1px solid color-mix(in srgb,var(--c) 38%,transparent);border-radius:14px;color:var(--c);font-size:19px;font-weight:950}.m9-role h3{margin:20px 0 8px;font-size:28px;line-height:1;font-weight:950}.m9-role p{margin:0;color:#aaa5b6;font-size:12px;line-height:1.6}.m9-role-foot{margin-top:20px;color:#fff;font-size:9px;font-weight:850}
+#m9-results .m9-method{padding:40px;border:1px solid rgba(255,255,255,.1);border-radius:32px;background:rgba(255,255,255,.025)}.m9-method-steps{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-top:30px}.m9-step{min-height:145px;padding:16px 10px;border:1px solid rgba(255,255,255,.08);border-radius:16px;background:#07060a;text-align:center}.m9-step span{display:block;color:#766f81;font-size:8px;font-weight:950;letter-spacing:.13em}.m9-step strong{display:block;margin-top:9px;font-size:11px;font-weight:950}.m9-step p{margin:7px 0 0;color:#aaa5b6;font-size:9px;line-height:1.45}
+#m9-results .m9-naya{display:grid;grid-template-columns:.86fr 1.14fr;border:1px solid rgba(255,255,255,.1);border-radius:35px;overflow:hidden;background:#08070b}.m9-naya-art{min-height:470px;display:grid;place-items:center;background:radial-gradient(circle,rgba(154,102,255,.18),transparent 62%),#07060a}.m9-naya-orb{width:min(280px,56vw);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 30% 20%,#fff,#e3d2ff 10%,#9b68ff 38%,#291055 74%,#09040f);border:1px solid rgba(255,255,255,.7);box-shadow:inset 0 8px 18px rgba(255,255,255,.44),0 0 105px rgba(154,102,255,.36)}.m9-naya-copy{padding:clamp(30px,5vw,66px);display:flex;flex-direction:column;justify-content:center}.m9-naya-copy h2{margin:10px 0 0;font-size:clamp(40px,5vw,69px);line-height:.94;letter-spacing:-.065em;font-weight:950}.m9-naya-copy p{max-width:720px;color:#aaa5b6;font-size:14px;line-height:1.65;margin:18px 0 0}.m9-pills{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px}.m9-pill{padding:7px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.09);color:#888091;font-size:8px;font-weight:950;letter-spacing:.11em;text-transform:uppercase}
+#m9-results .m9-nayanet{padding-top:20px}.m9-nayanet-shell{border:1px solid rgba(200,168,255,.26);border-radius:35px;overflow:hidden}.m9-nayanet-head,.m9-nayanet-foot{padding:23px 27px;display:flex;align-items:center;justify-content:space-between;gap:16px;background:rgba(255,255,255,.025);border-bottom:1px solid rgba(255,255,255,.1)}.m9-nayanet-foot{border-top:1px solid rgba(255,255,255,.1);border-bottom:0}.m9-nayanet-head h3{margin:5px 0 0;font-size:25px}.m9-nayanet-head p,.m9-nayanet-foot p{margin:4px 0 0;color:#aaa5b6;font-size:11px;line-height:1.55}.m9-nayanet-frame{display:block;width:100%;height:min(780px,78vh);min-height:560px;border:0;background:#030204}
 #m9-results .m9-footer{padding:55px 0 75px;text-align:center;color:#706979;font-size:8px;font-weight:900;letter-spacing:.13em;text-transform:uppercase}
-#m9-results .m9-qa{display:none;position:fixed;right:14px;bottom:50px;width:min(650px,calc(100% - 28px));max-height:68vh;overflow:auto;z-index:100000;padding:17px;border:1px solid rgba(200,168,255,.24);border-radius:17px;background:rgba(8,6,12,.97);box-shadow:0 25px 90px rgba(0,0,0,.72);font:11px/1.55 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}.m9-qa.open{display:block}.m9-qa-line.pass{color:#8cefc1}.m9-qa-line.fail{color:#ff9b9b}.m9-qa button{margin-top:10px;padding:7px 10px;border:1px solid rgba(255,255,255,.13);border-radius:9px;color:#fff;background:#121016}
 @media(max-width:1100px){#m9-results .m9-hero,#m9-results .m9-profile,#m9-results .m9-fingerprint,#m9-results .m9-next,#m9-results .m9-naya{grid-template-columns:1fr}#m9-results .m9-characters{grid-template-columns:repeat(3,1fr)}#m9-results .m9-library{grid-template-columns:repeat(2,1fr)}#m9-results .m9-method-steps{grid-template-columns:repeat(4,1fr)}}
-@media(max-width:700px){#m9-results .m9-wrap{width:calc(100% - 22px)}#m9-results .m9-section{padding:82px 0}#m9-results .m9-top{min-height:60px}#m9-results .m9-top-status{display:none}#m9-results .m9-hero{padding:52px 0 75px;min-height:auto;gap:55px}#m9-results h1{font-size:clamp(48px,14vw,73px)}#m9-results .m9-actions{display:grid;grid-template-columns:1fr}#m9-results .m9-btn{width:100%}#m9-results .m9-characters,#m9-results .m9-library,#m9-results .m9-roles{grid-template-columns:1fr}#m9-results .m9-character-inner{min-height:270px}#m9-results .m9-leverage{grid-template-columns:1fr}#m9-results .m9-detail-grid,#m9-results .m9-insight-grid{grid-template-columns:1fr}#m9-results .m9-method-steps{grid-template-columns:repeat(2,1fr)}#m9-results .m9-nayanet-head,#m9-results .m9-nayanet-foot{align-items:flex-start;flex-direction:column}#m9-results .m9-nayanet-frame{height:72vh;min-height:570px}}
+@media(max-width:700px){#m9-results .m9-wrap{width:calc(100% - 22px)}#m9-results .m9-section{padding:82px 0}#m9-results .m9-top{min-height:60px}#m9-results .m9-top-status{display:none}#m9-results .m9-hero{padding:52px 0 75px;min-height:auto;gap:55px}#m9-results h1{font-size:clamp(48px,14vw,73px)}#m9-results .m9-actions{display:grid;grid-template-columns:1fr}#m9-results .m9-btn{width:100%}#m9-results .m9-characters,#m9-results .m9-library,#m9-results .m9-roles{grid-template-columns:1fr}#m9-results .m9-leverage{grid-template-columns:1fr}#m9-results .m9-detail-grid,#m9-results .m9-insight-grid{grid-template-columns:1fr}#m9-results .m9-method-steps{grid-template-columns:repeat(2,1fr)}#m9-results .m9-nayanet-head,#m9-results .m9-nayanet-foot{align-items:flex-start;flex-direction:column}#m9-results .m9-nayanet-frame{height:72vh;min-height:570px}}
 @media(prefers-reduced-motion:reduce){#m9-results *{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
-@media print{#m9-results{background:#fff!important;color:#111!important}#m9-results .m9-top,#m9-results .m9-actions,#m9-results .m9-nayanet-frame,#m9-results .m9-nayanet-head a,#m9-results .m9-nayanet-foot a{display:none!important}#m9-results .m9-card,#m9-results .m9-character,#m9-results .m9-leverage-card,#m9-results .m9-insight,#m9-results .m9-next-main,#m9-results .m9-next-side,#m9-results .m9-area,#m9-results .m9-role,#m9-results .m9-method,#m9-results .m9-naya,#m9-results .m9-nayanet-shell{color:#111!important;background:#fff!important;border-color:#ccc!important;box-shadow:none!important}#m9-results .m9-lede,#m9-results .m9-profile-copy,#m9-results .m9-stat-copy,#m9-results .m9-character-description,#m9-results .m9-character-insight,#m9-results .m9-detail-grid strong,#m9-results .m9-leverage-copy,#m9-results .m9-next-main p,#m9-results .m9-area p,#m9-results .m9-role p,#m9-results .m9-naya-copy p,#m9-results .m9-nayanet-foot p{color:#444!important}}
+@media print{#m9-results{background:#fff!important;color:#111!important}#m9-results .m9-top,#m9-results .m9-actions,#m9-results .m9-nayanet-frame{display:none!important}#m9-results .m9-card,#m9-results .m9-character,#m9-results .m9-leverage-card,#m9-results .m9-insight,#m9-results .m9-next-main,#m9-results .m9-next-side,#m9-results .m9-area,#m9-results .m9-role,#m9-results .m9-method,#m9-results .m9-naya,#m9-results .m9-nayanet-shell{color:#111!important;background:#fff!important;border-color:#ccc!important;box-shadow:none!important}}
 </style>
 '''
 
 BODY = r'''
 <section id="m9-results" aria-label="MAXESS 9.9 Results Experience">
-  <div class="m9-wrap">
-    <div class="m9-top">
-      <div class="m9-brand">MAX<span>ESS</span></div>
-      <div class="m9-top-status">Personal Intelligence · Results 9.9</div>
-      <div class="m9-actions" style="margin:0">
-        <button class="m9-btn dark" id="m9Share" type="button">Share</button>
-        <button class="m9-btn dark" id="m9Print" type="button">Save / Print</button>
-      </div>
-    </div>
-
-    <section class="m9-hero">
-      <div>
-        <p class="m9-eyebrow">YOUR MAXESS RESULT</p>
-        <h1>This is what your<br><span class="m9-gradient">AI capability looks like.</span></h1>
-        <p class="m9-lede" id="m9HeroCopy">Your score is a starting point. The value is understanding the pattern behind it.</p>
-        <p class="m9-hero-note">The Results experience never invents a score. It consumes the completed assessment Result Contract and turns it into self-understanding, leverage and a next move.</p>
-        <div class="m9-actions">
-          <a class="m9-btn primary" href="#m9-character">See What AI Really Says About Me ↓</a>
-          <a class="m9-btn dark" href="#m9-naya">Continue with Naya ↓</a>
-        </div>
-      </div>
-      <div class="m9-score-orbit">
-        <div class="m9-score-ring"></div>
-        <div class="m9-score-ring two"></div>
-        <div class="m9-score-core">
-          <div>
-            <div class="m9-score" id="m9Score">—<small>/100</small></div>
-            <div class="m9-score-label">YOUR AI MAX SCORE</div>
-            <div class="m9-band"><i></i><span id="m9Band">—</span></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="m9-section">
-      <div class="m9-profile">
-        <article class="m9-card m9-profile-main">
-          <p class="m9-eyebrow">01 · THIS IS YOU</p>
-          <div class="m9-profile-title" id="m9ProfileTitle">Your AI capability profile</div>
-          <p class="m9-profile-copy" id="m9ProfileCopy">—</p>
-        </article>
-        <aside class="m9-card m9-stats">
-          <div class="m9-stat"><span>OVERALL</span><strong id="m9OverallStat">—</strong><p>Your current position on the MAXESS scale.</p></div>
-          <div class="m9-stat"><span>STRONGEST</span><strong id="m9StrongStat">—</strong><p id="m9StrongStatCopy">—</p></div>
-          <div class="m9-stat"><span>OPPORTUNITY</span><strong id="m9OppStat">—</strong><p id="m9OppStatCopy">—</p></div>
-          <div class="m9-stat"><span>PROFILE SPREAD</span><strong id="m9SpreadStat">—</strong><p>A larger spread reveals where your capability shape is uneven.</p></div>
-        </aside>
-      </div>
-    </section>
-
-    <section class="m9-section" id="m9-character">
-      <div class="m9-head">
-        <p class="m9-eyebrow">02 · WHAT AI REALLY SAYS ABOUT YOU</p>
-        <h2>Your AI character is <span class="m9-gradient">five-dimensional.</span></h2>
-        <p>These five scores are not empty boxes. Each one tells a story about how you tend to work with AI and what your next leverage point could be.</p>
-      </div>
-      <div class="m9-characters" id="m9Characters"></div>
-    </section>
-
-    <section class="m9-section">
-      <div class="m9-head">
-        <p class="m9-eyebrow">03 · YOUR FIVE-DIMENSION FINGERPRINT</p>
-        <h2>The shape of <span class="m9-gradient">your ability.</span></h2>
-        <p>The visual pattern lets you see the whole system before you study the individual parts.</p>
-      </div>
-      <div class="m9-fingerprint">
-        <div class="m9-card m9-radar-card"><canvas id="m9Radar" aria-label="MAXESS five-dimension fingerprint"></canvas><div class="m9-radar-center"><span>MAXESS PROFILE</span><strong id="m9RadarScore">—</strong><small>OUT OF 100</small></div></div>
-        <div class="m9-legend" id="m9Legend"></div>
-      </div>
-    </section>
-
-    <section class="m9-section">
-      <div class="m9-head"><p class="m9-eyebrow">04 · MAKE THE NUMBERS MEAN SOMETHING</p><h2>Every score has a <span class="m9-gradient">human meaning.</span></h2><p>Numbers are useful only when the person can understand what they reveal and what to do with them.</p></div>
-      <div class="m9-details" id="m9Details"></div>
-    </section>
-
-    <section class="m9-section">
-      <div class="m9-head"><p class="m9-eyebrow">05 · YOUR LEVERAGE</p><h2>Use what is strong.<br><span class="m9-gradient">Strengthen what creates lift.</span></h2></div>
-      <div class="m9-leverage">
-        <article class="m9-leverage-card" style="--accent:var(--m9-green);--glow:var(--m9-green)"><div class="m9-leverage-label">YOUR NATURAL ADVANTAGE</div><div class="m9-leverage-name" id="m9StrengthName">—</div><div class="m9-leverage-score" id="m9StrengthScore">—</div><p class="m9-leverage-copy" id="m9StrengthCopy">—</p><div class="m9-action-pill" id="m9StrengthAction">—</div></article>
-        <article class="m9-leverage-card" style="--accent:var(--m9-gold);--glow:var(--m9-gold)"><div class="m9-leverage-label">YOUR HIGHEST-LEVERAGE OPPORTUNITY</div><div class="m9-leverage-name" id="m9OpportunityName">—</div><div class="m9-leverage-score" id="m9OpportunityScore">—</div><p class="m9-leverage-copy" id="m9OpportunityCopy">—</p><div class="m9-action-pill" id="m9OpportunityAction">—</div></article>
-      </div>
-    </section>
-
-    <section class="m9-section">
-      <article class="m9-insight">
-        <p class="m9-eyebrow">06 · THE RECOGNITION MOMENT</p>
-        <h2>Oh… <span class="m9-gradient">that’s why.</span></h2>
-        <div class="m9-insight-grid" id="m9InsightGrid"></div>
-      </article>
-    </section>
-
-    <section class="m9-section">
-      <div class="m9-head"><p class="m9-eyebrow">07 · YOUR NEXT MOVE</p><h2>Don’t improve <span class="m9-gradient">everything at once.</span></h2><p>One high-leverage improvement is more useful than twenty vague recommendations.</p></div>
-      <div class="m9-next">
-        <article class="m9-next-main"><p class="m9-eyebrow">THE NEXT LEVER</p><h2 id="m9NextTitle">—</h2><p id="m9NextIntro">—</p><p id="m9NextCopy">—</p><a class="m9-btn primary" href="#m9-library">See My AI Opportunities ↓</a></article>
-        <aside class="m9-next-side"><span>PROTECT</span><strong id="m9NextStrength">—</strong><span>BUILD NEXT</span><strong id="m9NextOpportunity">—</strong><span>WHY</span><div id="m9NextWhy" style="color:#aaa5b6;font-size:12px;line-height:1.55">—</div></aside>
-      </div>
-    </section>
-
-    <section class="m9-section" id="m9-library">
-      <div class="m9-head"><p class="m9-eyebrow">08 · YOUR PERSONALIZED AI MASTERY LIBRARY</p><h2>18 doors.<br><span class="m9-gradient">Not one generic path.</span></h2><p>Every area is available, but relevance is determined from your real result profile. Selected interests are highlighted when present.</p></div>
-      <div class="m9-library" id="m9Library"></div>
-    </section>
-
-    <section class="m9-section">
-      <div class="m9-head center"><p class="m9-eyebrow">09 · NAYA MASTER ROLES</p><h2>One Naya.<br><span class="m9-gradient">Many expert modes.</span></h2><p>Naya can act as Director, Oscar, Architect, Writer, Researcher, Designer, Developer and other specialist modes while staying one coherent intelligence.</p></div>
-      <div class="m9-roles" id="m9Roles"></div>
-    </section>
-
-    <section class="m9-section">
-      <div class="m9-method">
-        <p class="m9-eyebrow">10 · THE MASTER KEY</p>
-        <div class="m9-head" style="margin-bottom:0"><h2>Know. Tell. Ask.<br><span class="m9-gradient">Create. Score. Improve. Repeat.</span></h2><p>The user provides intention, direction, judgment and approval. Naya does the heavy lifting she can reasonably do.</p></div>
-        <div class="m9-method-steps" id="m9Method"></div>
-      </div>
-    </section>
-
-    <section class="m9-section" id="m9-naya">
-      <div class="m9-naya">
-        <div class="m9-naya-art"><div class="m9-naya-orb" aria-hidden="true"></div></div>
-        <div class="m9-naya-copy"><p class="m9-eyebrow">11 · NAYA</p><h2>Your result can become a <span class="m9-gradient">conversation.</span></h2><p id="m9NayaCopy">—</p><div class="m9-pills"><span id="m9NayaLevel">RESULT READY</span><span>REAL RESULT CONTRACT</span><span>HUMAN-FIRST</span></div><div class="m9-actions"><a class="m9-btn primary" href="https://nayanet.xyz/" target="_blank" rel="noopener">Continue with Naya →</a><button class="m9-btn dark" id="m9Copy" type="button">Copy Result Context</button></div></div>
-      </div>
-    </section>
-
-    <section class="m9-section m9-nayanet">
-      <div class="m9-nayanet-shell">
-        <div class="m9-nayanet-head"><div><p class="m9-eyebrow">12 · EXISTING NAYANET EXPERIENCE</p><h3>Continue into the ecosystem.</h3><p>This is the destination layer. The Results product above remains the interpretation experience.</p></div><a class="m9-btn primary" href="https://nayanet.xyz/" target="_blank" rel="noopener">Open NayaNET ↗</a></div>
-        <iframe class="m9-nayanet-frame" src="https://nayanet.xyz/" title="Existing NayaNET ecosystem experience" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
-        <div class="m9-nayanet-foot"><p>Your Results show where you are. NayaNET is where you can keep learning, creating, connecting and using what you discovered.</p><a class="m9-btn dark" href="#m9-results">Back to Results ↑</a></div>
-      </div>
-    </section>
-
-    <footer class="m9-footer">MAXESS · AI MAX · MAX LIFE · MAX PERCEPTION · LEAVE THE HUMAN BETTER THAN YOU FOUND THEM</footer>
-  </div>
-  <div class="m9-qa" id="m9QA" aria-live="polite"></div>
-</section>
+<div class="m9-wrap">
+<div class="m9-top"><div class="m9-brand">MAX<span>ESS</span></div><div class="m9-top-status">Personal Intelligence · Results 9.9</div><div class="m9-actions" style="margin:0"><button class="m9-btn dark" id="m9Share" type="button">Share</button><button class="m9-btn dark" id="m9Print" type="button">Save / Print</button></div></div>
+<section class="m9-hero"><div><p class="m9-eyebrow">YOUR MAXESS RESULT</p><h1>This is what your<br><span class="m9-gradient">AI capability looks like.</span></h1><p class="m9-lede" id="m9HeroCopy">Your score is a starting point. The value is understanding the pattern behind it.</p><div class="m9-actions"><a class="m9-btn primary" href="#m9-character">See What AI Really Says About Me ↓</a><a class="m9-btn dark" href="#m9-naya">Continue with Naya ↓</a></div></div><div class="m9-score-orbit"><div class="m9-score-ring"></div><div class="m9-score-ring two"></div><div class="m9-score-core"><div><div class="m9-score" id="m9Score">—<small>/100</small></div><div class="m9-score-label">YOUR AI MAX SCORE</div><div class="m9-band"><i></i><span id="m9Band">—</span></div></div></div></div></section>
+<section class="m9-section"><div class="m9-profile"><article class="m9-card m9-profile-main"><p class="m9-eyebrow">01 · THIS IS YOU</p><div class="m9-profile-title" id="m9ProfileTitle">Your AI capability profile</div><p class="m9-profile-copy" id="m9ProfileCopy">—</p></article><aside class="m9-card m9-stats"><div class="m9-stat"><span>OVERALL</span><strong id="m9OverallStat">—</strong><p>Your current position on the MAXESS scale.</p></div><div class="m9-stat"><span>STRONGEST</span><strong id="m9StrongStat">—</strong><p id="m9StrongStatCopy">—</p></div><div class="m9-stat"><span>OPPORTUNITY</span><strong id="m9OppStat">—</strong><p id="m9OppStatCopy">—</p></div><div class="m9-stat"><span>PROFILE SPREAD</span><strong id="m9SpreadStat">—</strong><p>The distance between your strongest and weakest dimensions.</p></div></aside></div></section>
+<section class="m9-section" id="m9-character"><div class="m9-head"><p class="m9-eyebrow">02 · WHAT AI REALLY SAYS ABOUT YOU</p><h2>Your AI character is <span class="m9-gradient">five-dimensional.</span></h2><p>These five scores are not empty boxes. Each one tells a story about how you tend to work with AI and what your next leverage point could be.</p></div><div class="m9-characters" id="m9Characters"></div></section>
+<section class="m9-section"><div class="m9-head"><p class="m9-eyebrow">03 · YOUR FIVE-DIMENSION FINGERPRINT</p><h2>The shape of <span class="m9-gradient">your ability.</span></h2><p>The visual pattern lets you see the whole system before you study the individual parts.</p></div><div class="m9-fingerprint"><div class="m9-card m9-radar-card"><canvas id="m9Radar" aria-label="MAXESS five-dimension fingerprint"></canvas><div class="m9-radar-center"><span>MAXESS PROFILE</span><strong id="m9RadarScore">—</strong><small>OUT OF 100</small></div></div><div class="m9-legend" id="m9Legend"></div></div></section>
+<section class="m9-section"><div class="m9-head"><p class="m9-eyebrow">04 · MAKE THE NUMBERS MEAN SOMETHING</p><h2>Every score has a <span class="m9-gradient">human meaning.</span></h2><p>No blank cards. No unexplained numbers. Every dimension has a definition, a pattern and a useful action.</p></div><div class="m9-details" id="m9Details"></div></section>
+<section class="m9-section"><div class="m9-head"><p class="m9-eyebrow">05 · YOUR LEVERAGE</p><h2>Use what is strong.<br><span class="m9-gradient">Strengthen what creates lift.</span></h2></div><div class="m9-leverage"><article class="m9-leverage-card" style="--accent:#55e1aa"><div class="m9-leverage-label">YOUR NATURAL ADVANTAGE</div><div class="m9-leverage-name" id="m9StrengthName">—</div><div class="m9-leverage-score" id="m9StrengthScore">—</div><p class="m9-leverage-copy" id="m9StrengthCopy">—</p><div class="m9-action-pill" id="m9StrengthAction">—</div></article><article class="m9-leverage-card" style="--accent:#ffd866"><div class="m9-leverage-label">YOUR HIGHEST-LEVERAGE OPPORTUNITY</div><div class="m9-leverage-name" id="m9OpportunityName">—</div><div class="m9-leverage-score" id="m9OpportunityScore">—</div><p class="m9-leverage-copy" id="m9OpportunityCopy">—</p><div class="m9-action-pill" id="m9OpportunityAction">—</div></article></div></section>
+<section class="m9-section"><article class="m9-insight"><p class="m9-eyebrow">06 · THE RECOGNITION MOMENT</p><h2>Oh… <span class="m9-gradient">that’s why.</span></h2><div class="m9-insight-grid" id="m9InsightGrid"></div></article></section>
+<section class="m9-section"><div class="m9-head"><p class="m9-eyebrow">07 · YOUR NEXT MOVE</p><h2>Don’t improve <span class="m9-gradient">everything at once.</span></h2><p>One high-leverage improvement is more useful than twenty vague recommendations.</p></div><div class="m9-next"><article class="m9-next-main"><p class="m9-eyebrow">THE NEXT LEVER</p><h2 id="m9NextTitle">—</h2><p id="m9NextIntro">—</p><p id="m9NextCopy">—</p><a class="m9-btn primary" href="#m9-library">See My AI Opportunities ↓</a></article><aside class="m9-next-side"><span>PROTECT</span><strong id="m9NextStrength">—</strong><span>BUILD NEXT</span><strong id="m9NextOpportunity">—</strong><span>WHY</span><div id="m9NextWhy" style="color:#aaa5b6;font-size:12px;line-height:1.55">—</div></aside></div></section>
+<section class="m9-section" id="m9-library"><div class="m9-head"><p class="m9-eyebrow">08 · YOUR PERSONALIZED AI MASTERY LIBRARY</p><h2>18 doors.<br><span class="m9-gradient">Not one generic path.</span></h2><p>Every area is available, but relevance is determined from your real result profile.</p></div><div class="m9-library" id="m9Library"></div></section>
+<section class="m9-section"><div class="m9-head center"><p class="m9-eyebrow">09 · NAYA MASTER ROLES</p><h2>One Naya.<br><span class="m9-gradient">Many expert modes.</span></h2><p>Naya can act as Director, Oscar, Architect and other specialist modes while staying one coherent intelligence.</p></div><div class="m9-roles" id="m9Roles"></div></section>
+<section class="m9-section"><div class="m9-method"><p class="m9-eyebrow">10 · THE MASTER KEY</p><div class="m9-head" style="margin-bottom:0"><h2>Know. Tell. Ask.<br><span class="m9-gradient">Create. Score. Improve. Repeat.</span></h2><p>The user provides intention, direction, judgment and approval. Naya does the heavy lifting she can reasonably do.</p></div><div class="m9-method-steps" id="m9Method"></div></div></section>
+<section class="m9-section" id="m9-naya"><div class="m9-naya"><div class="m9-naya-art"><div class="m9-naya-orb" aria-hidden="true"></div></div><div class="m9-naya-copy"><p class="m9-eyebrow">11 · NAYA</p><h2>Your result can become a <span class="m9-gradient">conversation.</span></h2><p id="m9NayaCopy">—</p><div class="m9-pills"><span id="m9NayaLevel">RESULT READY</span><span>REAL RESULT CONTRACT</span><span>HUMAN-FIRST</span></div><div class="m9-actions"><a class="m9-btn primary" href="https://nayanet.xyz/" target="_blank" rel="noopener">Continue with Naya →</a><button class="m9-btn dark" id="m9Copy" type="button">Copy Result Context</button></div></div></div></section>
+<section class="m9-section m9-nayanet"><div class="m9-nayanet-shell"><div class="m9-nayanet-head"><div><p class="m9-eyebrow">12 · EXISTING NAYANET EXPERIENCE</p><h3>Continue into the ecosystem.</h3><p>This is the destination layer. The Results product above remains the interpretation experience.</p></div><a class="m9-btn primary" href="https://nayanet.xyz/" target="_blank" rel="noopener">Open NayaNET ↗</a></div><iframe class="m9-nayanet-frame" src="https://nayanet.xyz/" title="Existing NayaNET ecosystem experience" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe><div class="m9-nayanet-foot"><p>Your Results show where you are. NayaNET is where you can keep learning, creating, connecting and using what you discovered.</p><a class="m9-btn dark" href="#m9-results">Back to Results ↑</a></div></div></section>
+<footer class="m9-footer">MAXESS · AI MAX · MAX LIFE · MAX PERCEPTION · LEAVE THE HUMAN BETTER THAN YOU FOUND THEM</footer>
+</div><div id="m9QA" aria-live="polite"></div></section>
 '''
 
-SCRIPT = r'''
-<script id="MAXESS_RESULTS_9_9_JS">
+SCRIPT = r'''<script id="MAXESS_RESULTS_9_9_JS">
 (function(){
-  "use strict";
-  const VERSION="MAXESS-9.9";
-  const CONTRACT="MAXESS-RESULTS-CONTRACT-1";
-  const DIMS=[
-    {id:"direction",name:"Direction",color:"#ffd866",description:"Knowing what you are trying to accomplish before asking AI to act.",high:"You turn goals into clear outcomes, priorities and success conditions.",low:"You may get technically impressive answers that are not aimed at the outcome you actually need.",action:"Define the outcome, audience, constraints and success condition before you ask AI to work."},
-    {id:"communication",name:"Communication",color:"#55e1aa",description:"Giving AI the context, intent and constraints needed for useful work.",high:"You can translate intent into language AI can work with.",low:"Your results can improve when you give AI more relevant context, examples and constraints.",action:"Tell AI what matters, who it is helping, what good looks like and what to avoid."},
-    {id:"evaluation",name:"Evaluation",color:"#58aaff",description:"Knowing whether an AI result is accurate, useful and fit for purpose.",high:"You are more likely to distinguish impressive-looking output from useful output.",low:"A stronger scorecard can prevent mediocre results from feeling finished too early.",action:"Score important output against explicit criteria before accepting it."},
-    {id:"iteration",name:"Iteration",color:"#9a66ff",description:"Improving results deliberately instead of accepting the first answer.",high:"You understand that quality often emerges through purposeful refinement.",low:"Your next jump may come from treating the first answer as a draft and directing a better second version.",action:"Create, score, diagnose and improve instead of simply asking AI to try again."},
-    {id:"systems",name:"Systems Thinking",color:"#ed68d7",description:"Turning individual AI interactions into repeatable systems and leverage.",high:"You are thinking beyond single prompts toward reusable workflows and leverage.",low:"Your AI wins become more valuable when you preserve them as reusable methods.",action:"Turn successful workflows into reusable templates, checklists, agents or systems."}
-  ];
-  const AREAS=[
-    ["Writing & Communication","Write, rewrite, explain, persuade and communicate better.","#ffd866",["communication","direction"]],
-    ["Research & Information","Find, verify, compare and synthesize information.","#55e1aa",["direction","evaluation"]],
-    ["Brainstorming & Ideas","Generate possibilities, angles, concepts and solutions.","#58aaff",["direction","communication"]],
-    ["Content Creation","Turn ideas into posts, scripts, stories and content systems.","#9a66ff",["communication","iteration"]],
-    ["Business & Strategy","Think through decisions, opportunities, models and growth.","#ed68d7",["direction","systems"]],
-    ["Marketing & Sales","Create offers, messaging, campaigns and customer journeys.","#7757ff",["communication","systems"]],
-    ["Learning & Education","Learn faster, teach better and turn knowledge into capability.","#c8a8ff",["communication","evaluation"]],
-    ["Coding & Software","Build, debug, explain and improve software with AI.","#55e1aa",["direction","evaluation","iteration"]],
-    ["Images & Visual Creation","Develop visual concepts, prompts and creative direction.","#ed68d7",["direction","communication","iteration"]],
-    ["Video & Media","Plan, script, produce, edit and improve media.","#58aaff",["direction","communication","iteration"]],
-    ["Documents & Presentations","Turn complex information into clear documents and presentations.","#ffd866",["communication","evaluation"]],
-    ["Data & Analysis","Structure information, compare evidence and reason from data.","#55e1aa",["evaluation","systems"]],
-    ["Productivity & Planning","Plan work, prioritize tasks and create leverage.","#9a66ff",["direction","systems"]],
-    ["Career & Professional Development","Build skills, opportunities, positioning and professional value.","#58aaff",["direction","communication"]],
-    ["Personal Decision-Making","Use AI to think through choices and trade-offs.","#55e1aa",["direction","evaluation"]],
-    ["Creative Work","Explore concepts, aesthetics, invention and original expression.","#ed68d7",["communication","iteration"]],
-    ["Automation & Systems","Connect repeatable tasks into dependable workflows.","#ffd866",["systems","iteration"]],
-    ["Advanced AI Work","Work with agents, orchestration and advanced AI workflows.","#c8a8ff",["systems","evaluation","iteration"]]
-  ];
-  const ROLES=[
-    ["Naya Director","✦","#ffd866","Clarify the outcome, direct the work, choose the right approach and keep the whole system aligned."],
-    ["Naya Oscar","◎","#55e1aa","Critique independently, identify what is weak or missing, score honestly and demand evidence."],
-    ["Naya Architect","◇","#9a66ff","Connect ideas into reusable workflows, systems, data contracts, automation and scalable structure."]
-  ];
-  const METHOD=[
-    ["KNOW","Understand the goal, audience, context and constraints."],
-    ["TELL","Give AI the information and direction it needs."],
-    ["ASK","Request the specific outcome or transformation."],
-    ["CREATE","Let AI produce the strongest useful first version."],
-    ["SCORE","Judge the actual result against clear standards."],
-    ["IMPROVE","Preserve strengths and fix the highest-impact gaps."],
-    ["REPEAT","Continue until the result earns the required standard."]
-  ];
-  function esc(v){return String(v??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\"/g,"&quot;").replace(/'/g,"&#039;")}
-  function clamp(v){const n=Number(v);return Number.isFinite(n)?Math.max(0,Math.min(100,Math.round(n*10)/10)):null}
-  function level(s){return s>=90?"Mastering":s>=75?"Advancing":s>=50?"Developing":"Foundation"}
-  function decode(raw){
-    try{return JSON.parse(decodeURIComponent(raw))}catch(e){}
-    try{let s=raw.replace(/-/g,"+").replace(/_/g,"/");while(s.length%4)s+="=";const b=atob(s);const bytes=Uint8Array.from(b,c=>c.charCodeAt(0));return JSON.parse(new TextDecoder().decode(bytes))}catch(e){}
-    return null;
-  }
-  function normalize(raw){
-    if(!raw||typeof raw!=="object")return null;
-    const src=raw.dimensions||raw.dimensionScores||raw.scores;
-    if(!src||typeof src!=="object")return null;
-    const dimensions={};
-    for(const d of DIMS){
-      const aliases=[d.id,d.name,d.name.toLowerCase(),d.id==="systems"?"systemsThinking":d.id];
-      let found;
-      for(const a of aliases){if(src[a]!==undefined){found=src[a];break}}
-      dimensions[d.id]=clamp(found);
-      if(dimensions[d.id]===null)return null;
-    }
-    const overall=clamp(raw.overall??raw.overallScore??raw.score??Object.values(dimensions).reduce((a,b)=>a+b,0)/5);
-    if(overall===null)return null;
-    const strongest=raw.strongest&&dimensions[raw.strongest]!==undefined?raw.strongest:Object.keys(dimensions).sort((a,b)=>dimensions[b]-dimensions[a])[0];
-    const opportunity=raw.opportunity&&dimensions[raw.opportunity]!==undefined?raw.opportunity:Object.keys(dimensions).sort((a,b)=>dimensions[a]-dimensions[b])[0];
-    return {contractVersion:raw.contractVersion||raw.version||CONTRACT,assessmentId:raw.assessmentId||"ai-max",assessmentVersion:raw.assessmentVersion||"MAXESS-1.0",completed:raw.completed!==false,overall,level:level(overall),dimensions,strongest,opportunity,responses:Array.isArray(raw.responses)?raw.responses:[],selectedInterests:Array.isArray(raw.selectedInterests)?raw.selectedInterests:[],completedAt:raw.completedAt||new Date().toISOString()};
-  }
-  function getResult(){
-    const p=new URLSearchParams(location.search);const encoded=p.get("result");
-    if(encoded){const r=normalize(decode(encoded));if(r&&r.completed)return r}
-    return null;
-  }
-  function d(id){return DIMS.find(x=>x.id===id)||DIMS[0]}
-  function relevance(area,r){const base=area[3].reduce((sum,id)=>sum+(r.dimensions[id]||50),0)/area[3].length;const b=area[3].includes(r.opportunity)?10:0;const s=area[3].includes(r.strongest)?4:0;return Math.round(Math.max(0,Math.min(100,base+b+s)))}
-  function render(r){
-    document.body.classList.add("m9-live");
-    const strong=d(r.strongest),opp=d(r.opportunity);const spread=Math.max(...Object.values(r.dimensions))-Math.min(...Object.values(r.dimensions));
-    document.getElementById("m9Score").innerHTML=`${Math.round(r.overall)}<small>/100</small>`;
-    document.getElementById("m9Band").textContent=`${r.level} · ${Math.round(r.overall)}/100`;
-    document.getElementById("m9HeroCopy").textContent=`You are currently strongest in ${strong.name}. Your clearest next leverage point is ${opp.name}. The score is a map of your current relationship with AI, not a judgment of your potential.`;
-    const profileNames={Foundation:"The AI Foundation Builder",Developing:"The Developing AI Practitioner",Advancing:"The Advancing AI Craftsman",Mastering:"The Mastering AI Strategist"};
-    const profileCopy={Foundation:"You are building the fundamentals that make AI useful: clear direction, useful context, honest evaluation and deliberate improvement.",Developing:"You already have useful AI instincts. Your next leap is turning those instincts into a repeatable process you can trust.",Advancing:"You are beyond casual experimentation. Your next gains come from refinement, iteration, systems and deliberate quality control.",Mastering:"Your fundamentals are highly developed. Your next edge is leverage: orchestration, repeatability, systems, teaching and scale."};
-    document.getElementById("m9ProfileTitle").textContent=profileNames[r.level];
-    document.getElementById("m9ProfileCopy").textContent=`${profileCopy[r.level]} Your strongest capability is ${strong.name}. Your highest-leverage opportunity is ${opp.name}.`;
-    document.getElementById("m9OverallStat").textContent=`${Math.round(r.overall)}/100`;
-    document.getElementById("m9StrongStat").textContent=`${strong.name} · ${Math.round(r.dimensions[strong.id])}`;
-    document.getElementById("m9StrongStatCopy").textContent=strong.high;
-    document.getElementById("m9OppStat").textContent=`${opp.name} · ${Math.round(r.dimensions[opp.id])}`;
-    document.getElementById("m9OppStatCopy").textContent=opp.low;
-    document.getElementById("m9SpreadStat").textContent=`${Math.round(spread)} points`;
+"use strict";
+const VERSION="MAXESS-9.9";
+const CONTRACT="MAXESS-RESULTS-CONTRACT-1";
+const DIMS=[
+{id:"direction",name:"Direction",color:"#ffd866",description:"Knowing what you are trying to accomplish before asking AI to act.",high:"You turn goals into clear outcomes, priorities and success conditions.",low:"You may get technically impressive answers that are not aimed at the outcome you actually need.",action:"Define the outcome, audience, constraints and success condition before you ask AI to work."},
+{id:"communication",name:"Communication",color:"#55e1aa",description:"Giving AI the context, intent and constraints needed for useful work.",high:"You can translate intent into language AI can work with.",low:"Your results can improve when you give AI more relevant context, examples and constraints.",action:"Tell AI what matters, who it is helping, what good looks like and what to avoid."},
+{id:"evaluation",name:"Evaluation",color:"#58aaff",description:"Knowing whether an AI result is accurate, useful and fit for purpose.",high:"You are more likely to distinguish impressive-looking output from useful output.",low:"A stronger scorecard can prevent mediocre results from feeling finished too early.",action:"Score important output against explicit criteria before accepting it."},
+{id:"iteration",name:"Iteration",color:"#9a66ff",description:"Improving results deliberately instead of accepting the first answer.",high:"You understand that quality often emerges through purposeful refinement.",low:"Your next jump may come from treating the first answer as a draft and directing a better second version.",action:"Create, score, diagnose and improve instead of simply asking AI to try again."},
+{id:"systems",name:"Systems Thinking",color:"#ed68d7",description:"Turning individual AI interactions into repeatable systems and leverage.",high:"You are thinking beyond single prompts toward reusable workflows and leverage.",low:"Your AI wins become more valuable when you preserve them as reusable methods.",action:"Turn successful workflows into reusable templates, checklists, agents or systems."}
+];
+const AREAS=[
+["Writing & Communication","Write, rewrite, explain, persuade and communicate better.","#ffd866",["communication","direction"]],["Research & Information","Find, verify, compare and synthesize information.","#55e1aa",["direction","evaluation"]],["Brainstorming & Ideas","Generate possibilities, angles, concepts and solutions.","#58aaff",["direction","communication"]],["Content Creation","Turn ideas into posts, scripts, stories and content systems.","#9a66ff",["communication","iteration"]],["Business & Strategy","Think through decisions, opportunities, models and growth.","#ed68d7",["direction","systems"]],["Marketing & Sales","Create offers, messaging, campaigns and customer journeys.","#7757ff",["communication","systems"]],["Learning & Education","Learn faster, teach better and turn knowledge into capability.","#c8a8ff",["communication","evaluation"]],["Coding & Software","Build, debug, explain and improve software with AI.","#55e1aa",["direction","evaluation","iteration"]],["Images & Visual Creation","Develop visual concepts, prompts and creative direction.","#ed68d7",["direction","communication","iteration"]],["Video & Media","Plan, script, produce, edit and improve media.","#58aaff",["direction","communication","iteration"]],["Documents & Presentations","Turn complex information into clear documents and presentations.","#ffd866",["communication","evaluation"]],["Data & Analysis","Structure information, compare evidence and reason from data.","#55e1aa",["evaluation","systems"]],["Productivity & Planning","Plan work, prioritize tasks and create leverage.","#9a66ff",["direction","systems"]],["Career & Professional Development","Build skills, opportunities, positioning and professional value.","#58aaff",["direction","communication"]],["Personal Decision-Making","Use AI to think through choices and trade-offs.","#55e1aa",["direction","evaluation"]],["Creative Work","Explore concepts, aesthetics, invention and original expression.","#ed68d7",["communication","iteration"]],["Automation & Systems","Connect repeatable tasks into dependable workflows.","#ffd866",["systems","iteration"]],["Advanced AI Work","Work with agents, orchestration and advanced AI workflows.","#c8a8ff",["systems","evaluation","iteration"]]
+];
+const ROLES=[["Naya Director","✦","#ffd866","Clarify the outcome, direct the work, choose the right approach and keep the whole system aligned."],["Naya Oscar","◎","#55e1aa","Critique independently, identify what is weak or missing, score honestly and demand evidence."],["Naya Architect","◇","#9a66ff","Connect ideas into reusable workflows, systems, data contracts, automation and scalable structure."]];
+const METHOD=[["KNOW","Understand the goal, audience, context and constraints."],["TELL","Give AI the information and direction it needs."],["ASK","Request the specific outcome or transformation."],["CREATE","Let AI produce the strongest useful first version."],["SCORE","Judge the actual result against clear standards."],["IMPROVE","Preserve strengths and fix the highest-impact gaps."],["REPEAT","Continue until the result earns the required standard."]];
+function esc(v){return String(v??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\"/g,"&quot;").replace(/'/g,"&#039;")}
+function clamp(v){const n=Number(v);return Number.isFinite(n)?Math.max(0,Math.min(100,Math.round(n*10)/10)):null}
+function level(s){return s>=90?"Mastering":s>=75?"Advancing":s>=50?"Developing":"Foundation"}
+function decode(raw){try{return JSON.parse(decodeURIComponent(raw))}catch(e){}try{let s=raw.replace(/-/g,"+").replace(/_/g,"/");while(s.length%4)s+="=";const b=atob(s);const bytes=Uint8Array.from(b,c=>c.charCodeAt(0));return JSON.parse(new TextDecoder().decode(bytes))}catch(e){}return null}
+function normalize(raw){if(!raw||typeof raw!=="object")return null;const src=raw.dimensions||raw.dimensionScores||raw.scores;if(!src||typeof src!=="object")return null;const dimensions={};for(const d of DIMS){const aliases=[d.id,d.name,d.name.toLowerCase(),d.id==="systems"?"systemsThinking":d.id];let found;for(const a of aliases){if(src[a]!==undefined){found=src[a];break}}dimensions[d.id]=clamp(found);if(dimensions[d.id]===null)return null}const overall=clamp(raw.overall??raw.overallScore??raw.score??Object.values(dimensions).reduce((a,b)=>a+b,0)/5);if(overall===null)return null;const strongest=raw.strongest&&dimensions[raw.strongest]!==undefined?raw.strongest:Object.keys(dimensions).sort((a,b)=>dimensions[b]-dimensions[a])[0];const opportunity=raw.opportunity&&dimensions[raw.opportunity]!==undefined?raw.opportunity:Object.keys(dimensions).sort((a,b)=>dimensions[a]-dimensions[b])[0];return {contractVersion:raw.contractVersion||raw.version||CONTRACT,assessmentId:raw.assessmentId||"ai-max",assessmentVersion:raw.assessmentVersion||"MAXESS-1.0",completed:raw.completed!==false,overall,level:level(overall),dimensions,strongest,opportunity,responses:Array.isArray(raw.responses)?raw.responses:[],selectedInterests:Array.isArray(raw.selectedInterests)?raw.selectedInterests:[],completedAt:raw.completedAt||new Date().toISOString()}}
+function d(id){return DIMS.find(x=>x.id===id)||DIMS[0]}
+function relevance(a,r){const base=a[3].reduce((sum,id)=>sum+(r.dimensions[id]||50),0)/a[3].length;const b=a[3].includes(r.opportunity)?10:0;const s=a[3].includes(r.strongest)?4:0;return Math.round(Math.max(0,Math.min(100,base+b+s)))}
+function render(r){window.RESULT=r;const strong=d(r.strongest),opp=d(r.opportunity);const spread=Math.max(...Object.values(r.dimensions))-Math.min(...Object.values(r.dimensions));document.getElementById("m9Score").innerHTML=`${Math.round(r.overall)}<small>/100</small>`;document.getElementById("m9Band").textContent=`${r.level} · ${Math.round(r.overall)}/100`;document.getElementById("m9HeroCopy").textContent=`You are currently strongest in ${strong.name}. Your clearest next leverage point is ${opp.name}. The score is a map of your current relationship with AI, not a judgment of your potential.`;const names={Foundation:"The AI Foundation Builder",Developing:"The Developing AI Practitioner",Advancing:"The Advancing AI Craftsman",Mastering:"The Mastering AI Strategist"};document.getElementById("m9ProfileTitle").textContent=names[r.level];document.getElementById("m9ProfileCopy").textContent=`Your profile is ${r.level.toLowerCase()}: use ${strong.name} as leverage while deliberately strengthening ${opp.name}.`;document.getElementById("m9OverallStat").textContent=`${Math.round(r.overall)}/100`;document.getElementById("m9StrongStat").textContent=`${strong.name} · ${Math.round(r.dimensions[strong.id])}`;document.getElementById("m9StrongStatCopy").textContent=strong.high;document.getElementById("m9OppStat").textContent=`${opp.name} · ${Math.round(r.dimensions[opp.id])}`;document.getElementById("m9OppStatCopy").textContent=opp.low;document.getElementById("m9SpreadStat").textContent=`${Math.round(spread)} points`;
     document.getElementById("m9Characters").innerHTML=DIMS.map(x=>{const s=r.dimensions[x.id];return `<article class="m9-character" style="--c:${x.color}"><div class="m9-character-inner"><span class="m9-dot"></span><h3>${esc(x.name)}</h3><div class="m9-character-score">${Math.round(s)}<small>/100</small></div><div class="m9-character-tier">${level(s)}</div><div class="m9-character-description">${esc(x.description)}</div><div class="m9-character-insight">${esc(s>=75?x.high:x.low)}</div></div></article>`}).join("");
-    drawRadar(r);
     document.getElementById("m9Legend").innerHTML=DIMS.map(x=>`<div class="m9-legend-row"><span class="m9-legend-dot" style="--c:${x.color}"></span><strong>${esc(x.name)}</strong><span class="m9-legend-score">${Math.round(r.dimensions[x.id])}/100</span></div>`).join("");
     document.getElementById("m9Details").innerHTML=DIMS.map(x=>{const s=r.dimensions[x.id];return `<article class="m9-detail" style="--c:${x.color}"><div class="m9-detail-top"><div class="m9-detail-name">${esc(x.name)}</div><div class="m9-detail-score">${Math.round(s)}</div></div><div class="m9-bar" style="--v:${s}"><i></i></div><div class="m9-detail-grid"><div><span>WHAT IT IS</span><strong>${esc(x.description)}</strong></div><div><span>WHAT YOUR SCORE SAYS</span><strong>${esc(s>=75?x.high:x.low)}</strong></div><div><span>NEXT USEFUL MOVE</span><strong>${esc(x.action)}</strong></div></div></article>`}).join("");
-    document.getElementById("m9StrengthName").textContent=strong.name;
-    document.getElementById("m9StrengthScore").textContent=`${Math.round(r.dimensions[strong.id])}/100`;
-    document.getElementById("m9StrengthCopy").textContent=strong.high;
-    document.getElementById("m9StrengthAction").textContent=`Protect it: ${strong.action}`;
-    document.getElementById("m9OpportunityName").textContent=opp.name;
-    document.getElementById("m9OpportunityScore").textContent=`${Math.round(r.dimensions[opp.id])}/100`;
-    document.getElementById("m9OpportunityCopy").textContent=opp.low;
-    document.getElementById("m9OpportunityAction").textContent=`Build it: ${opp.action}`;
+    document.getElementById("m9StrengthName").textContent=strong.name;document.getElementById("m9StrengthScore").textContent=`${Math.round(r.dimensions[strong.id])}/100`;document.getElementById("m9StrengthCopy").textContent=strong.high;document.getElementById("m9StrengthAction").textContent=`Protect it: ${strong.action}`;document.getElementById("m9OpportunityName").textContent=opp.name;document.getElementById("m9OpportunityScore").textContent=`${Math.round(r.dimensions[opp.id])}/100`;document.getElementById("m9OpportunityCopy").textContent=opp.low;document.getElementById("m9OpportunityAction").textContent=`Build it: ${opp.action}`;
     const why=spread>=30?`Your profile has a clear shape. ${strong.name} is doing more of the heavy lifting than ${opp.name}. That may explain why some AI tasks feel naturally easy while others feel harder than they should.`:spread>=15?`Your profile is balanced enough to give you range, but it still has a clear next lever. ${strong.name} is ahead and ${opp.name} is the clearest place to create lift.`:`Your dimensions are relatively balanced. Your next advantage will come from turning consistency into leverage and connecting the five capabilities into repeatable ways of working with AI.`;
-    document.getElementById("m9InsightGrid").innerHTML=[
-      ["WHAT YOU ALREADY HAVE",`${strong.name} is currently your strongest dimension at ${Math.round(r.dimensions[strong.id])}/100. ${strong.high}`],
-      ["WHAT IS HOLDING THE NEXT LEVEL BACK",`${opp.name} is currently your clearest opportunity at ${Math.round(r.dimensions[opp.id])}/100. ${opp.low}`],
-      ["THE RECOGNITION",`${why} The opportunity is not to judge yourself. It is to decide what to do next.`]
-    ].map(x=>`<div class="m9-insight-box"><span>${esc(x[0])}</span><strong>${esc(x[1])}</strong></div>`).join("");
-    document.getElementById("m9NextTitle").textContent=`Build ${opp.name}.`;
-    document.getElementById("m9NextIntro").textContent=`Your clearest leverage opportunity is ${opp.name} at ${Math.round(r.dimensions[opp.id])}/100. Protect ${strong.name} while deliberately strengthening this capability.`;
-    document.getElementById("m9NextCopy").textContent=opp.action;
-    document.getElementById("m9NextStrength").textContent=`${strong.name} · ${Math.round(r.dimensions[strong.id])}`;
-    document.getElementById("m9NextOpportunity").textContent=`${opp.name} · ${Math.round(r.dimensions[opp.id])}`;
-    document.getElementById("m9NextWhy").textContent=`Improving a single leverage point can improve how the rest of your AI workflow behaves. The score is a map, not a verdict.`;
+    document.getElementById("m9InsightGrid").innerHTML=[["WHAT YOU ALREADY HAVE",`${strong.name} is currently your strongest dimension at ${Math.round(r.dimensions[strong.id])}/100. ${strong.high}`],["WHAT IS HOLDING THE NEXT LEVEL BACK",`${opp.name} is currently your clearest opportunity at ${Math.round(r.dimensions[opp.id])}/100. ${opp.low}`],["THE RECOGNITION",`${why} The opportunity is not to judge yourself. It is to decide what to do next.`]].map(x=>`<div class="m9-insight-box"><span>${esc(x[0])}</span><strong>${esc(x[1])}</strong></div>`).join("");
+    document.getElementById("m9NextTitle").textContent=`Build ${opp.name}.`;document.getElementById("m9NextIntro").textContent=`Your clearest leverage opportunity is ${opp.name} at ${Math.round(r.dimensions[opp.id])}/100. Protect ${strong.name} while deliberately strengthening this capability.`;document.getElementById("m9NextCopy").textContent=opp.action;document.getElementById("m9NextStrength").textContent=`${strong.name} · ${Math.round(r.dimensions[strong.id])}`;document.getElementById("m9NextOpportunity").textContent=`${opp.name} · ${Math.round(r.dimensions[opp.id])}`;document.getElementById("m9NextWhy").textContent=`Improving a single leverage point can improve how the rest of your AI workflow behaves. The score is a map, not a verdict.`;
     document.getElementById("m9Library").innerHTML=AREAS.map((a,i)=>{const rel=relevance(a,r);const hot=rel>=Math.max(74,r.overall-4);return `<article class="m9-area" style="--c:${a[2]}"><div class="m9-area-inner"><div><div class="m9-area-head"><span class="m9-area-icon">${String.fromCharCode(65+i)}</span><span class="m9-area-priority ${hot?"hot":""}">${hot?"HIGH PRIORITY":rel>=60?"RELEVANT":"BUILD LATER"}</span></div><h3>${esc(a[0])}</h3><p>${esc(a[1])}</p></div><div><div class="m9-area-score"><span>Personal relevance</span><span>${rel}/100</span></div><div class="m9-area-bar" style="--v:${rel}"><i></i></div><div class="m9-area-foot">Connected to ${esc(a[3].map(id=>d(id).name).join(" + "))} →</div></div></div></article>`}).join("");
-    document.getElementById("m9Roles").innerHTML=ROLES.map(x=>`<article class="m9-role" style="--c:${x[2]}"><div class="m9-role-icon">${x[1]}</div><h3>${esc(x[0])}</h3><p>${esc(x[3])}</p><div class="m9-role-foot">Move from insight to execution →</div></article>`).join("");
-    document.getElementById("m9Method").innerHTML=METHOD.map((x,i)=>`<article class="m9-step"><span>0${i+1}</span><strong>${esc(x[0])}</strong><p>${esc(x[1])}</p></article>`).join("");
-    document.getElementById("m9NayaLevel").textContent=`${r.level.toUpperCase()} · ${Math.round(r.overall)}/100`;
-    document.getElementById("m9NayaCopy").textContent=`Naya can carry this result into the next conversation: your score is ${Math.round(r.overall)}/100, strongest dimension ${strong.name}, highest-leverage opportunity ${opp.name}. The Result Contract remains the source of truth.`;
-    window.MAXESS_RESULT_9_9=r;
-    window.MAXESS_NAYA_CONTEXT={type:"MAXESS_RESULT",version:CONTRACT,assessmentId:r.assessmentId,assessmentVersion:r.assessmentVersion,overall:r.overall,level:r.level,dimensions:r.dimensions,strongest:r.strongest,opportunity:r.opportunity,responses:r.responses,selectedInterests:r.selectedInterests,completedAt:r.completedAt};
-    try{sessionStorage.setItem("MAXESS_NAYA_CONTEXT",JSON.stringify(window.MAXESS_NAYA_CONTEXT));localStorage.setItem("MAXESS_NAYA_CONTEXT",JSON.stringify(window.MAXESS_NAYA_CONTEXT))}catch(e){}
-    bind();
+    document.getElementById("m9Roles").innerHTML=ROLES.map(x=>`<article class="m9-role" style="--c:${x[2]}"><div class="m9-role-icon">${x[1]}</div><h3>${esc(x[0])}</h3><p>${esc(x[3])}</p><div class="m9-role-foot">Move from insight to execution →</div></article>`).join("");document.getElementById("m9Method").innerHTML=METHOD.map((x,i)=>`<article class="m9-step"><span>0${i+1}</span><strong>${esc(x[0])}</strong><p>${esc(x[1])}</p></article>`).join("");
+    document.getElementById("m9NayaLevel").textContent=`${r.level.toUpperCase()} · ${Math.round(r.overall)}/100`;document.getElementById("m9NayaCopy").textContent=`Naya can carry this result into the next conversation: your score is ${Math.round(r.overall)}/100, strongest dimension ${strong.name}, highest-leverage opportunity ${opp.name}. The Result Contract remains the source of truth.`;
+    const ctx={type:"MAXESS_RESULT",version:CONTRACT,assessmentId:r.assessmentId,assessmentVersion:r.assessmentVersion,overall:r.overall,level:r.level,dimensions:r.dimensions,strongest:r.strongest,opportunity:r.opportunity,responses:r.responses,selectedInterests:r.selectedInterests,completedAt:r.completedAt};window.MAXESS_NAYA_CONTEXT=ctx;try{sessionStorage.setItem("MAXESS_NAYA_CONTEXT",JSON.stringify(ctx));localStorage.setItem("MAXESS_NAYA_CONTEXT",JSON.stringify(ctx))}catch(e){};
+    drawRadar(r);bind();
   }
-  function drawRadar(r){
-    const c=document.getElementById("m9Radar");const rect=c.getBoundingClientRect();const size=Math.max(300,Math.floor(Math.min(rect.width||620,rect.height||620)));const dpr=Math.min(window.devicePixelRatio||1,2);c.width=size*dpr;c.height=size*dpr;const ctx=c.getContext("2d");ctx.setTransform(dpr,0,0,dpr,0,0);const cx=size/2,cy=size/2,rad=size*.34,n=5;ctx.clearRect(0,0,size,size);
-    for(let ring=1;ring<=4;ring++){const rr=rad*ring/4;ctx.beginPath();for(let i=0;i<n;i++){const a=-Math.PI/2+i*Math.PI*2/n,x=cx+Math.cos(a)*rr,y=cy+Math.sin(a)*rr;i?ctx.lineTo(x,y):ctx.moveTo(x,y)}ctx.closePath();ctx.strokeStyle=ring===4?"rgba(200,168,255,.28)":"rgba(255,255,255,.07)";ctx.stroke()}
-    DIMS.forEach((d,i)=>{const a=-Math.PI/2+i*Math.PI*2/n;ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+Math.cos(a)*rad,cy+Math.sin(a)*rad);ctx.strokeStyle="rgba(255,255,255,.08)";ctx.stroke()});
-    const vals=DIMS.map(d=>r.dimensions[d.id]/100);ctx.beginPath();vals.forEach((v,i)=>{const a=-Math.PI/2+i*Math.PI*2/n,x=cx+Math.cos(a)*rad*v,y=cy+Math.sin(a)*rad*v;i?ctx.lineTo(x,y):ctx.moveTo(x,y)});ctx.closePath();const g=ctx.createRadialGradient(cx,cy,10,cx,cy,rad);g.addColorStop(0,"rgba(200,168,255,.22)");g.addColorStop(1,"rgba(90,34,190,.05)");ctx.fillStyle=g;ctx.fill();ctx.strokeStyle="rgba(215,190,255,.94)";ctx.lineWidth=2;ctx.shadowColor="rgba(154,102,255,.38)";ctx.shadowBlur=18;ctx.stroke();ctx.shadowBlur=0;
-    vals.forEach((v,i)=>{const a=-Math.PI/2+i*Math.PI*2/n,x=cx+Math.cos(a)*rad*v,y=cy+Math.sin(a)*rad*v;ctx.beginPath();ctx.arc(x,y,6,0,Math.PI*2);ctx.fillStyle=DIMS[i].color;ctx.fill();ctx.strokeStyle="#fff";ctx.lineWidth=2;ctx.stroke()});
-    DIMS.forEach((d,i)=>{const a=-Math.PI/2+i*Math.PI*2/n,x=cx+Math.cos(a)*(rad+38),y=cy+Math.sin(a)*(rad+38);ctx.fillStyle="#8a8291";ctx.font="800 9px Inter,system-ui,sans-serif";ctx.textAlign=x<cx-10?"right":x>cx+10?"left":"center";ctx.textBaseline=y<cy?"bottom":"top";ctx.fillText(d.name.toUpperCase(),x,y)})
-    document.getElementById("m9RadarScore").textContent=Math.round(r.overall);
-  }
-  function bind(){
-    document.getElementById("m9Print").onclick=()=>window.print();
-    document.getElementById("m9Share").onclick=async()=>{try{if(navigator.share){await navigator.share({title:"My MAXESS AI Mastery Results",text:`My MAXESS score is ${Math.round(RESULT.overall)}/100.`,url:location.href})}else if(navigator.clipboard){await navigator.clipboard.writeText(location.href);toast("Results link copied.")}else{toast(location.href)}}catch(e){}};
-    document.getElementById("m9Copy").onclick=async()=>{try{await navigator.clipboard.writeText(JSON.stringify(window.MAXESS_NAYA_CONTEXT,null,2));toast("Result Contract copied.")}catch(e){toast("Result Contract is available as window.MAXESS_NAYA_CONTEXT.")}};
-  }
-  function toast(text){const el=document.createElement("div");el.style.cssText="position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:120000;padding:11px 15px;border:1px solid rgba(200,168,255,.25);border-radius:13px;background:rgba(8,6,12,.96);color:#fff;font-size:11px;box-shadow:0 20px 45px rgba(0,0,0,.45)";el.textContent=text;document.body.appendChild(el);setTimeout(()=>el.remove(),2200)}
-  function qa(){const box=document.getElementById("m9QA");const checks=[];const ck=(n,p,d="")=>checks.push({n,p:Boolean(p),d});ck("Marker present",document.getElementById("m9-results"));ck("Valid Result Contract",Boolean(RESULT));ck("Five dimensions",DIMS.length===5);ck("18 AI areas",AREAS.length===18);ck("Result score 0-100",!RESULT||(RESULT.overall>=0&&RESULT.overall<=100));ck("Naya context ready",Boolean(window.MAXESS_NAYA_CONTEXT));ck("NayaNET bridge present",Boolean(document.querySelector(".m9-nayanet-frame")));ck("Print control",Boolean(document.getElementById("m9Print")));ck("Share control",Boolean(document.getElementById("m9Share")));const fails=checks.filter(x=>!x.p);box.innerHTML=`<strong>MAXESS 9.9 QA · ${checks.length-fails.length}/${checks.length} PASS</strong>${checks.map(x=>`<div class="m9-qa-line ${x.p?"pass":"fail"}">${x.p?"PASS":"FAIL"} · ${esc(x.n)} ${x.d?`— ${esc(x.d)}`:""}</div>`).join("")}<button type="button" id="m9QaClose">Close</button>`;box.classList.add("open");document.getElementById("m9QaClose").onclick=()=>box.classList.remove("open");return {checks,fails}}
-  function boot(){
-    const gate=document.getElementById("gate");if(gate)gate.style.display="none";
-    const encoded=new URLSearchParams(location.search).get("result");let raw=encoded?decode(encoded):null;let r=normalize(raw);
-    if(!r){try{const saved=sessionStorage.getItem("MAXESS_RESULT")||localStorage.getItem("MAXESS_RESULT");if(saved)r=normalize(JSON.parse(saved))}catch(e){}}
-    if(!r){document.getElementById("m9-results").innerHTML='<div style="min-height:100vh;display:grid;place-items:center;padding:30px"><div style="max-width:720px;text-align:center"><div class="m9-eyebrow">MAXESS RESULTS</div><h1 style="font-size:clamp(50px,8vw,92px);line-height:.9;letter-spacing:-.06em;margin:16px 0">Your completed result is waiting.</h1><p style="color:#aaa5b6;line-height:1.7">This page does not invent scores. Complete the MAXESS assessment and arrive here with the real Result Contract.</p><a class="m9-btn primary" href="https://maxess.nayanet.xyz/">Return to the assessment →</a></div></div>';return}
-    window.RESULT=r;render(r);setTimeout(()=>qa(),500);
-    window.addEventListener("resize",()=>drawRadar(r));
-  }
-  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot,{once:true});else boot();
-  window.MAXESS_RESULTS_9_9={version:VERSION,contract:CONTRACT,get:()=>window.RESULT,qa,normalize,openResultsInProduction:r=>{const n=normalize(r);if(!n)throw new Error("Invalid Result Contract");const payload=btoa(unescape(encodeURIComponent(JSON.stringify(n)))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/g,"");location.assign("https://results.nayanet.xyz/?result="+encodeURIComponent(payload))}};
+  function drawRadar(r){const c=document.getElementById("m9Radar");if(!c)return;const rect=c.getBoundingClientRect();const size=Math.max(300,Math.floor(Math.min(rect.width||620,rect.height||620)));const dpr=Math.min(window.devicePixelRatio||1,2);c.width=size*dpr;c.height=size*dpr;const ctx=c.getContext("2d");ctx.setTransform(dpr,0,0,dpr,0,0);const cx=size/2,cy=size/2,rad=size*.34,n=5;ctx.clearRect(0,0,size,size);for(let ring=1;ring<=4;ring++){const rr=rad*ring/4;ctx.beginPath();for(let i=0;i<n;i++){const a=-Math.PI/2+i*Math.PI*2/n,x=cx+Math.cos(a)*rr,y=cy+Math.sin(a)*rr;i?ctx.lineTo(x,y):ctx.moveTo(x,y)}ctx.closePath();ctx.strokeStyle=ring===4?"rgba(200,168,255,.28)":"rgba(255,255,255,.07)";ctx.stroke()}DIMS.forEach((d,i)=>{const a=-Math.PI/2+i*Math.PI*2/n;ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+Math.cos(a)*rad,cy+Math.sin(a)*rad);ctx.strokeStyle="rgba(255,255,255,.08)";ctx.stroke()});const vals=DIMS.map(d=>r.dimensions[d.id]/100);ctx.beginPath();vals.forEach((v,i)=>{const a=-Math.PI/2+i*Math.PI*2/n,x=cx+Math.cos(a)*rad*v,y=cy+Math.sin(a)*rad*v;i?ctx.lineTo(x,y):ctx.moveTo(x,y)});ctx.closePath();ctx.fillStyle="rgba(154,102,255,.13)";ctx.fill();ctx.strokeStyle="rgba(215,190,255,.94)";ctx.lineWidth=2;ctx.stroke();vals.forEach((v,i)=>{const a=-Math.PI/2+i*Math.PI*2/n,x=cx+Math.cos(a)*rad*v,y=cy+Math.sin(a)*rad*v;ctx.beginPath();ctx.arc(x,y,6,0,Math.PI*2);ctx.fillStyle=DIMS[i].color;ctx.fill();ctx.strokeStyle="#fff";ctx.lineWidth=2;ctx.stroke()});DIMS.forEach((d,i)=>{const a=-Math.PI/2+i*Math.PI*2/n,x=cx+Math.cos(a)*(rad+38),y=cy+Math.sin(a)*(rad+38);ctx.fillStyle="#8a8291";ctx.font="800 9px Inter,system-ui,sans-serif";ctx.textAlign=x<cx-10?"right":x>cx+10?"left":"center";ctx.textBaseline=y<cy?"bottom":"top";ctx.fillText(d.name.toUpperCase(),x,y)});document.getElementById("m9RadarScore").textContent=Math.round(r.overall)}
+  function bind(){document.getElementById("m9Print").onclick=()=>window.print();document.getElementById("m9Share").onclick=async()=>{try{if(navigator.share){await navigator.share({title:"My MAXESS AI Mastery Results",text:`My MAXESS score is ${Math.round(RESULT.overall)}/100.`,url:location.href})}else if(navigator.clipboard){await navigator.clipboard.writeText(location.href);toast("Results link copied.")}}catch(e){}};document.getElementById("m9Copy").onclick=async()=>{try{await navigator.clipboard.writeText(JSON.stringify(window.MAXESS_NAYA_CONTEXT,null,2));toast("Result Contract copied.")}catch(e){toast("Result Contract is available in window.MAXESS_NAYA_CONTEXT")}}}
+  function toast(text){const el=document.createElement("div");el.style.cssText="position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:120000;padding:11px 15px;border:1px solid rgba(200,168,255,.25);border-radius:13px;background:rgba(8,6,12,.96);color:#fff;font-size:11px";el.textContent=text;document.body.appendChild(el);setTimeout(()=>el.remove(),2200)}
+  function qa(){const rows=[];const ck=(n,p)=>rows.push({n,p:Boolean(p)});ck("Result layer",Boolean(document.getElementById("m9-results")));ck("Valid result",Boolean(window.RESULT));ck("Five dimensions",DIMS.length===5);ck("18 areas",AREAS.length===18);ck("Naya context",Boolean(window.MAXESS_NAYA_CONTEXT));ck("NayaNET bridge",Boolean(document.querySelector(".m9-nayanet-frame")));ck("Share",Boolean(document.getElementById("m9Share")));ck("Print",Boolean(document.getElementById("m9Print")));console.info("MAXESS 9.9 QA",rows);return rows}
+  function boot(){const p=new URLSearchParams(location.search);const encoded=p.get("result");let r=encoded?decode(encoded):null;if(!r){try{r=JSON.parse(sessionStorage.getItem("MAXESS_RESULT")||"null")}catch(e){}}r=normalize(r);if(!r){document.getElementById("m9-results").innerHTML='<div style="min-height:100vh;display:grid;place-items:center;text-align:center;padding:30px"><div><div class="m9-eyebrow">MAXESS RESULTS</div><h1 style="font-size:clamp(52px,8vw,92px);line-height:.9;letter-spacing:-.06em;margin:15px 0">Your completed result is waiting.</h1><p style="max-width:700px;color:#aaa5b6;line-height:1.7;margin:0 auto">This page never invents a score. Complete the MAXESS assessment and arrive here with the real Result Contract.</p><a class="m9-btn primary" href="https://maxess.nayanet.xyz/" style="margin-top:25px">Return to the assessment →</a></div></div>';return}render(r);setTimeout(qa,300);window.addEventListener("resize",()=>drawRadar(r))}
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot,{once:true});else boot();window.MAXESS_RESULTS_9_9={version:VERSION,contract:CONTRACT,get:()=>window.RESULT,qa,normalize};
 })();
-</script>
-'''
+</script>'''
+
+def format_html(text):
+    text = re.sub(r'>\s*<', '>\n<', text)
+    text = re.sub(r'\{\s*', '{\n', text)
+    text = re.sub(r'\}\s*', '}\n', text)
+    text = re.sub(r';\s*(?=[A-Za-z.#@\[\]:_-])', ';\n', text)
+    text = re.sub(r'\n{3,}', '\n\n', text)
+    return text
 
 def build():
     if not SOURCE.exists():
         raise SystemExit('MAXESS-RESULTS-AAA-FULL.html not found')
-    base=SOURCE.read_text(encoding='utf-8')
-    if MARKER in base:
-        print('9.9 transformation already present')
-        final=base
-    else:
-        # Suppress the legacy Results presentation while preserving its source for rollback/audit.
-        hide='<style id="MAXESS_RESULTS_9_9_LEGACY_HIDE">\n#resultsView,.fresh-results,[id^="m10-"]{display:none!important}\n</style>\n'
-        closing=base.lower().rfind('</body>')
-        if closing<0:
+    base = SOURCE.read_text(encoding='utf-8')
+    if MARKER not in base:
+        closing = base.lower().rfind('</body>')
+        if closing < 0:
             raise SystemExit('No closing body tag')
-        bridge='\n<!-- MAXESS_RESULTS_9_9_TRANSFORMATION -->\n'+STYLE+BODY+SCRIPT
-        final=base[:closing]+hide+bridge+base[closing:]
-    OUTPUT.write_text(final,encoding='utf-8')
-    lines=len(final.splitlines())
-    size=len(final.encode('utf-8'))
-    required=[MARKER,'WHAT AI REALLY SAYS ABOUT YOU','m9Radar','m9Library','m9Roles','m9Method','m9Naya','results.nayanet.xyz','MAXESS-RESULTS-CONTRACT-1','MAXESS_RESULTS_9_9']
-    missing=[item for item in required if item not in final]
-    if missing:
-        raise SystemExit('9.9 build missing: '+', '.join(missing))
-    if lines<1000:
-        raise SystemExit(f'9.9 build too small: {lines} lines')
-    if size<70000:
-        raise SystemExit(f'9.9 build too small: {size} bytes')
+        hide='<style id="MAXESS_RESULTS_9_9_LEGACY_HIDE">#resultsView,.fresh-results,[id^="m10-"]{display:none!important}</style>\n'
+        base = base[:closing] + hide + '\n<!-- '+MARKER+' -->\n' + STYLE + BODY + SCRIPT + '\n' + base[closing:]
+    final = format_html(base)
+    OUTPUT.write_text(final, encoding='utf-8')
+    lines = len(final.splitlines())
+    size = len(final.encode('utf-8'))
+    required = [MARKER,'WHAT AI REALLY SAYS ABOUT YOU','m9Radar','m9Library','m9Roles','m9Method','m9Naya','https://nayanet.xyz/','MAXESS-RESULTS-CONTRACT-1']
+    missing = [x for x in required if x not in final]
+    if missing: raise SystemExit('9.9 build missing: '+', '.join(missing))
+    if lines < 1000: raise SystemExit(f'9.9 build too small: {lines} lines')
+    if size < 70000: raise SystemExit(f'9.9 build too small: {size} bytes')
     print(f'MAXESS 9.9 BUILD PASS: {lines} lines / {size} bytes')
 
 if __name__=='__main__':
