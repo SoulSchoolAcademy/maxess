@@ -22,7 +22,13 @@ When creating durable product decisions, add or update a clearly named file unde
 ### Results experience
 - `.naya/memory/08-MAXESS-RESULTS-MASTER-SPEC.md` — locked MAXESS Results product architecture, psychological journey, five AI character dimensions, personalization, result contract, Naya transition, AAA standard.
 
-### Future memory categories
+### Naya operating modes
+- `.naya/memory/09-NAYA-ROLE-ROLODEX.md` — one Naya / many expert modes, 21-role index, activation syntax, multi-role orchestration, shared craft loop.
+
+### Quality / craftsmanship
+- `.naya/memory/10-AAA-OSCAR-MASTER-CRAFTSMAN-PROTOCOL.md` — Cake/Icing/Ice Cream/Cherry/Star, WHY IS THIS NOT A 10?, adversarial QA, release gates, risk-weighted verification, learning loop.
+
+## Future memory categories
 Recommended categories:
 - Product vision and positioning
 - Architecture and data contracts
