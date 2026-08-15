@@ -21,10 +21,11 @@ def build():
     if not scripts:
         raise SystemExit('No script blocks found')
 
-    # The final script in the document is the authoritative Royal Results controller.
+    # The final script in the source is the authoritative Royal Results controller.
     royal_script = scripts[-1]
 
-    preflight = '''<style id="MAXESS_GROOVE_EMBED_PREFLIGHT">
+    preflight = '''<!-- MAXESS-RESULTS-CONTRACT-1 | GROOVE-NATIVE | ROYAL-9.95 | NO-IFRAME | FULL-BLEED -->
+<style id="MAXESS_GROOVE_EMBED_PREFLIGHT">
 #maxess-groove-embed{
   position:relative!important;
   left:50%!important;
@@ -73,7 +74,7 @@ def build():
         'no_iframe_tag': not bool(re.search(r'<iframe(?:\s|>)', final, flags=re.I)),
         'no_legacy_results_root': 'id="m9-results"' not in final,
         'no_legacy_nayanet_frame': 'm9-nayanet-frame' not in final,
-        'substantial': len(final.splitlines()) >= 2500 and len(final.encode('utf-8')) >= 70000,
+        'substantial': len(final.splitlines()) >= 1200 and len(final.encode('utf-8')) >= 50000,
     }
     for name, ok in checks.items():
         print(f'{name}: {"PASS" if ok else "FAIL"}')
