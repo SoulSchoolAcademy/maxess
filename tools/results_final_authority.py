@@ -2,17 +2,16 @@ from pathlib import Path
 
 p = Path("code")
 s = p.read_text(encoding="utf-8")
-MARK = "MAXESS RESULTS FINAL AUTHORITY V2"
+MARK = "MAXESS RESULTS FRESH AUTHORITY V3"
 HTML_MARK = "<!-- " + MARK + " -->"
 
+# Remove this authority from any prior generated source.
 while HTML_MARK in s:
-    marker_start = s.find("<!-- " + MARK + " -->")
-    if marker_start < 0:
+    start = s.find(HTML_MARK)
+    body_end = s.find("</body>", start)
+    if start < 0 or body_end < 0:
         break
-    body_end = s.find("</body>", marker_start)
-    if body_end < 0:
-        break
-    s = s[:marker_start] + s[body_end:]
+    s = s[:start] + s[body_end:]
 
 body_idx = s.rfind("</body>")
 if body_idx < 0:
@@ -25,159 +24,145 @@ first_script_end += len("</script>")
 core = s[:first_script_end].rstrip()
 
 CSS = r'''
-/* MAXESS RESULTS FINAL AUTHORITY V2 */
-#resultsView{display:none!important;width:100%;max-width:none!important;margin:0!important;}
+/* =========================================================
+   MAXESS RESULTS — FRESH AUTHORITY V3
+   Results presentation only. Assessment engine remains intact.
+========================================================= */
+#resultsView{display:none!important;width:100%!important;max-width:none!important;margin:0!important;}
 #resultsView.visible{display:block!important;}
 .board-wrap:has(#resultsView.visible){display:block!important;min-height:0!important;}
-.board-wrap:has(#resultsView.visible) .board{min-height:0!important;overflow:visible!important;border-radius:0!important;background:transparent!important;}
-.board-wrap:has(#resultsView.visible) .board-content{min-height:0!important;padding:0!important;}
+.board-wrap:has(#resultsView.visible) .board{display:block!important;min-height:0!important;overflow:visible!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;}
 .board-wrap:has(#resultsView.visible) .board::before,.board-wrap:has(#resultsView.visible) .board::after{display:none!important;}
-.maxess-r2{position:relative;isolation:isolate;width:100%;min-height:100vh;overflow:hidden;color:#f7f5fb;background:radial-gradient(circle at 50% -10%,rgba(126,78,255,.22),transparent 32%),radial-gradient(circle at 5% 42%,rgba(60,168,255,.06),transparent 26%),radial-gradient(circle at 95% 73%,rgba(53,227,155,.05),transparent 24%),linear-gradient(180deg,#050507 0%,#020204 38%,#030305 100%);}
-.maxess-r2::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:-1;background:linear-gradient(110deg,transparent 15%,rgba(255,255,255,.018) 50%,transparent 85%);mask-image:linear-gradient(to bottom,black,transparent 70%);}
-.maxess-r2 *{box-sizing:border-box;}
-.r2-wrap{width:min(1160px,100%);margin:0 auto;padding:clamp(24px,5vw,74px) clamp(16px,4vw,52px) 120px;}
-.r2-kicker{font-size:10px;font-weight:950;letter-spacing:.2em;text-transform:uppercase;color:#b896ff;}
-.r2-title{margin:8px 0 0;font-size:clamp(40px,6.5vw,80px);line-height:.94;letter-spacing:-.06em;font-weight:950;}
-.r2-copy{margin:16px 0 0;color:#b7b0bf;font-size:clamp(16px,2vw,20px);line-height:1.58;max-width:820px;}
-.r2-hero{text-align:center;padding:6px 0 64px;}
-.r2-hero .r2-copy{margin-left:auto;margin-right:auto;}
-.r2-gauge{width:min(650px,100%);margin:28px auto 0;}
-.r2-gauge svg{display:block;width:100%;height:auto;overflow:visible;}
-.r2-gauge .track{fill:none;stroke:rgba(255,255,255,.075);stroke-width:24;stroke-linecap:round;}
-.r2-gauge .fill{fill:none;stroke:url(#r2Gauge);stroke-width:24;stroke-linecap:round;filter:drop-shadow(0 0 16px rgba(138,92,255,.38));}
-.r2-gauge .tick{stroke:rgba(255,255,255,.14);stroke-width:2;}
-.r2-gauge .tick.major{stroke:rgba(184,149,255,.35);stroke-width:3;}
-.r2-gauge .needle{stroke:#fff;stroke-width:5;stroke-linecap:round;filter:drop-shadow(0 0 8px rgba(255,255,255,.52));}
-.r2-gauge .hub{fill:#08060d;stroke:#b896ff;stroke-width:3;filter:drop-shadow(0 0 12px rgba(138,92,255,.48));}
-.r2-gauge .score{fill:#fff;font:1000 74px system-ui,sans-serif;letter-spacing:-.065em;}
-.r2-gauge .label{fill:#aaa3b0;font:950 10px system-ui,sans-serif;letter-spacing:.17em;}
-.r2-band{margin-top:-4px;font-size:11px;font-weight:950;letter-spacing:.16em;text-transform:uppercase;color:#d3c7e7;}
-.r2-section{position:relative;padding:clamp(66px,8vw,104px) 0;border-top:1px solid rgba(184,149,255,.1);}
-.r2-editorial{max-width:970px;margin:0 auto;}
-.r2-editorial h2{margin:8px 0 0;font-size:clamp(32px,5vw,62px);line-height:.98;letter-spacing:-.045em;font-weight:950;}
-.r2-editorial .lead{margin:18px 0 0;color:#ddd7e3;font-size:clamp(18px,2.2vw,22px);line-height:1.58;max-width:900px;}
-.r2-editorial .lead em{font-style:normal;color:#b896ff;}
-.r2-sidefacts{display:flex;gap:28px;flex-wrap:wrap;margin-top:24px;}
-.r2-fact{min-width:150px;padding-top:12px;border-top:1px solid rgba(255,255,255,.1);}
-.r2-fact small{display:block;color:#7e7788;font-size:9px;font-weight:950;letter-spacing:.16em;text-transform:uppercase;}
-.r2-fact strong{display:block;margin-top:7px;font-size:22px;line-height:1.04;}
-.r2-spectrum{margin-top:28px;padding:24px 0 6px;}
-.r2-spectrum-track{height:18px;border-radius:999px;background:linear-gradient(90deg,#34224f 0%,#573e8e 34%,#765cff 63%,#8ee8c8 100%);box-shadow:inset 0 1px 3px rgba(255,255,255,.16),0 12px 28px rgba(0,0,0,.22);position:relative;}
-.r2-spectrum-mark{position:absolute;top:50%;width:26px;height:26px;border-radius:50%;transform:translate(-50%,-50%);background:radial-gradient(circle at 30% 22%,#fff 0,#e9ddff 14%,#b896ff 34%,#744cff 63%,#171021 100%);border:1px solid #f1e9ff;box-shadow:0 0 0 6px rgba(138,92,255,.09),0 0 28px rgba(138,92,255,.42);}
-.r2-fingerprint{text-align:center;}
-.r2-fingerprint h2{margin:8px 0 0;font-size:clamp(34px,5vw,62px);line-height:.97;letter-spacing:-.045em;font-weight:950;}
-.r2-fingerprint p{max-width:820px;margin:16px auto 0;color:#aaa3b1;font-size:15px;line-height:1.64;}
-.r2-fingerprint-svg{width:min(850px,100%);margin:30px auto 0;}
-.r2-fingerprint-svg svg{display:block;width:100%;height:auto;}
-.r2-fingerprint-svg .grid{fill:none;stroke:rgba(255,255,255,.08);stroke-width:1;}
-.r2-fingerprint-svg .axis{stroke:rgba(184,149,255,.11);stroke-width:1;}
-.r2-fingerprint-svg .shape{fill:rgba(138,92,255,.16);stroke:#b896ff;stroke-width:3;filter:drop-shadow(0 0 18px rgba(138,92,255,.24));}
-.r2-fingerprint-svg .point{fill:#fff;stroke:#b896ff;stroke-width:2.5;}
-.r2-fingerprint-svg .label{fill:#aaa3b1;font:900 11px system-ui,sans-serif;}
-.r2-cap-grid{display:grid;grid-template-columns:1fr 1fr;gap:44px;margin-top:34px;}
-.r2-cap{padding-top:16px;border-top:1px solid rgba(184,149,255,.14);}
-.r2-cap .cap-line{width:44px;height:3px;border-radius:99px;margin-bottom:14px;background:#35e39b;box-shadow:0 0 18px rgba(53,227,155,.24);}
-.r2-cap.opportunity .cap-line{background:#8a5cff;box-shadow:0 0 18px rgba(138,92,255,.24);}
-.r2-cap small{display:block;color:#7f7888;font-size:9px;font-weight:950;letter-spacing:.16em;text-transform:uppercase;}
-.r2-cap h3{margin:8px 0 0;font-size:clamp(28px,4vw,40px);line-height:1.03;letter-spacing:-.035em;}
-.r2-cap .score{display:inline-block;margin-top:8px;color:#b896ff;font-size:14px;font-weight:950;}
-.r2-cap p{margin:10px 0 0;color:#aaa3b1;font-size:14px;line-height:1.64;}
-.r2-insight{padding:clamp(76px,11vw,140px) 0;}
-.r2-insight .orbital{width:120px;height:120px;margin:0 0 24px;border-radius:50%;border:1px solid rgba(211,195,255,.68);background:radial-gradient(circle at 30% 20%,#fff 0,#e9ddff 10%,#a27aff 28%,#5b32b1 54%,#08050e 100%);box-shadow:inset 0 2px 7px rgba(255,255,255,.72),0 0 55px rgba(138,92,255,.32),0 19px 34px rgba(0,0,0,.44);position:relative;}
-.r2-insight .orbital::after{content:"";position:absolute;inset:-20px;border:1px solid rgba(184,149,255,.09);border-radius:50%;transform:rotate(-12deg) scaleX(1.45);}
-.r2-insight blockquote{margin:0;max-width:980px;font-size:clamp(34px,5.6vw,68px);line-height:.98;letter-spacing:-.05em;font-weight:950;}
-.r2-insight p{max-width:780px;margin:18px 0 0;color:#aaa3b1;font-size:15px;line-height:1.64;}
-.r2-report-artifact{display:flex;justify-content:center;align-items:center;gap:24px;flex-wrap:wrap;}
-.r2-doc{width:min(330px,82vw);aspect-ratio:.73;border-radius:28px;padding:20px;background:linear-gradient(145deg,#17131f,#08080b);border:1px solid rgba(184,149,255,.28);box-shadow:inset 0 2px 5px rgba(255,255,255,.08),0 28px 64px rgba(0,0,0,.42),0 0 34px rgba(138,92,255,.1);transform:rotate(-3deg);}
-.r2-doc .seal{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle,#c9b5ff,#7954ff 56%,#27104f);border:1px solid rgba(255,255,255,.5);font-weight:1000;}
-.r2-doc h3{margin:20px 0 0;font-size:28px;line-height:1.02;letter-spacing:-.03em;}
-.r2-doc p{margin:10px 0 0;color:#aaa3b1;font-size:11px;line-height:1.5;}
-.r2-doc .lines{display:grid;gap:8px;margin-top:18px;}
-.r2-doc .line{height:6px;border-radius:99px;background:linear-gradient(90deg,#8a5cff,#2b2635);}
-.r2-report-copy{max-width:430px;}
-.r2-report-copy h2{margin:0;font-size:clamp(30px,4.4vw,50px);line-height:.98;letter-spacing:-.04em;}
-.r2-report-copy p{margin:12px 0 0;color:#aaa3b1;font-size:15px;line-height:1.62;}
-.r2-naya{display:grid;grid-template-columns:180px minmax(0,1fr);gap:34px;align-items:center;max-width:1000px;margin:0 auto;}
-.r2-naya-photo{width:180px;height:180px;border-radius:50%;overflow:hidden;border:1px solid rgba(240,233,255,.7);box-shadow:inset 0 2px 8px rgba(255,255,255,.72),0 0 55px rgba(138,92,255,.34),0 20px 30px rgba(0,0,0,.43);background:radial-gradient(circle at 30% 20%,#fff,#a27aff 38%,#341774 72%,#06040a);}
-.r2-naya-photo img{width:100%;height:100%;display:block;object-fit:cover;}
-.r2-naya h2{margin:7px 0 0;font-size:clamp(36px,5vw,60px);line-height:.96;letter-spacing:-.045em;}
-.r2-naya p{margin:14px 0 0;color:#b2abb9;font-size:16px;line-height:1.62;max-width:760px;}
-.r2-masters{text-align:center;}
-.r2-masters h2{margin:8px 0 0;font-size:clamp(34px,4.9vw,60px);line-height:.97;letter-spacing:-.045em;font-weight:950;}
-.r2-masters p{max-width:760px;margin:14px auto 0;color:#aaa3b1;font-size:14px;line-height:1.62;}
-.r2-network{position:relative;width:min(980px,100%);height:390px;margin:34px auto 0;}
-.r2-network .core{position:absolute;left:50%;top:50%;width:116px;height:116px;transform:translate(-50%,-50%);border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 30% 20%,#fff 0,#e4d9ff 10%,#9c78ff 34%,#4f2ba8 63%,#08050e 100%);border:1px solid rgba(240,233,255,.7);box-shadow:inset 0 2px 8px rgba(255,255,255,.74),0 0 58px rgba(138,92,255,.42),0 20px 34px rgba(0,0,0,.44);font-weight:1000;font-size:24px;}
-.r2-network .orbit{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);border:1px solid rgba(184,149,255,.16);border-radius:50%;}
-.r2-network .o1{width:250px;height:250px;}
-.r2-network .o2{width:420px;height:260px;transform:translate(-50%,-50%) rotate(-8deg);}
-.r2-network .node{position:absolute;width:128px;text-align:center;transform:translate(-50%,-50%);}
-.r2-network .node .rf-gem{width:74px;height:74px;border-radius:23px;margin:0 auto;}
-.r2-network .n1{left:17%;top:50%}.r2-network .n2{left:33%;top:12%}.r2-network .n3{left:67%;top:12%}.r2-network .n4{left:83%;top:50%}.r2-network .n5{left:50%;top:90%}
-.r2-network .node h3{margin:10px 0 0;font-size:13px;line-height:1.12;}
-.r2-network .node span{display:block;margin-top:5px;color:#90889a;font-size:9px;line-height:1.35;}
-.r2-keys{text-align:center;}
-.r2-keys h2{margin:8px 0 0;font-size:clamp(32px,4.7vw,56px);line-height:.98;letter-spacing:-.04em;font-weight:950;}
-.r2-keys p{max-width:720px;margin:14px auto 0;color:#aaa3b1;font-size:14px;line-height:1.62;}
-.r2-key-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:26px;margin:36px auto 0;max-width:940px;position:relative;}
-.r2-key-row::before{content:"";position:absolute;left:18%;right:18%;top:58px;height:2px;background:linear-gradient(90deg,transparent,rgba(184,149,255,.48),transparent);}
-.r2-key{position:relative;z-index:1;text-align:center;}
-.r2-key .rf-gem{width:116px;height:116px;border-radius:50%;margin:0 auto;box-shadow:inset 0 2px 8px rgba(255,255,255,.74),0 0 38px rgba(138,92,255,.22),0 19px 30px rgba(0,0,0,.42);}
-.r2-key h3{margin:16px 0 0;font-size:18px;}
-.r2-key p{margin:7px auto 0;color:#90889a;font-size:11px;line-height:1.45;max-width:220px;}
-.r2-cta{text-align:center;padding:clamp(80px,12vw,150px) 0 40px;}
-.r2-cta h2{margin:8px auto 0;max-width:900px;font-size:clamp(40px,6vw,76px);line-height:.94;letter-spacing:-.055em;font-weight:950;}
-.r2-cta p{max-width:700px;margin:16px auto 0;color:#b2abb9;font-size:16px;line-height:1.64;}
-.r2-actions{display:flex;justify-content:center;gap:11px;flex-wrap:wrap;margin-top:28px;}
-.r2-actions button{min-height:58px;padding:0 26px;border-radius:18px;font-weight:950;cursor:pointer;transition:transform .18s ease,box-shadow .18s ease;}
-.r2-primary{border:1px solid rgba(238,228,255,.72);background:linear-gradient(180deg,#c9b0ff,#805cff);color:#0b0712;box-shadow:0 18px 44px rgba(138,92,255,.23);}
-.r2-secondary{border:1px solid rgba(255,255,255,.14);background:rgba(8,8,11,.9);color:#fff;}
-.r2-actions button:hover{transform:translateY(-2px);}
-.r2-disclaimer{margin:22px auto 0;max-width:700px;color:#675f70;font-size:10px;line-height:1.5;}
-.rf-gem{display:grid;place-items:center;color:#fff;font-weight:1000;border:1px solid rgba(255,255,255,.64);box-shadow:inset 0 2px 5px rgba(255,255,255,.68),0 0 24px rgba(138,92,255,.18),0 9px 17px rgba(0,0,0,.42);}
-.rf-gem.p{background:radial-gradient(circle at 28% 17%,#fff 0,#ddd2ff 12%,#8a5cff 42%,#09050f 100%);}
-.rf-gem.b{background:radial-gradient(circle at 28% 17%,#fff 0,#d9ecff 12%,#3ca8ff 42%,#06101a 100%);}
-.rf-gem.g{background:radial-gradient(circle at 28% 17%,#fff 0,#d8fff0 12%,#35e39b 42%,#06110b 100%);}
-.rf-gem.v{background:radial-gradient(circle at 28% 17%,#fff 0,#ddd8ff 12%,#765cff 42%,#0a0710 100%);}
-.rf-gem.m{background:radial-gradient(circle at 28% 17%,#fff 0,#ffd8f5 12%,#ed42c4 42%,#12050f 100%);}
-@media(max-width:900px){.r2-network{height:430px}.r2-network .n1{left:12%}.r2-network .n4{left:88%}}
-@media(max-width:720px){.r2-cap-grid{grid-template-columns:1fr;gap:28px}.r2-naya{grid-template-columns:1fr;text-align:center}.r2-naya-photo{margin:0 auto}.r2-network{height:470px}.r2-network .n1{left:18%;top:42%}.r2-network .n2{left:36%;top:12%}.r2-network .n3{left:64%;top:12%}.r2-network .n4{left:82%;top:42%}.r2-network .n5{left:50%;top:88%}.r2-key-row{grid-template-columns:1fr;gap:18px}.r2-key .rf-gem{width:98px;height:98px}}
-@media(prefers-reduced-motion:reduce){.r2-actions button{transition:none}}
+.board-wrap:has(#resultsView.visible) .board-content{display:block!important;min-height:0!important;padding:0!important;}
+
+.mxr{--ink:#f8f6fb;--muted:#aaa3b1;--line:rgba(184,149,255,.13);--purple:#8a5cff;--light:#b895ff;--blue:#3ca8ff;--green:#35e39b;--magenta:#ed42c4;--sapphire:#4e8cff;position:relative;isolation:isolate;overflow:hidden;color:var(--ink);background:radial-gradient(circle at 50% -8%,rgba(128,78,255,.2),transparent 32%),radial-gradient(circle at 5% 40%,rgba(60,168,255,.05),transparent 24%),radial-gradient(circle at 95% 76%,rgba(53,227,155,.05),transparent 22%),linear-gradient(180deg,#050507 0%,#020204 38%,#030305 100%);}
+.mxr::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:-1;background:radial-gradient(circle at 50% 20%,rgba(255,255,255,.02),transparent 35%),linear-gradient(115deg,transparent 16%,rgba(255,255,255,.014) 50%,transparent 84%);}
+.mxr *{box-sizing:border-box}
+.mxr-wrap{width:min(1180px,100%);margin:0 auto;padding:clamp(24px,5vw,72px) clamp(16px,4vw,48px) 120px}
+.mxr-kicker{font-size:10px;font-weight:950;letter-spacing:.21em;text-transform:uppercase;color:var(--light)}
+.mxr-title{margin:8px 0 0;font-size:clamp(42px,7vw,84px);font-weight:950;line-height:.92;letter-spacing:-.065em}
+.mxr-copy{margin:17px 0 0;max-width:820px;color:#bcb6c4;font-size:clamp(16px,2vw,20px);line-height:1.58}
+.mxr-center{text-align:center}.mxr-center .mxr-copy{margin-left:auto;margin-right:auto}
+.mxr-hero{padding-bottom:64px}
+.mxr-gauge{width:min(680px,100%);margin:26px auto 0}.mxr-gauge svg{display:block;width:100%;height:auto;overflow:visible}
+.mxr-gauge .track{fill:none;stroke:rgba(255,255,255,.075);stroke-width:23;stroke-linecap:round}.mxr-gauge .fill{fill:none;stroke:url(#mxrGauge);stroke-width:23;stroke-linecap:round;filter:drop-shadow(0 0 14px rgba(138,92,255,.38))}.mxr-gauge .tick{stroke:rgba(255,255,255,.13);stroke-width:2}.mxr-gauge .tick.major{stroke:rgba(184,149,255,.35);stroke-width:3}.mxr-gauge .tick-label{fill:#898392;font:800 11px system-ui,sans-serif}.mxr-gauge .needle{stroke:#fff;stroke-width:5;stroke-linecap:round;filter:drop-shadow(0 0 8px rgba(255,255,255,.48))}.mxr-gauge .hub{fill:#09070d;stroke:#b895ff;stroke-width:3;filter:drop-shadow(0 0 12px rgba(138,92,255,.45))}.mxr-gauge .score{fill:#fff;font:1000 76px system-ui,sans-serif;letter-spacing:-.065em}.mxr-gauge .label{fill:#98919f;font:900 10px system-ui,sans-serif;letter-spacing:.17em}
+.mxr-band{margin-top:-3px;font-size:11px;font-weight:950;letter-spacing:.16em;text-transform:uppercase;color:#d9d0e7}
+.mxr-rule{height:1px;background:linear-gradient(90deg,transparent,var(--line),transparent)}
+.mxr-section{padding:clamp(68px,8vw,110px) 0;border-top:1px solid var(--line)}
+.mxr-editorial{max-width:960px;margin:0 auto}.mxr-editorial h2{margin:8px 0 0;font-size:clamp(34px,5vw,62px);line-height:.98;letter-spacing:-.045em}.mxr-lead{margin:16px 0 0;max-width:900px;color:#ddd7e4;font-size:clamp(18px,2.2vw,22px);line-height:1.58}
+.mxr-facts{display:flex;flex-wrap:wrap;gap:28px;margin-top:26px}.mxr-fact{min-width:145px;padding-top:12px;border-top:1px solid rgba(255,255,255,.09)}.mxr-fact small{display:block;color:#7f7888;font-size:9px;font-weight:950;letter-spacing:.16em;text-transform:uppercase}.mxr-fact strong{display:block;margin-top:7px;font-size:24px}
+.mxr-spectrum{max-width:900px;margin:28px auto 0;text-align:left}.mxr-spectrum-track{position:relative;height:16px;border-radius:999px;background:linear-gradient(90deg,#312043 0%,#5b3c87 36%,#7a5cff 64%,#8ce7c5 100%);box-shadow:inset 0 1px 3px rgba(255,255,255,.14),0 12px 28px rgba(0,0,0,.24)}.mxr-spectrum-marker{position:absolute;top:50%;width:28px;height:28px;border-radius:50%;transform:translate(-50%,-50%);background:radial-gradient(circle at 30% 20%,#fff 0,#e8ddff 14%,#b895ff 35%,#7048ef 64%,#14101c 100%);border:1px solid #f1ebff;box-shadow:0 0 0 6px rgba(138,92,255,.08),0 0 25px rgba(138,92,255,.4)}.mxr-spectrum-labels{display:flex;justify-content:space-between;margin-top:11px;color:#7f7888;font-size:10px;font-weight:900;letter-spacing:.06em;text-transform:uppercase}
+.mxr-fingerprint{text-align:center}.mxr-fingerprint h2{margin:8px 0 0;font-size:clamp(36px,5vw,64px);line-height:.96;letter-spacing:-.045em}.mxr-fingerprint p{max-width:820px;margin:16px auto 0;color:#aaa3b1;font-size:15px;line-height:1.65}
+.mxr-constellation{max-width:900px;margin:28px auto 0}.mxr-constellation svg{display:block;width:100%;height:auto}.mxr-constellation .grid{fill:none;stroke:rgba(255,255,255,.075)}.mxr-constellation .axis{stroke:rgba(184,149,255,.1)}.mxr-constellation .shape{fill:rgba(138,92,255,.14);stroke:#b895ff;stroke-width:3;filter:drop-shadow(0 0 18px rgba(138,92,255,.22))}.mxr-constellation .point{fill:#fff;stroke:#b895ff;stroke-width:2.5}.mxr-constellation .label{fill:#b6afbe;font:900 11px system-ui,sans-serif}
+.mxr-cap-list{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:25px}.mxr-cap-btn{appearance:none;border:0;background:transparent;color:#fff;padding:0;text-align:center;cursor:pointer}.mxr-jewel{width:64px;height:64px;margin:0 auto;border-radius:21px;display:grid;place-items:center;border:1px solid rgba(255,255,255,.66);box-shadow:inset 0 2px 5px rgba(255,255,255,.7),0 0 28px rgba(138,92,255,.15),0 9px 18px rgba(0,0,0,.42)}.mxr-cap-btn:nth-child(1) .mxr-jewel{background:radial-gradient(circle at 28% 17%,#fff 0,#ddd4ff 13%,#8a5cff 43%,#09050f 100%)}.mxr-cap-btn:nth-child(2) .mxr-jewel{background:radial-gradient(circle at 28% 17%,#fff 0,#d9ecff 13%,#3ca8ff 43%,#06101a 100%)}.mxr-cap-btn:nth-child(3) .mxr-jewel{background:radial-gradient(circle at 28% 17%,#fff 0,#d8fff0 13%,#35e39b 43%,#06110b 100%)}.mxr-cap-btn:nth-child(4) .mxr-jewel{background:radial-gradient(circle at 28% 17%,#fff 0,#ddd8ff 13%,#765cff 43%,#0a0710 100%)}.mxr-cap-btn:nth-child(5) .mxr-jewel{background:radial-gradient(circle at 28% 17%,#fff 0,#ffd8f5 13%,#ed42c4 43%,#12050f 100%)}.mxr-cap-btn span{display:block;margin-top:10px;font-size:11px;font-weight:950;line-height:1.2}.mxr-cap-detail{max-width:760px;margin:24px auto 0;padding-top:15px;border-top:1px solid rgba(184,149,255,.12);color:#b7b0bd;font-size:14px;line-height:1.68}.mxr-cap-btn:focus-visible{outline:2px solid #fff;outline-offset:6px;border-radius:12px}
+.mxr-two{display:grid;grid-template-columns:1fr 1fr;gap:48px}.mxr-story{padding-top:16px;border-top:1px solid rgba(184,149,255,.16)}.mxr-story .accent{width:36px;height:3px;border-radius:999px;background:var(--green);box-shadow:0 0 18px rgba(53,227,155,.25);margin-bottom:15px}.mxr-story.opportunity .accent{background:var(--purple);box-shadow:0 0 18px rgba(138,92,255,.24)}.mxr-story small{display:block;color:#7f7888;font-size:9px;font-weight:950;letter-spacing:.16em;text-transform:uppercase}.mxr-story h3{margin:8px 0 0;font-size:clamp(30px,4vw,42px);line-height:1.02;letter-spacing:-.035em}.mxr-story .story-score{margin-top:9px;color:var(--light);font-size:14px;font-weight:950}.mxr-story p{margin:10px 0 0;color:#aaa3b1;font-size:14px;line-height:1.68}.mxr-story details{margin-top:18px}.mxr-story summary{cursor:pointer;color:#d7d1df;font-size:11px;font-weight:950;letter-spacing:.1em;text-transform:uppercase}.mxr-story details p{margin-top:10px}
+.mxr-insight{padding:clamp(82px,12vw,150px) 0}.mxr-orbit{width:112px;height:112px;border-radius:50%;border:1px solid rgba(234,226,255,.7);background:radial-gradient(circle at 30% 20%,#fff 0,#e4d8ff 11%,#a079ff 33%,#5429aa 61%,#08050e 100%);box-shadow:inset 0 2px 7px rgba(255,255,255,.72),0 0 54px rgba(138,92,255,.31),0 20px 34px rgba(0,0,0,.4);position:relative;margin-bottom:24px}.mxr-orbit::after{content:"";position:absolute;inset:-18px;border:1px solid rgba(184,149,255,.08);border-radius:50%;transform:rotate(-12deg) scaleX(1.46)}.mxr-insight blockquote{margin:0;max-width:1000px;font-size:clamp(34px,5.7vw,70px);font-weight:950;line-height:.98;letter-spacing:-.05em}.mxr-insight p{max-width:790px;margin:18px 0 0;color:#aaa3b1;font-size:15px;line-height:1.66}
+.mxr-report{display:grid;grid-template-columns:330px minmax(0,1fr);gap:48px;align-items:center;max-width:980px;margin:0 auto}.mxr-doc{aspect-ratio:.74;border-radius:27px;padding:20px;background:linear-gradient(145deg,#17131f,#08080b);border:1px solid rgba(184,149,255,.25);box-shadow:inset 0 2px 6px rgba(255,255,255,.07),0 28px 65px rgba(0,0,0,.42),0 0 34px rgba(138,92,255,.1);transform:rotate(-3deg)}.mxr-seal{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle,#d8c9ff,#7954ff 58%,#291054);border:1px solid rgba(255,255,255,.5);font-weight:1000}.mxr-doc h3{margin:20px 0 0;font-size:28px;line-height:1.02;letter-spacing:-.03em}.mxr-doc .line{height:6px;border-radius:99px;background:linear-gradient(90deg,#8a5cff,#292430);margin-top:9px}.mxr-report-copy h2{margin:0;font-size:clamp(32px,4.7vw,54px);line-height:.98;letter-spacing:-.04em}.mxr-report-copy p{margin:12px 0 0;color:#aaa3b1;font-size:15px;line-height:1.64}.mxr-actions{display:flex;gap:11px;flex-wrap:wrap;margin-top:22px}.mxr-btn{min-height:56px;padding:0 23px;border-radius:18px;border:1px solid rgba(255,255,255,.15);background:#08080b;color:#fff;font-weight:950;cursor:pointer}.mxr-btn.primary{border-color:rgba(231,220,255,.72);background:linear-gradient(180deg,#c8afff,#805cff);color:#0a0610;box-shadow:0 17px 42px rgba(138,92,255,.21)}.mxr-btn:hover{transform:translateY(-2px)}.mxr-btn:focus-visible{outline:2px solid #fff;outline-offset:4px}
+.mxr-naya{display:grid;grid-template-columns:190px minmax(0,1fr);gap:34px;align-items:center;max-width:1000px;margin:0 auto;padding:18px 0}.mxr-naya-photo{width:190px;height:190px;border-radius:50%;overflow:hidden;border:1px solid rgba(240,233,255,.7);background:radial-gradient(circle at 30% 20%,#fff,#a27aff 38%,#341774 72%,#06040a);box-shadow:inset 0 2px 8px rgba(255,255,255,.72),0 0 55px rgba(138,92,255,.32),0 20px 32px rgba(0,0,0,.42)}.mxr-naya-photo img{width:100%;height:100%;object-fit:cover;display:block}.mxr-naya h2{margin:8px 0 0;font-size:clamp(38px,5.2vw,62px);line-height:.94;letter-spacing:-.05em}.mxr-naya p{margin:14px 0 0;color:#b6b0bb;font-size:16px;line-height:1.65;max-width:760px}
+.mxr-network{text-align:center}.mxr-network h2{margin:8px 0 0;font-size:clamp(36px,5.1vw,62px);line-height:.96;letter-spacing:-.045em}.mxr-network>p{max-width:760px;margin:15px auto 0;color:#aaa3b1;font-size:14px;line-height:1.65}.mxr-network-art{position:relative;width:min(960px,100%);height:430px;margin:30px auto 0}.mxr-net-orbit{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);border:1px solid rgba(184,149,255,.14);border-radius:50%}.mxr-net-orbit.one{width:250px;height:250px}.mxr-net-orbit.two{width:450px;height:280px;transform:translate(-50%,-50%) rotate(-9deg)}.mxr-net-center{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:122px;height:122px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 30% 20%,#fff 0,#e5d9ff 10%,#9c78ff 34%,#4f2ba8 63%,#08050e 100%);border:1px solid rgba(240,233,255,.7);box-shadow:inset 0 2px 8px rgba(255,255,255,.74),0 0 58px rgba(138,92,255,.42),0 20px 34px rgba(0,0,0,.44);font-size:24px;font-weight:1000}.mxr-net-node{position:absolute;width:150px;transform:translate(-50%,-50%)}.mxr-net-node .mxr-jewel{width:72px;height:72px;border-radius:23px}.mxr-net-node strong{display:block;margin-top:10px;font-size:13px}.mxr-net-node span{display:block;margin-top:5px;color:#8f8799;font-size:9px;line-height:1.3}.mxr-net-node.n1{left:16%;top:50%}.mxr-net-node.n2{left:34%;top:12%}.mxr-net-node.n3{left:66%;top:12%}.mxr-net-node.n4{left:84%;top:50%}.mxr-net-node.n5{left:50%;top:90%}
+.mxr-all-masters{margin:22px auto 0;max-width:930px}.mxr-master-list{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px;text-align:left}.mxr-master-list span{padding:12px 14px;border-top:1px solid rgba(184,149,255,.12);color:#aaa3b1;font-size:11px}.mxr-master-list[hidden]{display:none}
+.mxr-keys{text-align:center}.mxr-keys h2{margin:8px 0 0;font-size:clamp(34px,4.9vw,60px);line-height:.97;letter-spacing:-.045em}.mxr-keys>p{max-width:760px;margin:15px auto 0;color:#aaa3b1;font-size:14px;line-height:1.64}.mxr-key-row{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:960px;margin:34px auto 0;position:relative}.mxr-key-row::before{content:"";position:absolute;left:18%;right:18%;top:60px;height:2px;background:linear-gradient(90deg,transparent,rgba(184,149,255,.48),transparent)}.mxr-key{position:relative;z-index:1;text-align:center}.mxr-key button{width:120px;height:120px;border-radius:50%;border:1px solid rgba(255,255,255,.65);background:radial-gradient(circle at 30% 18%,#fff 0,#ded4ff 13%,#8a5cff 42%,#0a0710 100%);box-shadow:inset 0 2px 8px rgba(255,255,255,.72),0 0 38px rgba(138,92,255,.2),0 18px 30px rgba(0,0,0,.42);color:#fff;font-size:20px;font-weight:1000;cursor:pointer}.mxr-key:nth-child(2) button{background:radial-gradient(circle at 30% 18%,#fff 0,#d9ecff 13%,#3ca8ff 42%,#06101a 100%)}.mxr-key:nth-child(3) button{background:radial-gradient(circle at 30% 18%,#fff 0,#d8fff0 13%,#35e39b 42%,#06110b 100%)}.mxr-key h3{margin:15px 0 0;font-size:16px}.mxr-key p{max-width:220px;margin:7px auto 0;color:#8f8798;font-size:11px;line-height:1.45}.mxr-key-detail{max-width:700px;margin:22px auto 0;color:#b9b1c0;font-size:14px;line-height:1.65;min-height:24px}
+.mxr-cta{text-align:center;padding:clamp(86px,12vw,155px) 0 32px}.mxr-cta h2{margin:8px auto 0;max-width:900px;font-size:clamp(42px,6.4vw,78px);line-height:.94;letter-spacing:-.06em}.mxr-cta p{max-width:690px;margin:16px auto 0;color:#b3acbb;font-size:16px;line-height:1.65}.mxr-cta .mxr-actions{justify-content:center}.mxr-note{margin-top:20px;color:#6b6471;font-size:10px;line-height:1.5}
+.mxr-print-only{display:none}
+@media(max-width:820px){.mxr-two,.mxr-report{grid-template-columns:1fr}.mxr-report{max-width:520px}.mxr-doc{max-width:330px;margin:0 auto}.mxr-naya{grid-template-columns:100px minmax(0,1fr)}.mxr-naya-photo{width:100px;height:100px}.mxr-cap-list{gap:6px}.mxr-network-art{height:480px}.mxr-net-node.n1{left:17%;top:45%}.mxr-net-node.n2{left:35%;top:12%}.mxr-net-node.n3{left:65%;top:12%}.mxr-net-node.n4{left:83%;top:45%}.mxr-net-node.n5{left:50%;top:88%}}
+@media(max-width:600px){.mxr-wrap{padding-inline:15px}.mxr-section{padding:58px 0}.mxr-cap-list{grid-template-columns:repeat(5,1fr)}.mxr-jewel{width:52px;height:52px;border-radius:17px}.mxr-cap-btn span{font-size:9px}.mxr-network-art{height:500px}.mxr-network h2{font-size:34px}.mxr-key-row{grid-template-columns:1fr;gap:18px}.mxr-key-row::before{display:none}.mxr-key button{width:98px;height:98px}.mxr-naya{grid-template-columns:1fr;text-align:center}.mxr-naya-photo{margin:0 auto}.mxr-master-list{grid-template-columns:1fr 1fr}.mxr-spectrum-labels{font-size:8px}}
+@media print{html,body{background:#fff!important;color:#111!important}body{overflow:visible!important}.maxess-app{background:#fff!important;min-height:auto!important}.topbar,.footer,.command-row,.interest-actions,.result-actions,.interstitial{display:none!important}.app-inner,.board-wrap,.board,.board-content{display:block!important;min-height:auto!important;padding:0!important;margin:0!important;border:0!important;box-shadow:none!important;background:#fff!important;overflow:visible!important}.mxr{background:#fff!important;color:#111!important}.mxr::before{display:none}.mxr-wrap{width:100%!important;padding:0!important}.mxr-section,.mxr-hero,.mxr-insight,.mxr-cta{break-inside:avoid}.mxr-title,.mxr-editorial h2,.mxr-fingerprint h2,.mxr-story h3,.mxr-insight blockquote,.mxr-report-copy h2,.mxr-naya h2,.mxr-network h2,.mxr-keys h2,.mxr-cta h2,.mxr-network strong,.mxr-key h3{color:#111!important}.mxr-copy,.mxr-lead,.mxr-fingerprint p,.mxr-story p,.mxr-insight p,.mxr-report-copy p,.mxr-naya p,.mxr-network>p,.mxr-keys>p,.mxr-key p,.mxr-key-detail,.mxr-cta p{color:#333!important}.mxr-doc{transform:none;background:#fafafa;border-color:#ddd;box-shadow:none}.mxr-orbit,.mxr-net-orbit,.mxr-spectrum-track{print-color-adjust:exact;-webkit-print-color-adjust:exact}.mxr-actions{display:none!important}.mxr-print-only{display:block!important;color:#111!important;margin-bottom:20px}}
+@media(prefers-reduced-motion:reduce){.mxr-btn:hover{transform:none}}
 '''
 
-JS = r'''
-<!-- MAXESS RESULTS FINAL AUTHORITY V2 -->
+JS = r'''<!-- MAXESS RESULTS FRESH AUTHORITY V3 -->
 <script>
 (function(){
   'use strict';
   const root=document.getElementById('resultsView');
   if(!root) return;
-  const MARKER='maxessResultsFinalAuthorityV2';
+  const KEY='maxessFreshResultsV3';
   const NAYA_IMG='https://i.postimg.cc/593L5r04/Naya-and-shawn-ok-0.png';
-  const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  let legacyTemplate=root.innerHTML;
+  let lastWasVisible=false;
+  let timer=0;
+  const esc=v=>String(v==null?'':v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
-  const getDims=()=>{const found=[...root.querySelectorAll('#dimensionConstellation .dimension-orb')].map((el,i)=>({name:el.querySelector('.dimension-name')?.textContent?.trim()||['Direction','Communication','Evaluation','Iteration','Systems Thinking'][i]||'Dimension',score:Number(el.querySelector('.dimension-score')?.textContent||0)})).filter(x=>Number.isFinite(x.score));return found.length===5?found:['Direction','Communication','Evaluation','Iteration','Systems Thinking'].map(name=>({name,score:0}));};
-  const getScore=ds=>{const el=document.getElementById('overallScore');const n=Number((el?.textContent||'').replace(/[^\d.]/g,''));return Number.isFinite(n)&&n>=0?clamp(Math.round(n),0,100):clamp(Math.round(ds.reduce((a,b)=>a+b.score,0)/5),0,100);};
-  const band=score=>score>=90?'MASTERING AI CAPABILITY':score>=80?'ADVANCING AI CAPABILITY':score>=65?'DEVELOPING AI CAPABILITY':score>=45?'EMERGING AI CAPABILITY':'EARLY AI CAPABILITY';
-  const adv={Direction:'You tend to give AI a destination instead of treating every request as an isolated prompt.',Communication:'You tend to shape the conversation with useful context, intent, and direction.',Evaluation:'You tend to notice when an answer is not yet good enough and can judge what matters.',Iteration:'You tend to improve AI output instead of stopping at the first answer.','Systems Thinking':'You tend to connect successful AI work into repeatable methods and workflows.'};
-  const opp={Direction:'Make the destination even clearer before asking AI to act.',Communication:'Give AI more of the context, constraints, examples, and standards that shape the result.',Evaluation:'Strengthen the habit of checking whether the result is correct, useful, and complete.',Iteration:'Turn revision into a deliberate loop rather than an occasional correction.','Systems Thinking':'Capture successful methods so you can reuse and improve them instead of starting over.'};
-  const safeClick=ids=>{for(const id of ids){const el=document.getElementById(id);if(el){el.click();return true;}}return false;};
-  const gauge=score=>{const c=clamp(Math.round(score),0,100),cx=300,cy=262,r=180,a0=-2.46,a1=2.46,a=a0+(a1-a0)*c/100,pt=(ang,rr)=>[cx+rr*Math.cos(ang),cy+rr*Math.sin(ang)],arc=(sAng,eAng)=>{const s=pt(sAng,r),e=pt(eAng,r);return `M ${s[0]} ${s[1]} A ${r} ${r} 0 0 1 ${e[0]} ${e[1]}`;};let ticks='';for(let i=0;i<=10;i++){const t=a0+(a1-a0)*i/10,ri=r-14,ro=r+10,u=pt(t,ri),v=pt(t,ro);ticks+=`<line class="tick ${i%5===0?'major':''}" x1="${u[0]}" y1="${u[1]}" x2="${v[0]}" y2="${v[1]}"/>`;}const labels=[0,25,50,75,100].map(v=>{const t=a0+(a1-a0)*v/100,q=pt(t,r+33);return `<text class="label" x="${q[0]}" y="${q[1]}" text-anchor="middle" dominant-baseline="middle" style="font-size:11px">${v}</text>`;}).join('');const needle=pt(a,126);return `<svg viewBox="0 0 600 400" role="img" aria-label="MAXESS score ${c} out of 100"><defs><linearGradient id="r2Gauge" x1="0" x2="1"><stop offset="0" stop-color="#5523b4"/><stop offset=".58" stop-color="#8a5cff"/><stop offset="1" stop-color="#c9b0ff"/></linearGradient></defs><path class="track" d="${arc(a0,a1)}"/><path class="fill" d="${arc(a0,a)}"/>${ticks}${labels}<line class="needle" x1="${cx}" y1="${cy}" x2="${needle[0]}" y2="${needle[1]}"/><circle class="hub" cx="${cx}" cy="${cy}" r="16"/><text class="score" x="${cx}" y="${cy-4}" text-anchor="middle">${c}</text><text class="label" x="${cx}" y="${cy+28}" text-anchor="middle" style="font-size:10px">YOUR MAXESS SCORE</text></svg>`;};
-  const fingerprint=ds=>{const cx=300,cy=220,r=154,n=5,p=(i,rr)=>{const a=-Math.PI/2+i*2*Math.PI/n;return[cx+rr*Math.cos(a),cy+rr*Math.sin(a)];};const poly=f=>ds.map((_,i)=>p(i,r*f).join(',')).join(' ');let grid='';[1,.75,.5,.25].forEach(f=>grid+=`<polygon class="grid" points="${poly(f)}"/>`);let axes='',points='',labels='';ds.forEach((x,i)=>{const q=p(i,r);axes+=`<line class="axis" x1="${cx}" y1="${cy}" x2="${q[0]}" y2="${q[1]}"/>`;points+=`<circle class="point" cx="${q[0]}" cy="${q[1]}" r="6"/>`;const lp=p(i,r+37);labels+=`<text class="label" x="${lp[0]}" y="${lp[1]}" text-anchor="middle" dominant-baseline="middle">${esc(x.name)} · ${Math.round(x.score)}</text>`;});const shape=ds.map((x,i)=>p(i,r*clamp(x.score,0,100)/100).join(',')).join(' ');return `<svg viewBox="0 0 600 440" role="img" aria-label="AI capability fingerprint">${grid}${axes}<polygon class="shape" points="${shape}"/>${points}${labels}</svg>`;};
+  const dims=()=>{const found=[...root.querySelectorAll('#dimensionConstellation .dimension-orb')].map((el,i)=>({name:el.querySelector('.dimension-name')?.textContent?.trim()||['Direction','Communication','Evaluation','Iteration','Systems Thinking'][i]||'Dimension',score:clamp(Math.round(Number(el.querySelector('.dimension-score')?.textContent||0)),0,100)}));return found.length===5?found:['Direction','Communication','Evaluation','Iteration','Systems Thinking'].map(name=>({name,score:0}));};
+  const scoreFrom=ds=>{const el=document.getElementById('overallScore');const n=Number((el?.textContent||'').replace(/[^\d.]/g,''));if(Number.isFinite(n)&&n>=0)return clamp(Math.round(n),0,100);return clamp(Math.round(ds.reduce((a,d)=>a+d.score,0)/5),0,100)};
+  const band=score=>score>=80?'MASTERING':score>=65?'ADVANCING':score>=45?'DEVELOPING':'EMERGING';
+  const scoreMeaning=score=>score>=80?'You already have a strong working relationship with AI. The opportunity now is consistency, depth, and turning good results into repeatable exceptional results.':score>=65?'You have a useful working foundation with AI. The next leap is learning to make your intent, evaluation, and improvement more deliberate.':score>=45?'You are developing the habits that make AI genuinely useful. A clearer process will make the quality of your results much more consistent.':'You are at the beginning of your AI capability journey. The biggest opportunity is building a simple repeatable way to direct, evaluate, and improve AI.';
+  const advText={Direction:'You tend to give AI a destination instead of leaving the work completely open-ended.',Communication:'You tend to shape the interaction with useful context, intent, examples, or constraints.',Evaluation:'You tend to notice whether an answer is useful, accurate, complete, or good enough.',Iteration:'You tend to improve an answer rather than assuming the first result is the final result.','Systems Thinking':'You tend to connect successful AI work into repeatable methods instead of treating every task as isolated.'};
+  const oppText={Direction:'Your next leverage point is making the desired destination even clearer before AI begins.',Communication:'Your next leverage point is giving AI richer context, constraints, examples, and standards when the outcome matters.',Evaluation:'Your next leverage point is turning quality judgment into a deliberate habit every time the result matters.',Iteration:'Your next leverage point is turning revision into a repeatable improve-and-check loop.', 'Systems Thinking':'Your next leverage point is capturing what works so you can reuse and improve it instead of starting from zero.'};
+  const icon=k=>{const paths={Direction:'M4 17 20 4 13 20 10 13 4 10Z',Communication:'M4 5h16v10H9l-5 4V5Z',Evaluation:'M12 3 20 7v5c0 5-3.4 8-8 9-4.6-1-8-4-8-9V7l8-4Z M8 12l2.5 2.5L16 9',Iteration:'M6 7a7 7 0 0 1 12 2M18 17a7 7 0 0 1-12-2 M7 4v4h4M17 20v-4h-4','Systems Thinking':'M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8'};return `<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="${paths[k]||paths.Direction}"/></svg>`;};
+  const jewel=(k,label)=>`<div class="mxr-jewel" aria-hidden="true">${icon(k)}</div>`;
+  const gauge=score=>{const cx=300,cy=260,r=180,a0=-2.46,a1=2.46,a=a0+(a1-a0)*score/100,pt=(ang,rr)=>[cx+rr*Math.cos(ang),cy+rr*Math.sin(ang)],arc=(s,e)=>{const A=pt(s,r),B=pt(e,r);return `M ${A[0]} ${A[1]} A ${r} ${r} 0 0 1 ${B[0]} ${B[1]}`};let ticks='',labels='';for(let i=0;i<=10;i++){const t=a0+(a1-a0)*i/10,u=pt(t,r-14),v=pt(t,r+10);ticks+=`<line class="tick ${i%5===0?'major':''}" x1="${u[0]}" y1="${u[1]}" x2="${v[0]}" y2="${v[1]}"/>`;if(i%2===0){const q=pt(t,r+35);labels+=`<text class="tick-label" x="${q[0]}" y="${q[1]}" text-anchor="middle" dominant-baseline="middle">${i*10}</text>`}}const needle=pt(a,126);return `<svg viewBox="0 0 600 395" role="img" aria-label="MAXESS score ${score} out of 100"><defs><linearGradient id="mxrGauge" x1="0" x2="1"><stop offset="0" stop-color="#5b2bb6"/><stop offset=".58" stop-color="#8a5cff"/><stop offset="1" stop-color="#c8afff"/></linearGradient></defs><path class="track" d="${arc(a0,a1)}"/><path class="fill" d="${arc(a0,a)}"/>${ticks}${labels}<line class="needle" x1="${cx}" y1="${cy}" x2="${needle[0]}" y2="${needle[1]}"/><circle class="hub" cx="${cx}" cy="${cy}" r="16"/><text class="score" x="${cx}" y="${cy-3}" text-anchor="middle">${score}</text><text class="label" x="${cx}" y="${cy+27}" text-anchor="middle">YOUR MAXESS SCORE</text></svg>`};
+  const constellation=ds=>{const cx=300,cy=220,r=154,n=5,p=(i,rr)=>{const a=-Math.PI/2+i*2*Math.PI/n;return[cx+rr*Math.cos(a),cy+rr*Math.sin(a)]};const poly=f=>ds.map((_,i)=>p(i,r*f).join(',')).join(' ');let grid='';[1,.75,.5,.25].forEach(f=>grid+=`<polygon class="grid" points="${poly(f)}"/>`);let axes='',points='',labels='';ds.forEach((d,i)=>{const q=p(i,r),l=p(i,r+38);axes+=`<line class="axis" x1="${cx}" y1="${cy}" x2="${q[0]}" y2="${q[1]}"/>`;const v=p(i,r*clamp(d.score,0,100)/100);points+=`<circle class="point" cx="${v[0]}" cy="${v[1]}" r="6"/>`;labels+=`<text class="label" x="${l[0]}" y="${l[1]}" text-anchor="middle" dominant-baseline="middle">${esc(d.name)}</text>`});const shape=ds.map((d,i)=>p(i,r*clamp(d.score,0,100)/100).join(',')).join(' ');return `<svg viewBox="0 0 600 440" role="img" aria-label="AI capability fingerprint">${grid}${axes}<polygon class="shape" points="${shape}"/>${points}${labels}</svg>`};
+  const ctaHref=()=>{const links=[...root.querySelectorAll('a[href]')];const hit=links.find(a=>/master ai|start master|masterclass|start now/i.test((a.textContent||'').trim()));return hit?.href||''};
+  const report=()=>window.print();
   function render(){
-    if(!root.classList.contains('visible')||root.dataset[MARKER]==='1') return;
-    const ds=getDims(),score=getScore(ds),ordered=[...ds].sort((a,b)=>b.score-a.score),strongest=ordered[0],weakest=ordered[4],capBand=band(score);
-    const masters=[['Writing','Words & Communication','p','W'],['Research','Evidence & Discovery','b','R'],['Strategy','Direction & Decisions','g','S'],['Creation','Ideas & Media','v','C'],['Systems','Automation & Leverage','m','⚙']];
-    const keys=[['01','MASTER KEY','The universal blueprint','p'],['02','SPECIALIZED KEY','Choose the territory','b'],['03','ACTIVATION ROLODEX','Activate the right expert','g']];
-    const process=[['KNOW','See the goal','p'],['TELL','Set the context','b'],['ASK','Direct clearly','g'],['LOOK','Inspect the result','v'],['SCORE','Judge honestly','m'],['IMPROVE','Refine deliberately','p'],['REPEAT','Keep what works','b']];
-    const insight=`Your strongest signal is ${strongest.name}. Your next leverage appears in ${weakest.name}. The opportunity is not to master everything at once — it is to turn ${strongest.name} into a repeatable advantage while deliberately strengthening ${weakest.name}.`;
-    root.innerHTML=`<div class="maxess-r2"><div class="r2-wrap"><section class="r2-hero"><div class="r2-kicker">YOUR MAXESS RESULT</div><div class="r2-title">${score}%</div><div class="r2-band">${capBand}</div><div class="r2-gauge">${gauge(score)}</div><p class="r2-copy">Your score is a snapshot of how deliberately, confidently, and systematically you currently work with AI.</p></section><section class="r2-section"><div class="r2-editorial"><div class="r2-kicker">YOUR PERSONALIZED ANALYSIS</div><h2>Here’s what your result tells us about you.</h2><p class="lead">${esc(adv[strongest.name]||'You already have a meaningful capability to build on.')} <em>Your strongest signal is ${esc(strongest.name)} at ${Math.round(strongest.score)}/100.</em> Your clearest leverage point is ${esc(weakest.name)} at ${Math.round(weakest.score)}/100. ${esc(opp[weakest.name]||'Focused improvement here could create useful leverage.')}</p><div class="r2-sidefacts"><div class="r2-fact"><small>NATURAL ADVANTAGE</small><strong>${esc(strongest.name)}</strong></div><div class="r2-fact"><small>LEVERAGE OPPORTUNITY</small><strong>${esc(weakest.name)}</strong></div><div class="r2-fact"><small>CAPABILITY BAND</small><strong>${esc(capBand)}</strong></div></div></div></section><section class="r2-section"><div class="r2-editorial"><div class="r2-kicker">WHAT YOUR SCORE TELLS YOU</div><h2>Your number needs context.</h2><div class="r2-spectrum"><div class="r2-spectrum-track"><span class="r2-spectrum-mark" style="left:${score}%"></span></div></div><p class="lead">Your ${score}/100 places you in <em>${esc(capBand.toLowerCase())}</em>. The number matters, but the shape underneath it explains where your capability is coming from and where your next leverage lives.</p></div></section><section class="r2-section r2-fingerprint"><div class="r2-kicker">HOW YOU ACTUALLY WORK WITH AI</div><h2>YOUR AI CAPABILITY SIGNATURE</h2><p>This is your AI fingerprint — the shape created by your five core capabilities working together.</p><div class="r2-fingerprint-svg">${fingerprint(ds)}</div><div class="r2-cap-grid"><article class="r2-cap"><div class="cap-line"></div><small>YOUR NATURAL ADVANTAGE</small><h3>${esc(strongest.name)}</h3><span class="score">${Math.round(strongest.score)} / 100</span><p>${esc(adv[strongest.name]||'This is a capability you can continue to leverage.')}</p></article><article class="r2-cap opportunity"><div class="cap-line"></div><small>YOUR HIGHEST-LEVERAGE OPPORTUNITY</small><h3>${esc(weakest.name)}</h3><span class="score">${Math.round(weakest.score)} / 100</span><p>${esc(opp[weakest.name]||'This is a capability where focused improvement may create useful leverage.')}</p></article></div></section><section class="r2-section"><div class="r2-editorial"><div class="r2-kicker">HOW TO WORK WITH AI</div><h2>The simple operating system.</h2><p class="lead">Exceptional AI results become repeatable when you know what you want, communicate it clearly, judge what comes back, and improve it deliberately.</p><div class="rf-process-line">${process.map((x,i)=>`<div class="rf-step"><div class="rf-gem ${x[2]}">${i+1}</div><strong>${x[0]}</strong><span>${x[1]}</span></div>`).join('')}</div></div></section><section class="r2-section r2-insight"><div class="r2-kicker">THE DISCOVERY</div><div class="orbital"></div><blockquote>OH… THAT’S WHY.</blockquote><p>${esc(insight)}</p><p>${esc('This is where the assessment becomes useful: not because of the number itself, but because you can see what to do with it.')}</p></section><section class="r2-section"><div class="r2-report-artifact"><div class="r2-doc" aria-hidden="true"><div class="seal">M</div><h3>YOUR MAXESS<br>AI CAPABILITY REPORT</h3><p>${esc(capBand)}</p><div class="lines"><div class="line"></div><div class="line" style="width:76%"></div><div class="line" style="width:61%"></div><div class="line" style="width:84%"></div></div></div><div class="r2-report-copy"><div class="r2-kicker">KEEP YOUR DISCOVERY</div><h2>Your MAXESS report belongs to you.</h2><p>Take the discovery with you as a premium capability report.</p><div class="r2-actions"><button class="r2-primary" data-r2-save>SAVE MY RESULTS</button></div></div></div></section><section class="r2-section"><div class="r2-naya"><div class="r2-naya-photo"><img src="${NAYA_IMG}" alt="Naya" loading="lazy" onerror="this.style.display='none';"></div><div><div class="r2-kicker">NAYA · YOUR PERSONAL GUIDE</div><h2>I GOT YOU.</h2><p>You just discovered how you work with AI. Now let me show you how to turn that capability into exceptional results.</p></div></div></section><section class="r2-section r2-masters"><div class="r2-kicker">NAYA MASTER INTELLIGENCE</div><h2>Meet your AI Masters.</h2><p>A specialized intelligence team is ready to help you work in the areas that matter to you.</p><div class="r2-network"><div class="orbit o1"></div><div class="orbit o2"></div><div class="core">NAYA</div>${masters.map((m,i)=>`<div class="node n${i+1}"><div class="rf-gem ${m[2]}">${m[3]}</div><h3>Naya Master ${m[0]}</h3><span>${m[1]}</span></div>`).join('')}</div><div class="r2-actions"><button class="r2-secondary" data-r2-explore>EXPLORE ALL MASTERS</button></div></section><section class="r2-section r2-keys"><div class="r2-kicker">THE THREE-KEY SYSTEM</div><h2>It’s actually very simple.</h2><p>Use the right blueprint, choose the right specialty, and activate the right Naya Master.</p><div class="r2-key-row">${keys.map(k=>`<article class="r2-key"><div class="rf-gem ${k[3]}">${k[0]}</div><h3>${k[1]}</h3><p>${k[2]}</p></article>`).join('')}</div></section><section class="r2-section r2-cta"><div class="r2-kicker">MASTER AI</div><h2>Ready to turn capability into exceptional results?</h2><p>You know where you are. You know your leverage. Now you have a simple system and specialized Naya expertise to help you put AI to work.</p><div class="r2-actions"><button class="r2-primary" data-r2-master>START MASTER AI</button><button class="r2-secondary" data-r2-save>SAVE MY RESULTS</button></div><div class="r2-disclaimer">Your MAXESS result is a capability snapshot based on your assessment responses. It is not a diagnosis, prediction, or guarantee.</div></section></div></div>`;
-    root.dataset[MARKER]='1';
-    root.querySelectorAll('[data-r2-save]').forEach(btn=>btn.addEventListener('click',()=>{if(!safeClick(['pdfButton','saveResultsButton','printButton']))window.print();}));
-    root.querySelector('[data-r2-master]')?.addEventListener('click',()=>{if(!safeClick(['freeTrialButton','masterAiButton','startMasterAiButton'])){const link=[...document.querySelectorAll('a')].find(a=>/master/i.test(a.textContent||a.getAttribute('href')||''));if(link)link.click();}});
-    root.querySelector('[data-r2-explore]')?.addEventListener('click',()=>window.dispatchEvent(new CustomEvent('maxess:explore-masters')));
+    if(!root.classList.contains('visible')) return;
+    if(root.dataset[KEY]==='1') return;
+    const ds=dims();
+    if(ds.every(d=>d.score===0)&&!document.getElementById('overallScore')) return;
+    const score=scoreFrom(ds),sorted=[...ds].sort((a,b)=>b.score-a.score),strong=sorted[0],opp=sorted[4],gap=Math.max(0,strong.score-opp.score),capBand=band(score),href=ctaHref();
+    const masters=[['Writing','Words & Communication','Direction'],['Research','Evidence & Discovery','Evaluation'],['Strategy','Direction & Decisions','Direction'],['Creation','Ideas & Media','Iteration'],['Systems','Automation & Leverage','Systems Thinking']];
+    const master18=['Writing & Communication','Research & Information','Brainstorming & Ideas','Content Creation','Business & Strategy','Marketing & Sales','Learning & Education','Coding & Software','Images & Visual Creation','Video & Media','Audio & Music','Automation & Workflows','Data & Analysis','Productivity & Organization','Personal Growth & Life','Health & Wellness','Money & Finance','Community & Relationships'];
+    const keys=[['01','MASTER KEY','The universal blueprint.'],['02','SPECIALIZED KEY','Choose the territory.'],['03','ACTIVATION ROLODEX','Activate the right Naya Master.']];
+    const analysis=`Your result shows a clear capability pattern: ${strong.name} is currently your strongest dimension at ${strong.score}, while ${opp.name} is the largest leverage point at ${opp.score}. That means you already have something real to build on. Your next gains are less about “learning AI” in the abstract and more about strengthening the specific part of your working process that will improve the rest.`;
+    const insight=gap<=9?`Your profile is remarkably balanced. The interesting part is that your next level is unlikely to come from fixing one obvious gap — it will come from making the whole way you work with AI more deliberate.`:`Your profile is more uneven. That matters because your strongest capability can help carry the opportunity forward. ${strong.name} is the strength to lean on while you deliberately develop ${opp.name}.`;
+    const nodes=ds.map((d,i)=>`<button class="mxr-cap-btn" data-cap="${i}" aria-label="${esc(d.name)} capability, ${d.score} out of 100">${jewel(d.name)}<span>${esc(d.name)}</span></button>`).join('');
+    const netNodes=masters.map((m,i)=>`<div class="mxr-net-node n${i+1}">${jewel(m[2],m[0])}<strong>${esc(m[0])}</strong><span>${esc(m[1])}</span></div>`).join('');
+    root.innerHTML=`<div class="mxr"><div class="mxr-wrap">
+      <section class="mxr-hero mxr-center"><div class="mxr-kicker">Your MAXESS Result</div><h1 class="mxr-title">${score}%</h1><div class="mxr-band">${capBand} AI CAPABILITY</div><p class="mxr-copy">${esc(scoreMeaning(score))}</p><div class="mxr-gauge">${gauge(score)}</div></section>
+
+      <section class="mxr-section"><div class="mxr-editorial"><div class="mxr-kicker">Your Personalized Analysis</div><h2>Here’s what your result tells us about you.</h2><p class="mxr-lead">${esc(analysis)}</p><div class="mxr-facts"><div class="mxr-fact"><small>Strongest</small><strong>${esc(strong.name)}</strong></div><div class="mxr-fact"><small>Leverage</small><strong>${esc(opp.name)}</strong></div><div class="mxr-fact"><small>Profile spread</small><strong>${gap} pts</strong></div></div></div></section>
+
+      <section class="mxr-section mxr-center"><div class="mxr-kicker">What Your Score Tells You</div><h2 class="mxr-title" style="font-size:clamp(34px,5vw,62px)">${score} / 100</h2><div class="mxr-spectrum" aria-label="Capability spectrum"><div class="mxr-spectrum-track"><div class="mxr-spectrum-marker" style="left:${score}%"></div></div><div class="mxr-spectrum-labels"><span>Emerging</span><span>Developing</span><span>Advancing</span><span>Mastering</span></div></div><p class="mxr-copy" style="max-width:760px">${esc(scoreMeaning(score))}</p></section>
+
+      <section class="mxr-section mxr-fingerprint"><div class="mxr-kicker">How You Actually Work With AI</div><h2>AI Capability Signature</h2><p>Five dimensions. One pattern. Tap a capability and make it the focus.</p><div class="mxr-constellation">${constellation(ds)}</div><div class="mxr-cap-list">${nodes}</div><div class="mxr-cap-detail" id="mxrCapDetail" aria-live="polite"></div></section>
+
+      <section class="mxr-section"><div class="mxr-two"><article class="mxr-story"><div class="accent"></div><small>Your Natural Advantage</small><h3>${esc(strong.name)}</h3><div class="story-score">${strong.score} / 100</div><p>${esc(advText[strong.name]||'This is currently the clearest strength in your capability profile.')}</p><details><summary>Why it matters</summary><p>This strength gives you something to build from. Use it deliberately when you enter areas where AI results are less consistent.</p></details></article><article class="mxr-story opportunity"><div class="accent"></div><small>Your Highest-Leverage Opportunity</small><h3>${esc(opp.name)}</h3><div class="story-score">${opp.score} / 100</div><p>${esc(oppText[opp.name]||'This is the capability with the clearest room to create additional leverage.')}</p><details><summary>Open the opportunity</summary><p>The point is not to become “perfect.” It is to strengthen this capability enough that the quality of your overall AI work rises with it.</p></details></article></div></section>
+
+      <section class="mxr-section mxr-insight"><div class="mxr-orbit" aria-hidden="true"></div><div class="mxr-kicker">The “OH… THAT’S WHY” Discovery</div><blockquote>${esc(insight)}</blockquote><p>That observation comes directly from the relationship between your measured strengths and opportunities — not from a generic personality label.</p></section>
+
+      <section class="mxr-section"><div class="mxr-report"><div class="mxr-doc"><div class="mxr-seal">M</div><h3>YOUR MAXESS<br>AI CAPABILITY REPORT</h3><p>Your score, capability fingerprint, advantage, opportunity, and discovery.</p><div class="line"></div><div class="line" style="width:78%"></div><div class="line" style="width:64%"></div><div class="line" style="width:86%"></div></div><div class="mxr-report-copy"><div class="mxr-kicker">Your MAXESS Report</div><h2>Keep what you discovered.</h2><p>Save a clean version of this experience to revisit, print, or keep offline.</p><div class="mxr-actions"><button class="mxr-btn primary" id="mxrSave">SAVE MY RESULTS</button></div></div></div></section>
+
+      <section class="mxr-section"><div class="mxr-naya"><div class="mxr-naya-photo"><img src="${NAYA_IMG}" alt="Naya and Shawn" onerror="this.style.display='none';this.parentElement.classList.add('image-fallback')"></div><div><div class="mxr-kicker">Naya</div><h2>I GOT YOU.</h2><p>You just discovered how you work with AI. Now let me show you how to turn that capability into exceptional results.</p></div></div></section>
+
+      <section class="mxr-section mxr-network"><div class="mxr-kicker">Naya Master Intelligence</div><h2>A whole intelligence team around you.</h2><p>Five major territories create the front door. The specialized Masters stay behind the doorway so the experience never becomes a catalogue.</p><div class="mxr-network-art"><div class="mxr-net-orbit one"></div><div class="mxr-net-orbit two"></div><div class="mxr-net-center">NAYA</div>${netNodes}</div><div class="mxr-all-masters"><button class="mxr-btn" id="mxrMasters">MEET ALL MASTERS</button><div class="mxr-master-list" id="mxrMasterList" hidden>${master18.map(x=>`<span>${esc(x)}</span>`).join('')}</div></div></section>
+
+      <section class="mxr-section mxr-keys"><div class="mxr-kicker">The Three-Key System</div><h2>It’s actually very simple.</h2><p>One universal blueprint. One specialized blueprint. One activated expert.</p><div class="mxr-key-row">${keys.map((k,i)=>`<div class="mxr-key"><button data-key="${i}" aria-label="${esc(k[1])}">${k[0]}</button><h3>${esc(k[1])}</h3><p>${esc(k[2])}</p></div>`).join('')}</div><div id="mxrKeyDetail" class="mxr-key-detail" aria-live="polite">The Master Key gives you the universal way to work. The Specialized Key gives the work a territory. The Activation Rolodex puts the right Naya Master beside you.</div></section>
+
+      <section class="mxr-section mxr-cta mxr-center"><div class="mxr-kicker">Master AI / Start Now</div><h2>Ready to master AI?</h2><p>You’re not happy with mediocre AI results. You want exceptional results. MAXESS gives you a simple, repeatable system to help you get there.</p><div class="mxr-actions"><button class="mxr-btn primary" id="mxrStart">START MASTER AI</button></div><div class="mxr-note">The invitation begins after you’ve received the value of your assessment.</div></section>
+
+      <section class="mxr-section mxr-cta mxr-center" style="padding-top:80px"><div class="mxr-kicker">Your Next Move</div><h2>What will you do with what you now know?</h2><p>You know where you are. You know where your leverage is. Now decide what you’ll do with it.</p><div class="mxr-actions"><button class="mxr-btn primary" id="mxrFinalStart">MASTER AI →</button><button class="mxr-btn" id="mxrFinalSave">SAVE MY RESULTS</button></div></section>
+      <div class="mxr-print-only">YOUR MAXESS AI CAPABILITY REPORT · Score ${score}/100 · Strongest: ${esc(strong.name)} · Opportunity: ${esc(opp.name)}</div>
+    </div></div>`;
+    root.dataset[KEY]='1';
+
+    const detail=root.querySelector('#mxrCapDetail');
+    const capExplain=i=>{const d=ds[i];return `<strong>${esc(d.name)} · ${d.score}/100</strong><br>${esc(advText[d.name]||'This capability contributes directly to how effectively you direct, evaluate, and improve AI work.')}`};
+    const first=Math.max(0,ds.findIndex(d=>d.name===strong.name));
+    detail.innerHTML=capExplain(first);
+    root.querySelectorAll('[data-cap]').forEach(btn=>btn.addEventListener('click',()=>{detail.innerHTML=capExplain(Number(btn.dataset.cap));}));
+    root.querySelector('#mxrSave')?.addEventListener('click',report);
+    root.querySelector('#mxrFinalSave')?.addEventListener('click',report);
+    root.querySelector('#mxrMasters')?.addEventListener('click',()=>{const list=root.querySelector('#mxrMasterList');list.hidden=!list.hidden;root.querySelector('#mxrMasters').textContent=list.hidden?'MEET ALL MASTERS':'HIDE SPECIALIZED MASTERS';});
+    const keyCopy=['The universal blueprint: KNOW → TELL → ASK → LOOK → SCORE → IMPROVE → REPEAT.','The specialized blueprint: choose the territory, language, standards, and context for the work.','The activated expert: bring the right Naya Master into the work when specialized judgment or execution matters.'];
+    root.querySelectorAll('[data-key]').forEach(btn=>btn.addEventListener('click',()=>{root.querySelector('#mxrKeyDetail').textContent=keyCopy[Number(btn.dataset.key)];}));
+    const go=()=>{if(href)window.location.href=href;else window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'});};
+    root.querySelector('#mxrStart')?.addEventListener('click',go);root.querySelector('#mxrFinalStart')?.addEventListener('click',go);
   }
-  new MutationObserver(render).observe(root,{attributes:true,attributeFilter:['class']});
-  render();
+  function watch(){
+    const visible=root.classList.contains('visible');
+    if(!visible){
+      if(lastWasVisible){root.innerHTML=legacyTemplate;delete root.dataset[KEY];}
+      lastWasVisible=false;
+      return;
+    }
+    lastWasVisible=true;
+    if(root.dataset[KEY]==='1') return;
+    window.clearTimeout(timer);timer=window.setTimeout(render,80);
+  }
+  const mo=new MutationObserver(watch);mo.observe(root,{attributes:true,childList:true,subtree:true});
+  window.setInterval(watch,180);
+  watch();
 })();
 </script>
 '''
@@ -190,11 +175,11 @@ core += chr(10) + JS + chr(10)
 s = core + "</body>" + chr(10) + "</html>" + chr(10)
 
 if s.count(HTML_MARK) != 1:
-    raise RuntimeError("final authority HTML marker invalid")
+    raise RuntimeError("fresh authority HTML marker invalid")
 if s.count("<script>") != 2:
     raise RuntimeError("expected one main app script plus one Results authority script")
-if "MAXESS RESULTS FINAL AUTHORITY V2" not in s:
-    raise RuntimeError("authority marker missing")
+if "MAXESS RESULTS FRESH AUTHORITY V3" not in s:
+    raise RuntimeError("fresh authority marker missing")
 
 p.write_text(s, encoding="utf-8")
-print("Applied MAXESS Results Final Authority V2")
+print("Applied MAXESS Results Fresh Authority V3")
