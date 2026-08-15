@@ -12,10 +12,11 @@ CSS = r'''
    MAXESS RESULTS HARD BOUNDARY
    The live Results surface owns the presentation.
 ========================================================= */
-#resultsView.results-hard-boundary > :not(.result-hero):not(.results-hard-output){
+/* Fail-safe: old Results UI is invisible even before JS mounts. */
+#resultsView > :not(.result-hero):not(.results-hard-output){
   display:none !important;
 }
-#resultsView.results-hard-boundary .result-hero{
+#resultsView .result-hero{
   position:relative;
   background:transparent !important;
   border:0 !important;
@@ -23,14 +24,14 @@ CSS = r'''
   overflow:visible !important;
   isolation:isolate;
 }
-#resultsView.results-hard-boundary .result-hero::before,
-#resultsView.results-hard-boundary .result-hero::after,
-#resultsView.results-hard-boundary .result-hero .score-stage::before,
-#resultsView.results-hard-boundary .result-hero .score-stage::after{
+#resultsView .result-hero::before,
+#resultsView .result-hero::after,
+#resultsView .result-hero .score-stage::before,
+#resultsView .result-hero .score-stage::after{
   display:none !important;
   content:none !important;
 }
-#resultsView.results-hard-boundary .results-hard-output{display:block !important;}
+#resultsView .results-hard-output{display:block !important;}
 '''
 
 JS = r'''
@@ -143,7 +144,6 @@ if '</style>' not in s:
 s=s.replace('</style>',CSS+'\n</style>',1)
 if '</script>' not in s:
     raise RuntimeError('script closing tag missing')
-# Append inside the final script so all earlier rendering state is available.
 pos=s.rfind('</script>')
 s=s[:pos]+'\n'+JS+'\n'+s[pos:]
 p.write_text(s,encoding='utf-8')
