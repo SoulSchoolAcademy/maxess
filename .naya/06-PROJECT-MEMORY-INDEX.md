@@ -1,11 +1,15 @@
 # 06 — PROJECT MEMORY INDEX
 
+READ FIRST FOR WHOLE-SYSTEM CONTEXT: `NAYA-MASTER.md`  
 READ NEXT: `.naya/NAYA-WORK-PROTOCOL.md`
 
 This file is the map of durable project memory. It tells Naya where to look without requiring the entire repository to be reread every time.
 
+## MASTER
+- `NAYA-MASTER.md` — whole-system Naya operating doctrine, mission, relationship rules, trigger, memory architecture, roles, AI-direction method, quality system, MAX family, MAXESS assessment/results architecture, content/design rules, engineering/release laws, and specialist-file map.
+
 ## GOVERNANCE
-- `.naya/NAYA-GOVERNANCE.md` — master entrypoint, trigger phrases, and reading chain.
+- `.naya/NAYA-GOVERNANCE.md` — master entrypoint, trigger phrases, priority order, reading chain, failure behavior, delivery states.
 - `.naya/01-PRIME-DIRECTIVE.md` — purpose, human-first principles, truth, accountability.
 - `.naya/02-LAWS-AND-RULES.md` — non-negotiable operating laws.
 - `.naya/03-SYSTEM-DESIGN-LAWS.md` — architecture and engineering laws.
@@ -33,7 +37,7 @@ When creating durable product decisions, add or update a clearly named file unde
 - `.naya/memory/10-AAA-OSCAR-MASTER-CRAFTSMAN-PROTOCOL.md` — Cake/Icing/Ice Cream/Cherry/Star, WHY IS THIS NOT A 10?, adversarial QA, release gates, risk-weighted verification, learning loop.
 - `.naya/memory/13-MAXIS-WHOLE-SYSTEM-STANDARD.md` — whole-system excellence, nothing-left-unthought audit, negative-space law, synergy and Star tests.
 
-### Brand / acquisition experience
+### Brand / acquisition / content
 - `.naya/memory/14-MAXESS-LANDING-EXPERIENCE.md` — landing-page job, messaging sequence, assessment CTA, credibility/proof, no-email-gate rule, section-earning law.
 - `.naya/memory/18-HUMAN-MAXIMUS-CONTENT-CRAFTSMANSHIP.md` — public/social content operating system: STOP → IDENTIFY → DELIVER, natural destination placement, value-first rule, human/Shawn voice, sign-off and editorial tests.
 
@@ -51,6 +55,7 @@ Recommended categories:
 - Deployment and infrastructure
 - Known constraints and lessons
 - Release history
+- Specialist role blueprints
 
 ## MEMORY RULE
 Conversation is temporary. Repository memory is durable.
