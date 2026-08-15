@@ -20,13 +20,14 @@ When creating durable product decisions, add or update a clearly named file unde
 - `.naya/memory/07-MAX-ASSESSMENT-FAMILY.md` — locked AI MAX / MAX LIFE / MAX PERCEPTION family, naming architecture, MAX PERCEPTION philosophy, five perception dimensions, shared engine law.
 - `.naya/memory/11-AI-MAX-ASSESSMENT-SPEC.md` — AI MAX flagship assessment, 15-question structure, five dimensions, scoring principles, mastery levels, honesty/privacy language, 18 AI areas, result promise.
 - `.naya/memory/12-HUMAN-MAXIMUS-MASTER-KEY.md` — universal AI workflow and operating philosophy: KNOW → TELL → ASK → CREATE → SCORE → IMPROVE → FREEZE.
+- `.naya/memory/17-AI-DIRECTION-MASTERY-LANGUAGE.md` — canonical behavioral language for outcome definition, quality criteria, diagnosis, context, audience awareness, pre-work, human-AI partnership, and adversarial thinking.
 
 ### Results experience
 - `.naya/memory/08-MAXESS-RESULTS-MASTER-SPEC.md` — locked MAXESS Results product architecture, psychological journey, five AI character dimensions, personalization, result contract, Naya transition, AAA standard.
 - `.naya/memory/15-MAXESS-10-STAR-RESULTS-EXPERIENCE.md` — expanded 10-star Results experience, reveal sequence, luxury digital hospitality direction, motion, report, personalization integrity, final user-value test.
 
 ### Naya operating modes
-- `.naya/memory/09-NAYA-ROLE-ROLODEX.md` — one Naya / many expert modes, 21-role index, activation syntax, multi-role orchestration, shared craft loop.
+- `.naya/memory/09-NAYA-ROLE-ROLODEX.md` — one Naya / many expert modes, expanded role index, activation syntax, multi-role orchestration, shared craft loop.
 
 ### Quality / craftsmanship
 - `.naya/memory/10-AAA-OSCAR-MASTER-CRAFTSMAN-PROTOCOL.md` — Cake/Icing/Ice Cream/Cherry/Star, WHY IS THIS NOT A 10?, adversarial QA, release gates, risk-weighted verification, learning loop.
