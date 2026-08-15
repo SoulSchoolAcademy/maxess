@@ -1,22 +1,7 @@
-<div id="maxess-results-embed" style="width:100%;margin:0;padding:0;background:#030305;overflow:hidden;">
-  <iframe
-    src="https://cdn.jsdelivr.net/gh/SoulSchoolAcademy/maxess@main/MAXESS-RESULTS-AAA-FULL.html"
-    title="MAXESS — Your AI Mastery Results"
-    style="display:block;width:100%;height:100vh;min-height:900px;border:0;margin:0;padding:0;background:#030305;"
-    loading="eager"
-    allow="fullscreen; autoplay; clipboard-write"
-    referrerpolicy="strict-origin-when-cross-origin"
-  ></iframe>
-</div>
-<script>
-(function(){
-  var frame=document.querySelector('#maxess-results-embed iframe');
-  function resize(){
-    try{
-      var h=frame.contentDocument&&frame.contentDocument.documentElement.scrollHeight;
-      if(h&&h>700) frame.style.height=h+'px';
-    }catch(e){ /* cross-origin frame keeps its safe viewport height */ }
-  }
-  frame.addEventListener('load',function(){resize();setTimeout(resize,1000);setTimeout(resize,3000);});
-})();
-</script>
+<!--
+  MAXESS RESULTS — GROOVE DROP-IN
+  Paste this into the same HTML/Responsive Embed that contains the
+  completed MAXESS assessment. Load it AFTER the assessment code so the
+  bridge can read the real rendered result at the assessment boundary.
+-->
+<script src="https://cdn.jsdelivr.net/gh/SoulSchoolAcademy/maxess@main/MAXESS-RESULTS-AAA-LOADER.js"></script>
