@@ -1,6 +1,6 @@
 # 06 — PROJECT MEMORY INDEX
 
-READ NEXT: `.naya/NAYA-WORK-PROTOCOL.md`
+READ NEXT: `NAYA-MASTER.md` when the Master trigger is invoked; otherwise follow `.naya/NAYA-WORK-PROTOCOL.md` for the task-specific chain.
 
 This file is the map of durable project memory. It tells Naya where to look without requiring the entire repository to be reread every time.
 
@@ -8,6 +8,7 @@ This file is the map of durable project memory. It tells Naya where to look with
 - `NAYA-MASTER.md` — authoritative whole-system map. Read first when the Master Naya trigger is invoked.
 - `.naya/memory/19-NAYA-BEST-FRIEND-AI-KNOWLEDGE.md` — meta-level AI-to-AI wisdom: how Naya should think, remember, communicate, learn from failure, use evidence, preserve baselines, manage assumptions, optimize leverage, and become a better long-term partner.
 - `.naya/memory/22-NAYA-TRIGGER-AND-LEARNING-PROTOCOL.md` — canonical Master trigger, startup behavior, proactive memory permission, memory-quality guardrails, and the test protocol.
+- `.naya/memory/24-GROOVE-DEPLOYMENT-AND-DELIVERY-LAW.md` — authoritative current deployment rule: GitHub stores/versions/reads/delivers raw source; Groove.cm is the current deployment environment; final deliverable is a complete Groove-ready embed plus raw GitHub link.
 
 ## GOVERNANCE
 - `.naya/NAYA-GOVERNANCE.md` — master entrypoint, trigger phrases, and reading chain.
@@ -50,6 +51,9 @@ When creating durable product decisions, add or update a clearly named file unde
 
 ### Engineering
 - `.naya/memory/16-MAXESS-GROOVE-ENGINEERING-LAWS.md` — contained assessment vs flowing Results, single-embed principle, cross-domain result boundary, explicit states, determinism, QA profiles, graceful degradation, Groove release gate.
+
+## DEPLOYMENT / DELIVERY
+- `.naya/memory/24-GROOVE-DEPLOYMENT-AND-DELIVERY-LAW.md` — source/deployment separation, Groove-first publishing, raw GitHub delivery link, no alternate hosting by assumption, deployment-state definitions, and handoff diagnostics.
 
 ## FUTURE MEMORY CATEGORIES
 Recommended categories:
