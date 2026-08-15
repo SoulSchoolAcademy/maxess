@@ -1,38 +1,8 @@
-name: MAXESS Final Results Release
+name: Legacy MAXESS Final Results Release (disabled)
 on:
-  push:
-    branches: [main]
-permissions:
-  contents: write
+  workflow_dispatch:
 jobs:
-  release:
+  legacy-disabled:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Run canonical merge
-        run: python3 tools/merge_maxess_nayanet.py
-      - name: Inspect generated HTML inventory
-        run: |
-          python3 - <<'PY'
-          from pathlib import Path
-          for p in sorted(Path('.').glob('*.html'), key=lambda x:x.stat().st_size, reverse=True):
-              print(p.name, p.read_text(encoding='utf-8').count('\\n')+1, p.stat().st_size)
-          PY
-      - name: Select complete merged artifact
-        run: |
-          python3 - <<'PY'
-          from pathlib import Path
-          candidates=[p for p in Path('.').glob('*.html') if p.name.startswith('MAXESS-RESULTS')]
-          if not candidates: raise SystemExit('No Results artifact generated')
-          base=max(candidates,key=lambda p:p.stat().st_size)
-          data=base.read_text(encoding='utf-8')
-          Path('MAXESS-RESULTS-10-GROOVE.html').write_text(data,encoding='utf-8')
-          print('Selected',base.name,'lines',data.count('\\n')+1,'bytes',len(data.encode()))
-          if data.count('\\n')+1 < 3000: raise SystemExit('Release candidate is not substantial enough')
-          PY
-      - name: Commit candidate
-        run: |
-          git config user.name 'MAXESS Release System'
-          git config user.email 'actions@github.com'
-          git add MAXESS-RESULTS-10-GROOVE.html
-          git diff --cached --quiet || (git commit -m 'Publish complete MAXESS Results candidate' && git push)
+      - run: echo 'Disabled. MAXESS 9.9 authoritative Results builder is build-final-results-groove.yml.'
