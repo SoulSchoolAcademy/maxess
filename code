@@ -311,6 +311,8 @@ button:disabled{
 
 
 
+
+
 .question-count-chip{
   justify-self:end;
   min-width:128px;
@@ -2391,6 +2393,7 @@ button:disabled{
   .answer{min-height:56px;}
   .jewel{width:45px;height:45px;}
 }
+
 
 
 
@@ -4837,6 +4840,67 @@ button:disabled{
 @media(prefers-reduced-motion:reduce){.r3-actions button{transition:none;}}
 
 
+
+/* =========================================================
+   MAXESS RESULTS EXPERIENCE CANONICAL CLEANUP
+   One experience. One hierarchy. No legacy pile-up.
+========================================================= */
+.maxess-canonical-hide{display:none!important}
+.maxess-canonical-spacer{height:0!important;margin:0!important;padding:0!important;border:0!important}
+
+/* Preserve the premium core; remove report/dashboard residue. */
+#resultsView .results-v4-intro,
+#resultsView .results-master-v2,
+#resultsView .results-v4-naya,
+#resultsView .results-v4-masterkey,
+#resultsView .final-cta,
+#resultsView .maxess-signal,
+#resultsView .maxess-meaning,
+#resultsView .maxess-ohwhy,
+#resultsView .maxess-naya-guide,
+#resultsView .maxess-masterkey-10,
+#resultsView .maxess-opportunities,
+#resultsView .maxess-naya-masters,
+#resultsView .maxess-threshold,
+#resultsView .maxess-results-journey,
+#resultsView .results-v4-playground,
+#resultsView .results-v4-treasure,
+#resultsView .results-v4-pathway,
+#resultsView .results-v4-cta,
+#resultsView .results-v4-method,
+#resultsView .results-v4-evidence,
+#resultsView .results-v4-recommendation,
+#resultsView .results-v4-next,
+#resultsView .results-master-v2-next,
+#resultsView .results-master-v2-evidence,
+#resultsView .results-master-v2-meaning{
+  display:none!important;
+}
+
+/* Let the canonical sections breathe instead of behaving like nested cards. */
+#resultsView .maxess-personal-editorial{
+  margin-top:30px;
+  margin-bottom:14px;
+}
+#resultsView .maxess-signature-shell{
+  margin-top:58px;
+}
+#resultsView .maxess-oscar-finale{
+  margin-top:68px;
+}
+
+/* Remove accidental empty vertical gaps left by deleted legacy sections. */
+#resultsView > .report-section:empty,
+#resultsView > .results-v4-reveal:empty{
+  display:none!important;
+}
+
+@media(max-width:760px){
+  #resultsView .maxess-signature-shell{margin-top:42px}
+  #resultsView .maxess-oscar-finale{margin-top:44px}
+}
+
+
 /* =========================================================
    MAXESS AAA V3 — VISIBLE CRAFT PASS
 ========================================================= */
@@ -4977,6 +5041,109 @@ button:disabled{
   #resultsView .maxess-signature-shell{margin-top:42px}
   #resultsView .maxess-oscar-finale{margin-top:44px}
 }
+
+
+/* =========================================================
+   MAXESS RESULTS FINAL AUTHORITY
+   One clean Results experience. No legacy presentation stack.
+========================================================= */
+#resultsView{width:100%;max-width:none!important;margin:0!important;display:none;}
+#resultsView.visible{display:block;}
+.board-wrap:has(#resultsView.visible){display:block!important;min-height:0!important;}
+.board-wrap:has(#resultsView.visible) .board{min-height:0!important;overflow:visible!important;border-radius:30px;}
+.board-wrap:has(#resultsView.visible) .board-content{min-height:0!important;padding:0!important;}
+.board-wrap:has(#resultsView.visible) .board::before,
+.board-wrap:has(#resultsView.visible) .board::after{display:none!important;}
+.results-final{width:100%;background:radial-gradient(circle at 50% 0,rgba(138,92,255,.16),transparent 35%),linear-gradient(180deg,#050507 0%,#020204 100%);color:#f8f7fb;}
+.results-final *{box-sizing:border-box;}
+.rf-wrap{width:min(1180px,100%);margin:0 auto;padding:clamp(28px,5vw,72px) clamp(18px,4vw,52px) 104px;}
+.rf-kicker{color:#b895ff;font-size:10px;font-weight:950;letter-spacing:.21em;text-transform:uppercase;}
+.rf-hero{text-align:center;padding:16px 0 56px;}
+.rf-hero h1{margin:10px 0 0;font-size:clamp(38px,6.5vw,78px);line-height:.95;letter-spacing:-.055em;font-weight:950;}
+.rf-hero h1 span{color:#b895ff;}
+.rf-hero p{max-width:760px;margin:18px auto 0;color:#b8b1c0;font-size:clamp(16px,2vw,20px);line-height:1.58;}
+.rf-gauge{max-width:620px;margin:30px auto 0;}
+.rf-gauge svg{display:block;width:100%;height:auto;overflow:visible;}
+.rf-gauge .track{fill:none;stroke:rgba(255,255,255,.09);stroke-width:24;stroke-linecap:round;}
+.rf-gauge .fill{fill:none;stroke:url(#rfGauge);stroke-width:24;stroke-linecap:round;filter:drop-shadow(0 0 15px rgba(138,92,255,.36));}
+.rf-gauge .tick{stroke:rgba(255,255,255,.16);stroke-width:2;}
+.rf-gauge .tick.major{stroke:rgba(184,149,255,.35);stroke-width:3;}
+.rf-gauge .needle{stroke:#fff;stroke-width:5;stroke-linecap:round;filter:drop-shadow(0 0 8px rgba(255,255,255,.55));}
+.rf-gauge .hub{fill:#08060d;stroke:#b895ff;stroke-width:3;filter:drop-shadow(0 0 12px rgba(138,92,255,.52));}
+.rf-gauge .score{fill:#fff;font:1000 70px system-ui,sans-serif;letter-spacing:-.06em;}
+.rf-gauge .label{fill:#a9a2b0;font:950 10px system-ui,sans-serif;letter-spacing:.17em;}
+.rf-band{margin-top:-2px;color:#d5c8eb;font-size:11px;font-weight:950;letter-spacing:.16em;text-transform:uppercase;}
+.rf-section{padding:82px 0;border-top:1px solid rgba(184,149,255,.11);}
+.rf-analysis{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(270px,.65fr);gap:52px;align-items:end;}
+.rf-analysis h2{margin:9px 0 0;font-size:clamp(30px,4.8vw,56px);line-height:1.00;letter-spacing:-.04em;font-weight:950;}
+.rf-lead{margin:16px 0 0;max-width:860px;color:#ddd6e3;font-size:clamp(17px,2.05vw,21px);line-height:1.56;}
+.rf-lead em{font-style:normal;color:#b895ff;}
+.rf-analysis-side{display:grid;gap:18px;}
+.rf-side{padding-top:16px;border-top:1px solid rgba(255,255,255,.08);}
+.rf-side span{display:block;color:#858090;font-size:9px;font-weight:950;letter-spacing:.15em;text-transform:uppercase;}
+.rf-side strong{display:block;margin-top:8px;color:#fff;font-size:24px;line-height:1.04;}
+.rf-side small{display:block;margin-top:6px;color:#9e97a7;font-size:12px;line-height:1.48;}
+.rf-fingerprint{text-align:center;}
+.rf-fingerprint h2{margin:10px 0 0;font-size:clamp(34px,5vw,62px);line-height:.97;letter-spacing:-.045em;font-weight:950;}
+.rf-fingerprint p{max-width:760px;margin:15px auto 0;color:#aaa3b1;font-size:15px;line-height:1.62;}
+.rf-radar{max-width:820px;margin:28px auto 0;}
+.rf-radar svg{display:block;width:100%;height:auto;filter:drop-shadow(0 26px 48px rgba(0,0,0,.30));}
+.rf-radar .grid{fill:none;stroke:rgba(255,255,255,.08);stroke-width:1;}
+.rf-radar .axis{stroke:rgba(184,149,255,.08);stroke-width:1;}
+.rf-radar .shape{fill:rgba(138,92,255,.15);stroke:#b895ff;stroke-width:2.6;filter:drop-shadow(0 0 16px rgba(138,92,255,.22));}
+.rf-radar .point{fill:#fff;stroke:#b895ff;stroke-width:2;}
+.rf-radar .label{fill:#a8a1b0;font:900 11px system-ui,sans-serif;}
+.rf-stories{display:grid;grid-template-columns:1fr 1fr;gap:42px;margin-top:34px;text-align:left;}
+.rf-story{padding-top:14px;border-top:1px solid rgba(184,149,255,.14);}
+.rf-story::before{content:"";display:block;width:34px;height:3px;border-radius:99px;margin-bottom:16px;background:#35e39b;box-shadow:0 0 16px rgba(53,227,155,.25);}
+.rf-story.opportunity::before{background:#8a5cff;box-shadow:0 0 16px rgba(138,92,255,.26);}
+.rf-story span{display:block;color:#8a8394;font-size:9px;font-weight:950;letter-spacing:.16em;text-transform:uppercase;}
+.rf-story h3{margin:8px 0 0;font-size:clamp(26px,3.5vw,38px);line-height:1.04;letter-spacing:-.03em;}
+.rf-story p{margin:10px 0 0;color:#aaa3b1;font-size:14px;line-height:1.64;}
+.rf-insight{padding:70px 0 76px;}
+.rf-insight blockquote{margin:10px 0 0;max-width:980px;font-size:clamp(30px,4.8vw,58px);line-height:1.03;letter-spacing:-.04em;font-weight:950;}
+.rf-insight p{max-width:760px;margin:15px 0 0;color:#aaa3b1;font-size:14px;line-height:1.65;}
+.rf-process{text-align:center;}
+.rf-process h2{margin:10px 0 0;font-size:clamp(32px,4.7vw,56px);line-height:.98;letter-spacing:-.04em;font-weight:950;}
+.rf-process h2 em{font-style:normal;color:#b895ff;}
+.rf-process > p{max-width:780px;margin:15px auto 0;color:#aaa3b1;font-size:14px;line-height:1.65;}
+.rf-process-line{position:relative;display:flex;justify-content:center;gap:0;overflow:auto;margin:30px auto 0;padding:10px 0 14px;scrollbar-width:thin;}
+.rf-process-line::before{content:"";position:absolute;left:4%;right:4%;top:37px;height:2px;background:linear-gradient(90deg,rgba(138,92,255,.12),rgba(184,149,255,.52),rgba(138,92,255,.12));}
+.rf-step{position:relative;z-index:1;min-width:122px;text-align:center;}
+.rf-gem{width:58px;height:58px;margin:0 auto;display:grid;place-items:center;border-radius:19px;border:1px solid rgba(255,255,255,.67);color:#fff;font-size:16px;font-weight:1000;box-shadow:inset 0 2px 5px rgba(255,255,255,.72),0 0 24px rgba(138,92,255,.18),0 9px 17px rgba(0,0,0,.42);}
+.rf-gem.p{background:radial-gradient(circle at 28% 17%,#fff 0,#ddd2ff 12%,#8a5cff 42%,#09050f 100%);}
+.rf-gem.b{background:radial-gradient(circle at 28% 17%,#fff 0,#d9ecff 12%,#3ca8ff 42%,#06101a 100%);}
+.rf-gem.g{background:radial-gradient(circle at 28% 17%,#fff 0,#d8fff0 12%,#35e39b 42%,#06110b 100%);}
+.rf-gem.v{background:radial-gradient(circle at 28% 17%,#fff 0,#ddd8ff 12%,#765cff 42%,#0a0710 100%);}
+.rf-gem.m{background:radial-gradient(circle at 28% 17%,#fff 0,#ffd8f5 12%,#ed42c4 42%,#12050f 100%);}
+.rf-step strong{display:block;margin-top:12px;color:#fff;font-size:12px;font-weight:950;letter-spacing:.04em;}
+.rf-step span{display:block;margin-top:5px;color:#858090;font-size:10px;line-height:1.35;}
+.rf-naya{display:grid;grid-template-columns:auto minmax(0,1fr);gap:25px;align-items:center;max-width:940px;margin:0 auto;}
+.rf-naya-orb{width:96px;height:96px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 28% 18%,#fff 0,#e2d7ff 12%,#9972ff 38%,#3c1d80 68%,#07030e 100%);border:1px solid #e4d9ff;box-shadow:inset 0 2px 5px rgba(255,255,255,.76),0 0 40px rgba(116,76,255,.36),0 12px 22px rgba(0,0,0,.48);color:#fff;font-size:32px;font-weight:1000;}
+.rf-naya h2{margin:8px 0 0;font-size:clamp(30px,4.6vw,52px);line-height:.98;letter-spacing:-.04em;}
+.rf-naya p{margin:10px 0 0;color:#aaa3b1;font-size:15px;line-height:1.64;max-width:800px;}
+.rf-masters{text-align:center;}
+.rf-masters h2{margin:10px 0 0;font-size:clamp(34px,4.9vw,60px);line-height:.97;letter-spacing:-.045em;}
+.rf-masters > p{max-width:760px;margin:15px auto 0;color:#aaa3b1;font-size:14px;line-height:1.62;}
+.rf-master-line{position:relative;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-top:34px;}
+.rf-master-line::before{content:"";position:absolute;left:8%;right:8%;top:46px;height:1px;background:linear-gradient(90deg,transparent,rgba(184,149,255,.42),transparent);}
+.rf-master{position:relative;z-index:1;text-align:center;}
+.rf-master .rf-gem{width:88px;height:88px;border-radius:27px;margin:0 auto;}
+.rf-master h3{margin:14px 0 0;font-size:15px;line-height:1.14;font-weight:950;}
+.rf-master span{display:block;margin-top:6px;color:#9a92a4;font-size:10px;line-height:1.38;}
+.rf-master small{display:block;margin-top:7px;color:#b895ff;font-size:8px;font-weight:950;letter-spacing:.12em;text-transform:uppercase;}
+.rf-next{text-align:center;padding-bottom:28px;}
+.rf-next h2{margin:9px auto 0;max-width:840px;font-size:clamp(38px,5.4vw,66px);line-height:.96;letter-spacing:-.05em;font-weight:950;}
+.rf-next p{max-width:660px;margin:15px auto 0;color:#aaa3b1;font-size:15px;line-height:1.65;}
+.rf-actions{display:flex;justify-content:center;gap:11px;flex-wrap:wrap;margin-top:26px;}
+.rf-actions button{min-height:57px;padding:0 25px;border-radius:19px;font-weight:950;cursor:pointer;transition:transform .2s ease,box-shadow .2s ease;}
+.rf-primary{border:1px solid rgba(205,188,255,.68);background:linear-gradient(180deg,#b895ff,#765cff);color:#09060f;box-shadow:0 17px 40px rgba(138,92,255,.20);}
+.rf-secondary{border:1px solid rgba(255,255,255,.14);background:#08080b;color:#fff;}
+.rf-actions button:hover{transform:translateY(-2px);}
+.rf-disclaimer{margin-top:20px;color:#6e6677;font-size:10px;line-height:1.5;}
+@media(max-width:840px){.rf-analysis{grid-template-columns:1fr}.rf-stories{grid-template-columns:1fr;gap:28px}.rf-master-line{grid-template-columns:repeat(3,minmax(0,1fr));gap:24px 9px}.rf-master-line::before{display:none}.rf-step{min-width:108px}}
+@media(max-width:620px){.rf-wrap{padding-inline:16px}.rf-section{padding:58px 0}.rf-process-line{justify-content:flex-start}.rf-naya{grid-template-columns:1fr;text-align:center}.rf-naya-orb{margin:0 auto}.rf-master-line{grid-template-columns:repeat(2,minmax(0,1fr))}.rf-master .rf-gem{width:74px;height:74px;border-radius:23px}.rf-master h3{font-size:13px}.rf-next{padding-top:58px}.rf-hero h1{font-size:56px}}
+@media(prefers-reduced-motion:reduce){.rf-actions button{transition:none}}
 
 </style>
 
@@ -8366,744 +8533,70 @@ document.addEventListener("keydown", event=>{
 
 </script>
 
+
+<!-- MAXESS RESULTS FINAL AUTHORITY -->
 <script>
-
-(function(){
-  "use strict";
-  const escapeHtmlSafe=(value)=>String(value).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m]));
-  const run=()=>{
-    const resultsView=document.getElementById("resultsView");
-    if(!resultsView || resultsView.dataset.maxessTreasureReady==="1") return;
-    resultsView.dataset.maxessTreasureReady="1";
-    const legacyIntro=resultsView.querySelector(".results-v4-intro");
-    if(legacyIntro) legacyIntro.classList.add("maxess-legacy-hidden");
-    const dimensionAnchor=document.getElementById("dimensionConstellation");
-    const dimensionSection=dimensionAnchor ? dimensionAnchor.closest(".report-section") : null;
-    const insightFlow=resultsView.querySelector(".insight-flow");
-    const storySection=insightFlow ? insightFlow.closest(".report-section") : null;
-    if(dimensionSection && storySection){dimensionSection.insertAdjacentElement("afterend",storySection);storySection.classList.add("maxess-story-section");}
-    const legacyCta=resultsView.querySelector(".final-cta");
-    if(legacyCta) legacyCta.classList.add("maxess-legacy-hidden");
-    if(resultsView.querySelector(".maxess-treasure")) return;
-    const logo="https://i.postimg.cc/QCJTLMd8/Maximus-2.png";
-    const areas=typeof AI_AREAS !== "undefined" && Array.isArray(AI_AREAS) ? AI_AREAS : [];
-    const specialized=areas.slice(0,18).map((area,i)=>({name:`Naya Elite ${area&&area.name?area.name.replace(/\s*&\s*/g," & "): `Expert ${i+1}`}`,type:"Elite Naya Expert"}));
-    const core=[{name:"Naya Prime",type:"Master Intelligence"},{name:"Naya Orchestrator",type:"Expert Coordination"},{name:"Naya Oscar",type:"Elite Quality Judge"}];
-    const experts=[...specialized,...core].slice(0,21);
-    const fallback=["Naya Architect","Naya Writer","Naya Designer","Naya Video","Naya Researcher","Naya Marketer","Naya Strategist"];
-    while(experts.length<21){experts.splice(Math.max(0,experts.length-3),0,{name:fallback[experts.length%fallback.length],type:"Specialized Naya"});}
-    const iconFor=(name)=>{const words=String(name).replace(/^Naya\s*/i,"").split(/\s+/).filter(w=>w.length>2 && !/^Master$/i.test(w));const letters=words.slice(0,2).map(x=>x[0]).join("").toUpperCase();return letters||"NY";};
-    const cards=experts.map((e)=>`<article class="maxess-expert-card"><div class="maxess-expert-icon" aria-hidden="true">${escapeHtmlSafe(iconFor(e.name))}</div><div class="maxess-expert-name">${escapeHtmlSafe(e.name)}</div><div class="naya-master-label">NAYA · MASTER SPECIALIST</div><div class="maxess-expert-type">${escapeHtmlSafe(e.type)}</div></article>`).join("");
-    const offer=document.createElement("section");
-    offer.className="maxess-treasure results-v4-reveal";
-    offer.setAttribute("aria-labelledby","maxessTreasureTitle");
-    offer.innerHTML=`<div class="maxess-treasure-inner"><img class="maxess-treasure-logo" src="${logo}" alt="Human Maximus" loading="lazy"><div class="maxess-treasure-kicker">YOU FOUND THE NEXT LEVEL</div><h3 class="maxess-treasure-title" id="maxessTreasureTitle">I got you. <span>Now let's end the frustration of not getting the results you want from AI.</span></h3><p class="maxess-treasure-sub">Your report showed you where you are. This is the simple system for learning how to get exceptional AI results — without having to figure the whole thing out yourself.</p><div class="maxess-value-line"><span class="maxess-value-chip">18 specialized Master Key blueprints</span><span class="maxess-value-chip">18 specialized Naya experts</span><span class="maxess-value-chip">AI Master Activation Rolodex</span><span class="maxess-value-chip">Master AI · Be Your Max · Get Paid</span></div><div class="maxess-expert-header"><h4>Your AI expert team</h4><p>Think of this as your ready-made team of AI specialists. Choose the area you want to master, give Naya the right blueprint, activate the expert role, and follow the process.</p></div><div class="maxess-expert-grid" aria-label="21 AI expert roles">${cards}</div><div class="maxess-expert-header"><h4>Three steps. That's it.</h4><p>The system is deliberately simple: give AI the big picture, choose the specialty, then activate the expert.</p></div><div class="maxess-three-step"><article class="maxess-step-card"><div class="maxess-step-no">01 · MASTER KEY</div><h5>Give Naya the blueprint</h5><p>The universal Master Key teaches the overall process for directing, evaluating, improving, and systematizing AI.</p></article><article class="maxess-step-card"><div class="maxess-step-no">02 · SPECIALIZED KEY</div><h5>Choose what you want to master</h5><p>Match the universal blueprint with the specialized key for the exact territory you want to work in.</p></article><article class="maxess-step-card"><div class="maxess-step-no">03 · ACTIVATE THE EXPERT</div><h5>Make Naya the master</h5><p>Use the activation Rolodex to give your AI the role, expertise, standards, and operating instructions for that specialty.</p></article></div><div class="maxess-offer"><div class="maxess-offer-badge">✦ YOUR NAYA INVITATION · START FREE</div><h4>Stop fighting with AI. Start directing it.</h4><p>Get the Master Key system, the specialized expert blueprints, the activation tools, and the AI Masterclass — then step into the Human Maximus ecosystem and start building capability you can actually use.</p><div class="maxess-cta-actions"><button type="button" class="maxess-cta-primary" id="maxessTreasureFree">Start My Free AI Masterclass <span class="button-arrow">→</span></button><button type="button" class="maxess-cta-secondary" id="maxessTreasureNaya">Meet Naya <span class="button-arrow">→</span></button></div><p class="maxess-cta-fine">No complicated setup. No scavenger hunt. Copy · paste · activate · follow the process.</p></div><div class="maxess-ecosystem"><img src="${logo}" alt="Human Maximus" loading="lazy"><span>Welcome to the Human Maximus ecosystem — where the goal is simple: master AI, become your MAX, and create more value in the world.</span></div></div>`;
-    const actionFree=document.getElementById("freeTrialButton");
-    const actionNaya=document.getElementById("enterNayaButton");
-    offer.querySelector("#maxessTreasureFree").addEventListener("click",()=>{if(actionFree) actionFree.click();});
-    offer.querySelector("#maxessTreasureNaya").addEventListener("click",()=>{if(actionNaya) actionNaya.click();});
-    const resultActions=resultsView.querySelector(".result-actions");
-    if(resultActions) resultActions.insertAdjacentElement("beforebegin",offer); else resultsView.appendChild(offer);
-  };
-  const waitForResults=()=>{const view=document.getElementById("resultsView");if(view&&view.classList.contains("visible"))run();};
-  const observerTarget=document.getElementById("resultsView");
-  if(observerTarget){new MutationObserver(waitForResults).observe(observerTarget,{attributes:true,attributeFilter:["class"]});}
-  waitForResults();
-})();
-
-</script>
-
-<script>
-
-
-/* =========================================================
-   MAXESS RESULTS EXPERIENCE 10-STAR — RUNTIME
-========================================================= */
 (function(){
   'use strict';
-  const ROOT='maxess-10star-results';
-  const IMG_A='https://i.postimg.cc/LsKxt1sz/Naya-and-Shawn-ok-35.png';
-  const IMG_B='https://i.postimg.cc/d1nncN9F/Naya-and-shawn-ok-44-a.png';
-  const scoreColor=(n)=>n>=90?'#d9b34b':n>=75?'#35e39b':n>=60?'#4e8cff':'#765cff';
-  const escape=(v)=>String(v).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
-  const iconSet=[['◆','#8a5cff'],['✦','#4e8cff'],['◇','#35e39b'],['✧','#765cff'],['✦','#b895ff']];
-  const insights={
-    direction:{lead:'When the destination becomes clearer, AI has less room to guess.',why:'Your pattern suggests that sharper definition of the desired outcome could make your existing AI capability more consistent.'},
-    communication:{lead:'The quality of the conversation shapes the quality of the result.',why:'Your opportunity appears to be giving AI richer context, audience, constraints, and intent so you spend less time correcting misunderstandings.'},
-    evaluation:{lead:'You may not need better AI answers. You may need a better way to judge the answers you are already getting.',why:'Your pattern points toward strengthening the quality filter: what is correct, useful, complete, clear, and genuinely worth keeping.'},
-    iteration:{lead:'The first answer does not have to be the final answer.',why:'Your pattern suggests that deliberate refinement could unlock more value from the AI output you already receive.'},
-    systems:{lead:'A good AI result becomes much more valuable when you can repeat it.',why:'Your opportunity appears to be turning successful experiments into reusable workflows, standards, and capability.'}
-  };
-  const masters={
-    writing:['Naya Master Writer','Writing & Communication','Words, tone, structure, persuasion and clarity.'],
-    research:['Naya Master Researcher','Research & Information','Finding, comparing, synthesizing and explaining information.'],
-    brainstorming:['Naya Master Idea Architect','Brainstorming & Ideas','Possibilities, concepts, angles and creative directions.'],
-    content:['Naya Master Content Creator','Content Creation','Turning ideas into compelling, repeatable content.'],
-    business:['Naya Master Strategist','Business & Strategy','Decisions, models, opportunities and growth.'],
-    marketing:['Naya Master Growth Strategist','Marketing & Sales','Offers, positioning, campaigns and customer journeys.'],
-    learning:['Naya Master Learning Guide','Learning & Education','Learning faster and building better teaching experiences.'],
-    coding:['Naya Master Developer','Coding & Software','Building, debugging and improving software.'],
-    images:['Naya Master Visual Creator','Images & Visual Creation','Visual concepts, composition, direction and design.'],
-    video:['Naya Master Media Director','Video & Media','Video concepts, storytelling and production workflows.'],
-    audio:['Naya Master Voice & Audio','Audio & Voice','Voice, narration, sound and podcast workflows.'],
-    data:['Naya Master Analyst','Data & Analysis','Patterns, evidence, numbers and decisions.'],
-    productivity:['Naya Master Automation Architect','Productivity & Automation','Repeatable systems that save time and increase leverage.'],
-    personal:['Naya Master Reflection Guide','Personal Growth & Reflection','Thinking, reflection and clearer self-direction.'],
-    career:['Naya Master Career Strategist','Career & Work','Skills, opportunities and professional value.'],
-    creativity:['Naya Master Creative Director','Creativity & Design','Concepts, aesthetics, invention and creative direction.'],
-    agents:['Naya Master Systems Architect','AI Agents & Systems','Intelligent multi-step systems and orchestration.'],
-    other:['Naya Master Explorer','Something Else','A flexible Naya specialist for the territory you define.']
-  };
-  function makeSvg(dimensions){
-    const cx=300,cy=210,r=155,n=dimensions.length;
-    const pts=(factor)=>dimensions.map((d,i)=>{const a=(-Math.PI/2)+(Math.PI*2*i/n),rr=r*factor;return `${cx+Math.cos(a)*rr},${cy+Math.sin(a)*rr}`}).join(' ');
-    const radar=dimensions.map((d,i)=>{const a=(-Math.PI/2)+(Math.PI*2*i/n),rr=r*Math.max(.08,d.score/100);return `${cx+Math.cos(a)*rr},${cy+Math.sin(a)*rr}`}).join(' ');
-    const labels=dimensions.map((d,i)=>{const a=(-Math.PI/2)+(Math.PI*2*i/n),lr=r+30;return `<text class="label" x="${cx+Math.cos(a)*lr}" y="${cy+Math.sin(a)*lr}" text-anchor="middle">${escape(d.name)}</text>`}).join('');
-    const axes=dimensions.map((d,i)=>{const a=(-Math.PI/2)+(Math.PI*2*i/n);return `<line class="axis" x1="${cx}" y1="${cy}" x2="${cx+Math.cos(a)*r}" y2="${cy+Math.sin(a)*r}"/>`}).join('');
-    const rings=[.25,.5,.75,1].map(f=>`<polygon class="grid" points="${pts(f)}"/>`).join('');
-    const points=dimensions.map((d,i)=>{const a=(-Math.PI/2)+(Math.PI*2*i/n),rr=r*Math.max(.08,d.score/100);return `<circle class="point" cx="${cx+Math.cos(a)*rr}" cy="${cy+Math.sin(a)*rr}" r="5"/>`}).join('');
-    return `<svg viewBox="0 0 600 420" role="img" aria-label="AI Capability Signature radar visualization">${rings}${axes}<polygon class="radar" points="${radar}"/>${points}${labels}</svg>`;
-  }
-  function getResults(){return window.MAXESS_RUNTIME_RESULTS||null}
-  function render(){
-    const root=document.getElementById('resultsView');
-    if(!root || !root.classList.contains('visible') || root.dataset.maxess10star==='1') return;
-    root.dataset.maxess10star='1';
-    root.classList.add('maxess-10star-results','maxess-results-flow');
-    root.querySelectorAll('.maxess-treasure,.results-v4-intro,.results-master-v2,.results-v4-naya,.results-v4-masterkey,.final-cta').forEach(el=>el.classList.add('legacy-hide'));
-    const scoreNode=document.getElementById('overallScore');
-    const overall=Number(scoreNode?.textContent||0);
-    const dims=[...root.querySelectorAll('#dimensionConstellation .dimension-orb')].map((el)=>({name:el.querySelector('.dimension-name')?.textContent?.trim()||'Dimension',score:Number(el.querySelector('.dimension-score')?.textContent||0),color:el.style.getPropertyValue('--dimensionColor')||'#8a5cff'}));
-    if(!dims.length) return;
-    const strongest=[...dims].sort((a,b)=>b.score-a.score)[0],opportunity=[...dims].sort((a,b)=>a.score-b.score)[0];
-    const oKey=Object.keys(insights).find(k=>opportunity.name.toLowerCase().includes(k))||'evaluation';
-    const sig=document.createElement('div');
-    sig.className='maxess-results-reveal';
-    sig.textContent='EXPLORE YOUR RESULTS';
-    const hero=root.querySelector('.result-hero');
-    if(hero){
-      const eyebrow=hero.querySelector('.result-eyebrow'); if(eyebrow) eyebrow.textContent='YOUR MAXESS RESULT';
-      const title=hero.querySelector('.result-title'); if(title) title.textContent='This is what we discovered about you.';
-      const sub=hero.querySelector('.result-subtitle'); if(sub) sub.textContent=`${Math.round(overall)}/100 · ${strongest.name} is currently your natural advantage.`;
-      hero.appendChild(sig);
-    }
-    const firstInsight=root.querySelector('.insight-flow')?.closest('.report-section');
-    const dimSection=root.querySelector('#dimensionConstellation')?.closest('.report-section');
-    if(!firstInsight || !dimSection) return;
-    const signature=document.createElement('section'); signature.className='maxess-signature-shell';
-    signature.innerHTML=`<div class="maxess-signature-head"><div><div class="report-kicker">YOUR AI CAPABILITY SIGNATURE</div><h3>Your AI fingerprint.</h3><p>Five capability dimensions create a shape that is uniquely yours. The graphic gives you the pattern; the words underneath give it meaning.</p></div></div><div class="maxess-signature-viz">${makeSvg(dims)}</div><div class="maxess-signature-table">${dims.map(d=>`<div class="maxess-signature-item"><strong>${Math.round(d.score)}</strong><span>${escape(d.name)}</span></div>`).join('')}</div></section>`;
-    dimSection.insertAdjacentElement('afterend',signature);
-    const meaning=document.createElement('section'); meaning.className='maxess-meaning'; meaning.innerHTML=`<div class="maxess-meaning-kicker">YOUR NATURAL ADVANTAGE</div><h4>${escape(strongest.name)} is where you already have momentum.</h4><p id="m10-strength-copy">${escape(document.getElementById('strongestText')?.textContent||'Your strongest capability gives you a foundation to build from.')}</p>`;
-    signature.insertAdjacentElement('afterend',meaning);
-    const op=document.createElement('section'); op.className='maxess-ohwhy'; op.innerHTML=`<div class="kicker">YOUR HIGHEST-LEVERAGE OPPORTUNITY</div><blockquote>“${escape(insights[oKey].lead)}”</blockquote><p>${escape(insights[oKey].why)}</p>`;
-    meaning.insertAdjacentElement('afterend',op);
-    const naya=document.createElement('section'); naya.className='maxess-naya-guide'; naya.innerHTML=`<div class="maxess-naya-guide-orb" aria-hidden="true"></div><div><h4>NAYA · YOUR PERSONAL GUIDE</h4><strong>“Okay, here's the interesting part…”</strong><p>${escape(insights[oKey].why)} Your result is a starting signal, not a verdict. The next move is to practice one improvement deliberately.</p></div>`;
-    op.insertAdjacentElement('afterend',naya);
-    const mk=document.createElement('section'); mk.className='maxess-masterkey-10'; mk.innerHTML=`<div class="report-kicker">THE MAXESS MASTER KEY</div><h3>This is the operating system.</h3><p>KNOW what you want. TELL AI what matters. ASK clearly. LOOK at the result. SCORE the quality. IMPROVE what is weak. REPEAT what works.</p><div class="maxess-keyline">${[['KNOW','Goal'],['TELL','Context'],['ASK','Direction'],['LOOK','Result'],['SCORE','Quality'],['IMPROVE','Refine'],['REPEAT','Mastery']].map(x=>`<div class="maxess-key-step"><b>${x[0]}</b><span>${x[1]}</span></div>`).join('')}</div><div class="maxess-aaa-practical">${[['PURPOSE','Did we solve the right problem?'],['CLARITY','Can a human understand it?'],['ACCURACY','Is it actually correct?'],['USEFULNESS','Does it help?'],['REFINEMENT','Did we improve it?'],['HUMAN VALUE','Is someone genuinely better off?']].map(x=>`<div class="maxess-aaa-item"><strong>${x[0]}</strong><p>${x[1]}</p></div>`).join('')}</div></section>`;
-    naya.insertAdjacentElement('afterend',mk);
-    const interests=[...root.querySelectorAll('#selectedInterests .interest-pill')].map(x=>x.textContent.trim()).filter(Boolean);
-    const doors=document.createElement('section'); doors.className='maxess-opportunities';
-    const fallback=['Writing & Communication','Research & Information','Business & Strategy'];
-    const names=(interests.length?interests:fallback).slice(0,6);
-    doors.innerHTML=`<div class="report-kicker">YOUR AI OPPORTUNITIES</div><h3>There are doors here. You choose which one to open.</h3><p>${interests.length?'Based on what you told us, these are the areas most naturally connected to your interests.':'Start with a few proven areas and explore from there.'}</p><div class="maxess-door-list">${names.map((name,i)=>{const key=Object.keys(masters).find(k=>masters[k][1].toLowerCase()===name.toLowerCase())||Object.keys(masters)[i%Object.keys(masters).length]; const m=masters[key]; const ic=iconSet[i%iconSet.length]; return `<article class="maxess-door"><div class="jewel" style="background:radial-gradient(circle at 30% 20%,#fff 0,#d8d2ff 12%,${ic[1]} 44%,#0a0710 100%)">${iconSet[i%iconSet.length][0]}</div><strong>${escape(m[0])}</strong><p>${escape(m[1])}</p><div class="why">${escape(m[2])}</div></article>`}).join('')}</div></section>`;
-    mk.insertAdjacentElement('afterend',doors);
-    const mastersSec=document.createElement('section'); mastersSec.className='maxess-naya-masters';
-    const selected=(interests.length?interests:['Writing & Communication','Research & Information','Business & Strategy','Images & Visual Creation','AI Agents & Systems','Content Creation']).slice(0,6);
-    mastersSec.innerHTML=`<div class="maxess-naya-brandline"><div class="mini-orb" aria-hidden="true"></div><div><div class="wordmark">Naya</div><span class="sub">Master intelligence · specialized expertise</span></div></div><p>Naya is the brand. The Masters are specialized forms of that intelligence. Each one is a doorway into a different capability — not another app tile.</p><div class="maxess-master-grid">${selected.map((name,i)=>{const key=Object.keys(masters).find(k=>masters[k][1].toLowerCase()===name.toLowerCase())||Object.keys(masters)[i%Object.keys(masters).length];const m=masters[key];const ic=iconSet[i%iconSet.length];return `<article class="maxess-master-card"><div class="m-jewel" style="background:radial-gradient(circle at 30% 20%,#fff 0,#dcd7ff 12%,${ic[1]} 44%,#08050d 100%)">${ic[0]}</div><strong>${escape(m[0])}</strong><span>${escape(m[1])}</span><p>${escape(m[2])}</p><span class="naya-label">NAYA MASTER</span></article>`}).join('')}</div></section>`;
-    doors.insertAdjacentElement('afterend',mastersSec);
-    const threshold=document.createElement('section'); threshold.className='maxess-threshold'; threshold.innerHTML=`<div class="k">READY TO GO FURTHER?</div><h3>Your results show you where you are. Now let's build what comes next.</h3><p>KNOW → LEARN → APPLY → CREATE → SHARE → EARN. Capability first. Opportunity second. No hype. No guarantees. Just a clearer path from what you can do to what you can build.</p><div class="actions"><button type="button" class="primary" id="maxess10MasterAi">MASTER AI <span class="button-arrow">→</span></button><button type="button" class="secondary" id="maxess10Save">SAVE MY RESULTS</button></div></section>`;
-    mastersSec.insertAdjacentElement('afterend',threshold);
-    const masterBtn=document.getElementById('freeTrialButton'); if(masterBtn) threshold.querySelector('#maxess10MasterAi').addEventListener('click',()=>masterBtn.click()); else threshold.querySelector('#maxess10MasterAi').addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
-    threshold.querySelector('#maxess10Save').addEventListener('click',()=>document.getElementById('pdfButton')?.click());
-    // Make the assessment shell stop behaving like the height-constrained quiz when Results opens.
-    document.getElementById('assessmentView')?.classList.add('maxess-results-active');
-  }
-  const watch=document.getElementById('resultsView');
-  if(watch)new MutationObserver(render).observe(watch,{attributes:true,attributeFilter:['class']});
-  render();
-})();
-
-
-(function(){
   const root=document.getElementById('resultsView');
   if(!root) return;
-  const apply=()=>{
-    if(!root.classList.contains('visible')) return;
-    root.classList.add('maxess-presentation-audited');
-    root.querySelectorAll('.maxess-audit-placeholder').forEach(el=>el.remove());
-    root.querySelectorAll('.maxess-opportunities,.maxess-naya-masters,.maxess-threshold').forEach(el=>el.remove());
-  };
-  const obs=new MutationObserver(apply);
-  obs.observe(root,{attributes:true,attributeFilter:['class'],childList:true,subtree:true});
-  apply();
-})();
-
-(function(){
-  const root=document.getElementById('resultsView');
-  if(!root) return;
-  const marker='maxess-clean-slate-mounted';
-
-  function esc(v){
-    return String(v==null?'':v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const marker='maxessResultsFinalAuthority';
+  const esc=v=>String(v==null?'':v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const dimsFromDom=()=>[...root.querySelectorAll('#dimensionConstellation .dimension-orb')].map((el,i)=>({
+    name:el.querySelector('.dimension-name')?.textContent?.trim()||['Direction','Communication','Evaluation','Iteration','Systems Thinking'][i]||'Dimension',
+    score:Number(el.querySelector('.dimension-score')?.textContent||0)
+  })).filter(d=>Number.isFinite(d.score));
+  function pathArc(cx,cy,r,a0,a1){const p=(a)=>[cx+r*Math.cos(a),cy+r*Math.sin(a)];const s=p(a0),e=p(a1);return `M ${s[0]} ${s[1]} A ${r} ${r} 0 0 1 ${e[0]} ${e[1]}`;}
+  function speedometer(score){
+    const c=Math.max(0,Math.min(100,score)),cx=300,cy=260,r=180,a0=-2.46,a1=2.46,a=a0+(a1-a0)*c/100,p=(ang,rr)=>[cx+rr*Math.cos(ang),cy+rr*Math.sin(ang)],end=p(a,r),needle=p(a,125),s=p(a0,r),e=p(a1,r);
+    let ticks='';
+    for(let i=0;i<=10;i++){const t=a0+(a1-a0)*i/10,ri=r-14,ro=r+10,cls=i%2===0?'tick major':'tick';ticks+=`<line class="${cls}" x1="${cx+ri*Math.cos(t)}" y1="${cy+ri*Math.sin(t)}" x2="${cx+ro*Math.cos(t)}" y2="${cy+ro*Math.sin(t)}"/>`;}
+    return `<svg viewBox="0 0 600 390" role="img" aria-label="MAXESS score ${c} out of 100"><defs><linearGradient id="rfGauge" x1="0" x2="1"><stop offset="0" stop-color="#5424b5"/><stop offset=".58" stop-color="#8a5cff"/><stop offset="1" stop-color="#c4a9ff"/></linearGradient></defs><path class="track" d="M ${s[0]} ${s[1]} A ${r} ${r} 0 0 1 ${e[0]} ${e[1]}"/><path class="fill" d="${pathArc(cx,cy,r,a0,a)}"/>${ticks}<line class="needle" x1="${cx}" y1="${cy}" x2="${needle[0]}" y2="${needle[1]}"/><circle class="hub" cx="${cx}" cy="${cy}" r="16"/><text class="score" x="${cx}" y="${cy-4}" text-anchor="middle">${c}</text><text class="label" x="${cx}" y="${cy+27}" text-anchor="middle">YOUR MAXESS SCORE</text></svg>`;
   }
-
-  function read(){
-    const score=Math.round(Number(document.getElementById('overallScore')?.textContent||0));
-    const dims=[...root.querySelectorAll('#dimensionConstellation .dimension-orb')].map((el,i)=>({
-      name:el.querySelector('.dimension-name')?.textContent?.trim()||['Direction','Communication','Evaluation','Iteration','Systems Thinking'][i]||'Dimension',
-      score:Number(el.querySelector('.dimension-score')?.textContent||0)
-    }));
-    dims.sort((a,b)=>b.score-a.score);
-    const strongest=dims[0]||{name:'Capability',score:score};
-    const opportunity=dims[dims.length-1]||strongest;
-    const existing=document.getElementById('strongestText')?.textContent?.trim()||`Your strongest current capability is ${strongest.name}.`;
-    const insights={direction:'You may already know what you want AI to accomplish. The next leap is making the destination even more deliberate.',communication:'You may already have useful intent. The next leap is giving AI enough context and direction to make that intent executable.',evaluation:'You may benefit most from becoming a stronger judge of AI output. Better judgment changes what you keep, reject, and improve.',iteration:'You may benefit most from making improvement deliberate: preserve what works, diagnose what does not, and repeat.',systems:'You may be ready to turn individual wins into repeatable workflows that create leverage.'};
-    const key=Object.keys(insights).find(k=>opportunity.name.toLowerCase().includes(k))||'evaluation';
-    return {score,dims,strongest,opportunity,existing,why:insights[key]};
+  function radar(dims){
+    const a=dims.slice(0,5),safe=a.length===5?a:[...a,...Array(5-a.length).fill({name:'Capability',score:0})],cx=300,cy=220,r=154,n=5,p=(i,rr)=>{const t=-Math.PI/2+i*2*Math.PI/n;return [cx+rr*Math.cos(t),cy+rr*Math.sin(t)]},poly=f=>safe.map((_,i)=>p(i,r*f).join(',')).join(' '),shape=safe.map((d,i)=>p(i,r*Math.max(.06,Math.min(100,d.score))/100).join(',')).join(' ');
+    const axes=safe.map((_,i)=>{const q=p(i,r);return `<line class="axis" x1="${cx}" y1="${cy}" x2="${q[0]}" y2="${q[1]}"/>`;}).join('');
+    const labels=safe.map((d,i)=>{const q=p(i,r+38);return `<text class="label" x="${q[0]}" y="${q[1]}" text-anchor="middle">${esc(d.name)}</text>`;}).join('');
+    const points=safe.map((d,i)=>{const q=p(i,r*Math.max(.06,Math.min(100,d.score))/100);return `<circle class="point" cx="${q[0]}" cy="${q[1]}" r="5"/>`;}).join('');
+    return `<svg viewBox="0 0 600 440" role="img" aria-label="Your AI capability fingerprint">${[.25,.5,.75,1].map(f=>`<polygon class="grid" points="${poly(f)}"/>`).join('')}${axes}<polygon class="shape" points="${shape}"/>${points}${labels}</svg>`;
   }
-
-  function makeRadar(dims){
-    const cx=300,cy=220,r=156,n=Math.max(dims.length,5);
-    const five=dims.slice(0,5); const safe=[...five]; while(safe.length<5)safe.push({name:'Capability',score:0});
-    const point=(d,scale=1)=>{const i=safe.indexOf(d),a=(-Math.PI/2)+(Math.PI*2*i/5),rr=r*scale;return `${cx+Math.cos(a)*rr},${cy+Math.sin(a)*rr}`};
-    const ring=(f)=>safe.map(d=>point(d,f)).join(' ');
-    const radar=safe.map(d=>{const i=safe.indexOf(d),a=(-Math.PI/2)+(Math.PI*2*i/5),rr=r*Math.max(.08,d.score/100);return `${cx+Math.cos(a)*rr},${cy+Math.sin(a)*rr}`}).join(' ');
-    const axes=safe.map(d=>{const i=safe.indexOf(d),a=(-Math.PI/2)+(Math.PI*2*i/5);return `<line class="axis" x1="${cx}" y1="${cy}" x2="${cx+Math.cos(a)*r}" y2="${cy+Math.sin(a)*r}"/>`}).join('');
-    const labels=safe.map(d=>{const i=safe.indexOf(d),a=(-Math.PI/2)+(Math.PI*2*i/5),lr=r+34;return `<text class="label" x="${cx+Math.cos(a)*lr}" y="${cy+Math.sin(a)*lr}" text-anchor="middle">${esc(d.name)}</text>`}).join('');
-    const pts=safe.map(d=>{const i=safe.indexOf(d),a=(-Math.PI/2)+(Math.PI*2*i/5),rr=r*Math.max(.08,d.score/100);return `<circle class="point" cx="${cx+Math.cos(a)*rr}" cy="${cy+Math.sin(a)*rr}" r="5"/>`}).join('');
-    return `<svg viewBox="0 0 600 440" role="img" aria-label="Your AI Capability Signature">${[.25,.5,.75,1].map(f=>`<polygon class="grid" points="${ring(f)}"/>`).join('')}${axes}<polygon class="radar" points="${radar}"/>${pts}${labels}</svg>`;
-  }
-
   function mount(){
-    if(!root.classList.contains('visible') || root.dataset[marker]==='1') return;
-    const data=read();
-    const hero=root.querySelector('.result-hero');
-    if(!hero || !data.dims.length) return;
-
-    /* Keep the proven hero and all engine-generated data; hide every presentation layer
-       created by the accumulated Results passes. */
-    [...root.children].forEach(child=>{
-      if(child===hero) return;
-      child.classList.add('cr-legacy-hidden');
-    });
-
-    hero.querySelector('.result-eyebrow')?.replaceChildren(document.createTextNode('YOUR PERSONALIZED ANALYSIS'));
-    const title=hero.querySelector('.result-title'); if(title) title.textContent='What your score tells the story.';
-    const subtitle=hero.querySelector('.result-subtitle'); if(subtitle) subtitle.textContent=`${data.score}/100 · A snapshot of how you currently work with AI.`;
-
-    const shell=document.createElement('div'); shell.className='maxess-clean-results'; shell.innerHTML=`
-      <section class="cr-section cr-analysis" aria-labelledby="crAnalysisTitle">
-        <div class="cr-kicker">YOUR SCORE</div>
-        <h2 id="crAnalysisTitle">${data.score} tells the story.</h2>
-        <div class="cr-thermometer" aria-label="MAXESS score ${data.score} out of 100">
-          <div class="cr-score"><div class="cr-score-number">${data.score}</div><div class="cr-score-label">MAXESS SCORE</div></div>
-          <div><div class="cr-meter"><div class="cr-meter-fill" style="width:${Math.max(0,Math.min(100,data.score))}%"></div></div><div class="cr-meter-ticks"><span>FOUNDATION</span><span>CAPABLE</span><span>STRONG</span><span>MASTERFUL</span></div><div class="cr-meter-caption"><b>${esc(data.strongest.name)}</b> is currently your strongest capability.</div></div>
-        </div>
-        <p class="cr-analysis-lead">${esc(data.existing)}</p>
-        <div class="cr-analysis-points"><span class="cr-analysis-point"><b>${data.strongest.name}</b> · ${Math.round(data.strongest.score)}/100</span><span class="cr-analysis-point"><b>${data.opportunity.name}</b> · ${Math.round(data.opportunity.score)}/100</span></div>
-      </section>
-
-      <section class="cr-section cr-signature" aria-labelledby="crSignatureTitle">
-        <div class="cr-signature-head"><div><div class="cr-kicker">YOUR AI CAPABILITY SIGNATURE</div><h2 class="cr-title" id="crSignatureTitle">Your AI fingerprint.</h2><p class="cr-copy">Five dimensions create a recognizable shape. The picture shows the pattern. The words tell you what it means.</p></div></div>
-        <div class="cr-signature-visual">${makeRadar(data.dims)}</div>
-        <div class="cr-dimension-story">
-          <div class="cr-story cr-story-adv"><div class="cr-story-kicker">YOUR NATURAL ADVANTAGE</div><h3>${esc(data.strongest.name)}</h3><p>${esc(data.existing)}</p></div>
-          <div class="cr-story cr-story-opp"><div class="cr-story-kicker">YOUR HIGHEST-LEVERAGE OPPORTUNITY</div><h3>${esc(data.opportunity.name)}</h3><p>${esc(data.why)}</p></div>
-        </div>
-      </section>
-
-      <section class="cr-section cr-insight"><div class="cr-kicker">THE INSIGHT</div><blockquote>“${esc(data.why)}”</blockquote><p>This is not a judgment. It is the most useful place to look next based on the pattern in your assessment.</p></section>
-
-      <section class="cr-section cr-naya" aria-labelledby="crNayaTitle"><div class="cr-naya-orb" aria-hidden="true">N</div><div><div class="cr-naya-name">NAYA · YOUR PERSONAL GUIDE</div><h3 id="crNayaTitle">Okay. Now we know where to look.</h3><p>${esc(data.opportunity.name)} is the place to experiment next. Keep it small, judge the result honestly, and improve it deliberately.</p></div></section>
-
-      <section class="cr-section cr-masterkey"><div class="cr-kicker">THE MAXESS MASTER KEY</div><h2 class="cr-title">How to work with AI.</h2><p class="cr-copy">You do not need to memorize hundreds of prompts. Build the habit of thinking around the result.</p><div class="cr-keyline"><span>KNOW</span><span>TELL</span><span>ASK</span><span>LOOK</span><span>SCORE</span><span>IMPROVE</span><span>REPEAT</span></div><p class="cr-aaa"><strong>AAA means:</strong> solve the right problem, make the result clear, check that it is accurate, make it useful, refine it, and create genuine human value.</p></section>
-
-      <section class="cr-section cr-doors"><div class="cr-kicker">YOUR POSSIBILITIES</div><h2 class="cr-title">Choose a door worth opening.</h2><p class="cr-copy">These are directions, not a catalogue. Start with the one that feels most useful to you.</p><div class="cr-doorline">
-        <article class="cr-door"><div class="cr-gem" style="background:radial-gradient(circle at 30% 20%,#fff 0,#d9d3ff 13%,#8a5cff 44%,#09050f 100%)">◆</div><strong>Keep your advantage</strong><p>Use your strongest capability deliberately.</p></article>
-        <article class="cr-door"><div class="cr-gem" style="background:radial-gradient(circle at 30% 20%,#fff 0,#d9d3ff 13%,#3ca8ff 44%,#07101a 100%)">✦</div><strong>Build your opportunity</strong><p>Practice the area with the most leverage.</p></article>
-        <article class="cr-door"><div class="cr-gem" style="background:radial-gradient(circle at 30% 20%,#fff 0,#d9d3ff 13%,#35e39b 44%,#06110b 100%)">△</div><strong>Create something real</strong><p>Turn capability into useful output.</p></article>
-        <article class="cr-door"><div class="cr-gem" style="background:radial-gradient(circle at 30% 20%,#fff 0,#d9d3ff 13%,#765cff 44%,#09050f 100%)">✧</div><strong>Explore Naya Masters</strong><p>Find specialized intelligence for your next task.</p></article>
-        <article class="cr-door"><div class="cr-gem" style="background:radial-gradient(circle at 30% 20%,#fff 0,#d9d3ff 13%,#ed42c4 44%,#12050f 100%)">✦</div><strong>Take the next step</strong><p>Turn what you know into what you do.</p></article>
-      </div></section>
-
-      <section class="cr-section cr-next"><div class="cr-kicker">READY TO GO FURTHER?</div><h2>Your result shows where you are. Now build what comes next.</h2><p>Capability first. Practice second. Opportunity follows useful work.</p><div class="cr-actions"><button type="button" class="cr-primary" id="crMasterAi">MASTER AI →</button><button type="button" class="cr-secondary" id="crSave">SAVE MY RESULTS</button></div></section>
-    `;
-
-    hero.insertAdjacentElement('afterend',shell);
-    shell.querySelector('#crMasterAi')?.addEventListener('click',()=>document.getElementById('freeTrialButton')?.click());
-    shell.querySelector('#crSave')?.addEventListener('click',()=>document.getElementById('pdfButton')?.click());
-    requestAnimationFrame(()=>{const f=shell.querySelector('.cr-meter-fill'); if(f){const w=f.style.width; f.style.width='0%'; requestAnimationFrame(()=>f.style.width=w);}});
-    root.dataset[marker]='1';
-  }
-
-  const obs=new MutationObserver(mount);
-  obs.observe(root,{attributes:true,attributeFilter:['class'],childList:true,subtree:true});
-  mount();
-})();
-
-
-
-(function(){
-  const root=document.getElementById('resultsView');
-  if(!root || root.dataset.maxessOpeningRefined==='1') return;
-
-  function esc(v){
-    return String(v==null?'':v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  }
-  function rad(deg){return deg*Math.PI/180;}
-  function point(cx,cy,r,deg){return {x:cx+r*Math.cos(rad(deg)),y:cy+r*Math.sin(rad(deg))};}
-  function pathArc(cx,cy,r,a0,a1){
-    const p0=point(cx,cy,r,a0),p1=point(cx,cy,r,a1),large=(a1-a0)>180?1:0;
-    return `M ${p0.x.toFixed(2)} ${p0.y.toFixed(2)} A ${r} ${r} 0 ${large} 1 ${p1.x.toFixed(2)} ${p1.y.toFixed(2)}`;
-  }
-  function buildSpeedometer(score){
-    const clamped=Math.max(0,Math.min(100,score));
-    const start=-140,end=140,angle=start+(end-start)*(clamped/100);
-    const cx=180,cy=170,r=118;
-    const needle=point(cx,cy,92,angle);
-    const pStart=point(cx,cy,r,start), pEnd=point(cx,cy,r,end);
-    return `<svg viewBox="0 0 360 250" role="img" aria-label="MAXESS score ${clamped} out of 100">
-      <defs><linearGradient id="maxessSpeedGradient" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#5424b5"/><stop offset="55%" stop-color="#8a5cff"/><stop offset="100%" stop-color="#b895ff"/></linearGradient></defs>
-      <path class="track" d="${pathArc(cx,cy,r,start,end)}"/>
-      <path class="range" d="${pathArc(cx,cy,r,start,angle)}"/>
-      <line class="tick" x1="${pStart.x}" y1="${pStart.y}" x2="${point(cx,cy,r+12,start).x}" y2="${point(cx,cy,r+12,start).y}"/>
-      <line class="tick" x1="${pEnd.x}" y1="${pEnd.y}" x2="${point(cx,cy,r+12,end).x}" y2="${point(cx,cy,r+12,end).y}"/>
-      <line class="needle" x1="${cx}" y1="${cy}" x2="${needle.x.toFixed(2)}" y2="${needle.y.toFixed(2)}"/>
-      <circle class="hub" cx="${cx}" cy="${cy}" r="9"/>
-      <text class="value" x="${cx}" y="${cy-22}">${clamped}</text>
-      <text class="label" x="${cx}" y="${cy+4}">MAXESS SCORE</text>
-      <text class="minmax" x="${cx-r-2}" y="${cy+22}">0</text>
-      <text class="minmax" x="${cx+r-12}" y="${cy+22}">100</text>
-    </svg>`;
-  }
-
-  function mount(){
-    if(!root.classList.contains('visible') || root.dataset.maxessOpeningRefined==='1') return;
-    const score=Math.round(Number(document.getElementById('overallScore')?.textContent||0));
-    const dims=[...root.querySelectorAll('#dimensionConstellation .dimension-orb')].map((el,i)=>({
-      name:el.querySelector('.dimension-name')?.textContent?.trim()||['Direction','Communication','Evaluation','Iteration','Systems Thinking'][i]||'Dimension',
-      score:Number(el.querySelector('.dimension-score')?.textContent||0)
-    }));
+    if(!root.classList.contains('visible')||root.dataset[marker]==='1') return;
+    const dims=dimsFromDom();
     if(!dims.length) return;
     dims.sort((a,b)=>b.score-a.score);
-    const strongest=dims[0];
-    const opportunity=dims[dims.length-1];
-
-    const hero=root.querySelector('.result-hero');
-    const clean=root.querySelector('.maxess-clean-results');
-    if(!hero || !clean) return;
-
-    clean.querySelectorAll('.cr-opening').forEach(el=>el.remove());
-    clean.querySelectorAll('.cr-legacy-cleanup').forEach(el=>el.remove());
-
-    const oldAnalysis=clean.querySelector('.cr-analysis');
-    const oldSignature=clean.querySelector('.cr-signature');
-    const oldDoors=clean.querySelector('.cr-doors');
-    const oldNext=clean.querySelector('.cr-next');
-
-    /* Hide the old hero signal entirely. The opening becomes the single source of truth. */
-    clean.querySelectorAll('.cr-analysis, .cr-signature, .cr-insight, .cr-naya, .cr-masterkey, .cr-doors, .cr-next').forEach(el=>el.classList.add('cr-legacy-cleanup'));
-
+    const score=Math.round(Number(document.getElementById('overallScore')?.textContent||0));
+    const strongest=dims[0],opportunity=dims[dims.length-1];
     const strongestText=document.getElementById('strongestText')?.textContent?.trim()||`Your strongest current capability is ${strongest.name}.`;
-    const band=score>=90?'Highly developed AI capability':score>=75?'Strong AI capability':score>=60?'Developing AI capability':'Foundational AI capability';
-
-    const opening=document.createElement('section');
-    opening.className='cr-opening';
-    opening.innerHTML=`
-      <div class="cr-opening-kicker">YOUR PERSONALIZED ANALYSIS</div>
-      <div class="cr-opening-grid">
-        <div class="cr-speedometer">${buildSpeedometer(score)}</div>
-        <div class="cr-opening-copy">
-          <div class="cr-opening-kicker">WHAT YOUR SCORE TELLS THE STORY</div>
-          <h2>${score}<span style="font-size:.42em;color:#b895ff;vertical-align:super;letter-spacing:0">/100</span></h2>
-          <p class="lead">Your score is a snapshot of how deliberately you currently work with AI. It is not a judgment. It shows where your current capability is strongest and where the next gains may live.</p>
-          <div class="cr-opening-signals">
-            <div class="cr-opening-signal"><b>${esc(band)}</b></div>
-            <div class="cr-opening-signal"><b>${esc(strongest.name)}</b> is your natural advantage</div>
-            <div class="cr-opening-signal"><b>${esc(opportunity.name)}</b> is your clearest leverage opportunity</div>
-          </div>
-        </div>
-      </div>
-      <div class="cr-opening-story">
-        <div class="story-kicker">YOUR STORY</div>
-        <h3>${esc(strongest.name)} is already showing up in the way you work with AI.</h3>
-        <p>${esc(strongestText)} The opportunity isn't to become better at everything. It's to protect what is already working while deliberately developing ${esc(opportunity.name)}.</p>
-      </div>
-      <div class="cr-opening-work">
-        <div class="cr-opening-kicker">HOW YOU WORK WITH AI</div>
-        <h3>AI is the engine. You are the director.</h3>
-        <p class="work-lead">Your leverage grows when you know what you want, tell AI what matters, ask clearly, look closely at the result, score it honestly, and improve what isn't there yet.</p>
-        <div class="cr-workline"><span>KNOW</span><i>→</i><span>TELL</span><i>→</i><span>ASK</span><i>→</i><span>LOOK</span><i>→</i><span>SCORE</span><i>→</i><span>IMPROVE</span><i>→</i><span>REPEAT</span></div>
-      </div>`;
-
-    hero.insertAdjacentElement('afterend',opening);
-    root.dataset.maxessOpeningRefined='1';
-  }
-
-  const obs=new MutationObserver(mount);
-  obs.observe(root,{attributes:true,attributeFilter:['class'],childList:true,subtree:true});
-  mount();
-})();
-
-(function(){
-  const root=document.getElementById('resultsView');
-  if(!root) return;
-  const mount=()=>{
-    if(!root.classList.contains('visible')) return;
-    const shell=root.querySelector('.maxess-clean-results');
-    if(!shell || shell.dataset.crPolish==='1') return;
-    const score=Math.round(Number(document.getElementById('overallScore')?.textContent||0));
-    const scoreBand=(score>=90?'EXCEPTIONAL AI CAPABILITY':score>=75?'STRONG AI CAPABILITY':score>=60?'DEVELOPING AI CAPABILITY':'EMERGING AI CAPABILITY');
-
-    const meter=shell.querySelector('.cr-thermometer');
-    if(meter){
-      const speed=document.createElement('div');
-      speed.className='cr-speedometer';
-      const pct=Math.max(0,Math.min(100,score));
-      const cx=300,cy=270,r=190,start=-Math.PI*0.82,end=Math.PI*0.82;
-      const point=(a,rr)=>`${cx+Math.cos(a)*rr},${cy+Math.sin(a)*rr}`;
-      const p0=point(start,r),p1=point(end,r);
-      const large=end-start>Math.PI?'1':'0';
-      const endAngle=start+(end-start)*(pct/100);
-      const pf=point(endAngle,r);
-      const fg=pct<=0?'':`M ${p0} A ${r} ${r} 0 ${large} 1 ${pf}`;
-      let ticks='';
-      for(let i=0;i<=10;i++){
-        const a=start+(end-start)*(i/10); const ri=r-18,ro=r-2; const cls=i%2===0?'tick major':'tick';
-        ticks += `<line class="${cls}" x1="${cx+Math.cos(a)*ri}" y1="${cy+Math.sin(a)*ri}" x2="${cx+Math.cos(a)*ro}" y2="${cy+Math.sin(a)*ro}"/>`;
-      }
-      const needle=point(start+(end-start)*(pct/100),132);
-      speed.innerHTML=`<svg viewBox="0 0 600 360" role="img" aria-label="MAXESS score ${pct} out of 100"><defs><linearGradient id="crSpeedGradient" x1="0" x2="1"><stop offset="0" stop-color="#5424b5"/><stop offset=".55" stop-color="#8a5cff"/><stop offset="1" stop-color="#b895ff"/></linearGradient></defs><path class="arc-bg" d="M ${p0} A ${r} ${r} 0 ${large} 1 ${p1}"/><path class="arc-fg" d="${fg}"/><g>${ticks}</g><line class="needle" x1="${cx}" y1="${cy}" x2="${needle.split(',')[0]}" y2="${needle.split(',')[1]}"/><circle class="hub" cx="${cx}" cy="${cy}" r="18"/><text class="score" x="${cx}" y="${cy-2}" text-anchor="middle">${pct}</text><text class="label" x="${cx}" y="${cy+28}" text-anchor="middle">YOUR MAXESS SCORE</text><text class="band" x="${cx}" y="${cy+54}" text-anchor="middle">${scoreBand}</text></svg><p class="caption">A snapshot of how effectively you currently direct, evaluate, refine, and apply AI.</p>`;
-      meter.replaceWith(speed);
-    }
-
-    const analysis=shell.querySelector('.cr-analysis');
-    if(analysis && !shell.querySelector('.cr-how-ai')){
-      const strongest=analysis.querySelector('.cr-analysis-point')?.textContent?.trim()||'Your strongest capability';
-      const how=document.createElement('section');
-      how.className='cr-how-ai';
-      how.innerHTML=`<div class="cr-kicker">HOW YOU WORK WITH AI</div><h3>AI is the engine. You are the director.</h3><p>Your results are most useful when they change how you work. Know what you want. Tell AI what matters. Ask clearly. Look closely. Score the result. Improve it. Repeat.</p><div class="ai-pillars"><span>KNOW</span><span>TELL</span><span>ASK</span><span>LOOK</span><span>SCORE</span><span>IMPROVE</span><span>REPEAT</span></div>`;
-      analysis.insertAdjacentElement('afterend',how);
-    }
-
-    if(!shell.querySelector('.cr-processes')){
-      const master=shell.querySelector('.cr-masterkey');
-      const anchor=master || shell.querySelector('.cr-signature');
-      if(anchor){
-        const processes=document.createElement('section');
-        processes.className='cr-processes';
-        processes.innerHTML=`<div class="cr-kicker">THE 7 AI PROCESSES</div><h3>A simple rhythm for making better work with AI.</h3><div class="cr-process-line">${[['KNOW','Define the destination'],['TELL','Give useful context'],['ASK','Shape the request'],['LOOK','Inspect the result'],['SCORE','Judge the quality'],['IMPROVE','Refine deliberately'],['REPEAT','Build the habit']].map(x=>`<div class="cr-process-step"><div class="gem">✦</div><strong>${x[0]}</strong><span>${x[1]}</span></div>`).join('')}</div>`;
-        anchor.insertAdjacentElement('beforebegin',processes);
-      }
-    }
-
-    shell.classList.add('cr-cinematic-mounted');
-    shell.dataset.crPolish='1';
-  };
-  const observer=new MutationObserver(mount);
-  observer.observe(root,{attributes:true,childList:true,subtree:true,attributeFilter:['class']});
-  mount();
-})();
-
-(function(){
-  const root=document.getElementById('resultsView');
-  if(!root) return;
-  const mount=()=>{
-    if(!root.classList.contains('visible') || root.querySelector('.maxess-naya-gallery')) return;
-    const shell=root.querySelector('.maxess-clean-results');
-    if(!shell) return;
-
-    root.querySelectorAll('.maxess-expert-grid,.maxess-expert-header,.maxess-treasure').forEach(el=>el.remove());
-
-    const section=document.createElement('section');
-    section.className='maxess-naya-gallery';
-    section.innerHTML=`
-      <div class="ng-kicker">NAYA · MASTERS</div>
-      <h3>A specialized intelligence team, designed around what you want to do.</h3>
-      <p class="ng-lead">One Naya. Many forms of mastery. Each Master is a focused way of turning AI capability into real-world work.</p>
-      <div class="ng-stage">
-        <article class="ng-master"><div class="ng-jewel purple">${gem('✦')}</div><div class="ng-name">Naya Master Writer</div><div class="ng-role">Words · Communication · Persuasion</div><span class="ng-brand">Naya Intelligence</span></article>
-        <article class="ng-master"><div class="ng-jewel blue">${gem('⌁')}</div><div class="ng-name">Naya Master Researcher</div><div class="ng-role">Evidence · Discovery · Clarity</div><span class="ng-brand">Naya Intelligence</span></article>
-        <article class="ng-master"><div class="ng-jewel green">${gem('◆')}</div><div class="ng-name">Naya Master Strategist</div><div class="ng-role">Business · Direction · Decisions</div><span class="ng-brand">Naya Intelligence</span></article>
-        <article class="ng-master"><div class="ng-jewel violet">${gem('✧')}</div><div class="ng-name">Naya Master Creator</div><div class="ng-role">Ideas · Visuals · Media</div><span class="ng-brand">Naya Intelligence</span></article>
-        <article class="ng-master"><div class="ng-jewel magenta">${gem('◈')}</div><div class="ng-name">Naya Master Systems Architect</div><div class="ng-role">Automation · Agents · Leverage</div><span class="ng-brand">Naya Intelligence</span></article>
-      </div>
-      <div class="ng-foot">Your assessment helps determine which doors deserve your attention first.</div>
-    `;
-    const anchor=shell.querySelector('.cr-naya') || shell.querySelector('.cr-masterkey') || shell.lastElementChild;
-    if(anchor) anchor.insertAdjacentElement('afterend',section); else shell.appendChild(section);
-  };
-  function gem(symbol){
-    return `<svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="17" fill="none" stroke="rgba(255,255,255,.75)" stroke-width="1.5"/><path d="M14 24h20M24 14v20M17 17l14 14M31 17L17 31" stroke="rgba(255,255,255,.78)" stroke-width="1.2" stroke-linecap="round"/><text x="24" y="29" text-anchor="middle" font-family="system-ui,sans-serif" font-size="16" font-weight="900" fill="#fff">${symbol}</text></svg>`;
-  }
-  new MutationObserver(mount).observe(root,{attributes:true,attributeFilter:['class'],childList:true,subtree:true});
-  mount();
-})();
-
-
-/* =========================================================
-   MAXESS RESULTS HARD BOUNDARY
-========================================================= */
-(function(){
-  const root=document.getElementById('resultsView');
-  if(!root) return;
-
-  const scrubCodeText=()=>{
-    const rx=/function\s*\(|document\.getElementById|const\s+[A-Za-z_$][\w$]*\s*=|querySelector\s*\(/;
-    const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
-    const kill=[];
-    while(walker.nextNode()){
-      const node=walker.currentNode;
-      const parent=node.parentElement;
-      if(parent && /^(SCRIPT|STYLE|NOSCRIPT)$/i.test(parent.tagName)) continue;
-      if(rx.test(node.nodeValue||'')) kill.push(node);
-    }
-    kill.forEach(n=>n.remove());
-  };
-
-  const mount=()=>{
-    if(!root.classList.contains('visible') || root.dataset.resultsHardBoundary==='1') return;
-    const hero=root.querySelector(':scope > .result-hero');
-    if(!hero) return;
-
-    root.classList.add('results-hard-boundary');
-    root.dataset.resultsHardBoundary='1';
-
-    [...root.children].forEach(child=>{
-      if(child!==hero) child.remove();
-    });
-
-    const score=Math.round(Number(document.getElementById('overallScore')?.textContent||0));
-    const dims=[...root.querySelectorAll('#dimensionConstellation .dimension-orb')].map((el,i)=>({
-      name:el.querySelector('.dimension-name')?.textContent?.trim()||['Direction','Communication','Evaluation','Iteration','Systems Thinking'][i]||'Dimension',
-      score:Number(el.querySelector('.dimension-score')?.textContent||0)
-    }));
-    dims.sort((a,b)=>b.score-a.score);
-    const hi=dims[0]||{name:'Direction',score:score};
-    const lo=dims[dims.length-1]||hi;
-    const escape=(v)=>String(v==null?'':v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-
-    const out=document.createElement('section');
-    out.className='results-hard-output';
-    out.innerHTML=`
-      <section class="rr-clean-intro">
-        <div class="rr-kicker">YOUR PERSONALIZED ANALYSIS</div>
-        <h3>What your score tells your story.</h3>
-        <p>You already have a real advantage in <em>${escape(hi.name)}</em>. Your next meaningful lift is in <em>${escape(lo.name).toLowerCase()}</em>.</p>
-      </section>
-
-      <section class="rr-clean-fingerprint">
-        <div class="rr-kicker">YOUR AI FINGERPRINT</div>
-        <h3>The shape underneath your score.</h3>
-        <div class="rr-fingerprint-grid">
-          ${dims.map(d=>`<div class="rr-fingerprint-point"><span>${escape(d.name)}</span><strong>${Math.round(d.score)}</strong></div>`).join('')}
-        </div>
-      </section>
-
-      <section class="rr-clean-system">
-        <div class="rr-kicker">HOW YOU WORK WITH AI</div>
-        <h3>AI is the engine.<br><em>You are the director.</em></h3>
-        <div class="rr-clean-sequence">${['KNOW','TELL','ASK','LOOK','SCORE','IMPROVE','REPEAT'].map(x=>`<span>${x}</span>`).join('<b>→</b>')}</div>
-      </section>
-
-      <section class="rr-clean-naya">
-        <div class="rr-clean-orb">N</div>
-        <div>
-          <div class="rr-kicker">NAYA · PERSONAL GUIDE</div>
-          <h3>“Okay. Now we know where to look.”</h3>
-          <p>Keep the capability that's already working. Practice the one that creates the most leverage. Then use that combination to make something real.</p>
-        </div>
-      </section>
-
-      <section class="rr-clean-master">
-        <div class="rr-kicker">NAYA · MASTER INTELLIGENCE</div>
-        <h3>Specific work deserves specific mastery.</h3>
-        <div class="rr-master-focus">
-          <div class="rr-jewel rr-purple">✦</div><div><strong>Naya Master ${escape(hi.name)}</strong><span>Your natural advantage</span></div>
-          <div class="rr-jewel rr-blue">◆</div><div><strong>Naya Master ${escape(lo.name)}</strong><span>Your leverage opportunity</span></div>
-          <div class="rr-jewel rr-green">△</div><div><strong>Naya Master Strategist</strong><span>Turn intent into action</span></div>
-        </div>
-      </section>
-
-      <section class="rr-clean-final">
-        <div class="rr-kicker">YOUR NEXT CHAPTER</div>
-        <h3>Now make the capability real.</h3>
-        <p>Your result shows you where you are. The next step is choosing what you want to build with it.</p>
-        <div class="rr-clean-actions"><button type="button" data-rh-go>MASTER AI</button><button type="button" data-rh-save>SAVE MY RESULTS</button></div>
-      </section>
-    `;
-
-    hero.insertAdjacentElement('afterend',out);
-    out.querySelector('[data-rh-go]')?.addEventListener('click',()=>document.getElementById('freeTrialButton')?.click());
-    out.querySelector('[data-rh-save]')?.addEventListener('click',()=>document.getElementById('pdfButton')?.click());
-    scrubCodeText();
-  };
-
-  const observer=new MutationObserver(()=>mount());
-  observer.observe(root,{attributes:true,attributeFilter:['class']});
-  mount();
-})();
-
-
-
-/* =========================================================
-   MAXESS RESULTS HARD RESET V2
-========================================================= */
-(function(){
-  const root=document.getElementById('resultsView');
-  if(!root) return;
-  const marker='maxessFreshResultsV2';
-  const esc=v=>String(v==null?'':v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  const band=s=>s>=90?'MASTER':s>=75?'ADVANCING':s>=60?'DEVELOPING':'FOUNDATION';
-  const readDims=()=>[...root.querySelectorAll('#dimensionConstellation .dimension-orb')].map((el,i)=>({name:el.querySelector('.dimension-name')?.textContent?.trim()||['Direction','Communication','Evaluation','Iteration','Systems Thinking'][i]||'Dimension',score:Number(el.querySelector('.dimension-score')?.textContent||0)}));
-  const radar=ds=>{const safe=ds.slice(0,5),cx=300,cy=220,r=150,n=5;const pt=(i,rr)=>{const a=-Math.PI/2+i*2*Math.PI/n;return [cx+Math.cos(a)*rr,cy+Math.sin(a)*rr]};const poly=f=>safe.map((_,i)=>pt(i,r*f).join(',')).join(' ');const shape=safe.map((d,i)=>pt(i,r*Math.max(.08,d.score/100)).join(',')).join(' ');const axes=safe.map((_,i)=>{const p=pt(i,r);return `<line class="axis" x1="${cx}" y1="${cy}" x2="${p[0]}" y2="${p[1]}"/>`}).join('');const labels=safe.map((d,i)=>{const p=pt(i,r+34);return `<text class="label" x="${p[0]}" y="${p[1]}" text-anchor="middle">${esc(d.name)}</text>`}).join('');const pts=safe.map((d,i)=>{const p=pt(i,r*Math.max(.08,d.score/100));return `<circle class="point" cx="${p[0]}" cy="${p[1]}" r="5"/>`}).join('');return `<svg viewBox="0 0 600 440" role="img" aria-label="AI capability fingerprint">${[.25,.5,.75,1].map(f=>`<polygon class="grid" points="${poly(f)}"/>`).join('')}${axes}<polygon class="shape" points="${shape}"/>${pts}${labels}</svg>`};
-  const mount=()=>{
-    if(!root.classList.contains('visible')||root.dataset[marker]==='1') return;
-    const hero=root.querySelector(':scope > .result-hero');if(!hero)return;
-    const ds=readDims();if(!ds.length)return;ds.sort((a,b)=>b.score-a.score);
-    const score=Math.round(Number(document.getElementById('overallScore')?.textContent||0));
-    const hi=ds[0],lo=ds[ds.length-1];
-    const analysis=document.getElementById('strongestText')?.textContent?.trim()||`Your strongest capability is ${hi.name}.`;
-    root.classList.add('results-hard-reset-v2');
-    root.querySelectorAll(':scope > *').forEach(el=>{if(el!==hero)el.classList.add('fresh-legacy-inert');});
-    const out=document.createElement('div');out.className='maxess-fresh-results';
-    out.innerHTML=`
-      <section class="fresh-section fresh-analysis"><div><div class="fresh-kicker">YOUR PERSONALIZED ANALYSIS</div><p class="fresh-lead">${esc(analysis)} <em>Your next meaningful lift is in ${esc(lo.name).toLowerCase()}.</em></p></div><div class="fresh-points"><div class="fresh-point"><span>NATURAL ADVANTAGE</span><strong>${esc(hi.name)}</strong><p>${Math.round(hi.score)}/100 · your strongest capability.</p></div><div class="fresh-point"><span>HIGHEST LEVERAGE</span><strong>${esc(lo.name)}</strong><p>${Math.round(lo.score)}/100 · your clearest next opportunity.</p></div></div></section>
-      <section class="fresh-section fresh-signature"><div class="fresh-kicker">YOUR AI CAPABILITY SIGNATURE</div><h2 class="fresh-title">The shape underneath your score.</h2><p class="fresh-copy">Five capabilities create a pattern. This is your AI fingerprint — visual first, understandable second.</p><div class="fresh-radar-wrap"><div class="fresh-radar">${radar(ds)}</div><div class="fresh-read"><div class="fresh-read-item"><span>Your strongest dimension</span><strong>${esc(hi.name)}</strong><p>${Math.round(hi.score)}/100 · ${band(hi.score)}.</p></div><div class="fresh-read-item"><span>Your highest-leverage opportunity</span><strong>${esc(lo.name)}</strong><p>${Math.round(lo.score)}/100 · where deliberate practice can create the most lift.</p></div><div class="fresh-read-item"><span>The question to carry forward</span><strong>What would make the next result a 10?</strong><p>Keep what works. Identify what doesn't. Improve deliberately.</p></div></div></div></section>
-      <section class="fresh-section fresh-process"><div class="fresh-kicker">HOW YOU WORK WITH AI</div><h2 class="fresh-title">AI is the engine.<br><span style="color:#b895ff">You are the director.</span></h2><p class="fresh-copy">Know what you want. Give the context. Ask clearly. Look closely. Score the result. Improve it. Repeat.</p><div class="fresh-line">${['KNOW','TELL','ASK','LOOK','SCORE','IMPROVE','REPEAT'].map((x,i)=>`<span>${x}</span>${i<6?'<b>→</b>':''}`).join('')}</div></section>
-      <section class="fresh-section fresh-naya"><div class="fresh-naya-orb">N</div><div><div class="fresh-kicker">NAYA · YOUR PERSONAL GUIDE</div><h3>Okay. Now we know where to look.</h3><p>${esc(lo.name)} is the place to experiment next. Start small. Judge the result honestly. Improve it deliberately. Let the win become a repeatable capability.</p></div></section>
-      <section class="fresh-section fresh-masters"><div class="fresh-kicker">NAYA · MASTER INTELLIGENCE</div><h2 class="fresh-title">Specific work deserves specific mastery.</h2><p class="fresh-copy">Not a catalogue. A glimpse of the specialized intelligence available when you want to go deeper.</p><div class="fresh-master-stage"><article class="fresh-master-main"><div class="fresh-jewel purple">✦</div><div class="fresh-role">NAYA · MASTER SPECIALIST</div><h3>Naya Master ${esc(hi.name)}</h3><p>Start from the capability you already own. Use it as the foundation for what you build next.</p></article><div class="fresh-master-side"><article><div class="fresh-jewel blue">◆</div><div class="fresh-role">NAYA · MASTER SPECIALIST</div><h4>Naya Master ${esc(lo.name)}</h4><p>Practice the capability with the clearest leverage.</p></article><article><div class="fresh-jewel green">△</div><div class="fresh-role">NAYA · MASTER STRATEGIST</div><h4>Turn intent into action</h4><p>Use direction, priorities, and decisions to make the work move.</p></article></div></div></section>
-      <section class="fresh-section fresh-next"><div class="fresh-kicker">YOUR NEXT CHAPTER</div><h2 class="fresh-title">Now make the capability real.</h2><p class="fresh-copy">Your result shows where you are. The next step is choosing what you want to build with it.</p><div class="fresh-actions"><button type="button" class="fresh-primary" data-fresh-go>MASTER AI →</button><button type="button" class="fresh-secondary" data-fresh-save>SAVE MY RESULTS</button></div></section>`;
-    root.appendChild(out);
-    out.querySelector('[data-fresh-go]')?.addEventListener('click',()=>document.getElementById('freeTrialButton')?.click());
-    out.querySelector('[data-fresh-save]')?.addEventListener('click',()=>document.getElementById('pdfButton')?.click());
-    root.dataset[marker]='1';
-  };
-  new MutationObserver(mount).observe(root,{attributes:true,attributeFilter:['class'],childList:true,subtree:true});
-  mount();
-})();
-
-
-
-/* =========================================================
-   MAXESS RESULTS HARD RESET V3
-   The old Results DOM is discarded. Only score data survives.
-========================================================= */
-(function(){
-  const root=document.getElementById('resultsView');
-  if(!root) return;
-  const marker='maxessResultsV3Mounted';
-  const esc=v=>String(v==null?'':v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  const getDims=()=>[...root.querySelectorAll('.dimension-orb')].map((el,i)=>({name:el.querySelector('.dimension-name')?.textContent?.trim()||['Direction','Communication','Evaluation','Iteration','Systems Thinking'][i]||'Dimension',score:Number(el.querySelector('.dimension-score')?.textContent||0)})).filter(d=>Number.isFinite(d.score));
-  const buildRadar=ds=>{const a=ds.slice(0,5);while(a.length<5)a.push({name:'Dimension',score:0});const cx=300,cy=220,r=152,n=5;const p=(i,rr)=>{const t=-Math.PI/2+(i*2*Math.PI/n);return [cx+Math.cos(t)*rr,cy+Math.sin(t)*rr]};const poly=f=>a.map((_,i)=>p(i,r*f).join(',')).join(' ');const shape=a.map((d,i)=>p(i,r*Math.max(.06,Math.min(100,d.score))/100).join(',')).join(' ');const axes=a.map((_,i)=>{const q=p(i,r);return `<line class="axis" x1="${cx}" y1="${cy}" x2="${q[0]}" y2="${q[1]}"/>`}).join('');const labels=a.map((d,i)=>{const q=p(i,r+38);return `<text class="label" x="${q[0]}" y="${q[1]}" text-anchor="middle">${esc(d.name)}</text>`}).join('');const pts=a.map((d,i)=>{const q=p(i,r*Math.max(.06,Math.min(100,d.score))/100);return `<circle class="point" cx="${q[0]}" cy="${q[1]}" r="5"/>`}).join('');return `<svg viewBox="0 0 600 440" role="img" aria-label="Your AI capability fingerprint">${[.25,.5,.75,1].map(f=>`<polygon class="grid" points="${poly(f)}"/>`).join('')}${axes}<polygon class="shape" points="${shape}"/>${pts}${labels}</svg>`};
-  const mount=()=>{
-    if(!root.classList.contains('visible')||root.dataset[marker]==='1') return;
-    const score=Math.round(Number(document.getElementById('overallScore')?.textContent||0));
-    const dims=getDims();if(!dims.length) return;dims.sort((a,b)=>b.score-a.score);
-    const hi=dims[0],lo=dims[dims.length-1];
-    const oldPdf=document.getElementById('pdfButton');
-    const oldStart=document.getElementById('freeTrialButton');
-    const oldText=document.getElementById('strongestText')?.textContent?.trim()||`Your strongest current capability is ${hi.name}.`;
-
-    root.dataset[marker]='1';
-    root.classList.add('maxess-results-v3');
-    root.innerHTML='';
-
-    const wrap=document.createElement('main');wrap.className='results-v3';
-    const startAngle=-2.46,endAngle=2.46,clamped=Math.max(0,Math.min(100,score)),angle=startAngle+(endAngle-startAngle)*clamped/100,cx=300,cy=260,r=180;
-    const pt=(a,rr)=>[cx+Math.cos(a)*rr,cy+Math.sin(a)*rr];
-    const ps=pt(startAngle,r),pe=pt(endAngle,r),pf=pt(angle,r),needle=pt(angle,125);
-    const arc=(p0,p1)=>`M ${p0[0]} ${p0[1]} A ${r} ${r} 0 0 1 ${p1[0]} ${p1[1]}`;
-    const scoreBand=score>=90?'MASTERFUL CAPABILITY':score>=75?'STRONG AI CAPABILITY':score>=60?'DEVELOPING AI CAPABILITY':'EMERGING AI CAPABILITY';
-    wrap.innerHTML=`<div class="r3-wrap">
-      <section class="r3-hero"><div class="r3-kicker">YOUR MAXESS RESULT</div><h1>${score}<span>/100</span></h1><p>${esc(scoreBand)}. This is your capability snapshot — a starting point for understanding how you work with AI.</p><div class="r3-gauge"><svg viewBox="0 0 600 390" role="img" aria-label="MAXESS score ${score} out of 100"><defs><linearGradient id="r3Gauge" x1="0" x2="1"><stop offset="0" stop-color="#5424b5"/><stop offset=".6" stop-color="#8a5cff"/><stop offset="1" stop-color="#c1a1ff"/></linearGradient></defs><path class="track" d="${arc(ps,pe)}"/><path class="fill" d="${arc(ps,pf)}"/><line class="tick" x1="${pt(startAngle,r-12)[0]}" y1="${pt(startAngle,r-12)[1]}" x2="${pt(startAngle,r+10)[0]}" y2="${pt(startAngle,r+10)[1]}"/><line class="tick" x1="${pt(endAngle,r-12)[0]}" y1="${pt(endAngle,r-12)[1]}" x2="${pt(endAngle,r+10)[0]}" y2="${pt(endAngle,r+10)[1]}"/><line class="needle" x1="${cx}" y1="${cy}" x2="${needle[0]}" y2="${needle[1]}"/><circle class="hub" cx="${cx}" cy="${cy}" r="15"/><text class="score" x="${cx}" y="${cy-4}" text-anchor="middle">${score}</text><text class="label" x="${cx}" y="${cy+28}" text-anchor="middle">YOUR AI MASTERY SCORE</text></svg></div><div class="r3-band">${esc(scoreBand)}</div></section>
-      <section class="r3-panel r3-analysis"><div><div class="r3-kicker">YOUR PERSONALIZED ANALYSIS</div><p class="r3-analysis-lead">${esc(oldText)} <em>Your next meaningful lift is ${esc(lo.name).toLowerCase()}.</em></p></div><div class="r3-meaning"><div class="r3-meaning-item"><span>Natural advantage</span><strong>${esc(hi.name)}</strong><small>${Math.round(hi.score)}/100 · your strongest dimension.</small></div><div class="r3-meaning-item"><span>Highest-leverage opportunity</span><strong>${esc(lo.name)}</strong><small>${Math.round(lo.score)}/100 · the clearest place to grow.</small></div></div></section>
-      <section class="r3-panel"><div class="r3-kicker">YOUR AI CAPABILITY SIGNATURE</div><h2 class="r3-title">This is your AI fingerprint.</h2><p class="r3-copy">Not five disconnected scores. One recognizable shape — the way your capabilities combine.</p><div class="r3-fingerprint"><div class="r3-radar">${buildRadar(dims)}</div><div class="r3-read"><article><span>Strongest</span><h3>${esc(hi.name)}</h3><p>You already have meaningful strength here.</p></article><article><span>Highest leverage</span><h3>${esc(lo.name)}</h3><p>This is the most useful capability to deliberately develop next.</p></article><article><span>The test</span><h3>What would make this a 10?</h3><p>Judge the work. Improve the weak point. Repeat.</p></article></div></div></section>
-      <section class="r3-panel r3-process"><div class="r3-kicker">HOW YOU WORK WITH AI</div><h2>AI is the engine.<br><em>You are the director.</em></h2><p class="r3-copy" style="margin-left:auto;margin-right:auto">Know what you want. Tell AI what matters. Ask clearly. Look closely. Score honestly. Improve deliberately. Repeat.</p><div class="r3-process-line">${['KNOW','TELL','ASK','LOOK','SCORE','IMPROVE','REPEAT'].map(x=>`<span class="step"><i class="gem">✦</i>${x}</span>`).join('')}</div></section>
-      <section class="r3-panel r3-naya"><div class="r3-orb">N</div><div><div class="r3-kicker">NAYA · YOUR PERSONAL GUIDE</div><h2>Okay. Now we know where to look.</h2><p class="r3-copy">${esc(lo.name)} is the place to experiment next. Keep what works, improve what doesn't, and turn the result into something you can use.</p></div></section>
-      <section class="r3-panel r3-masters"><div class="r3-kicker">NAYA · MASTER INTELLIGENCE</div><h2>Specific work deserves specific mastery.</h2><p class="r3-copy">One Naya. Many forms of mastery. These are examples of the specialized intelligence available when you need it.</p><div class="r3-masters-stage"><article class="r3-master"><div class="r3-jewel p">✦</div><h3>Naya Master ${esc(hi.name)}</h3><div class="r3-role">Your natural advantage</div><p>Turn what you already do well into a repeatable strength.</p></article><article class="r3-master"><div class="r3-jewel b">◆</div><h3>Naya Master ${esc(lo.name)}</h3><div class="r3-role">Your next leverage</div><p>Practice the capability that can create the biggest lift.</p></article><article class="r3-master"><div class="r3-jewel g">△</div><h3>Naya Master Strategist</h3><div class="r3-role">Turn intent into action</div><p>Move from what you want to what you can actually build.</p></article></div></section>
-      <section class="r3-panel r3-next"><div class="r3-kicker">YOUR NEXT CHAPTER</div><h2>Now make the capability real.</h2><p>Your result shows you where you are. The next step is choosing where to apply it — then doing the work.</p><div class="r3-actions"><button class="r3-primary" type="button" data-r3-start>MASTER AI</button><button class="r3-secondary" type="button" data-r3-save>SAVE MY RESULTS</button></div></section>
-    </div>`;
-    root.appendChild(wrap);
-    root.querySelector('[data-r3-start]')?.addEventListener('click',()=>oldStart?.click());
-    root.querySelector('[data-r3-save]')?.addEventListener('click',()=>oldPdf?.click());
-  };
-  const obs=new MutationObserver(mount);obs.observe(root,{attributes:true,attributeFilter:['class']});mount();
-})();
-
-</script>
-
-<style id="maxess-10star-shell-style">
-.board-wrap:has(#resultsView.visible){display:block;min-height:auto}
-.board-wrap:has(#resultsView.visible) .board{min-height:auto;overflow:visible}
-.board-wrap:has(#resultsView.visible) .board-content{min-height:auto}
-.maxess-results-flow{min-height:0}
-</style>
-
-
-
-(function(){
-  const root=document.getElementById('resultsView');
-  if(!root || root.dataset.maxessOscarFinal==='1') return;
-  const run=()=>{
-    if(!root.classList.contains('visible') || root.dataset.maxessOscarFinal==='1') return;
-    const scoreEl=document.getElementById('overallScore');
-    const strongestText=document.getElementById('strongestText');
-    const dims=[...root.querySelectorAll('#dimensionConstellation .dimension-orb')].map(el=>({name:el.querySelector('.dimension-name')?.textContent?.trim()||'Dimension',score:Number(el.querySelector('.dimension-score')?.textContent||0)}));
-    if(!dims.length) return;
-    const strongest=[...dims].sort((a,b)=>b.score-a.score)[0];
-    const opportunity=[...dims].sort((a,b)=>a.score-b.score)[0];
-    const score=Math.round(Number(scoreEl?.textContent||0));
-
-    const hero=root.querySelector('.result-hero');
-    if(hero){
-      hero.querySelector('.result-eyebrow')?.replaceChildren(document.createTextNode('YOUR PERSONALIZED ANALYSIS'));
-      const title=hero.querySelector('.result-title');
-      if(title) title.textContent='What your score tells the story.';
-      const sub=hero.querySelector('.result-subtitle');
-      if(sub) sub.textContent=`Your ${score}/100 is a capability snapshot — the beginning of understanding how you work with AI.`;
-    }
-
-    root.querySelectorAll('.maxess-signal').forEach(el=>el.classList.add('legacy-hide-oscar'));
-    root.querySelectorAll('.maxess-opportunities,.maxess-naya-masters,.maxess-threshold,.maxess-oscar-finale').forEach(el=>el.remove());
-
-    const oldHeroSignal=root.querySelector('.maxess-results-reveal');
-    if(oldHeroSignal) oldHeroSignal.textContent='EXPLORE WHAT YOUR SCORE REVEALS';
-
-    const editorial=document.createElement('section');
-    editorial.className='maxess-personal-editorial';
-    editorial.innerHTML=`<div class="k">YOUR PERSONALIZED ANALYSIS</div><h3>You are already bringing ${escape(strongest.name).toLowerCase()} to your AI work.</h3><p>${escape(strongestText?.textContent||`Your strongest current capability is ${strongest.name}.`)} The most useful next move is not to fix everything. It is to keep that advantage while deliberately developing ${escape(opportunity.name)}.</p><div class="signal"><span><b>${score}</b> · MAXESS SCORE</span><span><b>${escape(strongest.name)}</b> · NATURAL ADVANTAGE</span><span><b>${escape(opportunity.name)}</b> · LEVERAGE OPPORTUNITY</span></div>`;
-    if(hero) hero.insertAdjacentElement('afterend',editorial);
-
-    const mk=root.querySelector('.maxess-masterkey-10');
-    if(mk) mk.classList.add('legacy-hide-oscar');
-    const existingMk=root.querySelector('.maxess-results-v4-masterkey');
-    if(existingMk) existingMk.classList.add('legacy-hide-oscar');
-
-    const sig=root.querySelector('.maxess-signature-shell');
-    const anchor=mk||sig||root.querySelector('.maxess-naya-guide');
-    if(!anchor) return;
-
-    const jewels=[['◆','#ffd45a'],['✦','#35e39b'],['△','#3ca8ff'],['✧','#765cff'],['✦','#ed42c4']];
-    const doors=[
-      [strongest.name,'Your natural advantage'],
-      [opportunity.name,'Where your next leverage lives'],
-      ['Master AI','Turn capability into practical output'],
-      ['Create','Apply your capability to something real'],
-      ['Earn','Convert useful work into value']
+    const opportunityText=document.getElementById('opportunityText')?.textContent?.trim()||`Your clearest leverage opportunity is ${opportunity.name}.`;
+    const trial=document.getElementById('freeTrialButton');
+    const save=document.getElementById('pdfButton');
+    const band=score>=90?'MASTERFUL AI CAPABILITY':score>=75?'STRONG AI CAPABILITY':score>=60?'DEVELOPING AI CAPABILITY':'EMERGING AI CAPABILITY';
+    const masters=[
+      ['Naya Master Writer','Words · Communication · Persuasion','p'],
+      ['Naya Master Researcher','Evidence · Discovery · Clarity','b'],
+      ['Naya Master Strategist','Business · Direction · Decisions','g'],
+      ['Naya Master Creator','Ideas · Visuals · Media','v'],
+      ['Naya Master Systems Architect','Automation · Agents · Leverage','m']
     ];
-    const finale=document.createElement('section');
-    finale.className='maxess-oscar-finale';
-    finale.innerHTML=`<div class="maxess-oscar-kicker">YOUR NEXT CHAPTER</div><h3>Now turn insight into capability.</h3><p class="lead">You know more about where you are. The next step is choosing where to grow — and then putting that capability to work.</p><div class="maxess-oscar-spine">${jewels.map((j,i)=>`<div class="j"><div class="gem" style="background:radial-gradient(circle at 30% 20%,#fff 0,#d9d3ff 13%,${j[1]} 44%,#08050d 100%)">${j[0]}</div><div class="t">${['KNOW','LEARN','APPLY','CREATE','EARN'][i]}</div></div>`).join('')}</div><div class="maxess-oscar-path"><div class="way"><h4>From capability</h4><p>Understand your advantage and the opportunity in front of you.</p></div><div class="arrow">→</div><div class="way"><h4>To possibility</h4><p>Choose a door that matters to you and practice it in real work.</p></div></div><div class="maxess-oscar-door"><div class="maxess-oscar-kicker">YOUR DOORS</div><h4>Five ways to move forward.</h4><p>These are not products or a catalogue. They are simple directions you can take from this result.</p><div class="doors">${doors.map((d,i)=>{const j=jewels[i];return `<div class="door"><div class="gem" style="background:radial-gradient(circle at 30% 20%,#fff 0,#d9d3ff 13%,${j[1]} 44%,#08050d 100%)">${j[0]}</div><strong>${escape(d[0])}</strong><span>${escape(d[1])}</span></div>`}).join('')}</div></div><div class="maxess-oscar-naya"><div class="orb">N</div><div><div class="ey">NAYA · YOUR PERSONAL GUIDE</div><strong>“Okay. Now we know where to look.”</strong><p>${escape(opportunity.name)} is the place to experiment next. Start small, judge the result honestly, and improve it deliberately.</p></div></div><div class="maxess-oscar-final"><div class="k">READY TO GO FURTHER?</div><h4>Your result shows you where you are. Now let's build what comes next.</h4><p>KNOW → LEARN → APPLY → CREATE → SHARE → EARN. Capability first. Opportunity second. No hype. No guarantees.</p><div class="actions"><button type="button" class="primary" data-oscar-master>MASTER AI →</button><button type="button" class="secondary" data-oscar-save>SAVE MY RESULTS</button></div></div><div class="maxess-oscar-disclaimer">Your MAXESS result is a capability snapshot based on your assessment responses. It is not a diagnosis, prediction, or guarantee.</div>`;
-    anchor.insertAdjacentElement('afterend',finale);
-
-    finale.querySelector('[data-oscar-master]')?.addEventListener('click',()=>document.getElementById('freeTrialButton')?.click());
-    finale.querySelector('[data-oscar-save]')?.addEventListener('click',()=>document.getElementById('pdfButton')?.click());
-    root.dataset.maxessOscarFinal='1';
-  };
-  const obs=new MutationObserver(run); obs.observe(root,{attributes:true,attributeFilter:['class']});
-  run();
+    root.dataset[marker]='1';
+    root.innerHTML=`<main class="results-final"><div class="rf-wrap">
+      <section class="rf-hero"><div class="rf-kicker">YOUR PERSONALIZED ANALYSIS</div><h1>What your score tells the story.</h1><p>${esc(band)}. Your result is a capability snapshot — a way to understand where you already have momentum and where the next meaningful gain may be.</p><div class="rf-gauge">${speedometer(score)}</div><div class="rf-band">${score}/100 · ${esc(strongest.name)} is your natural advantage</div></section>
+      <section class="rf-section rf-analysis"><div><div class="rf-kicker">YOUR STORY</div><h2>${esc(strongest.name)} is already showing up in how you work with AI.</h2><p class="rf-lead">${esc(strongestText)} <em>The opportunity is not to fix everything. It is to keep that strength while deliberately developing ${esc(opportunity.name)}.</em></p></div><div class="rf-analysis-side"><div class="rf-side"><span>Natural advantage</span><strong>${esc(strongest.name)}</strong><small>${Math.round(strongest.score)}/100 · your strongest dimension.</small></div><div class="rf-side"><span>Highest leverage</span><strong>${esc(opportunity.name)}</strong><small>${Math.round(opportunity.score)}/100 · your clearest next opportunity.</small></div></div></section>
+      <section class="rf-section rf-fingerprint"><div class="rf-kicker">YOUR AI CAPABILITY SIGNATURE</div><h2>Your AI fingerprint.</h2><p>Five capabilities. One pattern. The graphic lets you recognize your shape before you read the explanation.</p><div class="rf-radar">${radar(dims)}</div><div class="rf-stories"><article class="rf-story"><span>Your natural advantage</span><h3>${esc(strongest.name)}</h3><p>${esc(strongestText)}</p></article><article class="rf-story opportunity"><span>Your highest-leverage opportunity</span><h3>${esc(opportunity.name)}</h3><p>${esc(opportunityText)}</p></article></div></section>
+      <section class="rf-section rf-insight"><div class="rf-kicker">THE “OH… THAT’S WHY” MOMENT</div><blockquote>${esc(opportunityText)}</blockquote><p>This is the place to look next because it is directly connected to your assessment pattern — not because we invented a flattering story.</p></section>
+      <section class="rf-section rf-process"><div class="rf-kicker">HOW YOU WORK WITH AI</div><h2>AI is the engine. <em>You are the director.</em></h2><p>Know what you want. Give the context. Ask clearly. Look closely. Score the result. Improve it. Repeat.</p><div class="rf-process-line">${[['KNOW','Define the destination','p'],['TELL','Give useful context','b'],['ASK','Shape the request','g'],['LOOK','Inspect the result','v'],['SCORE','Judge the quality','p'],['IMPROVE','Refine deliberately','b'],['REPEAT','Build the habit','m']].map(x=>`<div class="rf-step"><div class="rf-gem ${x[2]}">${x[0].slice(0,1)}</div><strong>${x[0]}</strong><span>${x[1]}</span></div>`).join('')}</div></section>
+      <section class="rf-section rf-naya"><div class="rf-naya-orb">N</div><div><div class="rf-kicker">NAYA · YOUR PERSONAL GUIDE</div><h2>Okay. Now we know where to look.</h2><p>${esc(opportunityText)} Start small. Judge the result honestly. Improve it deliberately. Let the win become a repeatable capability.</p></div></section>
+      <section class="rf-section rf-masters"><div class="rf-kicker">NAYA · MASTER INTELLIGENCE</div><h2>Specific work deserves specific mastery.</h2><p>One Naya. Many forms of mastery. These are five examples of the specialized intelligence available when the work calls for more focus.</p><div class="rf-master-line">${masters.map((m,i)=>`<article class="rf-master"><div class="rf-gem ${m[2]}">${['✦','⌁','◆','✧','◈'][i]}</div><h3>${m[0]}</h3><span>${m[1]}</span><small>NAYA INTELLIGENCE</small></article>`).join('')}</div></section>
+      <section class="rf-section rf-next"><div class="rf-kicker">YOUR NEXT CHAPTER</div><h2>Now make the capability real.</h2><p>Your result shows where you are. The next step is choosing where you want to apply it — then doing the work.</p><div class="rf-actions"><button class="rf-primary" type="button" id="rfMaster">MASTER AI →</button><button class="rf-secondary" type="button" id="rfSave">SAVE MY RESULTS</button></div><div class="rf-disclaimer">Your MAXESS result is a capability snapshot based on your assessment responses. It is not a diagnosis, prediction, or guarantee.</div></section>
+    </div></main>`;
+    root.querySelector('#rfMaster')?.addEventListener('click',()=>trial?.click());
+    root.querySelector('#rfSave')?.addEventListener('click',()=>save?.click());
+  }
+  const obs=new MutationObserver(mount);
+  obs.observe(root,{attributes:true,attributeFilter:['class']});
+  mount();
 })();
-
+</script>
 </body>
 </html>
