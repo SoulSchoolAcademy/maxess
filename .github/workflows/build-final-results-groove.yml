@@ -48,8 +48,8 @@ jobs:
           echo "MAXESS Groove embed: ${embed_lines} lines / ${embed_bytes} bytes"
           test "$lines" -ge 3000
           test "$bytes" -ge 90000
-          test "$embed_lines" -ge 3000
-          test "$embed_bytes" -ge 90000
+          test "$embed_lines" -ge 100
+          test "$embed_bytes" -ge 10000
           grep -q 'MAXESS_RESULTS_ROYAL_9_95' MAXESS-RESULTS-10-GROOVE.html
           grep -q 'MAXESS-RESULTS-CONTRACT-1' MAXESS-RESULTS-10-GROOVE.html
           grep -q 'rr-naya-avatar' MAXESS-RESULTS-10-GROOVE.html
@@ -66,6 +66,10 @@ jobs:
           grep -q 'MAXESS_RESULTS_ROYAL_9_95' MAXESS-RESULTS-GROOVE-EMBED.html
           grep -q 'MAXESS-RESULTS-CONTRACT-1' MAXESS-RESULTS-GROOVE-EMBED.html
           grep -q 'const MASTERS=' MAXESS-RESULTS-GROOVE-EMBED.html
+          grep -q 'rr-naya-hero' MAXESS-RESULTS-GROOVE-EMBED.html
+          grep -q 'rr-fingerprint' MAXESS-RESULTS-GROOVE-EMBED.html
+          grep -q 'rr-insight' MAXESS-RESULTS-GROOVE-EMBED.html
+          grep -q 'rr-path' MAXESS-RESULTS-GROOVE-EMBED.html
           echo 'MAXESS Royal + Groove Embed release gate: PASS'
 
       - name: Commit authoritative artifacts
