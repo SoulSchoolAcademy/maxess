@@ -23,6 +23,7 @@ When creating durable product decisions, add or update a clearly named file unde
 
 ### Results experience
 - `.naya/memory/08-MAXESS-RESULTS-MASTER-SPEC.md` — locked MAXESS Results product architecture, psychological journey, five AI character dimensions, personalization, result contract, Naya transition, AAA standard.
+- `.naya/memory/15-MAXESS-10-STAR-RESULTS-EXPERIENCE.md` — expanded 10-star Results experience, reveal sequence, luxury digital hospitality direction, motion, report, personalization integrity, final user-value test.
 
 ### Naya operating modes
 - `.naya/memory/09-NAYA-ROLE-ROLODEX.md` — one Naya / many expert modes, 21-role index, activation syntax, multi-role orchestration, shared craft loop.
@@ -33,6 +34,9 @@ When creating durable product decisions, add or update a clearly named file unde
 
 ### Brand / acquisition experience
 - `.naya/memory/14-MAXESS-LANDING-EXPERIENCE.md` — landing-page job, messaging sequence, assessment CTA, credibility/proof, no-email-gate rule, section-earning law.
+
+### Engineering
+- `.naya/memory/16-MAXESS-GROOVE-ENGINEERING-LAWS.md` — contained assessment vs flowing Results, single-embed principle, cross-domain result boundary, explicit states, determinism, QA profiles, graceful degradation, Groove release gate.
 
 ## FUTURE MEMORY CATEGORIES
 Recommended categories:
