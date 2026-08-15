@@ -128,7 +128,6 @@ def strip_document_shell(page: str):
     styles = STYLE_RE.findall(page)
     if not styles:
         raise SystemExit('No stylesheet blocks found in authoritative Results source')
-    # Scripts are re-added at the end in source order so the body remains pure markup.
     body_html = SCRIPT_RE.sub('', body_html)
     return [scope_css(s) for s in styles], body_html.strip(), scripts
 
@@ -151,6 +150,8 @@ def build():
         '</div>',
     ])
 
+    # Validate actual HTML markup, not strings such as JS QA checks containing '<iframe'.
+    structural = SCRIPT_RE.sub('', STYLE_RE.sub('', final))
     forbidden = [
         (r'<!doctype\s', 'doctype'),
         (r'<html(?:\s|>)', 'html shell'),
@@ -159,7 +160,7 @@ def build():
         (r'<iframe(?:\s|>)', 'iframe'),
     ]
     for pattern, label in forbidden:
-        if re.search(pattern, final, flags=re.I):
+        if re.search(pattern, structural, flags=re.I):
             raise SystemExit(f'Groove embed contains forbidden {label} markup')
 
     required_tokens = [
@@ -179,7 +180,7 @@ def build():
     checks = {f'required:{token}': token in final for token in required_tokens}
     checks.update({
         'full_authoritative_source': 'MAXESS-RESULTS-10-GROOVE.html' in final,
-        'no_iframe_tag': not bool(re.search(r'<iframe(?:\s|>)', final, flags=re.I)),
+        'no_iframe_tag': not bool(re.search(r'<iframe(?:\s|>)', structural, flags=re.I)),
         'nonempty_artifact': len(final.splitlines()) >= 3000 and len(final.encode('utf-8')) >= 100000,
         'not_compressed_preview': len(final.splitlines()) >= 3000,
         'contains_result_bridge': 'MAXESS_GROOVE_RESULT_BRIDGE' in final,
