@@ -3,9 +3,10 @@ from pathlib import Path
 p = Path("code")
 s = p.read_text(encoding="utf-8")
 MARK = "MAXESS RESULTS FINAL AUTHORITY V2"
+HTML_MARK = "<!-- " + MARK + " -->"
 
-while MARK in s:
-    marker_start = s.find("<!-- " + MARK + " -->")
+while HTML_MARK in s:
+    marker_start = s.find(HTML_MARK)
     if marker_start < 0:
         break
     body_end = s.find("</body>", marker_start)
@@ -23,7 +24,7 @@ if first_script_end < 0 or first_script_end > body_idx:
 first_script_end += len("</script>")
 core = s[:first_script_end].rstrip()
 
-CSS = r"""
+CSS = r'''
 /* MAXESS RESULTS FINAL AUTHORITY V2 */
 #resultsView{display:none!important;width:100%;max-width:none!important;margin:0!important;}
 #resultsView.visible{display:block!important;}
@@ -141,9 +142,9 @@ CSS = r"""
 @media(max-width:900px){.r2-network{height:430px}.r2-network .n1{left:12%}.r2-network .n4{left:88%}}
 @media(max-width:720px){.r2-cap-grid{grid-template-columns:1fr;gap:28px}.r2-naya{grid-template-columns:1fr;text-align:center}.r2-naya-photo{margin:0 auto}.r2-network{height:470px}.r2-network .n1{left:18%;top:42%}.r2-network .n2{left:36%;top:12%}.r2-network .n3{left:64%;top:12%}.r2-network .n4{left:82%;top:42%}.r2-network .n5{left:50%;top:88%}.r2-key-row{grid-template-columns:1fr;gap:18px}.r2-key .rf-gem{width:98px;height:98px}}
 @media(prefers-reduced-motion:reduce){.r2-actions button{transition:none}}
-"""
- 
-JS = r"""
+'''
+
+JS = r'''
 <!-- MAXESS RESULTS FINAL AUTHORITY V2 -->
 <script>
 (function(){
@@ -155,25 +156,16 @@ JS = r"""
   const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
   const getDims=()=>{
-    const found=[...root.querySelectorAll('#dimensionConstellation .dimension-orb')].map((el,i)=>({
-      name:el.querySelector('.dimension-name')?.textContent?.trim()||['Direction','Communication','Evaluation','Iteration','Systems Thinking'][i]||'Dimension',
-      score:Number(el.querySelector('.dimension-score')?.textContent||0)
-    })).filter(x=>Number.isFinite(x.score));
+    const found=[...root.querySelectorAll('#dimensionConstellation .dimension-orb')].map((el,i)=>({name:el.querySelector('.dimension-name')?.textContent?.trim()||['Direction','Communication','Evaluation','Iteration','Systems Thinking'][i]||'Dimension',score:Number(el.querySelector('.dimension-score')?.textContent||0)})).filter(x=>Number.isFinite(x.score));
     return found.length===5?found:['Direction','Communication','Evaluation','Iteration','Systems Thinking'].map(name=>({name,score:0}));
   };
-  const getScore=ds=>{
-    const el=document.getElementById('overallScore');
-    const n=Number((el?.textContent||'').replace(/[^\d.]/g,''));
-    return Number.isFinite(n)&&n>=0?clamp(Math.round(n),0,100):clamp(Math.round(ds.reduce((a,b)=>a+b.score,0)/5),0,100);
-  };
+  const getScore=ds=>{const el=document.getElementById('overallScore');const n=Number((el?.textContent||'').replace(/[^\d.]/g,''));return Number.isFinite(n)&&n>=0?clamp(Math.round(n),0,100):clamp(Math.round(ds.reduce((a,b)=>a+b.score,0)/5),0,100);};
   const band=score=>score>=90?'MASTERING AI CAPABILITY':score>=80?'ADVANCING AI CAPABILITY':score>=65?'DEVELOPING AI CAPABILITY':score>=45?'EMERGING AI CAPABILITY':'EARLY AI CAPABILITY';
   const adv={Direction:'You tend to give AI a destination instead of treating every request as an isolated prompt.',Communication:'You tend to shape the conversation with useful context, intent, and direction.',Evaluation:'You tend to notice when an answer is not yet good enough and can judge what matters.',Iteration:'You tend to improve AI output instead of stopping at the first answer.','Systems Thinking':'You tend to connect successful AI work into repeatable methods and workflows.'};
   const opp={Direction:'Make the destination even clearer before asking AI to act.',Communication:'Give AI more of the context, constraints, examples, and standards that shape the result.',Evaluation:'Strengthen the habit of checking whether the result is correct, useful, and complete.',Iteration:'Turn revision into a deliberate loop rather than an occasional correction.','Systems Thinking':'Capture successful methods so you can reuse and improve them instead of starting over.'};
   const safeClick=ids=>{for(const id of ids){const el=document.getElementById(id);if(el){el.click();return true;}}return false;};
   const gauge=score=>{
-    const c=clamp(Math.round(score),0,100),cx=300,cy=262,r=180,a0=-2.46,a1=2.46,a=a0+(a1-a0)*c/100;
-    const pt=(ang,rr)=>[cx+rr*Math.cos(ang),cy+rr*Math.sin(ang)];
-    const arc=(sAng,eAng)=>{const s=pt(sAng,r),e=pt(eAng,r);return `M ${s[0]} ${s[1]} A ${r} ${r} 0 0 1 ${e[0]} ${e[1]}`;};
+    const c=clamp(Math.round(score),0,100),cx=300,cy=262,r=180,a0=-2.46,a1=2.46,a=a0+(a1-a0)*c/100,pt=(ang,rr)=>[cx+rr*Math.cos(ang),cy+rr*Math.sin(ang)],arc=(sAng,eAng)=>{const s=pt(sAng,r),e=pt(eAng,r);return `M ${s[0]} ${s[1]} A ${r} ${r} 0 0 1 ${e[0]} ${e[1]}`;};
     let ticks=''; for(let i=0;i<=10;i++){const t=a0+(a1-a0)*i/10,ri=r-14,ro=r+10,u=pt(t,ri),v=pt(t,ro);ticks+=`<line class="tick ${i%5===0?'major':''}" x1="${u[0]}" y1="${u[1]}" x2="${v[0]}" y2="${v[1]}"/>`;}
     const labels=[0,25,50,75,100].map(v=>{const t=a0+(a1-a0)*v/100,q=pt(t,r+33);return `<text class="label" x="${q[0]}" y="${q[1]}" text-anchor="middle" dominant-baseline="middle" style="font-size:11px">${v}</text>`;}).join('');
     const needle=pt(a,126);
@@ -181,11 +173,9 @@ JS = r"""
   };
   const fingerprint=ds=>{
     const cx=300,cy=220,r=154,n=5,p=(i,rr)=>{const a=-Math.PI/2+i*2*Math.PI/n;return[cx+rr*Math.cos(a),cy+rr*Math.sin(a)];};
-    const poly=f=>ds.map((_,i)=>p(i,r*f).join(',')).join(' ');
-    let grid='';[1,.75,.5,.25].forEach(f=>grid+=`<polygon class="grid" points="${poly(f)}"/>`);
-    let axes='',points='',labels='';ds.forEach((x,i)=>{const q=p(i,r);axes+=`<line class="axis" x1="${cx}" y1="${cy}" x2="${q[0]}" y2="${q[1]}"/>`;points+=`<circle class="point" cx="${q[0]}" cy="${q[1]}" r="6"/>`;const lp=p(i,r+37);labels+=`<text class="label" x="${lp[0]}" y="${lp[1]}" text-anchor="middle" dominant-baseline="middle">${esc(x.name)} · ${Math.round(x.score)}</text>`;});
-    const shape=ds.map((x,i)=>p(i,r*clamp(x.score,0,100)/100).join(',')).join(' ');
-    return `<svg viewBox="0 0 600 440" role="img" aria-label="AI capability fingerprint">${grid}${axes}<polygon class="shape" points="${shape}"/>${points}${labels}</svg>`;
+    const poly=f=>ds.map((_,i)=>p(i,r*f).join(',')).join(' '); let grid=''; [1,.75,.5,.25].forEach(f=>grid+=`<polygon class="grid" points="${poly(f)}"/>`); let axes='',points='',labels='';
+    ds.forEach((x,i)=>{const q=p(i,r);axes+=`<line class="axis" x1="${cx}" y1="${cy}" x2="${q[0]}" y2="${q[1]}"/>`;points+=`<circle class="point" cx="${q[0]}" cy="${q[1]}" r="6"/>`;const lp=p(i,r+37);labels+=`<text class="label" x="${lp[0]}" y="${lp[1]}" text-anchor="middle" dominant-baseline="middle">${esc(x.name)} · ${Math.round(x.score)}</text>`;});
+    const shape=ds.map((x,i)=>p(i,r*clamp(x.score,0,100)/100).join(',')).join(' '); return `<svg viewBox="0 0 600 440" role="img" aria-label="AI capability fingerprint">${grid}${axes}<polygon class="shape" points="${shape}"/>${points}${labels}</svg>`;
   };
   function render(){
     if(!root.classList.contains('visible')||root.dataset[MARKER]==='1') return;
@@ -194,19 +184,7 @@ JS = r"""
     const keys=[['01','MASTER KEY','The universal blueprint','p'],['02','SPECIALIZED KEY','Choose the territory','b'],['03','ACTIVATION ROLODEX','Activate the right expert','g']];
     const process=[['KNOW','See the goal','p'],['TELL','Set the context','b'],['ASK','Direct clearly','g'],['LOOK','Inspect the result','v'],['SCORE','Judge honestly','m'],['IMPROVE','Refine deliberately','p'],['REPEAT','Keep what works','b']];
     const insight=`Your strongest signal is ${strongest.name}. Your next leverage appears in ${weakest.name}. The opportunity is not to master everything at once — it is to turn ${strongest.name} into a repeatable advantage while deliberately strengthening ${weakest.name}.`;
-    root.innerHTML=`<div class="maxess-r2"><div class="r2-wrap">
-      <section class="r2-hero"><div class="r2-kicker">YOUR MAXESS RESULT</div><div class="r2-title">${score}%</div><div class="r2-band">${capBand}</div><div class="r2-gauge">${gauge(score)}</div><p class="r2-copy">Your score is a snapshot of how deliberately, confidently, and systematically you currently work with AI.</p></section>
-      <section class="r2-section"><div class="r2-editorial"><div class="r2-kicker">YOUR PERSONALIZED ANALYSIS</div><h2>Here’s what your result tells us about you.</h2><p class="lead">${esc(adv[strongest.name]||'You already have a meaningful capability to build on.')} <em>Your strongest signal is ${esc(strongest.name)} at ${Math.round(strongest.score)}/100.</em> Your clearest leverage point is ${esc(weakest.name)} at ${Math.round(weakest.score)}/100. ${esc(opp[weakest.name]||'Focused improvement here could create useful leverage.')}</p><div class="r2-sidefacts"><div class="r2-fact"><small>NATURAL ADVANTAGE</small><strong>${esc(strongest.name)}</strong></div><div class="r2-fact"><small>LEVERAGE OPPORTUNITY</small><strong>${esc(weakest.name)}</strong></div><div class="r2-fact"><small>CAPABILITY BAND</small><strong>${esc(capBand)}</strong></div></div></div></section>
-      <section class="r2-section"><div class="r2-editorial"><div class="r2-kicker">WHAT YOUR SCORE TELLS YOU</div><h2>Your number needs context.</h2><div class="r2-spectrum"><div class="r2-spectrum-track"><span class="r2-spectrum-mark" style="left:${score}%"></span></div></div><p class="lead">Your ${score}/100 places you in <em>${esc(capBand.toLowerCase())}</em>. The number matters, but the shape underneath it explains where your capability is coming from and where your next leverage lives.</p></div></section>
-      <section class="r2-section r2-fingerprint"><div class="r2-kicker">HOW YOU ACTUALLY WORK WITH AI</div><h2>YOUR AI CAPABILITY SIGNATURE</h2><p>This is your AI fingerprint — the shape created by your five core capabilities working together.</p><div class="r2-fingerprint-svg">${fingerprint(ds)}</div><div class="r2-cap-grid"><article class="r2-cap"><div class="cap-line"></div><small>YOUR NATURAL ADVANTAGE</small><h3>${esc(strongest.name)}</h3><span class="score">${Math.round(strongest.score)} / 100</span><p>${esc(adv[strongest.name]||'This is a capability you can continue to leverage.')}</p></article><article class="r2-cap opportunity"><div class="cap-line"></div><small>YOUR HIGHEST-LEVERAGE OPPORTUNITY</small><h3>${esc(weakest.name)}</h3><span class="score">${Math.round(weakest.score)} / 100</span><p>${esc(opp[weakest.name]||'This is a capability where focused improvement may create useful leverage.')}</p></article></div></section>
-      <section class="r2-section"><div class="r2-editorial"><div class="r2-kicker">HOW TO WORK WITH AI</div><h2>The simple operating system.</h2><p class="lead">Exceptional AI results become repeatable when you know what you want, communicate it clearly, judge what comes back, and improve it deliberately.</p><div class="rf-process-line">${process.map((x,i)=>`<div class="rf-step"><div class="rf-gem ${x[2]}">${i+1}</div><strong>${x[0]}</strong><span>${x[1]}</span></div>`).join('')}</div></div></section>
-      <section class="r2-section r2-insight"><div class="r2-kicker">THE DISCOVERY</div><div class="orbital"></div><blockquote>OH… THAT’S WHY.</blockquote><p>${esc(insight)}</p><p>${esc('This is where the assessment becomes useful: not because of the number itself, but because you can see what to do with it.')}</p></section>
-      <section class="r2-section"><div class="r2-report-artifact"><div class="r2-doc" aria-hidden="true"><div class="seal">M</div><h3>YOUR MAXESS<br>AI CAPABILITY REPORT</h3><p>${esc(capBand)}</p><div class="lines"><div class="line"></div><div class="line" style="width:76%"></div><div class="line" style="width:61%"></div><div class="line" style="width:84%"></div></div></div><div class="r2-report-copy"><div class="r2-kicker">KEEP YOUR DISCOVERY</div><h2>Your MAXESS report belongs to you.</h2><p>Take the discovery with you as a premium capability report.</p><div class="r2-actions"><button class="r2-primary" data-r2-save>SAVE MY RESULTS</button></div></div></div></section>
-      <section class="r2-section"><div class="r2-naya"><div class="r2-naya-photo"><img src="${NAYA_IMG}" alt="Naya" loading="lazy" onerror="this.style.display='none';"></div><div><div class="r2-kicker">NAYA · YOUR PERSONAL GUIDE</div><h2>I GOT YOU.</h2><p>You just discovered how you work with AI. Now let me show you how to turn that capability into exceptional results.</p></div></div></section>
-      <section class="r2-section r2-masters"><div class="r2-kicker">NAYA MASTER INTELLIGENCE</div><h2>Meet your AI Masters.</h2><p>A specialized intelligence team is ready to help you work in the areas that matter to you.</p><div class="r2-network"><div class="orbit o1"></div><div class="orbit o2"></div><div class="core">NAYA</div>${masters.map((m,i)=>`<div class="node n${i+1}"><div class="rf-gem ${m[2]}">${m[3]}</div><h3>Naya Master ${m[0]}</h3><span>${m[1]}</span></div>`).join('')}</div><div class="r2-actions"><button class="r2-secondary" data-r2-explore>EXPLORE ALL MASTERS</button></div></section>
-      <section class="r2-section r2-keys"><div class="r2-kicker">THE THREE-KEY SYSTEM</div><h2>It’s actually very simple.</h2><p>Use the right blueprint, choose the right specialty, and activate the right Naya Master.</p><div class="r2-key-row">${keys.map(k=>`<article class="r2-key"><div class="rf-gem ${k[3]}">${k[0]}</div><h3>${k[1]}</h3><p>${k[2]}</p></article>`).join('')}</div></section>
-      <section class="r2-section r2-cta"><div class="r2-kicker">MASTER AI</div><h2>Ready to turn capability into exceptional results?</h2><p>You know where you are. You know your leverage. Now you have a simple system and specialized Naya expertise to help you put AI to work.</p><div class="r2-actions"><button class="r2-primary" data-r2-master>START MASTER AI</button><button class="r2-secondary" data-r2-save>SAVE MY RESULTS</button></div><div class="r2-disclaimer">Your MAXESS result is a capability snapshot based on your assessment responses. It is not a diagnosis, prediction, or guarantee.</div></section>
-    </div></div>`;
+    root.innerHTML=`<div class="maxess-r2"><div class="r2-wrap"><section class="r2-hero"><div class="r2-kicker">YOUR MAXESS RESULT</div><div class="r2-title">${score}%</div><div class="r2-band">${capBand}</div><div class="r2-gauge">${gauge(score)}</div><p class="r2-copy">Your score is a snapshot of how deliberately, confidently, and systematically you currently work with AI.</p></section><section class="r2-section"><div class="r2-editorial"><div class="r2-kicker">YOUR PERSONALIZED ANALYSIS</div><h2>Here’s what your result tells us about you.</h2><p class="lead">${esc(adv[strongest.name]||'You already have a meaningful capability to build on.')} <em>Your strongest signal is ${esc(strongest.name)} at ${Math.round(strongest.score)}/100.</em> Your clearest leverage point is ${esc(weakest.name)} at ${Math.round(weakest.score)}/100. ${esc(opp[weakest.name]||'Focused improvement here could create useful leverage.')}</p><div class="r2-sidefacts"><div class="r2-fact"><small>NATURAL ADVANTAGE</small><strong>${esc(strongest.name)}</strong></div><div class="r2-fact"><small>LEVERAGE OPPORTUNITY</small><strong>${esc(weakest.name)}</strong></div><div class="r2-fact"><small>CAPABILITY BAND</small><strong>${esc(capBand)}</strong></div></div></div></section><section class="r2-section"><div class="r2-editorial"><div class="r2-kicker">WHAT YOUR SCORE TELLS YOU</div><h2>Your number needs context.</h2><div class="r2-spectrum"><div class="r2-spectrum-track"><span class="r2-spectrum-mark" style="left:${score}%"></span></div></div><p class="lead">Your ${score}/100 places you in <em>${esc(capBand.toLowerCase())}</em>. The number matters, but the shape underneath it explains where your capability is coming from and where your next leverage lives.</p></div></section><section class="r2-section r2-fingerprint"><div class="r2-kicker">HOW YOU ACTUALLY WORK WITH AI</div><h2>YOUR AI CAPABILITY SIGNATURE</h2><p>This is your AI fingerprint — the shape created by your five core capabilities working together.</p><div class="r2-fingerprint-svg">${fingerprint(ds)}</div><div class="r2-cap-grid"><article class="r2-cap"><div class="cap-line"></div><small>YOUR NATURAL ADVANTAGE</small><h3>${esc(strongest.name)}</h3><span class="score">${Math.round(strongest.score)} / 100</span><p>${esc(adv[strongest.name]||'This is a capability you can continue to leverage.')}</p></article><article class="r2-cap opportunity"><div class="cap-line"></div><small>YOUR HIGHEST-LEVERAGE OPPORTUNITY</small><h3>${esc(weakest.name)}</h3><span class="score">${Math.round(weakest.score)} / 100</span><p>${esc(opp[weakest.name]||'This is a capability where focused improvement may create useful leverage.')}</p></article></div></section><section class="r2-section"><div class="r2-editorial"><div class="r2-kicker">HOW TO WORK WITH AI</div><h2>The simple operating system.</h2><p class="lead">Exceptional AI results become repeatable when you know what you want, communicate it clearly, judge what comes back, and improve it deliberately.</p><div class="rf-process-line">${process.map((x,i)=>`<div class="rf-step"><div class="rf-gem ${x[2]}">${i+1}</div><strong>${x[0]}</strong><span>${x[1]}</span></div>`).join('')}</div></div></section><section class="r2-section r2-insight"><div class="r2-kicker">THE DISCOVERY</div><div class="orbital"></div><blockquote>OH… THAT’S WHY.</blockquote><p>${esc(insight)}</p><p>${esc('This is where the assessment becomes useful: not because of the number itself, but because you can see what to do with it.')}</p></section><section class="r2-section"><div class="r2-report-artifact"><div class="r2-doc" aria-hidden="true"><div class="seal">M</div><h3>YOUR MAXESS<br>AI CAPABILITY REPORT</h3><p>${esc(capBand)}</p><div class="lines"><div class="line"></div><div class="line" style="width:76%"></div><div class="line" style="width:61%"></div><div class="line" style="width:84%"></div></div></div><div class="r2-report-copy"><div class="r2-kicker">KEEP YOUR DISCOVERY</div><h2>Your MAXESS report belongs to you.</h2><p>Take the discovery with you as a premium capability report.</p><div class="r2-actions"><button class="r2-primary" data-r2-save>SAVE MY RESULTS</button></div></div></div></section><section class="r2-section"><div class="r2-naya"><div class="r2-naya-photo"><img src="${NAYA_IMG}" alt="Naya" loading="lazy" onerror="this.style.display='none';"></div><div><div class="r2-kicker">NAYA · YOUR PERSONAL GUIDE</div><h2>I GOT YOU.</h2><p>You just discovered how you work with AI. Now let me show you how to turn that capability into exceptional results.</p></div></div></section><section class="r2-section r2-masters"><div class="r2-kicker">NAYA MASTER INTELLIGENCE</div><h2>Meet your AI Masters.</h2><p>A specialized intelligence team is ready to help you work in the areas that matter to you.</p><div class="r2-network"><div class="orbit o1"></div><div class="orbit o2"></div><div class="core">NAYA</div>${masters.map((m,i)=>`<div class="node n${i+1}"><div class="rf-gem ${m[2]}">${m[3]}</div><h3>Naya Master ${m[0]}</h3><span>${m[1]}</span></div>`).join('')}</div><div class="r2-actions"><button class="r2-secondary" data-r2-explore>EXPLORE ALL MASTERS</button></div></section><section class="r2-section r2-keys"><div class="r2-kicker">THE THREE-KEY SYSTEM</div><h2>It’s actually very simple.</h2><p>Use the right blueprint, choose the right specialty, and activate the right Naya Master.</p><div class="r2-key-row">${keys.map(k=>`<article class="r2-key"><div class="rf-gem ${k[3]}">${k[0]}</div><h3>${k[1]}</h3><p>${k[2]}</p></article>`).join('')}</div></section><section class="r2-section r2-cta"><div class="r2-kicker">MASTER AI</div><h2>Ready to turn capability into exceptional results?</h2><p>You know where you are. You know your leverage. Now you have a simple system and specialized Naya expertise to help you put AI to work.</p><div class="r2-actions"><button class="r2-primary" data-r2-master>START MASTER AI</button><button class="r2-secondary" data-r2-save>SAVE MY RESULTS</button></div><div class="r2-disclaimer">Your MAXESS result is a capability snapshot based on your assessment responses. It is not a diagnosis, prediction, or guarantee.</div></section></div></div>`;
     root.dataset[MARKER]='1';
     root.querySelectorAll('[data-r2-save]').forEach(btn=>btn.addEventListener('click',()=>{if(!safeClick(['pdfButton','saveResultsButton','printButton']))window.print();}));
     root.querySelector('[data-r2-master]')?.addEventListener('click',()=>{if(!safeClick(['freeTrialButton','masterAiButton','startMasterAiButton'])){const link=[...document.querySelectorAll('a')].find(a=>/master/i.test(a.textContent||a.getAttribute('href')||''));if(link)link.click();}});
@@ -216,23 +194,17 @@ JS = r"""
   render();
 })();
 </script>
-"""
+'''
 
 style_idx = core.rfind("</style>")
 if style_idx < 0:
     raise RuntimeError("stylesheet closing tag missing")
-core = core[:style_idx] + CSS + "
-" + core[style_idx:]
+core = core[:style_idx] + CSS + "\n" + core[style_idx:]
+core += "\n" + JS + "\n"
+s = core + "</body>\n</html>\n"
 
-core += "
-" + JS + "
-"
-s = core + "</body>
-</html>
-"
-
-if s.count(MARK) != 1:
-    raise RuntimeError("final authority marker invalid")
+if s.count(HTML_MARK) != 1:
+    raise RuntimeError("final authority HTML marker invalid")
 if s.count("<script>") != 2:
     raise RuntimeError("expected one main app script plus one Results authority script")
 if "MAXESS RESULTS LOGIC EMBEDDED" in s:
