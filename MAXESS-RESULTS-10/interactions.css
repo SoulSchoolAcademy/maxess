@@ -1,0 +1,61 @@
+/* =========================================================
+   MAXESS RESULTS — INTERACTION LAYER
+   These states intentionally live apart from the base visual
+   system so interaction behavior can evolve without changing
+   the page structure.
+========================================================= */
+
+.dimension-card:active{transform:translateY(-1px) scale(.995)}
+.dimension-card.active:after{content:"";position:absolute;inset:auto 20px 0;height:2px;background:linear-gradient(90deg,transparent,#b58cff,transparent);box-shadow:0 0 14px rgba(181,140,255,.55)}
+.detail-row{cursor:pointer}
+.detail-row:focus-within{border-color:rgba(181,140,255,.45);box-shadow:0 0 0 3px rgba(139,92,255,.08)}
+.feature-panel{isolation:isolate}
+.feature-panel>*{z-index:1}
+.feature-panel:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(105deg,transparent 0%,rgba(255,255,255,.025) 48%,transparent 54%);transform:translateX(-120%);transition:transform 1.2s var(--ease)}
+.feature-panel:hover:after{transform:translateX(120%)}
+.why-grid>div{transition:transform .3s var(--ease),border-color .3s ease,background .3s ease}
+.why-grid>div:hover{transform:translateY(-5px);border-color:rgba(181,140,255,.3);background:rgba(139,92,255,.035)}
+.path-card:nth-child(2){transform:translateY(18px)}
+.path-card:nth-child(2):hover{transform:translateY(13px)}
+.path-card:nth-child(3){transform:translateY(36px)}
+.path-card:nth-child(3):hover{transform:translateY(31px)}
+.method-node{cursor:pointer}
+.method-node:focus-visible{outline:2px solid #fff;outline-offset:5px}
+.method-node:after{content:"";position:absolute;inset:-8px;border-radius:inherit;border:1px solid transparent;transition:border-color .25s ease}
+.method-node:hover:after{border-color:rgba(181,140,255,.16)}
+.naya-header-button.playing .naya-mini-orb{box-shadow:0 0 25px rgba(139,92,255,.55),inset 0 2px 5px rgba(255,255,255,.55)}
+.naya-header-button.playing .play-triangle{width:9px;height:11px;border:0;background:linear-gradient(90deg,#fff 0 34%,transparent 34% 66%,#fff 66% 100%);margin-left:0}
+.naya-main-button.playing .button-play{background:#c09dff;color:#120b1d}
+.naya-main-button:disabled{opacity:.48;cursor:not-allowed;transform:none!important}
+.naya-main-button:disabled .button-play{background:#5d5568}
+.naya-panel-art:before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg,rgba(255,255,255,.035),transparent 30%,transparent 70%,rgba(139,92,255,.045))}
+.naya-large-orb{transition:transform .8s var(--ease),box-shadow .8s ease}
+.naya-panel:hover .naya-large-orb{transform:scale(1.025);box-shadow:inset 0 5px 15px rgba(255,255,255,.5),0 0 115px rgba(139,92,255,.36),0 35px 60px rgba(0,0,0,.6)}
+.transition-inner{position:relative}
+.transition-inner:before{content:"";position:absolute;left:50%;top:-150px;width:1px;height:100px;background:linear-gradient(transparent,rgba(181,140,255,.35));transform:translateX(-50%)}
+.primary-action,.secondary-action{transition:transform .25s var(--ease),border-color .25s ease,box-shadow .25s ease}
+.primary-action:hover{box-shadow:0 18px 42px rgba(93,46,177,.36)}
+.secondary-action:hover{border-color:rgba(181,140,255,.32)}
+.site-footer .brand{opacity:.9}
+@media(max-width:900px){.path-card:nth-child(2),.path-card:nth-child(2):hover,.path-card:nth-child(3),.path-card:nth-child(3):hover{transform:none}}
+@media(max-width:600px){.why-grid>div:hover,.dimension-card:hover,.path-card:hover{transform:none}.feature-panel:hover:after{display:none}.transition-inner:before{top:-100px;height:60px}}
+@media(prefers-reduced-motion:reduce){.dimension-card,.why-grid>div,.path-card,.method-node,.naya-large-orb,.primary-action,.secondary-action,.naya-main-button,.naya-header-button{transition:none!important}.feature-panel:after{display:none}.transition-inner:before{opacity:.3}}
+
+/* Large-screen composition helpers */
+@media(min-width:1100px){
+  .hero-score-card{transform:translateY(8px)}
+  .statement-section{padding-top:135px}
+  .fingerprint-section{padding-top:90px}
+  .dimension-detail-section{padding-top:135px}
+  .capability-section,.opportunity-section{padding-top:125px;padding-bottom:125px}
+  .naya-section{padding-top:145px}
+}
+
+/* Print-safe behavior: the result remains useful when saved as PDF. */
+@media print{
+  body,.maxess-app{background:#fff!important;color:#111!important}
+  .site-header,.naya-header-button,.naya-main-button,.primary-action,.secondary-action{display:none!important}
+  .glass-card,.feature-panel,.dimension-card,.detail-row,.path-card,.nayanet-card{box-shadow:none!important;background:#fff!important;color:#111!important;border-color:#ddd!important}
+  .muted,.hero-lede,.statement-copy,.section-heading>p,.feature-copy p,.path-card p,.naya-panel-copy>p,.nayanet-card p{color:#444!important}
+  .reveal{opacity:1!important;transform:none!important}
+}
