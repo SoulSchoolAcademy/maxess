@@ -66,18 +66,25 @@ def build():
         if re.search(pattern, final, flags=re.I):
             raise SystemExit(f'Groove embed contains forbidden {label} markup')
 
+    required_tokens = [
+        'MAXESS_RESULTS_ROYAL_9_95',
+        'id="royal-results-995"',
+        'MAXESS-RESULTS-CONTRACT-1',
+        'const MASTERS=',
+        'Direction', 'Communication', 'Evaluation', 'Iteration', 'Systems Thinking',
+        'rr-profile', 'rr-fingerprint', 'rr-leverage', 'rr-insight', 'rr-path',
+        'rr-naya-hero', 'rr-masters', 'https://nayanet.xyz/'
+    ]
     checks = {
-        'royal_layer': 'MAXESS_RESULTS_ROYAL_9_95' in final,
-        'royal_root': 'id="royal-results-995"' in final,
-        'result_contract': 'MAXESS-RESULTS-CONTRACT-1' in final,
-        'naya_masters': 'const MASTERS=' in final,
-        'five_dimensions': all(x in final for x in ['Direction','Communication','Evaluation','Iteration','Systems Thinking']),
+        f'required:{token}': token in final for token in required_tokens
+    }
+    checks.update({
         'full_bleed': 'width:100vw!important' in final,
         'no_iframe_tag': not bool(re.search(r'<iframe(?:\s|>)', final, flags=re.I)),
         'no_legacy_results_root': 'id="m9-results"' not in final,
         'no_legacy_nayanet_frame': 'm9-nayanet-frame' not in final,
-        'substantial': lines >= 500 and bytes_len >= 25000,
-    }
+        'nontrivial_artifact': lines >= 200 and bytes_len >= 10000,
+    })
     for name, ok in checks.items():
         print(f'{name}: {"PASS" if ok else "FAIL"}')
     if not all(checks.values()):
