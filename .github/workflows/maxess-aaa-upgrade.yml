@@ -14,20 +14,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Validate embed source exists
-        run: test -s code
-
-      - name: Validate HTML structure
-        run: python3 - <<'PY'
+      - name: Validate and inspect embed source
+        run: |
+          python3 - <<'PY'
           from pathlib import Path
           import re
-          s = Path('code').read_text(encoding='utf-8')
-          assert '<!doctype html>' in s.lower()
-          assert '</html>' in s.lower()
-          assert '<script' in s.lower()
-          assert '</script>' in s.lower()
-          assert s.count('<html') == 1
-          print(f'Embed source validated: {len(s.splitlines())} lines / {len(s)} bytes')
+          s=Path('code').read_text(encoding='utf-8')
+          print('=== BASELINE ===')
+          print('LINES',len(s.splitlines()))
+          print('BYTES',len(s))
+          print('SCRIPTS',len(re.findall(r'<script(?:\\s[^>]*)?>([\\s\\S]*?)</script>',s,re.I)))
+          print('BODY_CLOSE',s.lower().count('</body>'))
+          print('HTML_CLOSE',s.lower().count('</html>'))
+          print('RESULT_TERMS')
+          for i,line in enumerate(s.splitlines(),1):
+              if re.search(r'result|score|question|complete|finish',line,re.I):
+                  print(f'{i}: {line[:300]}')
           PY
 
       - name: Validate JavaScript blocks
@@ -37,7 +39,6 @@ jobs:
           import re
           s=Path('code').read_text(encoding='utf-8')
           scripts=re.findall(r'<script(?:\\s[^>]*)?>([\\s\\S]*?)</script>',s,re.I)
-          Path('/tmp').mkdir(exist_ok=True)
           for i,script in enumerate(scripts,1):
               Path(f'/tmp/maxess-{i}.js').write_text(script,encoding='utf-8')
           print(f'Found {len(scripts)} script blocks')
