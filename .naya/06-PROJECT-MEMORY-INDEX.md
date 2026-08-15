@@ -35,6 +35,7 @@ When creating durable product decisions, add or update a clearly named file unde
 
 ### Brand / acquisition experience
 - `.naya/memory/14-MAXESS-LANDING-EXPERIENCE.md` — landing-page job, messaging sequence, assessment CTA, credibility/proof, no-email-gate rule, section-earning law.
+- `.naya/memory/18-HUMAN-MAXIMUS-CONTENT-CRAFTSMANSHIP.md` — public/social content operating system: STOP → IDENTIFY → DELIVER, natural destination placement, value-first rule, human/Shawn voice, sign-off and editorial tests.
 
 ### Engineering
 - `.naya/memory/16-MAXESS-GROOVE-ENGINEERING-LAWS.md` — contained assessment vs flowing Results, single-embed principle, cross-domain result boundary, explicit states, determinism, QA profiles, graceful degradation, Groove release gate.
