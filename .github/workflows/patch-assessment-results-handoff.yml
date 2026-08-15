@@ -1,0 +1,123 @@
+name: Connect MAXESS Assessment to Results 9.5
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch-handoff:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Patch completed-assessment handoff
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          path = Path('code')
+          source = path.read_text(encoding='utf-8')
+          marker = 'MAXESS_9_5_CROSS_DOMAIN_HANDOFF'
+
+          if marker in source:
+              print('Handoff already installed.')
+              raise SystemExit(0)
+
+          pattern = re.compile(
+              r'function finishInterestSelection\(\)\{.*?\n\}',
+              re.S
+          )
+
+          replacement = r'''/* MAXESS_9_5_CROSS_DOMAIN_HANDOFF */
+function finishInterestSelection(){
+
+  DOM.interestsView.classList.remove(
+    "visible"
+  );
+
+  /*
+     The assessment and Results are intentionally separate origins.
+     Do not rely on localStorage/sessionStorage crossing domains.
+     Package the authoritative completed result into a compact,
+     URL-safe payload and hand it directly to results.nayanet.xyz.
+  */
+  const results = calculateResults();
+  const payload = {
+    version: "MAXESS-RESULTS-CONTRACT-1",
+    assessmentId: "ai-max",
+    assessmentVersion: "MAXESS-1.0",
+    completed: true,
+    overall: results.overall,
+    dimensions: Object.fromEntries(
+      results.dimensions.map(
+        dimension => [
+          dimension.id,
+          dimension.score
+        ]
+      )
+    ),
+    strongest: [...results.dimensions]
+      .sort((a,b)=>b.score-a.score)[0]?.id || null,
+    opportunity: [...results.dimensions]
+      .sort((a,b)=>a.score-b.score)[0]?.id || null,
+    responses: state.responses,
+    selectedInterests: [...state.selectedInterests],
+    completedAt: new Date().toISOString()
+  };
+
+  const json = JSON.stringify(payload);
+  const bytes = new TextEncoder().encode(json);
+  let binary = "";
+
+  bytes.forEach(
+    byte => binary += String.fromCharCode(byte)
+  );
+
+  const encoded =
+    btoa(binary)
+      .replace(/\+/g,"-")
+      .replace(/\//g,"_")
+      .replace(/=+$/g,"");
+
+  const resultsUrl =
+    "https://results.nayanet.xyz/?result="+
+    encodeURIComponent(encoded);
+
+  window.location.assign(resultsUrl);
+}'''
+
+          patched, count = pattern.subn(replacement, source, count=1)
+          if count != 1:
+              raise SystemExit('Could not locate finishInterestSelection() for safe patch.')
+
+          path.write_text(patched, encoding='utf-8')
+          print('Installed MAXESS 9.5 cross-domain Results handoff.')
+          PY
+
+      - name: Validate handoff contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check code
+          grep -q 'MAXESS_9_5_CROSS_DOMAIN_HANDOFF' code
+          grep -q 'results.nayanet.xyz/?result=' code
+          grep -q 'Object.fromEntries' code
+          grep -q 'responses: state.responses' code
+          echo 'MAXESS 9.5 handoff contract PASS'
+
+      - name: Commit patched assessment
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'MAXESS Release System'
+          git config user.email 'actions@github.com'
+          git add code
+          git diff --cached --quiet || git commit -m 'Connect completed MAXESS assessment to Results 9.5'
+          git push
