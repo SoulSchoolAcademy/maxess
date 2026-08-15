@@ -58,6 +58,9 @@ jobs:
       - name: Apply Oscar final Results Experience presentation pass
         run: python3 tools/results_experience_oscar_final.py
 
+      - name: Apply AAA presentation-density audit pass
+        run: python3 tools/results_experience_aaa_audit_pass.py
+
       - name: Verify generated MAXESS source
         run: |
           python3 - <<'PY'
@@ -76,6 +79,7 @@ jobs:
           assert 'MAXESS NAYA MASTERS BRAND SYSTEM' in s
           assert 'MAXESS RESULTS EXPERIENCE 10-STAR' in s
           assert 'MAXESS RESULTS EXPERIENCE OSCAR FINAL' in s
+          assert 'MAXESS RESULTS EXPERIENCE AAA AUDIT PASS' in s
           assert 'maxessSignalTitle' in s
           assert 'resultsV4Opening' in s
           assert 'resultsV4MasterKeyTitle' in s
