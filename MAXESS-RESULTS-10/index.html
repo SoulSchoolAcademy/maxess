@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#030305">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="MAXESS — Your AI capability revealed.">
+  <title>MAXESS — Your Results</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="app" class="maxess-app">
+    <header class="site-header" aria-label="MAXESS navigation">
+      <a class="brand" href="#top" aria-label="MAXESS home">
+        <span class="brand-max">MAX</span><span class="brand-ess">ESS</span>
+      </a>
+      <div class="header-center">
+        <span class="eyebrow-dot"></span>
+        <span>YOUR AI MASTERY RESULTS</span>
+      </div>
+      <button id="nayaHeaderButton" class="naya-header-button" type="button" aria-label="Listen to Naya">
+        <span class="naya-mini-orb" aria-hidden="true"><span class="play-triangle"></span></span>
+        <span class="naya-header-copy"><strong>Naya</strong><small>Listen to your report</small></span>
+      </button>
+    </header>
+
+    <main id="top">
+      <section class="hero section-shell" aria-labelledby="heroTitle">
+        <div class="hero-copy reveal">
+          <p class="kicker">YOUR MAXESS PROFILE</p>
+          <h1 id="heroTitle">Your AI capability,<br><em>revealed.</em></h1>
+          <p class="hero-lede">This is more than a score. It is a map of how you currently think, direct, evaluate and improve with AI — and where your next breakthrough lives.</p>
+        </div>
+        <div class="hero-score-card glass-card reveal reveal-delay-1">
+          <div class="score-orbit" aria-hidden="true"><div class="orbit orbit-a"></div><div class="orbit orbit-b"></div><div class="orbit-core"></div></div>
+          <div class="score-content">
+            <span class="score-label">MAXESS SCORE</span>
+            <strong id="overallScore" class="overall-score">84</strong>
+            <span id="overallLevel" class="score-level">ADVANCING</span>
+            <p id="scoreMeaning" class="score-meaning">You already know how to work with AI deliberately. Your next gains come from making your process more iterative and measurable.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-shell statement-section reveal" aria-labelledby="statementTitle">
+        <div class="section-rule"><span></span><span>01 / THE BIG PICTURE</span><span></span></div>
+        <div class="statement-grid">
+          <div><p class="kicker">START HERE</p><h2 id="statementTitle">You are not starting<br><em>from zero.</em></h2></div>
+          <div><p class="statement-copy" id="statementCopy">Your profile shows a meaningful foundation. You can already direct AI, communicate intent and recognize quality. The opportunity now is to turn those strengths into a repeatable mastery system.</p></div>
+        </div>
+      </section>
+
+      <section class="section-shell fingerprint-section reveal" aria-labelledby="fingerprintTitle">
+        <div class="section-rule"><span></span><span>02 / YOUR FINGERPRINT</span><span></span></div>
+        <div class="section-heading"><div><p class="kicker">FIVE DIMENSIONS</p><h2 id="fingerprintTitle">The shape of<br><em>your ability.</em></h2></div><p>Each dimension measures a different part of the human side of AI mastery. Together they create your MAXESS fingerprint.</p></div>
+        <div class="fingerprint-layout">
+          <div class="radar-card glass-card"><canvas id="radarCanvas" aria-label="Five dimension radar chart"></canvas><div class="radar-center"><span>MAXESS</span><strong id="radarCenterScore">84</strong><small>PROFILE</small></div></div>
+          <div id="dimensionGrid" class="dimension-grid"></div>
+        </div>
+      </section>
+
+      <section class="section-shell dimension-detail-section reveal" aria-labelledby="detailTitle">
+        <div class="section-rule"><span></span><span>03 / UNDERSTAND THE NUMBERS</span><span></span></div>
+        <div class="section-heading compact"><div><p class="kicker">YOUR FIVE DIMENSIONS</p><h2 id="detailTitle">Every score<br><em>means something.</em></h2></div><p>Tap a dimension to explore what the score says about your current behavior with AI.</p></div>
+        <div id="dimensionDetails" class="dimension-details"></div>
+      </section>
+
+      <section class="section-shell capability-section reveal" aria-labelledby="capabilityTitle">
+        <div class="section-rule"><span></span><span>04 / YOUR ADVANTAGE</span><span></span></div>
+        <div class="feature-panel feature-advantage">
+          <div class="feature-number">A</div>
+          <div class="feature-copy"><p class="kicker">STRONGEST CAPABILITY</p><h2 id="capabilityTitle">Direction</h2><p id="capabilityText">You have a natural ability to establish what you are trying to accomplish before asking AI to act. That gives you leverage because good direction reduces wasted output.</p><div class="meter-line"><span>YOUR SCORE</span><strong id="capabilityScore">91</strong></div><div class="meter"><span id="capabilityMeter"></span></div></div>
+          <div class="feature-badge"><span>YOUR<br>ADVANTAGE</span><strong id="capabilityBadge">91</strong></div>
+        </div>
+      </section>
+
+      <section class="section-shell opportunity-section reveal" aria-labelledby="opportunityTitle">
+        <div class="section-rule"><span></span><span>05 / YOUR LEVERAGE POINT</span><span></span></div>
+        <div class="feature-panel feature-opportunity">
+          <div class="feature-copy"><p class="kicker">NEXT OPPORTUNITY</p><h2 id="opportunityTitle">Iteration</h2><p id="opportunityText">Your biggest leverage point is learning to treat the first answer as a starting point rather than a finish line. Score it. Change the instruction. Run another pass. That is where your next jump lives.</p><div class="opportunity-stats"><div><span>CURRENT</span><strong id="opportunityScore">72</strong></div><div><span>LEVERAGE</span><strong>HIGH</strong></div><div><span>NEXT MOVE</span><strong>REPEAT</strong></div></div></div>
+          <div class="opportunity-visual"><div class="cycle-ring"><span>1</span><span>2</span><span>3</span><span>4</span><div><b>IMPROVE</b><small>THEN REPEAT</small></div></div></div>
+        </div>
+      </section>
+
+      <section class="why-section reveal" aria-labelledby="whyTitle">
+        <div class="why-glow"></div>
+        <div class="why-inner">
+          <p class="kicker">06 / THE PATTERN</p>
+          <h2 id="whyTitle">Oh… <em>that’s why.</em></h2>
+          <p id="whyLead" class="why-lead">Your profile is not telling you that you are “good” or “bad” at AI. It is showing you where your effort creates the greatest return.</p>
+          <div class="why-grid"><div><span>WHAT YOU ALREADY HAVE</span><strong id="whyStrength">Strong direction and clear communication.</strong></div><div><span>WHAT IS HOLDING THE NEXT LEVEL BACK</span><strong id="whyGap">Inconsistent iteration and evaluation after the first answer.</strong></div><div><span>WHAT CHANGES THE GAME</span><strong id="whyMove">Turn every important AI output into a scored draft with a deliberate second pass.</strong></div></div>
+        </div>
+      </section>
+
+      <section class="section-shell pathway-section reveal" aria-labelledby="pathwayTitle">
+        <div class="section-rule"><span></span><span>07 / YOUR NEXT THREE MOVES</span><span></span></div>
+        <div class="section-heading"><div><p class="kicker">PERSONALIZED PATHWAY</p><h2 id="pathwayTitle">Three moves.<br><em>One direction.</em></h2></div><p>You do not need to improve everything at once. Start where the leverage is highest, build the habit, then expand it.</p></div>
+        <div id="pathway" class="pathway"></div>
+      </section>
+
+      <section class="method-section reveal" aria-labelledby="methodTitle">
+        <div class="method-inner section-shell">
+          <div class="section-rule"><span></span><span>08 / THE MAXESS METHOD</span><span></span></div>
+          <div class="section-heading"><div><p class="kicker">THE OPERATING SYSTEM</p><h2 id="methodTitle">Mastery is<br><em>a loop.</em></h2></div><p>The goal is not to write one perfect prompt. The goal is to build a better relationship between your thinking and the machine.</p></div>
+          <div id="methodLoop" class="method-loop"></div>
+          <div class="method-caption"><strong>KNOW → TELL → ASK → CREATE → SCORE → IMPROVE → REPEAT</strong><span>Every cycle makes the next cycle smarter.</span></div>
+        </div>
+      </section>
+
+      <section class="naya-section section-shell reveal" aria-labelledby="nayaTitle">
+        <div class="naya-panel glass-card">
+          <div class="naya-panel-art"><div class="naya-large-orb"><span class="orb-play"></span></div><div class="sound-bars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+          <div class="naya-panel-copy"><p class="kicker">09 / YOUR AI COMPANION</p><h2 id="nayaTitle">Naya — listen to<br><em>your report.</em></h2><p id="nayaIntro">Your results are more useful when you hear the story behind the numbers. Naya turns your profile into a clear, human walkthrough.</p><div class="audio-meta"><span id="nayaTier">ADVANCING</span><span>PERSONALIZED AUDIO</span></div><button id="nayaMainButton" class="naya-main-button" type="button"><span class="button-play">▶</span><span id="nayaMainLabel">Listen to Naya</span></button><audio id="nayaAudio" preload="none"></audio><p class="audio-note">Audio activates when a valid recording is connected. The Results page never invents a recording that does not exist.</p></div>
+        </div>
+      </section>
+
+      <section class="transition-section reveal" aria-labelledby="transitionTitle">
+        <div class="transition-inner"><p class="kicker">10 / WHAT COMES NEXT</p><h2 id="transitionTitle">You know where<br>you are.</h2><p>Now discover what you can build from here.</p><div class="transition-line"><span></span><i>↓</i><span></span></div></div>
+      </section>
+
+      <section id="nayanetBridge" class="nayanet-section section-shell reveal" aria-labelledby="nayanetTitle">
+        <div class="nayanet-card glass-card"><div><p class="kicker">NAYANET</p><h2 id="nayanetTitle">Your next<br><em>place to grow.</em></h2><p>Continue from your MAXESS profile into the NayaNET experience — the larger ecosystem for learning, creating, connecting and becoming more.</p></div><div class="nayanet-actions"><a class="primary-action" href="https://nayanet.xyz/" target="_blank" rel="noopener">Enter NayaNET <span>↗</span></a><a class="secondary-action" href="#top">Review my results <span>↑</span></a></div></div>
+      </section>
+    </main>
+
+    <footer class="site-footer section-shell"><div><span class="brand small"><span class="brand-max">MAX</span><span class="brand-ess">ESS</span></span><p>Your AI capability revealed.</p></div><div><span>MAXESS RESULTS</span><span>Built for humans.</span></div></footer>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
