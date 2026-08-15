@@ -79,6 +79,9 @@ jobs:
       - name: Rebuild lower Results experience from total reset
         run: python3 tools/results_experience_total_reset.py
 
+      - name: Enforce ruthless Results presentation reset
+        run: python3 tools/results_experience_ruthless_reset.py
+
       - name: Verify generated MAXESS source
         run: |
           python3 - <<'PY'
@@ -103,12 +106,12 @@ jobs:
           assert 'MAXESS RESULTS EXPERIENCE CINEMATIC POLISH' in s
           assert 'MAXESS NAYA MASTERS GALLERY' in s
           assert 'MAXESS RESULTS EXPERIENCE TOTAL RESET' in s
+          assert 'MAXESS RESULTS EXPERIENCE RUTHLESS RESET' in s
           assert 'cr-speedometer' in s
           assert 'HOW YOU WORK WITH AI' in s
           assert 'THE 7 AI PROCESSES' in s
           assert 'Naya Master Writer' in s
           assert 'Naya Master Researcher' in s
-          assert 'Now turn insight into capability.' in s
           scripts=re.findall(r'<script(?:\s[^>]*)?>([\s\S]*?)</script>', s, flags=re.I)
           assert scripts, 'application scripts missing'
           Path('/tmp/maxess-scripts').mkdir(exist_ok=True)
