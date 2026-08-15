@@ -1,57 +1,8 @@
-name: Publish MAXESS Results Now
+name: Legacy MAXESS Results Now Publisher (disabled)
 on:
-  push:
-    branches: [main]
-permissions:
-  contents: write
+  workflow_dispatch:
 jobs:
-  publish:
+  legacy-disabled:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Build and publish verified 9.5 Results source
-        run: |
-          set -euo pipefail
-          python3 - <<'PY'
-          from pathlib import Path
-
-          src = Path('MAXESS-RESULTS-9-5-WORLD-CLASS.html')
-          out = Path('MAXESS-RESULTS-10-GROOVE.html')
-
-          if not src.exists():
-              raise SystemExit('MAXESS 9.5 world-class source is missing.')
-
-          final = src.read_text(encoding='utf-8')
-          lines = final.count('\n') + 1
-          size = len(final.encode('utf-8'))
-
-          required = [
-              'WHAT AI REALLY SAYS ABOUT YOU',
-              'Your five-dimensional',
-              'YOUR NATURAL ADVANTAGE',
-              'YOUR HIGHEST-LEVERAGE OPPORTUNITY',
-              'OH… THAT’S WHY',
-              'YOUR PERSONALIZED AI MASTERY LIBRARY',
-              'Naya Director',
-              'Naya Oscar',
-              'Naya Architect',
-              'KNOW', 'TELL', 'ASK', 'CREATE', 'SCORE', 'IMPROVE', 'REPEAT',
-              'https://nayanet.xyz/',
-              'MAXESS_OPEN_RESULTS',
-              'openResultsInProduction'
-          ]
-
-          assert lines >= 2000, f'9.5 artifact is too small: {lines} lines'
-          assert size >= 150000, f'9.5 artifact is too small: {size} bytes'
-          missing = [x for x in required if x not in final]
-          assert not missing, f'Missing required 9.5 content: {missing}'
-
-          out.write_text(final, encoding='utf-8')
-          print(f'MAXESS 9.5 RELEASE PASS: {lines} lines / {size} bytes')
-          PY
-
-          git config user.name 'MAXESS Release System'
-          git config user.email 'actions@github.com'
-          git add MAXESS-RESULTS-10-GROOVE.html
-          git commit -m 'Publish verified MAXESS 9.5 Results source' || true
-          git push --force-with-lease
+      - run: echo 'Disabled. MAXESS 9.9 authoritative Results builder is build-final-results-groove.yml.'
