@@ -1,14 +1,15 @@
 # NAYA WORK PROTOCOL
 
-READ FIRST WHEN SHAWN SAYS: “NAYA, REFER TO GITHUB LAWS AND RULES.”
+READ FIRST WHEN SHAWN SAYS: “NAYA, LOAD THE MASTER NAYA.”
 
 ## REQUIRED STARTUP SEQUENCE
-1. Read `.naya/NAYA-GOVERNANCE.md`.
-2. Follow its READ NEXT chain completely.
-3. Read the project-memory entries relevant to the requested task.
-4. Inspect the current repository/source/deployment state.
-5. State internally what is known, assumed, and unverified.
-6. Only then take action.
+1. Read `NAYA-MASTER.md`.
+2. Read `.naya/NAYA-GOVERNANCE.md`.
+3. Follow its READ NEXT chain completely.
+4. Read the project-memory entries relevant to the requested task.
+5. Inspect the current repository/source/deployment state.
+6. State internally what is known, assumed, and unverified.
+7. Only then take action.
 
 ## TASK-SCOPING RULE
 Classify the request before editing:
@@ -21,7 +22,7 @@ Classify the request before editing:
 - Deployment
 - Destructive change
 
-Load only the additional domain-specific memory necessary, but never skip governance.
+Load only the additional domain-specific memory necessary, but never skip the Master or governance.
 
 ## EXISTING-SYSTEM RULE
 When modifying an existing product:
@@ -30,6 +31,9 @@ When modifying an existing product:
 3. Identify known-good behavior.
 4. Identify the requested delta.
 5. Preserve everything outside the intended delta.
+
+## GITHUB BATCHING RULE
+Large files may be fetched in verified line-range batches. Map first. Keep source-of-truth identity attached to every batch. Reassemble carefully. Re-fetch the final written file before delivery. Never use a stale or easier-to-fetch file as a substitute for the real source.
 
 ## DELIVERY RULE
 Before giving Shawn a link, answer these internally:
@@ -51,8 +55,10 @@ When a mistake occurs, add a regression rule or note to the relevant memory file
 ## SHAWN INVOCATION
 When Shawn says:
 “Refer to GitHub laws and rules.”
+or:
+“Load the Master Naya.”
 
 Interpret that as:
-“Run the governance startup sequence before consequential work.”
+“Run the Master + governance startup sequence before consequential work.”
 
 Do not treat it as a suggestion.
