@@ -6,7 +6,7 @@ MARK = "MAXESS RESULTS FINAL AUTHORITY V2"
 HTML_MARK = "<!-- " + MARK + " -->"
 
 while HTML_MARK in s:
-    marker_start = s.find(HTML_MARK)
+    marker_start = s.find("<!-- " + MARK + " -->")
     if marker_start < 0:
         break
     body_end = s.find("</body>", marker_start)
@@ -181,18 +181,13 @@ JS = r'''
 })();
 </script>
 '''
- 
+
 style_idx = core.rfind("</style>")
 if style_idx < 0:
     raise RuntimeError("stylesheet closing tag missing")
-core = core[:style_idx] + CSS + "
-" + core[style_idx:]
-core += "
-" + JS + "
-"
-s = core + "</body>
-</html>
-"
+core = core[:style_idx] + CSS + chr(10) + core[style_idx:]
+core += chr(10) + JS + chr(10)
+s = core + "</body>" + chr(10) + "</html>" + chr(10)
 
 if s.count(HTML_MARK) != 1:
     raise RuntimeError("final authority HTML marker invalid")
