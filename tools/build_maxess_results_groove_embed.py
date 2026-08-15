@@ -4,20 +4,25 @@ import re
 SOURCE = Path('MAXESS-RESULTS-10-GROOVE.html')
 OUTPUT = Path('MAXESS-RESULTS-GROOVE-EMBED.html')
 
-STYLE_RE = re.compile(r'<style\b[^>]*>.*?</style>', re.I | re.S)
+ROYAL_STYLE_RE = re.compile(r'<style\s+id=["\']MAXESS_RESULTS_ROYAL_9_95_CSS["\'][^>]*>.*?</style>', re.I | re.S)
+ROYAL_MAIN_RE = re.compile(r'<main\s+id=["\']royal-results-995["\'][^>]*>.*?</main>', re.I | re.S)
 SCRIPT_RE = re.compile(r'<script\b[^>]*>.*?</script>', re.I | re.S)
-BODY_RE = re.compile(r'<body\b[^>]*>(.*?)</body>', re.I | re.S)
 
 
 def build():
     page = SOURCE.read_text(encoding='utf-8')
-    body_match = BODY_RE.search(page)
-    if not body_match:
-        raise SystemExit('Source has no <body>; cannot build Groove fragment')
+    style_match = ROYAL_STYLE_RE.search(page)
+    main_match = ROYAL_MAIN_RE.search(page)
+    scripts = SCRIPT_RE.findall(page)
+    if not style_match:
+        raise SystemExit('Royal 9.95 stylesheet missing')
+    if not main_match:
+        raise SystemExit('Royal 9.95 Results main missing')
+    if not scripts:
+        raise SystemExit('No script blocks found')
 
-    styles = '\n'.join(STYLE_RE.findall(page))
-    scripts = '\n'.join(SCRIPT_RE.findall(page))
-    body = body_match.group(1).strip()
+    # The final script in the document is the authoritative Royal Results controller.
+    royal_script = scripts[-1]
 
     preflight = '''<style id="MAXESS_GROOVE_EMBED_PREFLIGHT">
 #maxess-groove-embed{
@@ -34,17 +39,15 @@ def build():
   background:#020204!important;
   color:#fff!important;
 }
-#maxess-groove-embed #m9-results{display:block!important;min-height:100vh!important;width:100%!important;max-width:none!important;}
 #maxess-groove-embed #royal-results-995{display:block!important;min-height:100vh!important;width:100%!important;max-width:none!important;}
-#maxess-groove-embed .m9-results,.maxess-groove-embed .m9-results{width:100%!important;max-width:none!important;}
 </style>'''
 
     final = '\n'.join([
         '<div id="maxess-groove-embed" data-maxess-groove-embed="1">',
         preflight,
-        styles,
-        body,
-        scripts,
+        style_match.group(0),
+        main_match.group(0),
+        royal_script,
         '</div>',
     ])
     OUTPUT.write_text(final, encoding='utf-8')
@@ -62,11 +65,15 @@ def build():
 
     checks = {
         'royal_layer': 'MAXESS_RESULTS_ROYAL_9_95' in final,
+        'royal_root': 'id="royal-results-995"' in final,
         'result_contract': 'MAXESS-RESULTS-CONTRACT-1' in final,
         'naya_masters': 'const MASTERS=' in final,
+        'five_dimensions': all(x in final for x in ['Direction','Communication','Evaluation','Iteration','Systems Thinking']),
         'full_bleed': 'width:100vw!important' in final,
         'no_iframe_tag': not bool(re.search(r'<iframe(?:\s|>)', final, flags=re.I)),
-        'substantial': len(final.splitlines()) >= 3000 and len(final.encode('utf-8')) >= 90000,
+        'no_legacy_results_root': 'id="m9-results"' not in final,
+        'no_legacy_nayanet_frame': 'm9-nayanet-frame' not in final,
+        'substantial': len(final.splitlines()) >= 2500 and len(final.encode('utf-8')) >= 70000,
     }
     for name, ok in checks.items():
         print(f'{name}: {"PASS" if ok else "FAIL"}')
