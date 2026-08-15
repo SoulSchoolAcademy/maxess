@@ -15,8 +15,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Rebuild, normalize, and validate only the Results presentation
-        run: python3 tools/rebuild_results_v5.py
+      - name: Repair and validate the Results integration
+        run: python3 tools/repair_results_v6.py
       - name: Validate protected assessment structure
         run: |
           python3 - <<'PY'
@@ -28,14 +28,15 @@ jobs:
           assert s.count('id="resultsView"')==1
           assert s.count('questions:[')==1
           assert 'questionId' in s
-          print('PROTECTED ASSESSMENT + FRESH RESULTS STRUCTURE VERIFIED')
+          assert 'class="fresh-compat"' in s
+          print('PROTECTED ASSESSMENT + RESULTS INTEGRATION VERIFIED')
           print('LINES',len(s.splitlines()),'BYTES',len(s))
           PY
-      - name: Commit generated code
+      - name: Commit repaired code
         run: |
-          if git diff --quiet -- code; then echo "No Results changes required"; exit 0; fi
+          if git diff --quiet -- code; then echo "No Results repair changes required"; exit 0; fi
           git config user.name "MAXESS Build Bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add code
-          git commit -m "feat(maxess): rebuild Results presentation from stable assessment"
+          git commit -m "fix(maxess): repair Results integration without touching assessment engine"
           git push
