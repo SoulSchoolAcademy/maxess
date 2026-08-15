@@ -18,6 +18,10 @@ under the shared:
 
 **MAX**
 
+The family promise is:
+
+**MAX your intelligence. MAX your life. MAX your perception.**
+
 ## Architecture
 
 ```text
@@ -101,25 +105,45 @@ Core Results journey:
 
 MAX LIFE reuses the engine and Results framework but receives its own dimensions, questions, interpretation model and pathway. Its job is not to become an AI quiz; it is a life-capability assessment.
 
+Primary product promise:
+
+**The most revealing MAX assessment — help me see patterns in how I am actually living, choosing, relating, growing and using my agency.**
+
 ## MAX PERCEPTION
 
 MAX PERCEPTION is intentionally designed to be more than a conventional personality test. Its questions should reveal perception itself while the person is taking the assessment.
 
-The eventual perception model should investigate areas such as:
+Its purpose is to explore how a person notices, interprets, filters, evaluates, reconsiders and expands their understanding of life.
 
-- awareness
-- perspective
-- discernment
-- flexibility
-- expansion
+The core model is:
+
+- Awareness
+- Perspective
+- Discernment
+- Flexibility
+- Expansion
 
 The questions should distinguish observation from interpretation, expose assumptions and filters, test perspective-taking, and measure willingness to reconsider a belief or interpretation when new evidence appears.
 
-The Results experience should make the person think:
+The assessment should not ask the user to self-label as “perceptive.” It should create ordinary human situations in which the person's perception pattern becomes visible through the choice they make.
+
+Its Results experience should create a genuine recognition moment such as:
 
 > “I thought I was very perceptive. I didn't realize how much of my experience was being shaped by the way I interpreted it.”
 
 This should lead naturally toward the Human Maximus Codex and its perception-oriented transformation work.
+
+### MAX PERCEPTION AI rules
+
+AI may interpret response patterns, identify meaningful combinations, surface likely blind spots, explain score relationships in plain language, suggest practical reflection experiments, and generate a personalized pathway.
+
+AI must not invent evidence, diagnose the person, claim certainty where evidence is ambiguous, or override deterministic scoring.
+
+Every result should distinguish:
+
+- **FACT** — what the response/scoring model actually establishes
+- **INTERPRETATION** — what the pattern may suggest
+- **REFLECTION** — what the person may want to explore next
 
 ## Product positioning
 
@@ -154,3 +178,11 @@ The assessment earns attention first. The Results experience earns trust and ins
 - Personalization must come from actual result data.
 - The existing NayaNET ending remains the final bridge unless explicitly redesigned later.
 - Oscar is the final quality critic: truth, completeness, logic, usefulness, beauty, accessibility, responsiveness and technical integrity all have to pass.
+
+## Permanent family lock
+
+The three-product family is now authoritative:
+
+**AI MAX · MAX LIFE · MAX PERCEPTION**
+
+The naming is not interchangeable with “MAX Reception.”
