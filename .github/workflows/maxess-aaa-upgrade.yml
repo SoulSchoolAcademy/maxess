@@ -1,201 +1,48 @@
-name: MAXESS AAA Release Pipeline
+name: MAXESS Safe QA
 
 on:
   push:
     branches: [main]
-    paths-ignore:
-      - "code"
-      - "QA_NODE_ERROR.txt"
-      - "QA_TRIGGER.txt"
 
 permissions:
-  contents: write
-
-concurrency:
-  group: maxess-aaa-release
-  cancel-in-progress: false
+  contents: read
 
 jobs:
-  release:
+  qa:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Apply core AAA UX and resilience patch
-        run: python3 tools/maxess_aaa_upgrade.py
+      - name: Validate embed source exists
+        run: test -s code
 
-      - name: Apply idempotent visible assessment craft pass
-        run: python3 tools/aaa_patch.py
+      - name: Validate HTML structure
+        run: python3 - <<'PY'
+          from pathlib import Path
+          import re
+          s = Path('code').read_text(encoding='utf-8')
+          assert '<!doctype html>' in s.lower()
+          assert '</html>' in s.lower()
+          assert '<script' in s.lower()
+          assert '</script>' in s.lower()
+          assert s.count('<html') == 1
+          print(f'Embed source validated: {len(s.splitlines())} lines / {len(s)} bytes')
+          PY
 
-      - name: Repair results V4 patch anchor
-        run: python3 tools/fix_results_v4_anchor.py
-
-      - name: Apply Results Experience V4
-        run: python3 tools/results_experience_v4.py
-
-      - name: Normalize Results Experience V4 layout
-        run: python3 tools/fix_results_v4_layout.py
-
-      - name: Add contextual Naya results layer
-        run: python3 tools/fix_results_v4_personal_coach.py
-
-      - name: Apply Results Experience Master V2 refinement
-        run: python3 tools/results_experience_master_v2.py
-
-      - name: Apply final 9.9 Results Experience refinement
-        run: python3 tools/results_experience_9_9.py
-
-      - name: Apply visual system and Naya expert refinement
-        run: python3 tools/results_experience_visual_refinement.py
-
-      - name: Apply Naya Masters brand presentation
-        run: python3 tools/results_naya_masters_brand.py
-
-      - name: Apply 10-star cinematic Results Experience
-        run: python3 tools/results_experience_10_star.py
-
-      - name: Apply Oscar final Results Experience presentation pass
-        run: python3 tools/results_experience_oscar_final.py
-
-      - name: Apply AAA presentation-density audit pass
-        run: python3 tools/results_experience_aaa_audit_pass.py
-
-      - name: Collapse Results Experience to canonical composition
-        run: python3 tools/results_experience_canonical_cleanup.py
-
-      - name: Rebuild Results Experience from clean slate
-        run: python3 tools/results_experience_clean_slate.py
-
-      - name: Refine canonical opening hierarchy
-        run: python3 tools/results_experience_opening_refinement.py
-
-      - name: Apply cinematic score and AI mastery polish
-        run: python3 tools/results_experience_cinematic_polish.py
-
-      - name: Apply premium Naya Masters gallery
-        run: python3 tools/results_experience_naya_gallery.py
-
-      - name: Rebuild lower Results experience from total reset
-        run: python3 tools/results_experience_total_reset.py
-
-      - name: Enforce ruthless Results presentation reset
-        run: python3 tools/results_experience_ruthless_reset.py
-
-      - name: Enforce hard Results presentation boundary
-        run: python3 tools/results_hard_boundary.py
-
-      - name: Enforce final clean-slate Results presentation
-        run: python3 tools/results_hard_reset_v2.py
-
-      - name: Replace entire Results DOM with clean-slate V3
-        run: python3 tools/results_hard_reset_v3.py
-
-      - name: Repair final authority transformer
-        run: python3 tools/results_final_authority_fix.py
-
-      - name: Make clean Results renderer the final presentation authority
-        run: python3 tools/results_final_authority.py
-
-      - name: Verify generated MAXESS source
+      - name: Validate JavaScript blocks
         run: |
           python3 - <<'PY'
           from pathlib import Path
           import re
-          s = Path('code').read_text(encoding='utf-8')
-          assert s.count('maxess-aaa-pass') == 1
-          assert s.count('id="questionCountChip"') == 1
-          assert s.count('id="aaaStepLabel"') == 1
-          assert s.count('AI_AREAS = [') == 1
-          assert s.count('id:"') >= 15
-          assert s.count('color:"') >= 18
-          assert 'MAXESS RESULTS EXPERIENCE V4' in s
-          assert 'MAXESS RESULTS EXPERIENCE MASTER V2' in s
-          assert 'MAXESS RESULTS EXPERIENCE 9.9 — PERSONAL SIGNAL' in s
-          assert 'MAXESS NAYA MASTERS BRAND SYSTEM' in s
-          assert 'MAXESS RESULTS EXPERIENCE 10-STAR' in s
-          assert 'MAXESS RESULTS EXPERIENCE OSCAR FINAL' in s
-          assert 'MAXESS RESULTS EXPERIENCE AAA AUDIT PASS' in s
-          assert 'MAXESS RESULTS EXPERIENCE CLEAN SLATE' in s
-          assert 'MAXESS NAYA MASTERS GALLERY' in s
-          assert 'MAXESS RESULTS EXPERIENCE TOTAL RESET' in s
-          assert 'MAXESS RESULTS EXPERIENCE RUTHLESS RESET' in s
-          assert 'MAXESS RESULTS HARD BOUNDARY' in s
-          assert 'MAXESS RESULTS HARD RESET V2' in s
-          assert 'MAXESS RESULTS HARD RESET V3' in s
-          assert 'MAXESS RESULTS FINAL AUTHORITY' in s
-          assert 'YOUR PERSONALIZED ANALYSIS' in s
-          assert 'AI is the engine.' in s
-          assert 'Naya Master Writer' in s
-          assert 'Naya Master Researcher' in s
-          assert 'rf-gauge' in s
-          assert 'rf-process-line' in s
-          first_script_end = s.find('</script>')
-          body_idx = s.rfind('</body>')
-          assert first_script_end > 0 and body_idx > first_script_end
-          tail = s[first_script_end + len('</script>'):body_idx]
-          assert '<script>' in tail, 'final Results authority script missing'
-          assert not re.search(r'</style>\s*\(function\s*\(', s), 'raw JavaScript text leak detected'
-          scripts = re.findall(r'<script(?:\s[^>]*)?>([\s\S]*?)</script>', s, flags=re.I)
-          assert scripts, 'application scripts missing'
-          Path('/tmp/maxess-scripts').mkdir(exist_ok=True)
+          s=Path('code').read_text(encoding='utf-8')
+          scripts=re.findall(r'<script(?:\\s[^>]*)?>([\\s\\S]*?)</script>',s,re.I)
+          Path('/tmp').mkdir(exist_ok=True)
           for i,script in enumerate(scripts,1):
-              Path(f'/tmp/maxess-scripts/script-{i}.js').write_text(script,encoding='utf-8')
-          print(f'MAXESS AAA release invariants passed; found {len(scripts)} script blocks')
+              Path(f'/tmp/maxess-{i}.js').write_text(script,encoding='utf-8')
+          print(f'Found {len(scripts)} script blocks')
           PY
+          for f in /tmp/maxess-*.js; do node --check "$f"; done
 
-      - name: Validate every JavaScript block independently
-        run: |
-          set +e
-          rm -f QA_NODE_ERROR.txt
-          status=0
-          for file in /tmp/maxess-scripts/*.js; do
-            echo "=== $file ===" >> QA_NODE_ERROR.txt
-            node --check "$file" >> QA_NODE_ERROR.txt 2>&1
-            rc=$?
-            if [ $rc -ne 0 ]; then status=$rc; fi
-          done
-          cat QA_NODE_ERROR.txt
-          if [ $status -eq 0 ]; then rm -f QA_NODE_ERROR.txt; fi
-          exit $status
-
-      - name: Publish QA diagnostic when syntax validation fails
-        if: failure()
-        run: |
-          if [ -s QA_NODE_ERROR.txt ]; then
-            git config user.name "MAXESS QA Bot"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add QA_NODE_ERROR.txt
-            git commit -m "chore(maxess): capture JavaScript syntax QA diagnostic" || true
-            git pull --rebase --autostash origin main || true
-            git push || true
-          fi
-
-      - name: Commit generated release
-        if: success()
-        run: |
-          rm -f QA_NODE_ERROR.txt QA_TRIGGER.txt
-          if git diff --quiet -- code; then
-            echo "No code changes required."
-            exit 0
-          fi
-          git config user.name "MAXESS AAA Release Bot"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -- code
-          git commit -m "feat(maxess): deliver AAA results experience"
-          STASHED=0
-          if ! git diff --quiet || [ -n "$(git ls-files --others --exclude-standard)" ]; then
-            git stash push --include-untracked -m "maxess-release-generated-worktree"
-            STASHED=1
-          fi
-          git pull --rebase origin main
-          if [ "$STASHED" -eq 1 ]; then
-            git stash pop
-            git add -- code
-            if ! git diff --cached --quiet; then
-              git commit -m "chore(maxess): preserve generated release changes"
-            fi
-          fi
-          git push
-
-      # Retry note: checkout must start from the latest main because the source and workflow are intentionally generated together.
+      - name: Report
+        run: echo "MAXESS safe QA passed. This workflow never rewrites code."
