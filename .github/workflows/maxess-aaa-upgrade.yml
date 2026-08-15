@@ -70,6 +70,9 @@ jobs:
       - name: Refine canonical opening hierarchy
         run: python3 tools/results_experience_opening_refinement.py
 
+      - name: Apply cinematic score and AI mastery polish
+        run: python3 tools/results_experience_cinematic_polish.py
+
       - name: Verify generated MAXESS source
         run: |
           python3 - <<'PY'
@@ -91,9 +94,10 @@ jobs:
           assert 'MAXESS RESULTS EXPERIENCE AAA AUDIT PASS' in s
           assert 'MAXESS RESULTS EXPERIENCE CLEAN SLATE' in s
           assert 'MAXESS RESULTS EXPERIENCE OPENING REFINEMENT' in s
+          assert 'MAXESS RESULTS EXPERIENCE CINEMATIC POLISH' in s
           assert 'cr-speedometer' in s
-          assert 'cr-opening' in s
           assert 'HOW YOU WORK WITH AI' in s
+          assert 'THE 7 AI PROCESSES' in s
           scripts=re.findall(r'<script(?:\s[^>]*)?>([\s\S]*?)</script>', s, flags=re.I)
           assert scripts, 'application scripts missing'
           Path('/tmp/maxess-scripts').mkdir(exist_ok=True)
