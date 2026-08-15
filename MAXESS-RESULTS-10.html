@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#030206">
+<meta name="color-scheme" content="dark">
+<title>MAXESS — Your AI Mastery Results</title>
+<style>
+:root{
+  --bg:#030206;
+  --ink:#f8f6ff;
+  --muted:#aaa5b5;
+  --soft:#777180;
+  --purple:#8b5cf6;
+  --violet:#b99cff;
+  --deep:#32136f;
+  --line:rgba(255,255,255,.11);
+  --line2:rgba(255,255,255,.18);
+  --glass:rgba(255,255,255,.045);
+  --ease:cubic-bezier(.2,.8,.2,1);
+}
+*{box-sizing:border-box}
+html{background:var(--bg);scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;overflow-x:hidden}
+button{font:inherit}
+button:focus-visible,a:focus-visible{outline:2px solid #fff;outline-offset:4px}
+a{color:inherit;text-decoration:none}
+::selection{background:rgba(139,92,246,.38);color:#fff}
+.page{min-height:100svh;background:radial-gradient(circle at 50% -5%,rgba(112,64,255,.24),transparent 34%),radial-gradient(circle at 100% 45%,rgba(76,36,160,.10),transparent 35%),#030206}
+.noise{position:fixed;inset:0;pointer-events:none;z-index:20;opacity:.09;background-image:radial-gradient(rgba(255,255,255,.35) .5px,transparent .5px);background-size:5px 5px;mask-image:linear-gradient(to bottom,transparent,black 18%,black 82%,transparent)}
+.wrap{width:min(1180px,calc(100% - 36px));margin:auto}
+.top{position:sticky;top:0;z-index:10;height:74px;display:flex;align-items:center;border-bottom:1px solid rgba(255,255,255,.08);background:rgba(3,2,6,.78);backdrop-filter:blur(22px)}
+.topin{width:min(1180px,calc(100% - 36px));margin:auto;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.logo{font-weight:950;letter-spacing:.16em;font-size:20px}.logo i{font-style:normal;color:var(--violet)}
+.listen{display:inline-flex;align-items:center;gap:10px;padding:7px 15px 7px 8px;border:1px solid var(--line2);border-radius:999px;background:rgba(255,255,255,.045);color:#fff;cursor:pointer;box-shadow:inset 0 1px rgba(255,255,255,.08),0 10px 28px rgba(0,0,0,.35);transition:.25s var(--ease)}
+.listen:hover{transform:translateY(-2px);border-color:rgba(190,157,255,.65);box-shadow:inset 0 1px rgba(255,255,255,.1),0 15px 34px rgba(0,0,0,.45),0 0 28px rgba(139,92,246,.15)}
+.play{width:31px;height:31px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 30% 20%,#fff,#cbb8ff 20%,#7140d8 55%,#1d0d3d);border:1px solid #e5dcff;box-shadow:0 0 18px rgba(139,92,246,.4)}
+.play:after{content:"";margin-left:2px;border-top:6px solid transparent;border-bottom:6px solid transparent;border-left:9px solid #fff}
+.listen span{font-size:11px;font-weight:900;letter-spacing:.05em}
+.hero{padding:92px 0 100px}.heroGrid{display:grid;grid-template-columns:1.05fr .95fr;gap:60px;align-items:center}.eyebrow{font-size:10px;font-weight:950;letter-spacing:.2em;text-transform:uppercase;color:var(--violet)}
+h1{font-size:clamp(58px,8vw,104px);line-height:.86;letter-spacing:-.08em;margin:18px 0 28px;max-width:760px}h1 span{color:var(--violet)}
+.lead{font-size:18px;line-height:1.7;color:#c8c3d0;max-width:650px}.heroNote{margin-top:28px;display:flex;align-items:center;gap:10px;color:var(--soft);font-size:11px;font-weight:800}.dot{width:7px;height:7px;border-radius:50%;background:var(--violet);box-shadow:0 0 15px var(--purple)}
+.scoreStage{display:grid;place-items:center}.scoreRing{width:min(390px,78vw);aspect-ratio:1;border-radius:50%;display:grid;place-items:center;position:relative;background:conic-gradient(from -90deg,var(--violet) 0 calc(var(--score)*1%),rgba(255,255,255,.075) calc(var(--score)*1%) 100%);box-shadow:0 0 100px rgba(139,92,246,.2)}
+.scoreRing:before{content:"";position:absolute;inset:16px;border-radius:50%;background:radial-gradient(circle at 42% 18%,#241436,#08070b 63%,#030206);border:1px solid rgba(255,255,255,.1);box-shadow:inset 0 0 50px rgba(0,0,0,.7)}
+.scoreInside{position:relative;text-align:center}.score{font-size:clamp(92px,11vw,138px);font-weight:950;line-height:.84;letter-spacing:-.1em}.scoreMeta{margin-top:15px;font-size:9px;font-weight:950;letter-spacing:.2em;color:#918b9b}.level{margin-top:13px;font-size:12px;font-weight:950;letter-spacing:.18em;color:var(--violet);text-transform:uppercase}
+.section{padding:100px 0}.dark{background:linear-gradient(180deg,transparent,rgba(255,255,255,.018),transparent)}.sectionHead{max-width:850px;margin-bottom:45px}.sectionHead h2{font-size:clamp(42px,6vw,76px);line-height:.93;letter-spacing:-.065em;margin:12px 0 20px}.sectionHead p{color:var(--muted);line-height:1.7;font-size:16px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}.panel{border:1px solid var(--line);border-radius:30px;background:linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.015));box-shadow:0 28px 80px rgba(0,0,0,.38);overflow:hidden}.panelPad{padding:38px}
+.capability{min-height:350px;display:flex;flex-direction:column;justify-content:space-between}.bigLabel{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--soft);font-weight:950}.capability h3{font-size:clamp(42px,5vw,68px);line-height:.9;letter-spacing:-.06em;margin:15px 0}.capability p{color:var(--muted);line-height:1.7}.miniScore{font-size:30px;font-weight:950;color:var(--violet)}
+.statList{display:grid;gap:11px;padding:18px}.stat{padding:22px;border:1px solid rgba(255,255,255,.08);border-radius:22px;background:rgba(0,0,0,.18)}.stat small{display:block;color:var(--soft);font-size:9px;font-weight:950;letter-spacing:.17em;text-transform:uppercase}.stat strong{display:block;margin-top:8px;font-size:25px;letter-spacing:-.03em}
+.fingerprint{padding:25px}.radar{width:100%;display:block}.legend{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}.legendItem{padding:15px 8px;border-top:1px solid var(--line);text-align:center}.legendItem b{font-size:10px}.legendItem strong{display:block;color:var(--violet);font-size:21px;margin-top:5px}.dimensionGrid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:18px}.dimension{padding:22px 18px;border:1px solid var(--line);border-radius:22px;background:rgba(255,255,255,.025);cursor:pointer;transition:.25s var(--ease)}.dimension:hover,.dimension.active{transform:translateY(-4px);border-color:rgba(185,156,255,.5);background:rgba(139,92,246,.07);box-shadow:0 15px 35px rgba(0,0,0,.3)}.dimension h4{margin:0;font-size:12px}.dimension .dscore{font-size:31px;font-weight:950;margin:12px 0;color:var(--violet)}.gauge{height:7px;border-radius:99px;background:rgba(255,255,255,.07);overflow:hidden}.gauge i{display:block;width:calc(var(--v)*1%);height:100%;border-radius:inherit;background:linear-gradient(90deg,#5a29bd,#c7a8ff);box-shadow:0 0 12px rgba(139,92,246,.45)}.dimension p{font-size:12px;line-height:1.55;color:var(--soft)}
+.insight{position:relative;padding:64px;border-radius:36px;border:1px solid rgba(185,156,255,.25);background:radial-gradient(circle at 50% 0,rgba(139,92,246,.18),transparent 58%),linear-gradient(145deg,rgba(139,92,246,.06),rgba(255,255,255,.015));overflow:hidden}.insight:after{content:"";position:absolute;width:300px;height:300px;right:-120px;bottom:-160px;border-radius:50%;background:rgba(139,92,246,.12);filter:blur(50px)}.insight h2{font-size:clamp(50px,7vw,92px);line-height:.88;letter-spacing:-.075em;margin:15px 0 25px}.insight h2 span{color:var(--violet)}.insightRule{width:90px;height:2px;background:var(--violet);box-shadow:0 0 18px var(--purple);margin:28px 0}.insightLead{max-width:850px;font-size:21px;line-height:1.65;color:#ded9e5}.insightBody{max-width:780px;color:var(--muted);line-height:1.75}
+.path{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.step{position:relative;min-height:280px;padding:30px;border:1px solid var(--line);border-radius:26px;background:linear-gradient(145deg,rgba(255,255,255,.045),rgba(255,255,255,.012));overflow:hidden}.step:before{content:"";position:absolute;left:0;top:0;width:100%;height:2px;background:linear-gradient(90deg,transparent,var(--violet),transparent)}.stepNo{font-size:10px;font-weight:950;letter-spacing:.18em;color:var(--violet)}.step h3{font-size:31px;line-height:1;letter-spacing:-.045em;margin:28px 0 15px}.step p{color:var(--muted);line-height:1.65}.stepArrow{position:absolute;right:24px;bottom:22px;color:#6f687a;font-size:24px}
+.methodWrap{padding:25px;border:1px solid var(--line);border-radius:30px;background:rgba(255,255,255,.025)}.method{display:grid;grid-template-columns:repeat(7,1fr);gap:7px}.methodItem{position:relative;padding:24px 8px;text-align:center;border:1px solid var(--line);border-radius:18px;background:#08070b}.methodItem b{font-size:11px;letter-spacing:.08em}.methodItem span{display:block;margin-top:7px;font-size:9px;color:var(--soft)}.methodItem:not(:last-child):after{content:"→";position:absolute;right:-10px;top:50%;transform:translateY(-50%);z-index:2;color:var(--violet);font-size:14px}
+.audio{padding:56px;text-align:center;border-radius:36px;border:1px solid rgba(185,156,255,.26);background:radial-gradient(circle at 50% 0,rgba(139,92,246,.16),transparent 58%),linear-gradient(145deg,rgba(255,255,255,.045),rgba(255,255,255,.012));box-shadow:0 30px 90px rgba(0,0,0,.45)}.audio h2{font-size:clamp(42px,6vw,74px);line-height:.92;letter-spacing:-.065em;margin:15px 0}.audio p{max-width:680px;margin:0 auto;color:var(--muted);line-height:1.7}.audioButton{margin-top:28px;display:inline-flex;align-items:center;justify-content:center;gap:12px;min-height:64px;padding:0 28px;border:1px solid rgba(206,179,255,.75);border-radius:20px;color:#fff;background:linear-gradient(180deg,#19151f,#08080b);box-shadow:inset 0 1px rgba(255,255,255,.1),0 18px 45px rgba(0,0,0,.5),0 0 30px rgba(139,92,246,.14);cursor:pointer;font-weight:950;transition:.25s var(--ease)}.audioButton:hover{transform:translateY(-3px);box-shadow:inset 0 1px rgba(255,255,255,.13),0 22px 55px rgba(0,0,0,.55),0 0 42px rgba(139,92,246,.23)}.audioStatus{min-height:20px;margin-top:15px;font-size:11px;color:var(--soft)}
+.bridge{padding:100px 0 30px;text-align:center}.bridge h2{font-size:clamp(48px,7vw,88px);line-height:.9;letter-spacing:-.07em;margin:15px auto;max-width:850px}.bridge h2 span{color:var(--violet)}.bridge p{color:var(--muted);max-width:650px;margin:0 auto;line-height:1.7}.continue{margin-top:28px;display:inline-flex;align-items:center;gap:10px;padding:15px 24px;border-radius:17px;border:1px solid rgba(185,156,255,.55);background:#0b090f;font-weight:950;box-shadow:0 15px 40px rgba(0,0,0,.4);transition:.25s var(--ease)}.continue:hover{transform:translateY(-3px);border-color:#d2bbff;box-shadow:0 20px 50px rgba(0,0,0,.5),0 0 35px rgba(139,92,246,.17)}
+.footer{padding:70px 0 90px;text-align:center;color:#615b6b;font-size:9px;font-weight:900;letter-spacing:.16em;text-transform:uppercase}
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);opacity:0;pointer-events:none;z-index:50;padding:12px 17px;border:1px solid var(--line2);border-radius:999px;background:rgba(10,8,14,.92);backdrop-filter:blur(16px);color:#e8e3ef;font-size:11px;font-weight:800;transition:.3s var(--ease);box-shadow:0 15px 40px rgba(0,0,0,.45)}.toast.show{transform:translate(-50%,0);opacity:1}
+@media(max-width:980px){.heroGrid{grid-template-columns:1fr;text-align:center}.lead{margin-left:auto;margin-right:auto}.heroNote{justify-content:center}.scoreStage{margin-top:25px}.dimensionGrid{grid-template-columns:1fr 1fr}.method{grid-template-columns:repeat(4,1fr)}.methodItem:nth-child(4):after{display:none}.grid2{grid-template-columns:1fr}.path{grid-template-columns:1fr 1fr}}
+@media(max-width:640px){.wrap,.topin{width:calc(100% - 24px)}.top{height:64px}.logo{font-size:16px}.listen{padding:6px}.listen span{display:none}.listen .play{width:33px;height:33px}.hero{padding:60px 0 65px}.section{padding:70px 0}.sectionHead{margin-bottom:30px}.panelPad{padding:26px}.dimensionGrid{grid-template-columns:1fr}.legend{grid-template-columns:repeat(2,1fr)}.insight{padding:35px 25px}.path{grid-template-columns:1fr}.method{grid-template-columns:repeat(2,1fr)}.methodItem:not(:last-child):after{display:none}.audio{padding:35px 22px}.audioButton{width:100%}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="page">
+<div class="noise"></div>
+<header class="top"><div class="topin"><a class="logo" href="#top" aria-label="MAXESS home">MAX<span>ESS</span></a><button class="listen" id="topNaya"><i class="play"></i><span>Listen to Naya</span></button></div></header>
+<main id="top">
+<section class="hero"><div class="wrap heroGrid"><div><div class="eyebrow">YOUR MAXESS RESULTS</div><h1>This is how<br><span>you work with AI.</span></h1><p class="lead" id="heroCopy">Your result is more than a number. It is a map of the capabilities that shape how you direct, evaluate, improve and multiply AI.</p><div class="heroNote"><i class="dot"></i><span id="heroLevel">ADVANCING · PERSONAL PROFILE</span></div></div><div class="scoreStage"><div class="scoreRing" id="scoreRing" style="--score:84"><div class="scoreInside"><div class="score" id="score">84</div><div class="scoreMeta">MAXESS SCORE</div><div class="level" id="level">ADVANCING</div></div></div></div></div></section>
+<section class="section dark"><div class="wrap"><div class="sectionHead"><div class="eyebrow">MAKE THE NUMBER MEAN SOMETHING</div><h2>Your score is the beginning of the story.</h2><p id="levelCopy">You are developing real AI capability. The next leap comes from becoming more deliberate about quality, repeatability and leverage.</p></div><div class="grid2"><article class="panel panelPad capability"><div><div class="bigLabel">YOUR STRONGEST CAPABILITY</div><h3 id="strongest">Direction</h3><p id="strongestCopy">You naturally define the destination before asking AI to move. That gives your prompts a useful sense of purpose.</p></div><div><div class="bigLabel">CURRENT STRENGTH</div><div class="miniScore" id="strongestScore">91 / 100</div></div></article><aside class="panel statList"><div class="stat"><small>Mastery level</small><strong id="statLevel">Advancing</strong></div><div class="stat"><small>Overall MAXESS</small><strong id="statOverall">84 / 100</strong></div><div class="stat"><small>Next opportunity</small><strong id="statOpportunity">Iteration</strong></div><div class="stat"><small>Profile type</small><strong>AI Capability Map</strong></div></aside></div></div></section>
+<section class="section"><div class="wrap"><div class="sectionHead"><div class="eyebrow">YOUR AI FINGERPRINT</div><h2>Five capabilities. One pattern.</h2><p>See where your capability is strongest, where it is developing, and where a focused improvement can create the greatest leverage.</p></div><div class="panel fingerprint"><svg class="radar" viewBox="0 0 700 520" role="img" aria-label="MAXESS five dimension fingerprint" id="radar"></svg><div class="legend" id="legend"></div></div><div class="dimensionGrid" id="dimensions"></div></div></section>
+<section class="section dark"><div class="wrap"><div class="insight"><div class="eyebrow">THE “OH… THAT’S WHY” MOMENT</div><h2>Your next breakthrough is <span id="opportunityHeadline">Iteration.</span></h2><div class="insightRule"></div><p class="insightLead" id="insightLead">You already have the ability to create strong ideas and communicate them clearly. Your leverage point is learning to deliberately improve version one instead of accepting it as the finish line.</p><p class="insightBody" id="insightBody">That matters because AI mastery compounds through feedback. When you can see what is weak, say exactly what needs changing, and run another deliberate pass, your output quality rises faster than your prompt collection ever could.</p></div></div></section>
+<section class="section"><div class="wrap"><div class="sectionHead"><div class="eyebrow">YOUR PERSONAL PATHWAY</div><h2>Three moves from insight to improvement.</h2><p>This is the shortest useful path from what your assessment revealed to what you can practice next.</p></div><div class="path" id="path"></div></div></section>
+<section class="section dark"><div class="wrap"><div class="sectionHead"><div class="eyebrow">THE MAXESS METHOD</div><h2>Mastery is a loop.</h2><p>Good AI work is not one brilliant prompt. It is a repeatable cycle of thinking, directing, creating, judging and improving.</p></div><div class="methodWrap"><div class="method" id="method"></div></div></div></section>
+<section class="section"><div class="wrap"><div class="audio"><div class="eyebrow" id="audioTier">ADVANCING AUDIO REPORT</div><h2>Naya — Listen to Your Report</h2><p>Naya turns your written result into a guided interpretation. The production audio can be connected to this player through the shared Results data contract.</p><button class="audioButton" id="audioButton"><span>▶</span><span>Listen to my personalized Naya report</span></button><div class="audioStatus" id="audioStatus">Your Advancing report is selected.</div></div></div></section>
+<section class="bridge"><div class="wrap"><div class="eyebrow">WHAT COMES NEXT</div><h2>You know where you are.<br><span>Now see what's possible.</span></h2><p>Your MAXESS profile is the map. NayaNET is the larger experience you can step into next.</p><a class="continue" href="https://nayanet.xyz/">Continue to NayaNET <span>→</span></a></div></section>
+</main>
+<footer class="footer"><div class="wrap">MAXESS · AI MASTERY · KNOW → TELL → ASK → CREATE → SCORE → IMPROVE → REPEAT</div></footer>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+(function(){
+'use strict';
+const DIMS=['Direction','Communication','Evaluation','Iteration','Systems Thinking'];
+const COPY={
+Direction:'Your ability to define outcomes, constraints, priorities and what good looks like before asking AI to act.',
+Communication:'Your ability to give AI clear intent, context, audience, tone and useful instructions.',
+Evaluation:'Your ability to judge output, detect weaknesses, compare alternatives and recognize quality.',
+Iteration:'Your ability to improve output through deliberate feedback, revision and repeated refinement.',
+'Systems Thinking':'Your ability to connect AI into repeatable workflows, tools, processes and leverage.'
+};
+const PATH={
+Direction:[['01','Define the destination','Write the result you actually want before asking AI to produce it.'],['02','Add the boundaries','Give audience, requirements, constraints and a clear definition of good.'],['03','Judge against the goal','Score the result against the outcome you defined.']],
+Communication:[['01','Clarify intent','State the goal, audience and desired result before adding detail.'],['02','Give useful context','Supply the information AI needs to make a good decision.'],['03','Direct the experience','Specify structure, tone, depth and constraints.']],
+Evaluation:[['01','Define excellent','Create a simple scorecard before judging the answer.'],['02','Compare deliberately','Evaluate alternatives against the same criteria instead of vibes.'],['03','Turn judgment into feedback','Use what you notice to create the next better version.']],
+Iteration:[['01','Expect version one','Treat the first answer as raw material rather than the finish line.'],['02','Give precise feedback','Name what is weak, missing, unnecessary or unclear.'],['03','Repeat with purpose','Create → Score → Improve → Repeat until the result earns its place.']],
+'Systems Thinking':[['01','Map the workflow','See the complete process instead of one isolated prompt.'],['02','Connect the pieces','Place AI, people, tools and decisions where they create leverage.'],['03','Make success repeatable','Turn a good result into a reusable system.']]
+};
+const METHOD=[['KNOW','Understand'],['TELL','Direct'],['ASK','Request'],['CREATE','Produce'],['SCORE','Judge'],['IMPROVE','Refine'],['REPEAT','Compound']];
+function clamp(n){n=Number(n);return Number.isFinite(n)?Math.max(0,Math.min(100,Math.round(n))):0}
+function level(s){return s<=50?'Foundation':s<=75?'Developing':s<=90?'Advancing':'Mastering'}
+function getData(){
+ let raw=null;
+ try{raw=window.MAXESS_RESULT||JSON.parse(sessionStorage.getItem('MAXESS_RESULT')||'null')}catch(e){}
+ try{raw=raw||JSON.parse(localStorage.getItem('MAXESS_RESULT')||'null')}catch(e){}
+ const q=new URLSearchParams(location.search);
+ const source=raw&&typeof raw==='object'?raw:{};
+ const src=source.dimensions||source.dimensionScores||source.scores||{};
+ const fallback=[91,84,78,72,88];
+ const vals=DIMS.map((d,i)=>{
+  let v=src[d];
+  if(v==null)v=src[d.toLowerCase().replace(/\s+/g,'_')];
+  if(v==null&&Array.isArray(src))v=src[i];
+  if(v==null&&q.has('d'+i))v=q.get('d'+i);
+  return clamp(v==null?fallback[i]:v);
+ });
+ const supplied=source.overall??source.score??q.get('score');
+ const overall=clamp(supplied==null?vals.reduce((a,b)=>a+b,0)/vals.length:supplied);
+ const hi=vals.indexOf(Math.max(...vals));
+ const lo=vals.indexOf(Math.min(...vals));
+ return {overall,level:level(overall),vals,hi,lo};
+}
+const data=getData();
+function setText(id,value){const el=document.getElementById(id);if(el)el.textContent=value}
+function renderRadar(){
+ const svg=document.getElementById('radar');const cx=350,cy=250,R=185;
+ const pt=(r,i)=>{const a=-Math.PI/2+i*Math.PI*2/5;return [cx+Math.cos(a)*r,cy+Math.sin(a)*r]};
+ let out='';
+ for(let k=1;k<=4;k++)out+=`<polygon points="${DIMS.map((_,i)=>pt(R*k/4,i).join(',')).join(' ')}" fill="none" stroke="rgba(255,255,255,.09)"/>`;
+ DIMS.forEach((d,i)=>{const p=pt(R,i);out+=`<line x1="${cx}" y1="${cy}" x2="${p[0]}" y2="${p[1]}" stroke="rgba(255,255,255,.07)"/>`;const t=pt(R+38,i);out+=`<text x="${t[0]}" y="${t[1]}" text-anchor="middle" dominant-baseline="middle" fill="#9c96a6" font-size="11" font-weight="800">${d}</text>`});
+ const points=data.vals.map((v,i)=>pt(R*v/100,i));
+ out+=`<polygon points="${points.map(p=>p.join(',')).join(' ')}" fill="rgba(139,92,246,.20)" stroke="#c2a4ff" stroke-width="3"/>`;
+ points.forEach(p=>out+=`<circle cx="${p[0]}" cy="${p[1]}" r="6" fill="#fff" stroke="#8b5cf6" stroke-width="4"/>`);
+ svg.innerHTML=out;
+}
+function renderDimensions(){
+ const el=document.getElementById('dimensions');
+ el.innerHTML=DIMS.map((d,i)=>`<article class="dimension ${i===data.hi?'active':''}" data-index="${i}"><h4>${d}</h4><div class="dscore">${data.vals[i]}</div><div class="gauge"><i style="--v:${data.vals[i]}"></i></div><p>${COPY[d]}</p></article>`).join('');
+ el.querySelectorAll('.dimension').forEach(card=>card.addEventListener('click',()=>{el.querySelectorAll('.dimension').forEach(x=>x.classList.remove('active'));card.classList.add('active')}));
+}
+function renderPath(){
+ const key=DIMS[data.lo];document.getElementById('path').innerHTML=PATH[key].map((s,i)=>`<article class="step"><div class="stepNo">${s[0]}</div><h3>${s[1]}</h3><p>${s[2]}</p><div class="stepArrow">${i===2?'✓':'→'}</div></article>`).join('');
+}
+function renderMethod(){document.getElementById('method').innerHTML=METHOD.map((m,i)=>`<div class="methodItem"><b>${m[0]}</b><span>${m[1]}</span></div>`).join('')}
+function render(){
+ const s=data.overall,l=data.level,strong=DIMS[data.hi],opp=DIMS[data.lo];
+ setText('score',s);setText('level',l.toUpperCase());setText('heroLevel',l.toUpperCase()+' · PERSONAL PROFILE');setText('statLevel',l);setText('statOverall',s+' / 100');setText('strongest',strong);setText('strongestScore',data.vals[data.hi]+' / 100');setText('statOpportunity',opp);setText('opportunityHeadline',opp+'.');
+ setText('strongestCopy',COPY[strong]);
+ const levelCopy={Foundation:'You are building the foundation. Your next leap is learning the thinking patterns that turn AI from a tool into a reliable capability.',Developing:'You are developing real AI capability. Your next leap is becoming more deliberate about quality, feedback and repeatability.',Advancing:'You are operating with meaningful AI capability. Your next leap is turning strong skills into repeatable systems and leverage.',Mastering:'You are operating at a mastery level. Your next challenge is multiplying capability through systems, teaching and leverage.'};
+ setText('levelCopy',levelCopy[l]);
+ const insights={Direction:['Your leverage is in defining the destination before the machine starts moving.','When the outcome, audience and boundaries are explicit, AI has a much better chance of producing something that is useful on the first pass.'],Communication:['Your leverage is in turning what you know into instructions AI can actually use.','Clarity is not about writing more. It is about giving the right context, intent and constraints so the machine can make better decisions.'],Evaluation:['Your leverage is in becoming a stronger judge of AI output.','The fastest way to improve AI work is to know what excellent looks like, notice the gap, and turn that observation into the next instruction.'],Iteration:['You already have the ability to create strong ideas and communicate them clearly. Your leverage point is learning to deliberately improve version one instead of accepting it as the finish line.','AI mastery compounds through feedback. When you can see what is weak, say exactly what needs changing, and run another deliberate pass, your output quality rises faster than your prompt collection ever could.'],'Systems Thinking':['Your leverage is in connecting individual AI wins into a repeatable system.','When successful tasks become workflows, templates, automations and reusable decision processes, your capability stops depending on one good conversation and starts multiplying.']};
+ setText('insightLead',insights[opp][0]);setText('insightBody',insights[opp][1]);
+ document.getElementById('scoreRing').style.setProperty('--score',s);document.getElementById('audioTier').textContent=l.toUpperCase()+' AUDIO REPORT';document.getElementById('audioStatus').textContent='Your '+l+' report is selected.';
+ renderRadar();renderDimensions();renderPath();renderMethod();
+}
+function toast(message){const t=document.getElementById('toast');t.textContent=message;t.classList.add('show');clearTimeout(window.__toast);window.__toast=setTimeout(()=>t.classList.remove('show'),2600)}
+function playNaya(){toast('Naya report selected — connect the production audio asset through the Results data contract.');document.getElementById('audioButton').classList.add('playing')}
+document.getElementById('audioButton').addEventListener('click',playNaya);document.getElementById('topNaya').addEventListener('click',playNaya);
+render();
+window.MAXESS_RESULTS={version:'10.0',data,render,getData};
+})();
+</script>
+</body>
+</html>
