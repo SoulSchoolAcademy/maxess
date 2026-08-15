@@ -301,6 +301,8 @@ button:disabled{
 
 
 
+
+
 .question-count-chip{
   justify-self:end;
   min-width:128px;
@@ -2430,6 +2432,7 @@ button:disabled{
 
 
 
+
 @media(max-width:420px){
 
   .naya-copy span{
@@ -4370,6 +4373,67 @@ button:disabled{
   content:none !important;
 }
 #resultsView.results-hard-boundary .results-hard-output{display:block !important;}
+
+
+
+/* =========================================================
+   MAXESS RESULTS EXPERIENCE CANONICAL CLEANUP
+   One experience. One hierarchy. No legacy pile-up.
+========================================================= */
+.maxess-canonical-hide{display:none!important}
+.maxess-canonical-spacer{height:0!important;margin:0!important;padding:0!important;border:0!important}
+
+/* Preserve the premium core; remove report/dashboard residue. */
+#resultsView .results-v4-intro,
+#resultsView .results-master-v2,
+#resultsView .results-v4-naya,
+#resultsView .results-v4-masterkey,
+#resultsView .final-cta,
+#resultsView .maxess-signal,
+#resultsView .maxess-meaning,
+#resultsView .maxess-ohwhy,
+#resultsView .maxess-naya-guide,
+#resultsView .maxess-masterkey-10,
+#resultsView .maxess-opportunities,
+#resultsView .maxess-naya-masters,
+#resultsView .maxess-threshold,
+#resultsView .maxess-results-journey,
+#resultsView .results-v4-playground,
+#resultsView .results-v4-treasure,
+#resultsView .results-v4-pathway,
+#resultsView .results-v4-cta,
+#resultsView .results-v4-method,
+#resultsView .results-v4-evidence,
+#resultsView .results-v4-recommendation,
+#resultsView .results-v4-next,
+#resultsView .results-master-v2-next,
+#resultsView .results-master-v2-evidence,
+#resultsView .results-master-v2-meaning{
+  display:none!important;
+}
+
+/* Let the canonical sections breathe instead of behaving like nested cards. */
+#resultsView .maxess-personal-editorial{
+  margin-top:30px;
+  margin-bottom:14px;
+}
+#resultsView .maxess-signature-shell{
+  margin-top:58px;
+}
+#resultsView .maxess-oscar-finale{
+  margin-top:68px;
+}
+
+/* Remove accidental empty vertical gaps left by deleted legacy sections. */
+#resultsView > .report-section:empty,
+#resultsView > .results-v4-reveal:empty{
+  display:none!important;
+}
+
+@media(max-width:760px){
+  #resultsView .maxess-signature-shell{margin-top:42px}
+  #resultsView .maxess-oscar-finale{margin-top:44px}
+}
 
 
 /* =========================================================
