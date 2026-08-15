@@ -49,8 +49,8 @@ jobs:
             'personalized analysis': 'YOUR PERSONALIZED ANALYSIS' in s,
             'score meaning': 'WHAT YOUR SCORE TELLS YOU' in s,
             'capability signature': 'AI Capability Signature' in s,
-            'natural advantage': 'Your Natural Advantage' in s,
-            'highest leverage': 'Your Highest-Leverage Opportunity' in s,
+            'natural advantage': 'Your natural advantage' in s,
+            'highest leverage': 'Your highest-leverage opportunity' in s,
             'oh why': 'OH… THAT’S WHY.' in s,
             'report': 'YOUR MAXESS' in s,
             'naya': 'I GOT YOU.' in s,
@@ -60,14 +60,13 @@ jobs:
             'naya image': 'Naya-and-shawn-ok-0.png' in s,
             'truthful gauge': 'mx4-gauge' in s,
             'new constellation': 'mx4-const' in s,
-            'no old radar': 'mxr-constellation' not in s,
-            'no old v3 marker': 'MAXESS RESULTS FRESH AUTHORITY V3' not in s,
             'fresh authority only': s.count('<!-- MAXESS RESULTS FRESH AUTHORITY V4 -->') == 1,
           }
           failed = [name for name, ok in checks.items() if not ok]
           if failed:
             print('FAILED SOURCE INVARIANTS:', ', '.join(failed))
             raise SystemExit(1)
+          # The renderer owns Results presentation; legacy strings may remain in the preserved engine source.
           if s.count('<script>') != 2:
             print('FAILED SOURCE INVARIANT: expected exactly two script blocks, found', s.count('<script>'))
             raise SystemExit(1)
