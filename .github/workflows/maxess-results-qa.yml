@@ -5,13 +5,17 @@ on:
     paths:
       - 'MAXESS-RESULTS-AAA-LOADER.js'
       - 'MAXESS-RESULTS-AAA-ENHANCER.js'
+      - 'MAXESS-NAYA-RESULT-AUDIO-9.js'
       - 'MAXESS-RESULTS-NAYANET-FINAL.html'
+      - 'MAXESS-RESULTS-9-0-GROOVE-EMBED.html'
       - 'MAXESS-RESULTS-AAA-MASTER-OPERATING-DIRECTIVE.md'
   pull_request:
     paths:
       - 'MAXESS-RESULTS-AAA-LOADER.js'
       - 'MAXESS-RESULTS-AAA-ENHANCER.js'
+      - 'MAXESS-NAYA-RESULT-AUDIO-9.js'
       - 'MAXESS-RESULTS-NAYANET-FINAL.html'
+      - 'MAXESS-RESULTS-9-0-GROOVE-EMBED.html'
       - 'MAXESS-RESULTS-AAA-MASTER-OPERATING-DIRECTIVE.md'
 
 jobs:
@@ -26,6 +30,7 @@ jobs:
         run: |
           node --check MAXESS-RESULTS-AAA-LOADER.js
           node --check MAXESS-RESULTS-AAA-ENHANCER.js
+          node --check MAXESS-NAYA-RESULT-AUDIO-9.js
       - name: Check Results contract
         run: |
           grep -q 'id="resultsView"' MAXESS-RESULTS-NAYANET-FINAL.html
@@ -34,6 +39,12 @@ jobs:
           grep -q 'class="naya-end"' MAXESS-RESULTS-NAYANET-FINAL.html
           grep -q 'MAXESS_RESULT' MAXESS-RESULTS-AAA-LOADER.js
           grep -q 'sessionStorage' MAXESS-RESULTS-AAA-LOADER.js
+          grep -q 'MAXESS-NAYA-RESULT-AUDIO-9.js' MAXESS-RESULTS-AAA-LOADER.js
           grep -q 'maxessMasteryPath' MAXESS-RESULTS-AAA-ENHANCER.js
+          grep -q 'FOUNDATION' MAXESS-NAYA-RESULT-AUDIO-9.js
+          grep -q 'DEVELOPING' MAXESS-NAYA-RESULT-AUDIO-9.js
+          grep -q 'ADVANCING' MAXESS-NAYA-RESULT-AUDIO-9.js
+          grep -q 'MASTERING' MAXESS-NAYA-RESULT-AUDIO-9.js
+          grep -q 'MAXESS-RESULTS-AAA-LOADER.js' MAXESS-RESULTS-9-0-GROOVE-EMBED.html
       - name: Report release contract
-        run: echo 'MAXESS Results structural QA passed: JS syntax, result boundary, five dimensions, and NayaNET endpoint are present.'
+        run: echo 'MAXESS Results 9.0 structural QA passed: JS syntax, result boundary, five dimensions, Naya audio tiering, and NayaNET endpoint are present.'
