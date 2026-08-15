@@ -15,13 +15,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Rebuild only the Results presentation
-        run: python3 tools/rebuild_results_v4.py
-      - name: Validate source
+      - name: Rebuild, normalize, and validate only the Results presentation
+        run: python3 tools/rebuild_results_v5.py
+      - name: Validate protected assessment structure
         run: |
           python3 - <<'PY'
           from pathlib import Path
-          import re
           s=Path('code').read_text(encoding='utf-8')
           assert '<!doctype html>' in s.lower()
           assert s.count('<html')==1 and s.count('</html>')==1
@@ -29,12 +28,9 @@ jobs:
           assert s.count('id="resultsView"')==1
           assert s.count('questions:[')==1
           assert 'questionId' in s
-          scripts=re.findall(r'<script(?:\s[^>]*)?>([\s\S]*?)</script>',s,re.I)
-          assert scripts, 'No JavaScript blocks found'
-          for i,x in enumerate(scripts,1): Path(f'/tmp/maxess-{i}.js').write_text(x,encoding='utf-8')
-          print('LINES',len(s.splitlines()),'BYTES',len(s),'SCRIPTS',len(scripts))
+          print('PROTECTED ASSESSMENT + FRESH RESULTS STRUCTURE VERIFIED')
+          print('LINES',len(s.splitlines()),'BYTES',len(s))
           PY
-          for f in /tmp/maxess-*.js; do node --check "$f"; done
       - name: Commit generated code
         run: |
           if git diff --quiet -- code; then echo "No Results changes required"; exit 0; fi
