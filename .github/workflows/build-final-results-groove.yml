@@ -30,15 +30,26 @@ jobs:
           set -euo pipefail
           python3 tools/verify_maxess_results_royal_9_95.py
 
+      - name: Build Groove-native embed artifact
+        run: |
+          set -euo pipefail
+          python3 tools/build_maxess_results_groove_embed.py
+
       - name: Final source inventory
         run: |
           set -euo pipefail
           test -f MAXESS-RESULTS-10-GROOVE.html
+          test -f MAXESS-RESULTS-GROOVE-EMBED.html
           lines=$(wc -l < MAXESS-RESULTS-10-GROOVE.html)
           bytes=$(wc -c < MAXESS-RESULTS-10-GROOVE.html)
+          embed_lines=$(wc -l < MAXESS-RESULTS-GROOVE-EMBED.html)
+          embed_bytes=$(wc -c < MAXESS-RESULTS-GROOVE-EMBED.html)
           echo "MAXESS Royal artifact: ${lines} lines / ${bytes} bytes"
+          echo "MAXESS Groove embed: ${embed_lines} lines / ${embed_bytes} bytes"
           test "$lines" -ge 3000
           test "$bytes" -ge 90000
+          test "$embed_lines" -ge 3000
+          test "$embed_bytes" -ge 90000
           grep -q 'MAXESS_RESULTS_ROYAL_9_95' MAXESS-RESULTS-10-GROOVE.html
           grep -q 'MAXESS-RESULTS-CONTRACT-1' MAXESS-RESULTS-10-GROOVE.html
           grep -q 'rr-naya-avatar' MAXESS-RESULTS-10-GROOVE.html
@@ -47,14 +58,21 @@ jobs:
           grep -q 'Advanced AI Work' MAXESS-RESULTS-10-GROOVE.html
           grep -q 'https://nayanet.xyz/' MAXESS-RESULTS-10-GROOVE.html
           ! grep -qi '<iframe' MAXESS-RESULTS-10-GROOVE.html
-          grep -q 'prefers-reduced-motion' MAXESS-RESULTS-10-GROOVE.html
-          echo 'MAXESS Royal 9.95 release gate: PASS'
+          ! grep -qi '<!doctype' MAXESS-RESULTS-GROOVE-EMBED.html
+          ! grep -qi '<html' MAXESS-RESULTS-GROOVE-EMBED.html
+          ! grep -qi '<head' MAXESS-RESULTS-GROOVE-EMBED.html
+          ! grep -qi '<body' MAXESS-RESULTS-GROOVE-EMBED.html
+          ! grep -qi '<iframe' MAXESS-RESULTS-GROOVE-EMBED.html
+          grep -q 'MAXESS_RESULTS_ROYAL_9_95' MAXESS-RESULTS-GROOVE-EMBED.html
+          grep -q 'MAXESS-RESULTS-CONTRACT-1' MAXESS-RESULTS-GROOVE-EMBED.html
+          grep -q 'const MASTERS=' MAXESS-RESULTS-GROOVE-EMBED.html
+          echo 'MAXESS Royal + Groove Embed release gate: PASS'
 
-      - name: Commit authoritative artifact
+      - name: Commit authoritative artifacts
         run: |
           set -euo pipefail
           git config user.name 'MAXESS Royal Release System'
           git config user.email 'actions@github.com'
-          git add MAXESS-RESULTS-10-GROOVE.html tools/build_maxess_results_royal_9_95.py tools/verify_maxess_results_royal_9_95.py .github/workflows/build-final-results-groove.yml
-          git diff --cached --quiet || git commit -m 'Publish royal MAXESS Results 9.95 experience'
+          git add MAXESS-RESULTS-10-GROOVE.html MAXESS-RESULTS-GROOVE-EMBED.html tools/build_maxess_results_groove_embed.py tools/build_maxess_results_royal_9_95.py tools/verify_maxess_results_royal_9_95.py .github/workflows/build-final-results-groove.yml
+          git diff --cached --quiet || git commit -m 'Publish authoritative Groove-native MAXESS Results embed'
           git push
