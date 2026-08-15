@@ -91,6 +91,9 @@ jobs:
       - name: Replace entire Results DOM with clean-slate V3
         run: python3 tools/results_hard_reset_v3.py
 
+      - name: Make clean Results renderer the final presentation authority
+        run: python3 tools/results_final_authority.py
+
       - name: Verify generated MAXESS source
         run: |
           python3 - <<'PY'
@@ -117,12 +120,21 @@ jobs:
           assert 'MAXESS RESULTS HARD BOUNDARY' in s
           assert 'MAXESS RESULTS HARD RESET V2' in s
           assert 'MAXESS RESULTS HARD RESET V3' in s
-          assert 'r3-gauge' in s
-          assert 'r3-analysis' in s
+          assert 'MAXESS RESULTS FINAL AUTHORITY' in s
           assert 'YOUR PERSONALIZED ANALYSIS' in s
           assert 'AI is the engine.' in s
-          assert 'Naya Master Strategist' in s
-          scripts=re.findall(r'<script(?:\s[^>]*)?>([\s\S]*?)</script>', s, flags=re.I)
+          assert 'Naya Master Writer' in s
+          assert 'Naya Master Researcher' in s
+          assert 'rf-gauge' in s
+          assert 'rf-process-line' in s
+          # The final authority intentionally removes the entire post-core legacy Results script tail.
+          first_script_end = s.find('</script>')
+          body_idx = s.rfind('</body>')
+          assert first_script_end > 0 and body_idx > first_script_end
+          tail = s[first_script_end + len('</script>'):body_idx]
+          assert '<script>' in tail, 'final Results authority script missing'
+          assert not re.search(r'</style>\s*\(function\s*\(', s), 'raw JavaScript text leak detected'
+          scripts = re.findall(r'<script(?:\s[^>]*)?>([\s\S]*?)</script>', s, flags=re.I)
           assert scripts, 'application scripts missing'
           Path('/tmp/maxess-scripts').mkdir(exist_ok=True)
           for i,script in enumerate(scripts,1):
