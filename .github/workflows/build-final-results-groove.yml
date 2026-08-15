@@ -1,0 +1,48 @@
+name: Build Final MAXESS Results Groove Release
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+jobs:
+  build:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Generate auditable standalone Groove source
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          src=Path('MAXESS-RESULTS-AAA-FULL.html').read_text(encoding='utf-8')
+          # This source is already standalone. Format the embedded CSS/JS/HTML
+          # so the raw Groove artifact is inspectable rather than a compressed blob.
+          def expand_css_js(text):
+              text=re.sub(r'\}\s*', '}\n', text)
+              text=re.sub(r'\{\s*', '{\n', text)
+              text=re.sub(r';\s*(?=[A-Za-z.#@\[\]:_-])', ';\n', text)
+              return text
+          def format_block(m):
+              return m.group(1)+'\n'+expand_css_js(m.group(2))+'\n'+m.group(3)
+          out=re.sub(r'(<style[^>]*>)(.*?)(</style>)',format_block,src,flags=re.S)
+          out=re.sub(r'(<script[^>]*>)(.*?)(</script>)',format_block,out,flags=re.S)
+          out=re.sub(r'>\s*<', '>\n<', out)
+          # Preserve the real implementation; only formatting is changed.
+          Path('MAXESS-RESULTS-10-GROOVE.html').write_text(out,encoding='utf-8')
+          lines=out.count('\n')+1
+          size=len(out.encode())
+          required=['MAXESS — Your AI Mastery Results','scoreRing','fingerprint','radar','dimensionList','advantageName','opportunityName','insightQuote','proofGrid','nextMoveTitle','nayanet.xyz','KNOW','TELL','ASK','CREATE','SCORE','IMPROVE','REPEAT','localStorage','sessionStorage','postMessage']
+          missing=[x for x in required if x not in out]
+          assert not missing, 'Missing required surfaces: '+', '.join(missing)
+          assert '<form' not in out.lower() or 'assessment' not in out.lower(), 'Assessment UI leaked into Results artifact'
+          assert lines >= 1000, f'Artifact is only {lines} lines'
+          assert size >= 50000, f'Artifact is only {size} bytes'
+          assert 'iframe src="https://nayanet.xyz/"' in out, 'NayaNET continuation missing'
+          print(f'RELEASE GATE PASS: {lines} lines / {size} bytes')
+          PY
+          git config user.name 'MAXESS Release System'
+          git config user.email 'actions@github.com'
+          git add MAXESS-RESULTS-10-GROOVE.html
+          git commit -m 'Publish standalone MAXESS Results Groove source'
+          git push
