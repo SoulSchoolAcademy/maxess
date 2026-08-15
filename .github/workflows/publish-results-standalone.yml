@@ -1,0 +1,38 @@
+name: Publish Standalone MAXESS Results
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Results-only artifact
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          src=Path('MAXESS-RESULTS-AAA-FULL.html').read_text(encoding='utf-8')
+          wf=Path('.github/workflows/build-maxess-results.yml').read_text(encoding='utf-8')
+          m=re.search(r"polish = r'''(.*?)'''",wf,re.S)
+          if not m: raise SystemExit('Missing polish layer')
+          final=src.replace('</body>',m.group(1)+'\\n</body>',1)
+          # Make the single-file source human-readable without changing its behavior.
+          final=re.sub(r'><', '>\\n<', final)
+          Path('MAXESS-RESULTS-10-GROOVE.html').write_text(final,encoding='utf-8')
+          lines=final.count('\\n')+1
+          print('STANDALONE RESULTS:',lines,'lines',len(final.encode()),'bytes')
+          required=['m10-hero','m10-fingerprint','m10-gauge-card','m10-radar','m10-insight','m10-path','m10-method','m10-naya','m10Progress','Direction','Communication','Evaluation','Iteration','Systems','KNOW','TELL','ASK','CREATE','SCORE','IMPROVE','REPEAT','nayanet.xyz']
+          missing=[x for x in required if x not in final]
+          if missing: raise SystemExit('MISSING: '+','.join(missing))
+          if lines<1000 or len(final.encode())<50000: raise SystemExit('SUBSTANCE GATE FAILED')
+          if re.search(r'QUESTION\\s*1',final,re.I): raise SystemExit('ASSESSMENT LEAK: questionnaire detected')
+          print('STANDALONE RESULTS SCORECARD PASS')
+          PY
+          git config user.name 'MAXESS Standalone Release System'
+          git config user.email 'actions@github.com'
+          git add MAXESS-RESULTS-10-GROOVE.html
+          git commit -m 'Publish standalone MAXESS Results experience'
+          git push --force-with-lease
