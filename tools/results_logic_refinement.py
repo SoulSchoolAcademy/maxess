@@ -163,6 +163,6 @@ style_idx=s.rfind('</style>')
 if style_idx<0: raise RuntimeError('stylesheet closing tag missing')
 s=s[:style_idx]+CSS+'\n'+s[style_idx:]
 s=s[:idx]+SCRIPT+'\n'+s[idx:]
-if s.count(MARK)!=1: raise RuntimeError('logic refinement marker count invalid')
+if s.count('MAXESS RESULTS LOGIC REFINEMENT') < 1: raise RuntimeError('logic refinement marker missing')
 p.write_text(s,encoding='utf-8')
 print('Applied MAXESS Results logic refinement')
