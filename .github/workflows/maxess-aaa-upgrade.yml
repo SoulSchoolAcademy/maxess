@@ -178,29 +178,31 @@ jobs:
             git push || true
           fi
 
-      - name: Commit generated release
-        if: success() && github.ref == 'refs/heads/main'
+      - name: Publish generated code artifact
+        if: success() && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/feat/results-logic-10star')
         run: |
           rm -f QA_NODE_ERROR.txt QA_TRIGGER.txt
           if git diff --quiet -- code; then
-            echo "No code changes required."
+            echo "No generated code changes required."
             exit 0
           fi
           git config user.name "MAXESS AAA Release Bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -- code
           git commit -m "feat(maxess): deliver AAA results experience"
-          STASHED=0
-          if ! git diff --quiet || [ -n "$(git ls-files --others --exclude-standard)" ]; then
-            git stash push --include-untracked -m "maxess-release-generated-worktree"
-            STASHED=1
-          fi
-          git pull --rebase origin main
-          if [ "$STASHED" -eq 1 ]; then
-            git stash pop
-            git add -- code
-            if ! git diff --cached --quiet; then
-              git commit -m "chore(maxess): preserve generated release changes"
+          if [ "${GITHUB_REF}" = "refs/heads/main" ]; then
+            STASHED=0
+            if ! git diff --quiet || [ -n "$(git ls-files --others --exclude-standard)" ]; then
+              git stash push --include-untracked -m "maxess-release-generated-worktree"
+              STASHED=1
+            fi
+            git pull --rebase origin main
+            if [ "$STASHED" -eq 1 ]; then
+              git stash pop
+              git add -- code
+              if ! git diff --cached --quiet; then
+                git commit -m "chore(maxess): preserve generated release changes"
+              fi
             fi
           fi
           git push
