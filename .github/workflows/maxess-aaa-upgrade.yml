@@ -28,8 +28,8 @@ jobs:
       - name: Apply idempotent visible assessment craft pass
         run: python3 tools/aaa_patch.py
 
-      - name: Build fresh MAXESS Results experience
-        run: python3 tools/results_final_authority.py
+      - name: Build fresh MAXESS Results experience V4
+        run: python3 tools/results_final_authority_v4.py
 
       - name: Verify generated MAXESS source
         run: |
@@ -44,24 +44,25 @@ jobs:
             'AI_AREAS': s.count('AI_AREAS = [') == 1,
             'area ids': s.count('id:"') >= 15,
             'area colors': s.count('color:"') >= 18,
-            'fresh Results authority': 'MAXESS RESULTS FRESH AUTHORITY V3' in s,
-            'your MAXESS result': 'Your MAXESS Result' in s,
-            'personalized analysis': 'Your Personalized Analysis' in s,
-            'score meaning': 'What Your Score Tells You' in s,
+            'fresh Results authority': 'MAXESS RESULTS FRESH AUTHORITY V4' in s,
+            'your MAXESS result': 'YOUR MAXESS RESULT' in s,
+            'personalized analysis': 'YOUR PERSONALIZED ANALYSIS' in s,
+            'score meaning': 'WHAT YOUR SCORE TELLS YOU' in s,
             'capability signature': 'AI Capability Signature' in s,
             'natural advantage': 'Your Natural Advantage' in s,
             'highest leverage': 'Your Highest-Leverage Opportunity' in s,
-            'oh why': 'The “OH… THAT’S WHY” Discovery' in s,
-            'report': 'Your MAXESS Report' in s,
+            'oh why': 'OH… THAT’S WHY.' in s,
+            'report': 'YOUR MAXESS' in s,
             'naya': 'I GOT YOU.' in s,
-            'masters': 'Naya Master Intelligence' in s,
-            'three keys': 'The Three-Key System' in s,
-            'master ai': 'MASTER AI →' in s,
+            'masters': 'NAYA MASTER INTELLIGENCE' in s,
+            'three keys': 'THE THREE-KEY SYSTEM' in s,
+            'master ai': 'START MASTER AI' in s,
             'naya image': 'Naya-and-shawn-ok-0.png' in s,
-            'gauge': 'mxr-gauge' in s,
-            'fingerprint': 'mxr-constellation' in s,
-            'portal language': 'Highest-Leverage Opportunity' in s,
-            'fresh authority only': s.count('<!-- MAXESS RESULTS FRESH AUTHORITY V3 -->') == 1,
+            'truthful gauge': 'mx4-gauge' in s,
+            'new constellation': 'mx4-const' in s,
+            'no old radar': 'mxr-constellation' not in s,
+            'no old v3 marker': 'MAXESS RESULTS FRESH AUTHORITY V3' not in s,
+            'fresh authority only': s.count('<!-- MAXESS RESULTS FRESH AUTHORITY V4 -->') == 1,
           }
           failed = [name for name, ok in checks.items() if not ok]
           if failed:
@@ -80,7 +81,7 @@ jobs:
           Path('/tmp/maxess-scripts').mkdir(exist_ok=True)
           for i,script in enumerate(scripts,1):
               Path(f'/tmp/maxess-scripts/script-{i}.js').write_text(script,encoding='utf-8')
-          print(f'MAXESS Results fresh-source invariants passed; found {len(scripts)} script blocks')
+          print(f'MAXESS Results V4 source invariants passed; found {len(scripts)} script blocks')
           PY
 
       - name: Validate every JavaScript block independently
@@ -120,7 +121,7 @@ jobs:
           git config user.name "MAXESS AAA Release Bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -- code
-          git commit -m "feat(maxess): deliver AAA results experience"
+          git commit -m "feat(maxess): deliver MAXESS Results V4"
           if [ "${GITHUB_REF}" = "refs/heads/main" ]; then
             STASHED=0
             if ! git diff --quiet || [ -n "$(git ls-files --others --exclude-standard)" ]; then
