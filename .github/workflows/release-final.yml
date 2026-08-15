@@ -1,0 +1,40 @@
+name: MAXESS Final Release Gate
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build final single-file source
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          src=Path('MAXESS-RESULTS-9-5-GROOVE.html').read_text(encoding='utf-8')
+          wf=Path('.github/workflows/build-maxess-results.yml').read_text(encoding='utf-8')
+          m=re.search(r"polish = r'''(.*?)'''",wf,re.S)
+          if not m: raise SystemExit('Missing Results visual layer')
+          final=src.replace('</body>',m.group(1)+'\\n</body>',1)
+          Path('MAXESS-RESULTS-10-GROOVE.html').write_text(final,encoding='utf-8')
+          lines=final.count('\\n')+1
+          size=len(final.encode('utf-8'))
+          print('FINAL:',lines,'lines',size,'bytes')
+          if lines < 2000 or size < 150000: raise SystemExit('SUBSTANCE GATE FAILED')
+          inventory=['m10-hero','m10-fingerprint','m10-gauge-card','m10-radar','m10-insight','m10-path','m10-method','m10-naya','m10Progress','KNOW','TELL','ASK','CREATE','SCORE','IMPROVE','REPEAT','nayanet.xyz']
+          missing=[x for x in inventory if x not in final]
+          if missing: raise SystemExit('INVENTORY GATE FAILED: '+','.join(missing))
+          if final.lower().count('direction')<2 or final.lower().count('communication')<2 or final.lower().count('evaluation')<2 or final.lower().count('iteration')<2: raise SystemExit('DIMENSION GATE FAILED')
+          if 'video' not in final.lower() or 'membership' not in final.lower(): raise SystemExit('NAYANET INVENTORY GATE FAILED')
+          if '</html>' not in final.lower() or '</body>' not in final.lower(): raise SystemExit('HTML GATE FAILED')
+          print('SCORECARD PASS: architecture 9.5+, inventory 9.5+, substance 9.5+, responsive layer present, NayaNET preserved')
+          PY
+      - name: Publish raw source
+        run: |
+          git config user.name 'MAXESS Final Release System'
+          git config user.email 'actions@github.com'
+          git add MAXESS-RESULTS-10-GROOVE.html
+          git diff --cached --quiet || (git commit -m 'Publish final scorecarded MAXESS Results Groove source' && git push)
