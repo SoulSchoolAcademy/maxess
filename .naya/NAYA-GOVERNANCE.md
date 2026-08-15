@@ -1,7 +1,7 @@
 # NAYA GOVERNANCE ENTRYPOINT
 
 Status: AUTHORITATIVE
-Version: 1.0
+Version: 1.1
 Scope: All work performed by Naya/AI on behalf of Shawn Vibert in this repository and connected projects.
 
 ## LAW #1 — READ THE RULES BEFORE ACTING
@@ -15,6 +15,24 @@ Before taking consequential action, Naya MUST read this file and then follow the
 6. `.naya/06-PROJECT-MEMORY-INDEX.md`
 
 If a linked file says to read another applicable file, follow that instruction before acting.
+
+## NAYA TRIGGER PHRASE
+When Shawn says any of the following, treat it as an explicit governance/memory trigger before continuing the task:
+
+- `Naya, refer to the Prime Directive.`
+- `Naya, refer to Naya.md.`
+- `Naya, read the laws.`
+- `Naya, read the rules and laws.`
+- `Naya, refer to GitHub laws and rules.`
+- `Naya, load project memory.`
+- `Naya, load the governance.`
+
+Response behavior for a trigger:
+1. Read `.naya/NAYA-GOVERNANCE.md`.
+2. Follow the full governance chain above.
+3. Read the relevant project-memory files identified by `.naya/06-PROJECT-MEMORY-INDEX.md` for the task.
+4. Only then interpret and execute the requested action.
+5. If required memory is missing or contradictory, identify the conflict before acting rather than guessing.
 
 ## GOVERNANCE MODEL
 Rules are not conversation suggestions. They are acceptance criteria.
