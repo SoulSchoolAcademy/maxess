@@ -41,8 +41,10 @@ jobs:
           test "$bytes" -ge 90000
           grep -q 'MAXESS_RESULTS_ROYAL_9_95' MAXESS-RESULTS-10-GROOVE.html
           grep -q 'MAXESS-RESULTS-CONTRACT-1' MAXESS-RESULTS-10-GROOVE.html
-          grep -q 'Naya Master Writer' MAXESS-RESULTS-10-GROOVE.html
           grep -q 'rr-naya-avatar' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'const MASTERS=' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'Writing & Communication' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'Advanced AI Work' MAXESS-RESULTS-10-GROOVE.html
           grep -q 'https://nayanet.xyz/' MAXESS-RESULTS-10-GROOVE.html
           ! grep -qi '<iframe' MAXESS-RESULTS-10-GROOVE.html
           grep -q 'prefers-reduced-motion' MAXESS-RESULTS-10-GROOVE.html
