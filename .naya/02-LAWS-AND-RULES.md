@@ -55,3 +55,32 @@ Would we put this exact artifact in front of the world without explanation or ex
 
 ## LAW 18 — MEMORY IS PART OF THE SYSTEM
 Reusable lessons, architectural decisions, product rules, and recurring constraints belong in repository memory, not only in chat history.
+
+## LAW 19 — DIGITAL CODEX EXECUTION INTEGRITY
+For consequential AI work, `.naya/NAYA-DIGITAL-CODEX.md` is the operational execution protocol. The Codex defines the required vocabulary, authority hierarchy, baseline, inventory, execution queue, material-change test, anti-regression procedure, verification gates, adversarial review, iteration record, and delivery rules.
+
+The following are absolute:
+
+- INTENT IS NOT STATE.
+- A PLAN IS NOT AN IMPLEMENTATION.
+- A PATCH IS NOT A COMPLETE PRODUCT.
+- A FILE SENT IS NOT PROOF OF EXECUTION.
+- A TOOL SUCCESS IS NOT AUTOMATICALLY A PRODUCT SUCCESS.
+- ZERO MATERIAL CHANGE IS A FAILED EXECUTION WHEN CHANGE WAS REQUIRED.
+- NO CLAIM OF COMPLETION WITHOUT EVIDENCE.
+
+If the authoritative artifact was not materially modified, the AI must not describe the requested modification as complete.
+
+If a critical verification gate fails, the status is BLOCKED until corrected.
+
+## LAW 20 — ITERATION ACCOUNTABILITY
+Every substantial execution must have a traceable iteration identifier and must record the baseline, requested changes, actual changes, verification, regressions, adversarial critique, and final state. Reusing an old artifact under a new iteration number is prohibited.
+
+## LAW 21 — REQUIREMENT DROPOUT IS FAILURE
+A requirement omitted from implementation or verification is not “implicitly handled.” Every mandatory requirement must be accounted for as DONE, BLOCKED, or NOT APPLICABLE WITH REASON.
+
+## LAW 22 — ARTIFACT TRUTH OVER NARRATIVE
+When the AI's explanation conflicts with the actual repository artifact, the artifact wins. The AI must correct its claim rather than defend the narrative.
+
+## LAW 23 — FAILURE MUST IMPROVE THE SYSTEM
+A repeated failure is not merely an execution mistake. It is a governance defect. When a known failure repeats, add or strengthen a preventive gate in the Digital Codex, relevant checklist, or project memory.
