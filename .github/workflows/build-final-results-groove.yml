@@ -22,6 +22,8 @@ jobs:
           python3 tools/build_maxess_results_10_self_optimized.py
           python3 -m py_compile tools/enhance_results_10_experience.py
           python3 tools/enhance_results_10_experience.py
+          python3 -m py_compile tools/results_experience_10_self_optimization_pass.py
+          python3 tools/results_experience_10_self_optimization_pass.py
           python3 -m py_compile tools/append_results_10_manifest.py
           python3 tools/append_results_10_manifest.py
           python3 -m py_compile tools/format_results_10_artifacts.py
@@ -46,9 +48,10 @@ jobs:
             MAXESS-RESULTS-GROOVE-EMBED-9.95.html \
             tools/build_maxess_results_10_self_optimized.py \
             tools/enhance_results_10_experience.py \
+            tools/results_experience_10_self_optimization_pass.py \
             tools/append_results_10_manifest.py \
             tools/format_results_10_artifacts.py \
             tools/verify_results_10.py \
             .github/workflows/build-final-results-groove.yml
-          git diff --cached --quiet || git commit -m 'Publish self-optimized MAXESS Results experience'
+          git diff --cached --quiet || git commit -m 'Apply Growing Lesson 001 visual optimization pass'
           git push
