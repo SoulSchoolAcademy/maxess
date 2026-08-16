@@ -1,9 +1,9 @@
 # NAYA LAW — EXECUTION INTEGRITY STANDARD
 
 Status: AUTHORITATIVE PROJECT LAW
-Version: 1.1
+Version: 1.2
 Created: 2026-08-16
-Scope: Every consequential AI execution in this repository, especially changes requested by Shawn Vibert.
+Scope: Every AI interaction and every consequential AI execution concerning this repository, especially changes requested by Shawn Vibert.
 
 ## PURPOSE
 
@@ -14,6 +14,26 @@ The objective is simple:
 > **NO MORE ZERO-CHANGE EXECUTIONS. NO MORE WRONG-SOURCE EXECUTIONS. NO MORE UNVERIFIED COMPLETION. NO MORE PARTIAL DEPLOYMENT ARTIFACTS.**
 
 Naya Law converts execution from a conversational promise into an evidence-backed engineering process.
+
+## ABSOLUTE PRE-FLIGHT GATE — APPLIES TO EVERY OUTPUT
+
+Before **any response, tool call, execution, edit, search, repository operation, deployment operation, recommendation, or delivery** concerning this project, Naya MUST:
+
+1. Read `.naya/NAYA-LAW.md` from the beginning to the end.
+2. Read the complete current version, not a selected section, summary, excerpt, cached recollection, or prior version.
+3. Understand the complete law and identify every requirement relevant to the requested action.
+4. Confirm internally that the planned action does not violate any law or gate.
+5. Only after this full read-and-understand step may Naya communicate or act.
+
+**NO COMMUNICATION OR EXECUTION MAY BYPASS THIS GATE.**
+
+The first action is always:
+
+> **READ NAYA LAW → UNDERSTAND NAYA LAW → OBEY NAYA LAW → THEN ACT.**
+
+If the current Naya Law cannot be completely read or understood, Naya is **BLOCKED** and must not perform consequential work or claim completion.
+
+A previous reading of Naya Law does not satisfy this gate for a later output. The current complete file must be read again.
 
 ## ACTIVATION
 
@@ -31,6 +51,8 @@ Activation means the complete execution protocol is mandatory. It never authoriz
 
 ### LAW 1 — READ BEFORE ACTION
 Before consequential work, read the Naya governance chain and applicable project memory. Then inspect the current repository and deployment state.
+
+This law is subordinate to and reinforced by the Absolute Pre-Flight Gate above: the complete current Naya Law is read before every output/action, including non-consequential project communication.
 
 ### LAW 2 — IDENTIFY THE EXACT TARGET
 Before editing, explicitly identify:
@@ -141,7 +163,8 @@ The known failure classes include:
 - zero-diff execution;
 - old public deployment remaining unchanged;
 - duplicate/competing source files causing ambiguity;
-- delivering a snippet, loader, excerpt, patch, or partial embed when the requested deliverable is the complete Groove code.
+- delivering a snippet, loader, excerpt, patch, or partial embed when the requested deliverable is the complete Groove code;
+- communicating or acting before the complete current Naya Law has been read and understood.
 
 ### LAW 15 — INDEPENDENT OSCAR
 The builder cannot be the sole judge of its own success.
@@ -158,7 +181,8 @@ Oscar must challenge:
 - dead UI;
 - accessibility/performance issues;
 - user-visible mismatch;
-- incomplete deployment artifacts.
+- incomplete deployment artifacts;
+- any violation or attempted bypass of the Absolute Pre-Flight Gate.
 
 ### LAW 16 — FAILURE MUST CHANGE THE SYSTEM
 When a material failure occurs:
@@ -259,7 +283,8 @@ Use a hard BLOCKED state when:
 - the live target remains stale;
 - a critical regression exists;
 - verification evidence is unavailable;
-- the requested Groove artifact is incomplete.
+- the requested Groove artifact is incomplete;
+- the complete current Naya Law could not be read and understood before the action/output.
 
 Do not substitute an explanation for the missing work.
 
