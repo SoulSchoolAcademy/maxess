@@ -38,7 +38,7 @@ jobs:
               'NAYA-LAW-AAA-IMPLEMENTATION-10',
               'MAXESS_RESULT',
               'maxess-aaa-runtime',
-              'aaa-dim-gauge',
+              'mx-dim-gauge',
               'prefers-reduced-motion',
               'window.print'
           ]
