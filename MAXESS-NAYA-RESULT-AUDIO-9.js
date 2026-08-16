@@ -19,20 +19,11 @@
 (function(){
   'use strict';
 
-  const AUDIO_URLS = {
-    foundation: '',
-    developing: '',
-    advancing: '',
-    mastering: ''
-  };
-
-  const LIVING_SIGNATURE_URL = 'https://raw.githubusercontent.com/SoulSchoolAcademy/maxess/feat/maxess-living-signature-10/MAXESS-LIVING-SIGNATURE-10-PATCH.js';
-
+  const AUDIO_URLS = { foundation:'', developing:'', advancing:'', mastering:'' };
+  const LIVING_SIGNATURE_URL = 'https://raw.githubusercontent.com/SoulSchoolAcademy/maxess/main/MAXESS-LIVING-SIGNATURE-10-PATCH.js';
   const result = window.MAXESS_RESULT || {};
   const score = Math.max(0, Math.min(100, Number(result.overallScore) || 0));
   const dims = Array.isArray(result.dimensions) ? result.dimensions : [];
-
-  function esc(v){return String(v ?? '').replace(/[&<>\"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[c]));}
 
   function bandFor(n){
     if(n<=50)return {key:'foundation',label:'FOUNDATION',range:'0–50',intro:'You are building your foundation with AI.'};
@@ -40,29 +31,20 @@
     if(n<=90)return {key:'advancing',label:'ADVANCING',range:'76–90',intro:'You are advancing into confident AI mastery.'};
     return {key:'mastering',label:'MASTERING',range:'91–100',intro:'You are operating at a mastering level with AI.'};
   }
-
   const band=bandFor(score);
   const sorted=dims.slice().sort((a,b)=>(Number(b.score)||0)-(Number(a.score)||0));
   const strongest=sorted[0];
   const opportunity=sorted[sorted.length-1];
-
-  function emit(name,detail){
-    try{window.dispatchEvent(new CustomEvent(name,{detail:detail||{}}));}catch(e){}
-  }
-
+  function emit(name,detail){try{window.dispatchEvent(new CustomEvent(name,{detail:detail||{}}));}catch(e){}}
   function reportText(){
-    const parts=[
-      `Hello. I'm Naya. This is your MAXESS AI Mastery Report.`,
-      `Your overall MAXESS score is ${Math.round(score)} out of 100. Your current level is ${band.label.toLowerCase()}. ${band.intro}`
-    ];
+    const parts=[`Hello. I'm Naya. This is your MAXESS AI Mastery Report.`,`Your overall MAXESS score is ${Math.round(score)} out of 100. Your current level is ${band.label.toLowerCase()}. ${band.intro}`];
     if(strongest)parts.push(`Your strongest signal is ${strongest.name}, with a score of ${Math.round(Number(strongest.score)||0)} out of 100. This is a capability you can use as leverage.`);
-    if(opportunity && strongest && opportunity.id!==strongest.id)parts.push(`Your biggest growth opportunity is ${opportunity.name}, currently at ${Math.round(Number(opportunity.score)||0)} out of 100. Strengthening this area can help close the gap between what you already do well and what you can do next.`);
+    if(opportunity&&strongest&&opportunity.id!==strongest.id)parts.push(`Your biggest growth opportunity is ${opportunity.name}, currently at ${Math.round(Number(opportunity.score)||0)} out of 100. Strengthening this area can help close the gap between what you already do well and what you can do next.`);
     if(dims.length)parts.push(`Your five-dimensional profile is ${dims.map(d=>`${d.name} ${Math.round(Number(d.score)||0)}`).join(', ')}.`);
     parts.push(`Your MAXESS result is not a label. It is a starting point. The goal is to understand how you work with AI, build the skills that matter most, and turn those skills into repeatable advantage.`);
     parts.push(`Thank you for completing MAXESS. I'm Naya, and I'm here to help you take your next step.`);
     return parts.join(' ');
   }
-
   function addStyles(){
     if(document.getElementById('maxessNayaAudioStyles'))return;
     const s=document.createElement('style');s.id='maxessNayaAudioStyles';s.textContent=`
@@ -90,17 +72,11 @@
       @media(prefers-reduced-motion:reduce){#maxessNayaAudio .mna-play{transition:none}}
     `;document.head.appendChild(s);
   }
-
   function loadLivingSignature(){
     if(document.getElementById('maxessLivingSignatureScript'))return;
-    const script=document.createElement('script');
-    script.id='maxessLivingSignatureScript';
-    script.src=LIVING_SIGNATURE_URL;
-    script.async=true;
-    script.onerror=function(){console.warn('MAXESS Living Signature: visual engine could not be loaded.');};
-    document.head.appendChild(script);
+    const script=document.createElement('script');script.id='maxessLivingSignatureScript';script.src=LIVING_SIGNATURE_URL;script.async=true;
+    script.onerror=function(){console.warn('MAXESS Living Signature: visual engine could not be loaded.');};document.head.appendChild(script);
   }
-
   function insert(){
     if(document.getElementById('maxessNayaAudio'))return;
     const endpoint=document.querySelector('.naya-end')||document.querySelector('.naya-section')||document.getElementById('nayaEnd');
@@ -109,55 +85,20 @@
     const section=document.createElement('section');section.id='maxessNayaAudio';section.setAttribute('aria-label','Naya MAXESS audio report');
     section.innerHTML=`<div class="mna-wrap"><div class="mna-card"><div class="mna-content"><div class="mna-eyebrow">NAYA · YOUR PERSONAL REPORT</div><h2>Listen to your result.</h2><p class="mna-intro">Naya has your MAXESS result. Press play and listen to the report for your level.</p><div class="mna-band"><span class="mna-dot"></span>${band.label} · ${band.range}</div><div class="mna-player"><audio id="maxessNayaAudioElement" preload="none"></audio><button class="mna-play" id="maxessNayaPlay" type="button" aria-label="Play your Naya MAXESS report">▶</button><div class="mna-label" id="maxessNayaPlayLabel">Play your Naya report</div><div class="mna-sub" id="maxessNayaStatus">${AUDIO_URLS[band.key]?'Your personalized Naya audio is ready.':'Preview mode: the four Naya audio URLs have not yet been added to the repository.'}</div><div class="mna-progress"><i id="maxessNayaProgress"></i></div><div class="mna-note">Your report is selected automatically from your MAXESS score.</div></div></div></div></div>`;
     if(theater)theater.parentNode.insertBefore(section,theater);else endpoint.insertBefore(section,endpoint.firstChild);
-
-    const audio=document.getElementById('maxessNayaAudioElement');
-    const play=document.getElementById('maxessNayaPlay');
-    const label=document.getElementById('maxessNayaPlayLabel');
-    const status=document.getElementById('maxessNayaStatus');
-    const progress=document.getElementById('maxessNayaProgress');
-    const url=AUDIO_URLS[band.key];
-    if(url)audio.src=url;
-
-    let speaking=false;
-    let wordTimer=null;
-
+    const audio=document.getElementById('maxessNayaAudioElement');const play=document.getElementById('maxessNayaPlay');const label=document.getElementById('maxessNayaPlayLabel');const status=document.getElementById('maxessNayaStatus');const progress=document.getElementById('maxessNayaProgress');const url=AUDIO_URLS[band.key];if(url)audio.src=url;
+    let speaking=false,wordTimer=null;
     function startVisual(){emit('maxess:naya:start',{score,band:band.key});}
     function stopVisual(){emit('maxess:naya:stop',{score,band:band.key});if(wordTimer)clearInterval(wordTimer);wordTimer=null;}
-    function simulateSpeech(){
-      if(wordTimer)clearInterval(wordTimer);
-      let t=0;
-      wordTimer=setInterval(()=>{
-        t++;
-        const energy=.48 + .44*((Math.sin(t*1.7)+1)/2);
-        emit('maxess:naya:word',{energy,step:t});
-        if(t%7===0)emit('maxess:naya:positive',{energy:.94});
-      },260);
-    }
-
+    function simulateSpeech(){if(wordTimer)clearInterval(wordTimer);let t=0;wordTimer=setInterval(()=>{t++;const energy=.48+.44*((Math.sin(t*1.7)+1)/2);emit('maxess:naya:word',{energy,step:t});if(t%7===0)emit('maxess:naya:positive',{energy:.94});},260);}
     play.addEventListener('click',async()=>{
-      if(url){
-        if(audio.paused){
-          try{await audio.play();label.textContent='Pause your Naya report';play.textContent='❚❚';status.textContent='Naya is speaking your personalized report.';startVisual();}
-          catch(e){status.textContent='Audio could not start. Press play again.';}
-        }else{audio.pause();label.textContent='Resume your Naya report';play.textContent='▶';stopVisual();}
-        return;
-      }
+      if(url){if(audio.paused){try{await audio.play();label.textContent='Pause your Naya report';play.textContent='❚❚';status.textContent='Naya is speaking your personalized report.';startVisual();}catch(e){status.textContent='Audio could not start. Press play again.';}}else{audio.pause();label.textContent='Resume your Naya report';play.textContent='▶';stopVisual();}return;}
       if(!('speechSynthesis' in window)){status.textContent='No Naya audio asset is configured and this browser has no speech preview support.';return;}
       if(speaking){speechSynthesis.cancel();speaking=false;play.textContent='▶';label.textContent='Play your Naya report';status.textContent='Preview stopped.';stopVisual();return;}
-      speechSynthesis.cancel();
-      const u=new SpeechSynthesisUtterance(reportText());
-      u.rate=.94;u.pitch=1.0;u.volume=1;
-      speaking=true;play.textContent='❚❚';label.textContent='Stop your Naya report';status.textContent='Preview mode: your browser is speaking the generated report. Replace the four URLs with Naya recordings for production.';
-      startVisual();simulateSpeech();speechSynthesis.speak(u);
-      u.onend=()=>{speaking=false;play.textContent='▶';label.textContent='Play your Naya report';status.textContent='Preview complete.';stopVisual();};
-      u.onerror=()=>{speaking=false;play.textContent='▶';label.textContent='Play your Naya report';status.textContent='Speech preview stopped.';stopVisual();};
+      speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(reportText());u.rate=.94;u.pitch=1.0;u.volume=1;speaking=true;play.textContent='❚❚';label.textContent='Stop your Naya report';status.textContent='Preview mode: your browser is speaking the generated report. Replace the four URLs with Naya recordings for production.';startVisual();simulateSpeech();speechSynthesis.speak(u);
+      u.onend=()=>{speaking=false;play.textContent='▶';label.textContent='Play your Naya report';status.textContent='Preview complete.';stopVisual();};u.onerror=()=>{speaking=false;play.textContent='▶';label.textContent='Play your Naya report';status.textContent='Speech preview stopped.';stopVisual();};
     });
-    audio.addEventListener('timeupdate',()=>{const p=audio.duration?audio.currentTime/audio.duration*100:0;progress.style.width=p+'%';});
-    audio.addEventListener('play',()=>{startVisual();});
-    audio.addEventListener('pause',()=>{if(!audio.ended)stopVisual();});
-    audio.addEventListener('ended',()=>{play.textContent='▶';label.textContent='Replay your Naya report';status.textContent='Naya has finished your report.';progress.style.width='100%';stopVisual();});
+    audio.addEventListener('timeupdate',()=>{const p=audio.duration?audio.currentTime/audio.duration*100:0;progress.style.width=p+'%';});audio.addEventListener('play',startVisual);audio.addEventListener('pause',()=>{if(!audio.ended)stopVisual();});audio.addEventListener('ended',()=>{play.textContent='▶';label.textContent='Replay your Naya report';status.textContent='Naya has finished your report.';progress.style.width='100%';stopVisual();});
   }
-
   function run(){addStyles();loadLivingSignature();insert();}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(run,50));else setTimeout(run,50);
 })();
