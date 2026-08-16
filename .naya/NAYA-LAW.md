@@ -1,7 +1,7 @@
 # NAYA LAW — EXECUTION INTEGRITY STANDARD
 
 Status: AUTHORITATIVE PROJECT LAW
-Version: 2.1
+Version: 3.0
 Scope: Every consequential AI execution in this repository, especially changes requested by Shawn Vibert.
 
 ## PURPOSE
@@ -21,11 +21,12 @@ The law exists to eliminate recurring failures in which an AI:
 - writes successfully to GitHub but fails to produce a user-visible result;
 - stops after partial implementation;
 - silently changes scope;
-- or repeatedly claims success without independent proof.
+- repeatedly claims success without independent proof;
+- or repeatedly returns the current working artifact while incorrectly calling it an approved authoritative artifact.
 
 The objective is:
 
-> **NO FALSE EXECUTION. NO WRONG-SOURCE EXECUTION. NO ZERO-CHANGE EXECUTION. NO PARTIAL-DONE EXECUTION. NO REGRESSION. NO UNVERIFIED DONE.**
+> **NO FALSE EXECUTION. NO WRONG-SOURCE EXECUTION. NO ZERO-CHANGE EXECUTION. NO PARTIAL-DONE EXECUTION. NO REGRESSION. NO UNVERIFIED DONE. NO AUTHORITY CONFUSION.**
 
 Naya Law is an engineering control system, not a prompt suggestion.
 
@@ -57,6 +58,9 @@ Every consequential implementation must answer these questions BEFORE modificati
 6. HOW will I prove previous functionality was preserved?
 7. HOW will I prove the user-facing product changed?
 8. WHAT will block me from falsely declaring success?
+9. WHAT artifact is the current approved baseline?
+10. WHAT artifact is the current unapproved working/edit result?
+11. What exact event promotes an edited result to APPROVED/AUTHORITATIVE?
 
 If any answer is unknown, the correct state is:
 
@@ -94,6 +98,8 @@ Before consequential work, read:
 - project-specific instruction sets;
 - source-of-truth registry or equivalent authority map;
 - relevant project memory/specification;
+- current approved baseline;
+- current working/edit artifact if one exists;
 - current implementation;
 - relevant deployment configuration.
 
@@ -107,25 +113,85 @@ Every implementation receives a unique execution identifier.
 
 For iterative work this MUST include the iteration number, for example:
 
-**MAXESS RESULTS — V14**
+**MAXESS RESULTS — V15**
 
 The execution record must identify:
 
 - iteration number;
 - date/time;
 - requested outcome;
-- authoritative source;
+- approved baseline;
+- working/edit artifact;
 - deployment target;
 - baseline commit;
-- final commit;
+- final edit commit;
 - changed files;
-- verification status.
+- verification status;
+- promotion status.
 
 An iteration number is not permission to recycle an old file.
 
 ---
 
-# LAW 3 — SOURCE-OF-TRUTH LOCK
+# LAW 3 — TWO-STATE ARTIFACT MODEL
+
+For consequential iterative work, distinguish these states explicitly:
+
+### APPROVED / AUTHORITATIVE BASELINE
+The last artifact that has been explicitly accepted by the human as the approved reference state, or the initial project baseline when no prior user approval exists.
+
+### UPDATED EDITED FILE
+The newly modified artifact produced by the current execution. It is NOT authoritative merely because it was successfully written, committed, generated, or verified by static tests.
+
+The terminology is mandatory:
+
+**UPDATED EDITED FILE = current proposed upgrade.**
+
+**AUTHORITATIVE FILE = approved baseline.**
+
+Never use “authoritative” as a synonym for “latest,” “current,” “working,” “generated,” “written,” “verified,” “master,” “final,” or “most recent.”
+
+A newly edited file MUST NOT inherit authoritative status automatically.
+
+---
+
+# LAW 4 — PROMOTION REQUIRES HUMAN APPROVAL
+
+The state transition is:
+
+```text
+AUTHORITATIVE / APPROVED V14
+        ↓
+COPY / WORKING BASELINE
+        ↓
+REAL EDITING
+        ↓
+UPDATED EDITED FILE V15
+        ↓
+AUTOMATED + STATIC + REGRESSION VERIFICATION
+        ↓
+HAND OFF UPDATED EDITED FILE V15
+        ↓
+HUMAN REVIEW / THUMBS UP
+        ↓
+PROMOTE V15 TO AUTHORITATIVE / APPROVED
+```
+
+No AI, workflow, commit, filename, test suite, or GitHub API response may silently perform the final human-approval promotion.
+
+Automated verification answers:
+
+> “Is this edit technically coherent and demonstrably different?”
+
+Human approval answers:
+
+> “Is this the version we want to keep as the new approved standard?”
+
+These are different decisions.
+
+---
+
+# LAW 5 — SOURCE-OF-TRUTH LOCK
 
 Before editing, explicitly lock the implementation chain:
 
@@ -134,7 +200,9 @@ REPOSITORY
 ↓
 BRANCH
 ↓
-AUTHORITATIVE SOURCE
+APPROVED / AUTHORITATIVE BASELINE
+↓
+UPDATED EDITED FILE
 ↓
 GENERATED/BUILD ARTIFACT
 ↓
@@ -143,21 +211,21 @@ DEPLOYMENT ARTIFACT
 PUBLIC/LIVE TARGET
 ```
 
-Every consequential surface must have exactly one AUTHORITATIVE SOURCE.
+Every consequential surface must have exactly one approved baseline and one active working edit at a time.
 
-A file is NOT authoritative because its name contains FINAL, MASTER, 10/10, 10.10, FULL, EXECUTABLE, GROOVE, AAA, CURRENT, NEW, or UPDATED.
+A file is NOT authoritative because its name contains FINAL, MASTER, 10/10, 10.10, FULL, EXECUTABLE, GROOVE, AAA, CURRENT, NEW, UPDATED, V15, or similar language.
 
-The source must be established from repository governance, actual dependency relationships, deployment configuration, and live evidence.
+The state registry determines authority.
 
-If two candidates conflict, execution stops.
+If two candidates conflict:
 
-# BLOCKED — SOURCE CONFLICT.
+# BLOCKED — SOURCE/STATE CONFLICT.
 
 Never silently choose the convenient file.
 
 ---
 
-# LAW 4 — PROVE THE TARGET BEFORE TOUCHING IT
+# LAW 6 — PROVE THE TARGET BEFORE TOUCHING IT
 
 Before modification, Naya must prove that the locked source is actually connected to the requested product surface.
 
@@ -173,25 +241,27 @@ A repository filename alone is insufficient evidence.
 
 ---
 
-# LAW 5 — BASELINE BEFORE MODIFICATION
+# LAW 7 — BASELINE BEFORE MODIFICATION
 
-Record the starting state:
+Record the starting approved state:
 
+- baseline version;
 - baseline commit SHA;
 - authoritative file SHA/blob SHA where available;
+- file hash;
 - file size/line count where useful;
 - structural markers;
 - key visual/content markers;
 - current deployment state;
 - current public target evidence when applicable.
 
-For a visual implementation, record the current visible state sufficiently to detect whether the requested change actually occurred.
+The baseline is frozen for the duration of the execution.
 
-Never modify first and attempt to discover the baseline afterward.
+Never modify the approved baseline in place and then call the modified result the baseline.
 
 ---
 
-# LAW 6 — COMPLETE REQUIREMENT INVENTORY
+# LAW 8 — COMPLETE REQUIREMENT INVENTORY
 
 Translate the user's directive into a checklist before implementation.
 
@@ -213,7 +283,7 @@ If the request is large, section-by-section execution is mandatory while preserv
 
 ---
 
-# LAW 7 — PRESERVATION MAP
+# LAW 9 — PRESERVATION MAP
 
 Before modifying, classify existing elements:
 
@@ -239,37 +309,41 @@ No major element may disappear merely because the executor forgot it.
 
 ---
 
-# LAW 8 — MODIFY THE AUTHORITATIVE SOURCE, NOT A CONVENIENT COPY
+# LAW 10 — MODIFY THE WORKING EDIT, NOT THE APPROVED BASELINE
 
-Implementation must occur in the locked authoritative source.
+When the human has an approved baseline, do NOT overwrite it during experimentation or reconstruction.
 
-Secondary artifacts may be modified ONLY when the dependency map proves they are required outputs of the same execution.
+Create or update a clearly versioned working/edit artifact for the current execution.
 
-Changing a preview, backup, generated artifact, embed fragment, or alternate implementation does NOT count as completing the task unless that artifact is explicitly the authoritative execution target.
+The current execution's output must be identifiable as:
+
+**UPDATED EDITED FILE — V<N>.**
+
+The approved baseline remains recoverable and unchanged until human promotion.
+
+If repository architecture requires modification of the same deployment path, preserve the approved baseline through an immutable commit/tag/reference and explicitly record that the current branch now contains the proposed edit.
+
+A successful write to the deployment path does not itself make the edit approved.
 
 ---
 
-# LAW 9 — ZERO-CHANGE GATE
+# LAW 11 — ZERO-CHANGE GATE
 
-If an implementation request requires change and the authoritative source has no material diff:
+If an implementation request requires change and the UPDATED EDITED FILE is materially identical to the approved baseline:
 
 # BLOCKED — ZERO-CHANGE EXECUTION.
 
 No explanation can override this.
 
-No renamed copy can override this.
+A new filename, new commit, new marker, new workflow, or regenerated download does not count as a material change.
 
-No new preview can override this.
+At least one requirement-level implementation delta must be demonstrable.
 
-No regenerated download can override this.
-
-No prose claiming improvement can override this.
-
-No successful write/API response can override this without re-fetching and diffing the resulting artifact.
+For substantial redesign requests, the executor must prove changes across the relevant component categories rather than merely adding metadata or wrappers.
 
 ---
 
-# LAW 10 — COMPLETENESS GATE
+# LAW 12 — COMPLETE/REAL-CHANGE GATE
 
 A tiny diff does not automatically mean failure, but the executor MUST compare the diff against the scope of the request.
 
@@ -287,9 +361,9 @@ Never call partial implementation complete.
 
 ---
 
-# LAW 11 — DISTINCTIVE CHANGE PROOF
+# LAW 13 — DISTINCTIVE CHANGE PROOF
 
-For every material requirement, identify observable evidence in the resulting artifact.
+For every material requirement, identify observable evidence in the UPDATED EDITED FILE.
 
 Examples:
 
@@ -307,22 +381,24 @@ Evidence must be specific enough for another person to reproduce the verificatio
 
 ---
 
-# LAW 12 — WRITE → REFETCH → DIFF
+# LAW 14 — WRITE → REFETCH → DIFF → CLASSIFY
 
 After every consequential write:
 
-1. re-fetch the exact file from GitHub;
+1. re-fetch the exact UPDATED EDITED FILE from GitHub;
 2. confirm the expected content is present;
-3. compare against the baseline;
+3. compare against the approved baseline;
 4. inspect the actual diff;
-5. verify the changed file is the locked source;
-6. verify the change corresponds to the requirement inventory.
+5. verify the changed file is the intended working/edit artifact;
+6. verify the change corresponds to the requirement inventory;
+7. record the new hash/blob SHA;
+8. classify the result as UPDATED EDITED FILE — NOT YET APPROVED.
 
 A successful GitHub API write is NEVER proof of successful implementation.
 
 ---
 
-# LAW 13 — WRONG-FILE GATE
+# LAW 15 — WRONG-FILE GATE
 
 After writing, Naya MUST explicitly compare:
 
@@ -338,7 +414,30 @@ If they differ unexpectedly:
 
 ---
 
-# LAW 14 — REASSEMBLE THE REAL PRODUCT
+# LAW 16 — NO AUTHORITY DRIFT
+
+Naya MUST NEVER silently redefine the current artifact as authoritative simply because it is the latest file encountered.
+
+The following statements are prohibited unless human promotion has occurred:
+
+- “This is now the authoritative file.”
+- “This is the new source of truth.”
+- “The latest file is authoritative.”
+- “The verified file replaces the approved baseline.”
+
+The correct handoff language before approval is:
+
+> **UPDATED EDITED FILE — V<N> — NOT YET AUTHORITATIVE.**
+
+When the user explicitly approves it, record:
+
+> **PROMOTED TO AUTHORITATIVE / APPROVED — V<N>.**
+
+This distinction is permanent.
+
+---
+
+# LAW 17 — REASSEMBLE THE REAL PRODUCT
 
 If the product uses generated, bundled, embedded, hosted, cached, or Groove-specific artifacts, update the complete chain required for the actual user-facing experience.
 
@@ -358,7 +457,7 @@ The latter requires deployment-path evidence.
 
 ---
 
-# LAW 15 — RUNTIME DATA GATE
+# LAW 18 — RUNTIME DATA GATE
 
 For MAXESS Results, the implementation must use the real:
 
@@ -376,35 +475,31 @@ If a requested score is visible only briefly, disappears, is replaced by fallbac
 
 ---
 
-# LAW 16 — PUBLIC PARITY GATE
+# LAW 19 — PUBLIC PARITY GATE
 
 For any live product request:
 
 ```text
-AUTHORITATIVE SOURCE
-↓
+APPROVED / AUTHORITATIVE BASELINE
+        ↓
+UPDATED EDITED FILE
+        ↓
 DEPLOYMENT ARTIFACT
-↓
+        ↓
 PUBLIC URL
 ```
 
 must be independently verified.
 
-The public target must visibly contain the requested change.
+The public target must visibly contain the requested change before LIVE/RELEASE verification can be claimed.
 
 If GitHub changed but the public page did not:
 
 # BLOCKED — DEPLOYMENT PARITY FAILURE.
 
-If the page is blank, stale, broken, or showing the previous implementation:
-
-# BLOCKED — LIVE FAILURE.
-
-Do not blame caching, timing, publishing, or the user's browser without testing the actual cause.
-
 ---
 
-# LAW 17 — NO FALSE DONE
+# LAW 20 — NO FALSE DONE
 
 The following words are reserved evidence states:
 
@@ -417,6 +512,8 @@ The following words are reserved evidence states:
 - 9.5+
 - PRODUCTION-READY
 - SUCCESS
+- AUTHORITATIVE
+- APPROVED
 
 They may only be used when the corresponding evidence exists.
 
@@ -428,17 +525,17 @@ Never substitute confidence for proof.
 
 ---
 
-# LAW 18 — NO REGRESSION / VERSION PROTECTION
+# LAW 21 — NO REGRESSION / VERSION PROTECTION
 
-Every successful iteration must preserve a recovery point.
+Every successful execution must preserve a recovery point for the approved baseline.
 
-Never overwrite a stronger working version with an older artifact.
+Never overwrite or promote an older artifact over a newer approved version.
 
 Before replacing or restoring a file, compare:
 
 - version/iteration;
 - commit SHA;
-- file timestamp where useful;
+- file hash;
 - structural markers;
 - feature inventory.
 
@@ -450,7 +547,7 @@ Restoration is permitted only when explicitly intended and recorded.
 
 ---
 
-# LAW 19 — OSCAR MUST ATTACK THE RESULT
+# LAW 22 — OSCAR MUST ATTACK THE RESULT
 
 Oscar is not a ceremonial review.
 
@@ -458,7 +555,7 @@ Oscar must attempt to disprove success.
 
 Oscar asks:
 
-- Did the correct file change?
+- Did the correct working/edit file change?
 - Did the complete scope change?
 - Did anything disappear?
 - Did an older version replace newer work?
@@ -472,6 +569,7 @@ Oscar asks:
 - Does PDF/print work?
 - Did performance regress?
 - Did accessibility regress?
+- Is the result genuinely better, rather than merely different?
 
 If Oscar finds a material failure:
 
@@ -481,7 +579,7 @@ The review is not complete until the failure is fixed or explicitly documented a
 
 ---
 
-# LAW 20 — FAILURE MUST CHANGE THE SYSTEM
+# LAW 23 — FAILURE MUST CHANGE THE SYSTEM
 
 When a material failure occurs:
 
@@ -489,13 +587,13 @@ When a material failure occurs:
 
 The safeguard must make the same failure harder to repeat.
 
-For repeated failures, the safeguard MUST become executable or machine-checkable wherever technically possible.
+The safeguard must be executable or machine-checkable wherever technically possible.
 
 A Markdown instruction saying “don't do that again” is insufficient when the failure can be detected automatically.
 
 ---
 
-# LAW 21 — REPEATED FAILURE ESCALATION
+# LAW 24 — REPEATED FAILURE ESCALATION
 
 If the same failure class occurs twice, add a mandatory gate.
 
@@ -508,7 +606,7 @@ If it occurs four times, stop normal feature execution and enter:
 During Root-Cause Lockdown:
 
 - no new cosmetic work is accepted;
-- the source/deployment chain is re-mapped;
+- the source/state/deployment chain is re-mapped;
 - the failing mechanism is isolated;
 - a regression test is created;
 - the test must fail before the fix and pass after the fix;
@@ -516,12 +614,15 @@ During Root-Cause Lockdown:
 
 ---
 
-# LAW 22 — ONE EXECUTION, ONE ACCOUNTABLE RESULT
+# LAW 25 — ONE EXECUTION, ONE ACCOUNTABLE RESULT
 
 Each execution must produce exactly one of these states:
 
 ### VERIFIED SUCCESS
-All mandatory gates passed.
+All mandatory gates passed AND the human-approved promotion state is explicitly established when approval is required.
+
+### UPDATED EDITED FILE — NOT YET APPROVED
+The requested implementation materially changed the working artifact and passed technical verification, but the human has not yet approved promotion.
 
 ### VERIFIED PARTIAL
 Only when the user explicitly requested phased/partial execution and the completed scope is clearly identified.
@@ -532,32 +633,37 @@ A mandatory gate failed or evidence is unavailable.
 ### INVESTIGATION
 No implementation was requested; the task was diagnostic only.
 
-There is no valid fifth state called “probably done.”
+There is no valid state called “probably done,” “latest authoritative,” or “verified means approved.”
 
 ---
 
-# LAW 23 — DELIVERY REPORT MUST MATCH REALITY
+# LAW 26 — DELIVERY REPORT MUST MATCH REALITY
 
 Every implementation delivery must report:
 
 1. Execution number.
-2. Baseline commit.
-3. Final commit.
-4. Authoritative source changed.
-5. Other artifacts changed and why.
-6. Requirement checklist completed.
-7. Distinctive proof.
-8. Tests performed.
-9. Oscar findings.
-10. Live verification result.
-11. Remaining blockers.
-12. Exact review links.
+2. Approved baseline version.
+3. Baseline commit/hash.
+4. Updated Edited File version.
+5. Final edit commit/hash.
+6. Authoritative source changed, if applicable.
+7. Other artifacts changed and why.
+8. Requirement checklist completed.
+9. Distinctive proof.
+10. Tests performed.
+11. Oscar findings.
+12. Live verification result.
+13. Promotion status.
+14. Remaining blockers.
+15. Exact review link to the UPDATED EDITED FILE.
 
-If any mandatory item is unknown, the status cannot be VERIFIED SUCCESS.
+Before human approval, the handoff link MUST point to the UPDATED EDITED FILE, not to a link described as authoritative.
+
+If the user approves it, the next execution must promote that exact reviewed artifact and record its exact commit/hash as the new approved baseline.
 
 ---
 
-# LAW 24 — NEVER LOOP THE USER
+# LAW 27 — NEVER LOOP THE USER
 
 The user must not have to repeatedly explain the same requirement because the executor failed to preserve it.
 
@@ -571,7 +677,11 @@ The system must learn from the failure rather than requiring the human to become
 
 # FINAL LAW
 
-> **IF THE REQUESTED WORK DID NOT MATERIALLY CHANGE THE CORRECT SOURCE, SURVIVE REGRESSION CHECKS, AND BECOME VISIBLE IN THE INTENDED USER-FACING EXPERIENCE, IT WAS NOT DONE.**
+> **IF THE REQUESTED WORK DID NOT MATERIALLY CHANGE THE CORRECT WORKING ARTIFACT, SURVIVE REGRESSION CHECKS, AND BECOME VISIBLE IN THE INTENDED USER-FACING EXPERIENCE, IT WAS NOT DONE.**
+
+And:
+
+> **AN EDITED FILE IS NOT AUTHORITATIVE UNTIL THE HUMAN APPROVES IT.**
 
 And:
 
