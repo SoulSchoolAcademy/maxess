@@ -1,6 +1,6 @@
 /*
   MAXESS — NAYA RESULT AUDIO
-  Oscar 9.0 pass.
+  10.0 integration pass.
 
   Score bands:
     0–50   Foundation
@@ -8,11 +8,13 @@
     76–90  Advancing
     91–100 Mastering
 
-  IMPORTANT:
-  The repository currently contains no Naya audio asset URLs, so this layer
-  never invents one. Add the real four Naya audio URLs below when available.
-  Until then, the Play button uses the browser's speech synthesis only as a
-  preview fallback so the complete interaction can be tested immediately.
+  The production audio URLs remain intentionally empty until real Naya assets
+  are supplied. Browser speech synthesis remains a functional preview fallback.
+
+  10.0 integration:
+  - Loads the MAXESS Living Signature visual engine.
+  - Emits public Naya visual events while the report is playing.
+  - Positive-result moments can trigger stronger visual resonance.
 */
 (function(){
   'use strict';
@@ -23,6 +25,8 @@
     advancing: '',
     mastering: ''
   };
+
+  const LIVING_SIGNATURE_URL = 'https://raw.githubusercontent.com/SoulSchoolAcademy/maxess/feat/maxess-living-signature-10/MAXESS-LIVING-SIGNATURE-10-PATCH.js';
 
   const result = window.MAXESS_RESULT || {};
   const score = Math.max(0, Math.min(100, Number(result.overallScore) || 0));
@@ -41,6 +45,10 @@
   const sorted=dims.slice().sort((a,b)=>(Number(b.score)||0)-(Number(a.score)||0));
   const strongest=sorted[0];
   const opportunity=sorted[sorted.length-1];
+
+  function emit(name,detail){
+    try{window.dispatchEvent(new CustomEvent(name,{detail:detail||{}}));}catch(e){}
+  }
 
   function reportText(){
     const parts=[
@@ -83,6 +91,16 @@
     `;document.head.appendChild(s);
   }
 
+  function loadLivingSignature(){
+    if(document.getElementById('maxessLivingSignatureScript'))return;
+    const script=document.createElement('script');
+    script.id='maxessLivingSignatureScript';
+    script.src=LIVING_SIGNATURE_URL;
+    script.async=true;
+    script.onerror=function(){console.warn('MAXESS Living Signature: visual engine could not be loaded.');};
+    document.head.appendChild(script);
+  }
+
   function insert(){
     if(document.getElementById('maxessNayaAudio'))return;
     const endpoint=document.querySelector('.naya-end')||document.querySelector('.naya-section')||document.getElementById('nayaEnd');
@@ -101,20 +119,45 @@
     if(url)audio.src=url;
 
     let speaking=false;
+    let wordTimer=null;
+
+    function startVisual(){emit('maxess:naya:start',{score,band:band.key});}
+    function stopVisual(){emit('maxess:naya:stop',{score,band:band.key});if(wordTimer)clearInterval(wordTimer);wordTimer=null;}
+    function simulateSpeech(){
+      if(wordTimer)clearInterval(wordTimer);
+      let t=0;
+      wordTimer=setInterval(()=>{
+        t++;
+        const energy=.48 + .44*((Math.sin(t*1.7)+1)/2);
+        emit('maxess:naya:word',{energy,step:t});
+        if(t%7===0)emit('maxess:naya:positive',{energy:.94});
+      },260);
+    }
+
     play.addEventListener('click',async()=>{
       if(url){
-        if(audio.paused){try{await audio.play();label.textContent='Pause your Naya report';play.textContent='❚❚';status.textContent='Naya is speaking your personalized report.';}catch(e){status.textContent='Audio could not start. Press play again.';}}
-        else{audio.pause();label.textContent='Resume your Naya report';play.textContent='▶';}
+        if(audio.paused){
+          try{await audio.play();label.textContent='Pause your Naya report';play.textContent='❚❚';status.textContent='Naya is speaking your personalized report.';startVisual();}
+          catch(e){status.textContent='Audio could not start. Press play again.';}
+        }else{audio.pause();label.textContent='Resume your Naya report';play.textContent='▶';stopVisual();}
         return;
       }
       if(!('speechSynthesis' in window)){status.textContent='No Naya audio asset is configured and this browser has no speech preview support.';return;}
-      if(speaking){speechSynthesis.cancel();speaking=false;play.textContent='▶';label.textContent='Play your Naya report';status.textContent='Preview stopped.';return;}
-      speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(reportText());u.rate=.94;u.pitch=1.0;u.volume=1;speaking=true;play.textContent='❚❚';label.textContent='Stop your Naya report';status.textContent='Preview mode: your browser is speaking the generated report. Replace the four URLs with Naya recordings for production.';u.onend=()=>{speaking=false;play.textContent='▶';label.textContent='Play your Naya report';status.textContent='Preview complete.';};speechSynthesis.speak(u);
+      if(speaking){speechSynthesis.cancel();speaking=false;play.textContent='▶';label.textContent='Play your Naya report';status.textContent='Preview stopped.';stopVisual();return;}
+      speechSynthesis.cancel();
+      const u=new SpeechSynthesisUtterance(reportText());
+      u.rate=.94;u.pitch=1.0;u.volume=1;
+      speaking=true;play.textContent='❚❚';label.textContent='Stop your Naya report';status.textContent='Preview mode: your browser is speaking the generated report. Replace the four URLs with Naya recordings for production.';
+      startVisual();simulateSpeech();speechSynthesis.speak(u);
+      u.onend=()=>{speaking=false;play.textContent='▶';label.textContent='Play your Naya report';status.textContent='Preview complete.';stopVisual();};
+      u.onerror=()=>{speaking=false;play.textContent='▶';label.textContent='Play your Naya report';status.textContent='Speech preview stopped.';stopVisual();};
     });
     audio.addEventListener('timeupdate',()=>{const p=audio.duration?audio.currentTime/audio.duration*100:0;progress.style.width=p+'%';});
-    audio.addEventListener('ended',()=>{play.textContent='▶';label.textContent='Replay your Naya report';status.textContent='Naya has finished your report.';progress.style.width='100%';});
+    audio.addEventListener('play',()=>{startVisual();});
+    audio.addEventListener('pause',()=>{if(!audio.ended)stopVisual();});
+    audio.addEventListener('ended',()=>{play.textContent='▶';label.textContent='Replay your Naya report';status.textContent='Naya has finished your report.';progress.style.width='100%';stopVisual();});
   }
 
-  function run(){addStyles();insert();}
+  function run(){addStyles();loadLivingSignature();insert();}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(run,50));else setTimeout(run,50);
 })();
