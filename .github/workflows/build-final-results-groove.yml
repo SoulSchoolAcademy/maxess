@@ -1,132 +1,116 @@
-name: Build Definitive MAXESS Results
+name: MAXESS Results — Canonical Verification
 
 on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'MAXESS-RESULTS-10-GROOVE.html'
+      - '.naya/**'
+      - 'tools/**'
+      - '.github/workflows/**'
   push:
-    branches: [main, 'feat/maxess-final-results-99', 'feat/maxess-results-10-self-optimized', 'feat/maxess-10-4-recognition-flow', 'fix/maxess-10-4-pink-gate', 'fix/maxess-10-4-pink-gate-v2', 'fix/maxess-10-4-color-gate-final', 'fix/maxess-release-push-path-v2']
+    branches: [main]
+    paths:
+      - 'MAXESS-RESULTS-10-GROOVE.html'
+      - '.naya/**'
+      - 'tools/**'
+      - '.github/workflows/**'
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
-  group: maxess-definitive-results-${{ github.ref }}
+  group: maxess-results-verification-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  build:
-    if: github.actor != 'github-actions[bot]'
+  verify:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout authoritative repository
+        uses: actions/checkout@v4
 
-      - name: Build self-optimized MAXESS Results
+      - name: Verify source-of-truth registry
+        shell: bash
         run: |
           set -euo pipefail
-          python3 -m py_compile tools/build_maxess_results_10_self_optimized.py
-          python3 tools/build_maxess_results_10_self_optimized.py
-          python3 -m py_compile tools/enhance_results_10_experience.py
-          python3 tools/enhance_results_10_experience.py
-          python3 -m py_compile tools/results_experience_10_self_optimization_pass.py
-          python3 tools/results_experience_10_self_optimization_pass.py
-          python3 -m py_compile tools/append_results_10_manifest.py
-          python3 tools/append_results_10_manifest.py
-          python3 -m py_compile tools/format_results_10_artifacts.py
-          python3 tools/format_results_10_artifacts.py
-          python3 -m py_compile tools/results_experience_oscar_pass_2.py
-          python3 tools/results_experience_oscar_pass_2.py
-          python3 -m py_compile tools/results_experience_oscar_pass_3.py
-          python3 tools/results_experience_oscar_pass_3.py
+          test -f .naya/NAYA-LAW.md
+          test -f .naya/NAYA-GOVERNANCE.md
+          test -f .naya/RESULTS-SOURCE-REGISTRY.md
+          test -f .naya/REPOSITORY-OPERATING-MAP.md
+          test -f MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'MAXESS-RESULTS-10-GROOVE.html' .naya/RESULTS-SOURCE-REGISTRY.md
+          grep -q 'results.nayanet.xyz' .naya/RESULTS-SOURCE-REGISTRY.md
 
-      - name: Integrate MAXESS 10.1 live visual and Naya layer
+      - name: Verify authoritative Results structure
+        shell: bash
         run: |
           set -euo pipefail
-          python3 -m py_compile tools/integrate_living_signature_10_1.py
-          python3 tools/integrate_living_signature_10_1.py
-
-      - name: Bootstrap MAXESS_RESULT before every visual script
-        run: |
-          set -euo pipefail
-          python3 -m py_compile tools/bootstrap_maxess_result_10_10_v2.py
-          python3 tools/bootstrap_maxess_result_10_10_v2.py
-
-      - name: Apply MAXESS 10.2 hero-first visual pass
-        run: |
-          set -euo pipefail
-          python3 -m py_compile tools/maxess_results_visual_pass_10_2.py
-          python3 tools/maxess_results_visual_pass_10_2.py
-
-      - name: Apply MAXESS 10.3 cinematic experience pass
-        run: |
-          set -euo pipefail
-          python3 -m py_compile tools/maxess_results_visual_pass_10_3.py
-          python3 tools/maxess_results_visual_pass_10_3.py
-
-      - name: Apply MAXESS 10.4 recognition-first experience pass
-        run: |
-          set -euo pipefail
-          python3 -m py_compile tools/maxess_results_recognition_flow_10_4.py
-          python3 tools/maxess_results_recognition_flow_10_4.py
-
-      - name: Apply Naya Law AAA Results pass
-        run: |
-          set -euo pipefail
-          python3 -m py_compile tools/maxess_results_naya_law_aaa_pass.py
-          python3 tools/maxess_results_naya_law_aaa_pass.py
-
-      - name: Verify final Results artifacts
-        run: |
-          set -euo pipefail
-          python3 -m py_compile tools/verify_results_10.py
-          python3 tools/verify_results_10.py
-          test "$(grep -c 'MAXESS-LIVING-SIGNATURE-10.1' MAXESS-RESULTS-10-GROOVE.html)" -eq 1
-          grep -q 'maxess-result-live-bridge' MAXESS-RESULTS-10-GROOVE.html
-          grep -q 'maxess-live-naya-audio' MAXESS-RESULTS-10-GROOVE.html
-          grep -q 'MAXESS_RESULT_10_10_BOOTSTRAP' MAXESS-RESULTS-10-GROOVE.html
-          grep -q 'naya-playground' MAXESS-RESULTS-10-GROOVE.html
+          test "$(grep -c 'id=\"maxess-results-10\"' MAXESS-RESULTS-10-GROOVE.html)" -eq 1
+          grep -q 'MAXESS-RESULTS-CONTRACT-1' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'MAXESS-RESULTS-EXPERIENCE-MANIFEST-1' MAXESS-RESULTS-10-GROOVE.html
           grep -q 'Naya Writer' MAXESS-RESULTS-10-GROOVE.html
           grep -q 'Naya Brainstormer' MAXESS-RESULTS-10-GROOVE.html
-          grep -q 'mx-naya-door' MAXESS-RESULTS-10-GROOVE.html
-          grep -q 'MAXESS-VISUAL-PASS-10.2' MAXESS-RESULTS-10-GROOVE.html
-          grep -q 'MAXESS-VISUAL-PASS-10.3' MAXESS-RESULTS-10-GROOVE.html
-          grep -q 'MAXESS-RECOGNITION-FLOW-10.4' MAXESS-RESULTS-10-GROOVE.html
-          grep -q 'maxess-pattern-10-4' MAXESS-RESULTS-10-GROOVE.html
-          grep -q 'mx-recognition-naya' MAXESS-RESULTS-10-GROOVE.html
-          grep -q 'mx-score-orb' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'ny-youtube-player' MAXESS-RESULTS-10-GROOVE.html
           grep -q 'width:100vw' MAXESS-RESULTS-10-GROOVE.html
-          grep -q 'NAYA-LAW-AAA-RESULTS-PASS-2' MAXESS-RESULTS-10-GROOVE.html
-          grep -q 'nl-print' MAXESS-RESULTS-10-GROOVE.html
-          echo 'MAXESS NAYA LAW AAA release gate PASS'
+          grep -q 'prefers-reduced-motion' MAXESS-RESULTS-10-GROOVE.html
 
-      - name: Commit authoritative artifacts
+      - name: Run existing deterministic Results verifier
+        shell: bash
         run: |
           set -euo pipefail
-          git config user.name 'MAXESS Definitive Results Release System'
-          git config user.email 'actions@github.com'
-          git add \
-            MAXESS-RESULTS-FINAL-GROOVE.html \
-            MAXESS-RESULTS-FINAL-GROOVE-EMBED.html \
-            MAXESS-RESULTS-10-GROOVE.html \
-            MAXESS-RESULTS-GROOVE-EMBED.html \
-            MAXESS-RESULTS-GROOVE-EMBED-9.95.html \
-            tools/build_maxess_results_10_self_optimized.py \
-            tools/enhance_results_10_experience.py \
-            tools/results_experience_10_self_optimization_pass.py \
-            tools/results_experience_oscar_pass_2.py \
-            tools/results_experience_oscar_pass_3.py \
-            tools/append_results_10_manifest.py \
-            tools/format_results_10_artifacts.py \
-            tools/integrate_living_signature_10_1.py \
-            tools/bootstrap_maxess_result_10_10.py \
-            tools/bootstrap_maxess_result_10_10_v2.py \
-            tools/maxess_results_visual_pass_10_2.py \
-            tools/maxess_results_visual_pass_10_3.py \
-            tools/maxess_results_recognition_flow_10_4.py \
-            tools/maxess_results_naya_law_aaa_pass.py \
-            tools/verify_results_10.py \
-            .naya/memory/30-GROWING-LESSON-002-OSCAR-PASS-2.md \
-            .naya/memory/31-GROWING-LESSON-003-10-STAR-LIVE-PRODUCT-GATE.md \
-            .github/workflows/build-final-results-groove.yml
-          if ! git diff --cached --quiet; then
-            git commit -m 'Build MAXESS Results with Naya Law'
-            git push origin HEAD:${{ github.ref_name }}
+          if test -f tools/verify_results_10.py; then
+            python3 -m py_compile tools/verify_results_10.py
+            python3 tools/verify_results_10.py
+          else
+            echo 'No legacy verifier present; structural gate above remains authoritative.'
           fi
+
+      - name: Detect silent fake-result fallback
+        shell: bash
+        run: |
+          set -euo pipefail
+          if grep -q 'resonance: 10.10' MAXESS-RESULTS-10-GROOVE.html; then
+            echo 'BLOCKED — authoritative Results contains a silent production-looking fake result fallback.'
+            exit 1
+          fi
+          if grep -q 'signature: "LIVING"' MAXESS-RESULTS-10-GROOVE.html; then
+            echo 'BLOCKED — authoritative Results contains a silent fake signature fallback.'
+            exit 1
+          fi
+          echo 'No known silent fake-result fallback detected.'
+
+      - name: Live parity gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib
+          import re
+          import urllib.request
+
+          source = open('MAXESS-RESULTS-10-GROOVE.html', 'rb').read()
+          source_text = source.decode('utf-8', errors='replace')
+          source_markers = [
+              'MAXESS-RESULTS-CONTRACT-1',
+              'MAXESS-RESULTS-EXPERIENCE-MANIFEST-1',
+              'NAYA-LAW-AAA-RESULTS-PASS-2',
+          ]
+
+          try:
+              with urllib.request.urlopen('https://results.nayanet.xyz/', timeout=20) as response:
+                  live = response.read().decode('utf-8', errors='replace')
+          except Exception as exc:
+              raise SystemExit(f'BLOCKED — could not fetch public Results target: {exc}')
+
+          missing = [m for m in source_markers if m in source_text and m not in live]
+          if missing:
+              raise SystemExit('BLOCKED — DEPLOYMENT PARITY FAILURE. Missing live markers: ' + ', '.join(missing))
+
+          if 'MAXESS-RESULTS-EXPERIENCE-MANIFEST-1' not in live:
+              raise SystemExit('BLOCKED — public target does not expose the authoritative Results experience manifest.')
+
+          print('LIVE PARITY GATE: PASS')
+          print('Authoritative source SHA256:', hashlib.sha256(source).hexdigest())
+          PY
