@@ -57,7 +57,7 @@ jobs:
           ids=re.findall(r'\bid="([^"]+)"', s)
           dup=sorted({x for x in ids if ids.count(x)>1})
           assert not dup, f'duplicate ids: {dup}'
-          assert 'fixture=demo' in s
+          assert 'get(\'fixture\')' in s and 'demo' in s
           assert 'window.MAXESS_RESULT' in s
           assert 'https://raw.githubusercontent.com' not in s
           assert 'fetch(' not in s
