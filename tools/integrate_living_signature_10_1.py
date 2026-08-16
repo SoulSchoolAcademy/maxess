@@ -7,26 +7,41 @@ TARGETS = [
     Path('MAXESS-RESULTS-GROOVE-EMBED.html'),
     Path('MAXESS-RESULTS-GROOVE-EMBED-9.95.html'),
 ]
-PATCH = Path('MAXESS-LIVING-SIGNATURE-10-PATCH.js')
+PATCH = Path('MAXESS-LIVING-SIGNATURE-10-10.js')
 AUDIO = Path('MAXESS-NAYA-RESULT-AUDIO-9.js')
-MARKER = '<!-- MAXESS-LIVING-SIGNATURE-10.1 -->'
+MARKER = '<!-- MAXESS-LIVING-SIGNATURE-10.10 -->'
 
 patch = PATCH.read_text(encoding='utf-8')
 audio = AUDIO.read_text(encoding='utf-8')
 
-bridge = r'''<script id="maxess-result-live-bridge">\
+fallback_css = r'''<style id="maxess-10-10-fallback-style">
+#maxess-results-10 .mx-ls-loading{position:absolute;inset:0;display:grid;place-items:center;text-align:center;color:rgba(255,255,255,.68);font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;pointer-events:none}
+#maxess-results-10 .mx-ls-loading span{display:block;margin-top:8px;color:rgba(255,255,255,.38);font-size:9px;font-weight:600;letter-spacing:.08em;text-transform:none}
+#maxess-results-10[data-result-source="window.MAXESS_RESULT"] .mx-ls-loading{display:none}
+</style>'''
+
+fallback = r'''<div class="mx-ls-loading" aria-live="polite">Preparing your MAXESS signature<span>Your result is loading</span></div>'''
+
+legacy_gate = r'''<script id="maxess-modern-browser-gate">\
 (function(){\
-  function boot(){\
-    var root=document.getElementById('maxess-results-10');\
-    if(!root)return;\
-    if(window.MAXESS_RESULT&&Array.isArray(window.MAXESS_RESULT.dimensions)&&window.MAXESS_RESULT.dimensions.length>=5)return;\
-    var score=root.querySelector('.mx-score strong');\
-    var rows=[].slice.call(root.querySelectorAll('.mx-list-row')).slice(0,5);\
-    if(!score||rows.length<5)return;\
-    var dims=rows.map(function(row,i){var n=row.querySelector('b'),s=row.querySelector('strong');return {id:String(i+1),name:n?n.textContent.trim():'Dimension '+(i+1),score:s?Number(s.textContent):0};});\
-    window.MAXESS_RESULT={overallScore:Number(score.textContent)||0,band:'',dimensions:dims};\
+  'use strict';\
+  var modern = !!(window.Promise && window.CustomEvent && document.querySelector && window.requestAnimationFrame);\
+  document.documentElement.setAttribute('data-maxess-browser', modern ? 'modern' : 'limited');\
+  function neutralize(){\
+    var nodes=document.querySelectorAll('body *');\
+    for(var i=0;i<nodes.length;i++){\
+      var el=nodes[i];\
+      if(el.children.length===0){\
+        var t=(el.textContent||'').replace(/\\s+/g,' ').trim().toLowerCase();\
+        if(t.indexOf("this site doesn't support internet explorer")!==-1 || t.indexOf('this site does not support internet explorer')!==-1){\
+          el.style.display='none';\
+          if(el.parentElement && el.parentElement.children.length===1) el.parentElement.style.display='none';\
+        }\
+      }\
+    }\
   }\
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(boot,0)},{once:true});else boot();\
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',neutralize,{once:true});else neutralize();\
+  if(window.MutationObserver){new MutationObserver(neutralize).observe(document.documentElement,{childList:true,subtree:true});}\
 })();\
 </script>'''
 
@@ -39,7 +54,9 @@ anchor = r'''<script id="maxess-live-anchor">\
 
 no_external_loader = '<script id="maxessLivingSignatureScript"></script>'
 
-block = ('\n' + MARKER + '\n' + bridge + '\n' + no_external_loader + '\n'
+block = ('\n' + MARKER + '\n' + fallback_css + '\n' + legacy_gate + '\n'
+         + '<div id="maxess-10-10-loading-template" hidden>' + fallback + '</div>\n'
+         + no_external_loader + '\n'
          + '<script id="maxess-live-living-signature-engine">\n' + patch + '\n</script>\n'
          + anchor + '\n' + '<script id="maxess-live-naya-audio">\n' + audio + '\n</script>\n')
 
@@ -52,10 +69,11 @@ for target in TARGETS:
         continue
     if '</body>' not in html:
         raise SystemExit(f'Missing </body> anchor in {target}')
-    target.write_text(html.replace('</body>', block + '</body>', 1), encoding='utf-8')
+    html = html.replace('</body>', block + '</body>', 1)
     changed += 1
+    target.write_text(html, encoding='utf-8')
 
 if changed == 0:
     raise SystemExit('No Results artifacts were changed; integration marker may already exist or artifacts are missing.')
 
-print(f'MAXESS Living Signature 10.1 integration applied to {changed} artifact(s).')
+print(f'MAXESS Living Signature 10.10 integration applied to {changed} artifact(s).')
