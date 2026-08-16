@@ -61,7 +61,12 @@ jobs:
           grep -q 'MAXESS_RESULT_10_10_BOOTSTRAP' MAXESS-RESULTS-10-GROOVE.html
           grep -q 'MAXESS_RESULT_10_10_BOOTSTRAP' MAXESS-RESULTS-GROOVE-EMBED.html
           grep -q 'MAXESS_RESULT_10_10_BOOTSTRAP' MAXESS-RESULTS-FINAL-GROOVE.html
-          echo 'MAXESS_RESULT early-bootstrap release gate PASS'
+          grep -q 'naya-playground' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'Naya Writer' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'Naya Brainstormer' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'mx-naya-door' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'mx-orb-breathe' MAXESS-RESULTS-10-GROOVE.html
+          echo 'MAXESS 10.0 Naya visual release gate PASS'
 
       - name: Commit authoritative artifacts
         run: |
@@ -89,7 +94,7 @@ jobs:
             .naya/memory/31-GROWING-LESSON-003-10-STAR-LIVE-PRODUCT-GATE.md \
             .github/workflows/build-final-results-groove.yml
           if ! git diff --cached --quiet; then
-            git commit -m 'Bootstrap MAXESS_RESULT before Results visuals'
+            git commit -m 'Build MAXESS 10.0 Naya visual experience'
             git pull --rebase origin main
             git push
           fi
