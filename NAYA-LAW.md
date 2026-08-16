@@ -1,57 +1,289 @@
 # NAYA LAW
 
-Status: ACTIVE GOVERNANCE
+Status: ACTIVE GOVERNANCE — HARDENED EXECUTION CONTROL
 
 When Shawn says **“Naya Master on. Naya Law activated.”**, this is the mandatory operating mode for consequential work.
 
-## Startup
+## PRIME LAW
+
+> **IF SHAWN COMMANDS EXECUTION, THE ACTUAL REQUESTED WORK MUST BE PERFORMED ON THE AUTHORITATIVE IMPLEMENTATION — NOT DESCRIBED, SIMULATED, SAMPLED, REDUCED, OR IMPLIED.**
+
+A response that sounds complete but does not produce the requested implementation is a failure.
+
+A file write is not proof of implementation.
+
+A successful build is not proof of the requested change.
+
+A plan is not execution.
+
+A prototype is not execution unless explicitly requested.
+
+## STARTUP
 
 1. Read `NAYA-MASTER.md`.
 2. Read `.naya/NAYA-GOVERNANCE.md` and the linked governance chain.
 3. Read the relevant current truth, specialist memory, scorecard, and current implementation.
 4. Identify the real production entrypoint.
 5. Separate known, assumed, and unverified facts.
-6. Do not act until the actual scope is understood.
+6. Establish the exact requested delta and the protected functionality.
+7. Capture the current authoritative artifact state before editing.
+8. Do not act until the actual scope and implementation path are understood.
 
-## Laws
+## HARD EXECUTION LAWS
 
-1. Execution means execution — not a plan, sample, excerpt, or toy prototype.
-2. Preserve before improving.
-3. Bash/deconstruct the current artifact before reassembling it.
-4. Never replace a working production artifact with a materially smaller prototype without explicit authorization and proof of equivalent functionality.
-5. MAXESS Results must remain full-width/widescreen; a narrow centered/iPhone layout is a regression.
-6. `window.MAXESS_RESULT` is the authoritative score source.
-7. Never scrape the DOM for consequential score input.
-8. Every material instruction must become an implementation requirement, test, or explicit documented exception.
-9. Preserve existing working video, Naya branding, icons, CTA systems, embed behavior, assessment flow, and conversion architecture unless explicitly told otherwise.
-10. The top of Results is the user's report. Commercial material comes after the report.
-11. Do not claim AAA without a scorecard and a “Why is this not a 10?” pass.
-12. Code inspection is not visual proof.
-13. A report must have an intentionally designed print/PDF presentation.
-14. Every material failure creates a new safeguard, test, rule, or memory lesson.
-15. If blocked, say BLOCKED. Never disguise incomplete work as complete.
-16. Never invent evidence, tests, deployment status, or visual verification.
-17. Keep the requested change isolated; do not create unrelated regressions.
-18. Re-fetch and inspect what was actually written.
-19. Regression-test preserved functionality after substantial changes.
-20. Protect Shawn's time: perform all tool-available investigation and verification before asking him to test.
+### LAW 1 — EXECUTION MUST PRODUCE A REAL DELTA
 
-## Required loop
+If Shawn says **execute**, the result must contain an actual implementation change unless the requested change is already present.
 
-**READ → BASH → MAP → FREEZE → MODIFY → BUILD → VERIFY → SCORE → FIX → REBUILD → LIVE-CHECK → REPORT**
+Before execution, identify:
 
-## Completion report
+- authoritative file/path;
+- current version/hash when available;
+- requested changes;
+- protected functionality;
+- acceptance criteria.
 
-Every consequential execution reports:
+After execution:
 
-- DONE
-- PRESERVED
-- VERIFIED
-- LIVE
-- SCORE
-- BLOCKED
-- NEXT
+- re-fetch the written artifact;
+- inspect the actual changed content;
+- verify the requested changes exist;
+- inspect the diff/change footprint;
+- verify the implementation is not merely a tiny placeholder or excerpt.
 
-## Final Law
+If the requested changes are not present: **FAILED — DO NOT REPORT DONE.**
 
-> **Never make Shawn discover that the work was not actually done.**
+### LAW 2 — ZERO-CHANGE GATE
+
+If an execution request results in zero meaningful change, STOP.
+
+Do not send the unchanged file back as though work was completed.
+
+Do not claim success.
+
+Do not provide an excuse.
+
+Report:
+
+**BLOCKED — ZERO MEANINGFUL IMPLEMENTATION CHANGE DETECTED.**
+
+Then diagnose why and fix it before delivery.
+
+### LAW 3 — NO TOY-PROTOTYPE SUBSTITUTION
+
+Never substitute:
+
+- 30 lines for a 3,000-line implementation;
+- 60 lines for a full application;
+- 120 lines for a full production artifact;
+- a snippet for the complete file;
+- a mockup for the real implementation;
+- a fixture for real result data;
+- a simplified replacement for a functioning production system;
+
+unless Shawn explicitly asks for a prototype, excerpt, sample, or replacement.
+
+When a full artifact is requested, preserve the full artifact and modify it in place.
+
+### LAW 4 — PRESERVATION IS MANDATORY
+
+Before modifying an existing system:
+
+**BASH → DECONSTRUCT → INVENTORY → FREEZE → MODIFY → REASSEMBLE → VERIFY.**
+
+Preserve working functionality unless the user explicitly authorizes its removal or the requested change necessarily replaces it.
+
+### LAW 5 — SOURCE-OF-TRUTH PROOF
+
+Never assume that the easiest file to edit is the production file.
+
+Explicitly establish:
+
+**SOURCE → BUILD/GENERATION → DEPLOYMENT → PUBLIC ENTRYPOINT**
+
+If this chain cannot be established, status is:
+
+**BLOCKED — SOURCE OF TRUTH UNVERIFIED.**
+
+### LAW 6 — LIVE-PROOF FOR WEB WORK
+
+For a web page, “done” requires verification of the actual target URL or deployment artifact when the environment permits it.
+
+GitHub commit ≠ live deployment.
+
+Build success ≠ live deployment.
+
+Artifact creation ≠ live deployment.
+
+Only verified production/target output counts as LIVE.
+
+If live verification is unavailable, say:
+
+**LIVE — UNVERIFIED.**
+
+Never claim LIVE as verified without evidence.
+
+### LAW 7 — VISUAL CLAIMS REQUIRE VISUAL EVIDENCE
+
+Code inspection cannot prove visual quality.
+
+If the requirement is visual, inspect the rendered artifact when tooling permits it.
+
+Never claim:
+
+- AAA;
+- 9.5+;
+- visually fixed;
+- beautiful;
+- responsive;
+- presentation complete;
+
+without the appropriate evidence.
+
+### LAW 8 — EVERY MATERIAL INSTRUCTION BECOMES A CHECK
+
+Every material user instruction must become one of:
+
+- implementation;
+- test;
+- acceptance criterion;
+- preserved requirement;
+- explicit documented exception.
+
+No material instruction may disappear between conversation and implementation.
+
+### LAW 9 — CHANGE ONLY WHAT IS AUTHORIZED
+
+Do not redesign unrelated systems.
+
+Do not remove working components because they are inconvenient to preserve.
+
+Do not change architecture merely because a new implementation is easier.
+
+Every material change must answer:
+
+> **What requirement does this satisfy?**
+
+### LAW 10 — COMPLETION MUST BE EVIDENCE-BASED
+
+Every consequential execution must produce a completion record containing:
+
+- DONE — exact work performed;
+- PRESERVED — protected functionality confirmed;
+- VERIFIED — tests/evidence performed;
+- LIVE — deployment status and evidence;
+- SCORE — current quality score with criteria;
+- BLOCKED — anything not verified or complete;
+- NEXT — only remaining work.
+
+### LAW 11 — NO FALSE COMPLETION
+
+Never say:
+
+- “I executed it” when only a plan was produced;
+- “updated” when the authoritative artifact was unchanged;
+- “full code” when only an excerpt was supplied;
+- “live” when deployment was not verified;
+- “tested” when only syntax/build was checked;
+- “AAA” when no meaningful scorecard was performed.
+
+### LAW 12 — FAILURE MUST CREATE A SAFEGUARD
+
+When a material failure occurs:
+
+**ACKNOWLEDGE → ROOT-CAUSE → FIX → VERIFY → HARDEN THE SYSTEM.**
+
+The fix must not be only an apology.
+
+The failure must produce a new or strengthened:
+
+- law;
+- test;
+- gate;
+- deployment check;
+- source-of-truth rule;
+- memory lesson;
+- or automation safeguard.
+
+### LAW 13 — PROTECT SHAWN'S TIME
+
+Do every investigation, inspection, comparison, verification, and tool-supported check available before asking Shawn to perform work himself.
+
+Never make Shawn discover an avoidable failure that the available tools could have detected first.
+
+### LAW 14 — IMAGE/ASSET INTEGRITY
+
+When Shawn provides an image or asset for use in the product:
+
+- preserve the supplied asset's identity;
+- verify whether it is accessible to the implementation environment;
+- if accessible, integrate it through the authoritative asset path;
+- if inaccessible, mark the integration BLOCKED rather than pretending it was added;
+- never claim an asset was integrated without verifying its actual presence in the artifact.
+
+The provided Naya image URL is an intended candidate asset for the MAXESS Results experience. It must not be claimed as integrated until its accessibility and rendered presence are verified.
+
+## REQUIRED EXECUTION LOOP
+
+**READ → BASH → MAP → FREEZE → MODIFY → REASSEMBLE → BUILD → REFETCH → DIFF → TEST → OSCAR → FIX → RETEST → LIVE-CHECK → REPORT**
+
+For consequential web work, the minimum proof chain is:
+
+**AUTHORITATIVE SOURCE VERIFIED → REAL CODE CHANGED → REQUESTED DELTA PRESENT → PRESERVED FUNCTIONALITY CHECKED → BUILD/TEST PASSED → TARGET DEPLOYMENT VERIFIED → FINAL ARTIFACT INSPECTED.**
+
+## REQUIRED PRE-EXECUTION STATEMENT
+
+Before consequential implementation, internally establish:
+
+**WHAT I UNDERSTAND**
+**AUTHORITATIVE SOURCE**
+**CURRENT STATE**
+**PROTECTED FUNCTIONALITY**
+**EXACT DELTA**
+**ACCEPTANCE CRITERIA**
+**VERIFICATION METHOD**
+**DEPLOYMENT PATH**
+
+If any material item is unknown, investigate or BLOCK.
+
+## REQUIRED POST-EXECUTION AUDIT
+
+Before reporting completion, verify:
+
+1. The authoritative artifact changed as intended.
+2. The requested features/content actually exist.
+3. The artifact remains complete rather than being replaced by a miniature substitute.
+4. Protected functionality remains present.
+5. No material regression was introduced.
+6. The written artifact was re-fetched after modification.
+7. The deployment path is known.
+8. Live output is verified when possible.
+9. Visual requirements are visually checked when possible.
+10. Remaining gaps are explicitly reported.
+
+## MAXESS RESULTS NON-NEGOTIABLES
+
+The MAXESS Results experience must preserve and protect:
+
+- full-width/widescreen architecture;
+- real `window.MAXESS_RESULT` data flow;
+- existing working assessment/result functionality;
+- Naya identity and NayaNET visual language;
+- existing working video;
+- existing working CTA/conversion architecture;
+- Groove/embed compatibility;
+- responsive behavior;
+- accessibility;
+- print/PDF capability;
+- report-first information hierarchy;
+- the user's personal result before commercial messaging.
+
+A regression in any protected item must block release unless explicitly authorized.
+
+## FINAL LAW
+
+> **NEVER MAKE SHAWN DISCOVER THAT THE WORK WAS NOT ACTUALLY DONE.**
+
+And the operational version is:
+
+> **IF IT IS NOT IMPLEMENTED, VERIFIED, AND PROVABLE, IT IS NOT DONE.**
