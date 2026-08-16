@@ -1,0 +1,94 @@
+name: MAXESS Results V16 — Build Candidate
+
+on:
+  push:
+    branches: [maxess-v16-results-reconstruction]
+    paths:
+      - 'MAXESS-RESULTS-V16.js'
+      - '.github/workflows/maxess-v16-build-candidate.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-candidate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch the approved baseline blob
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BASELINE_BLOB: 9036c27a58f1a8552ea86c6ce598883a3dc12bd7
+        run: |
+          set -euo pipefail
+          curl -fsSL -H "Authorization: Bearer ${GH_TOKEN}" -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/git/blobs/${BASELINE_BLOB}" \
+            -o /tmp/baseline.json
+          python3 - <<'PY'
+          import base64, json
+          data=json.load(open('/tmp/baseline.json',encoding='utf-8'))
+          if data.get('encoding') != 'base64':
+              raise SystemExit('BLOCKED — approved baseline blob was not returned as base64.')
+          raw=base64.b64decode(data['content'])
+          open('/tmp/approved-baseline.html','wb').write(raw)
+          print('Approved baseline bytes:', len(raw))
+          PY
+
+      - name: Build complete V16 candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          baseline=Path('/tmp/approved-baseline.html').read_text(encoding='utf-8')
+          controller=Path('MAXESS-RESULTS-V16.js').read_text(encoding='utf-8')
+          old_loader=re.compile(r'<script[^>]+src=["\']https://raw\.githubusercontent\.com/SoulSchoolAcademy/maxess/main/MAXESS-RESULTS-EXPERIENCE\.js["\'][^>]*></script>', re.I)
+          if not old_loader.search(baseline):
+              raise SystemExit('BLOCKED — approved baseline presentation loader was not found.')
+          candidate=old_loader.sub('<!-- MAXESS RESULTS V16 CONTROLLER -->\\n<script id="maxess-results-v16-controller">\\n'+controller+'\\n</script>', baseline, count=1)
+          candidate += '\n<!-- UPDATED EDITED FILE — V16 — NOT YET AUTHORITATIVE -->\n'
+          candidate += '<!-- V16 controller replaces the approved presentation loader; NayaNET foundation remains preserved below the Results boundary. -->\n'
+          Path('MAXESS-RESULTS-UPDATED-V16.html').write_text(candidate,encoding='utf-8')
+          print('Candidate bytes:', len(candidate.encode('utf-8')))
+          print('Candidate lines:', len(candidate.splitlines()))
+          if len(candidate.splitlines()) < 5000:
+              raise SystemExit('BLOCKED — candidate is unexpectedly short.')
+          if candidate.count('id="maxess-results-10"') != 1:
+              raise SystemExit('BLOCKED — Results root duplication detected.')
+          if 'window.MAXESS_RESULT' not in candidate:
+              raise SystemExit('BLOCKED — authoritative result contract missing.')
+          if 'ny-youtube-player' not in candidate:
+              raise SystemExit('BLOCKED — NayaNET video foundation missing.')
+          if 'MAXESS RESULTS V16' not in candidate:
+              raise SystemExit('BLOCKED — V16 marker missing.')
+          if 'Writing & Communication' not in candidate or 'AI Orchestration' not in candidate:
+              raise SystemExit('BLOCKED — canonical 18 pathway boundary missing.')
+          Path('MAXESS-V16-BUILD-METADATA.txt').write_text(
+              'candidate=MAXESS-RESULTS-UPDATED-V16.html\\n'
+              'state=UPDATED EDITED FILE — V16 — NOT YET AUTHORITATIVE\\n'
+              'approved_baseline_blob=9036c27a58f1a8552ea86c6ce598883a3dc12bd7\\n'
+              f'bytes={len(candidate.encode("utf-8"))}\\n'
+              f'lines={len(candidate.splitlines())}\\n',
+              encoding='utf-8'
+          )
+          PY
+
+      - name: Syntax-check V16 controller
+        run: node --check MAXESS-RESULTS-V16.js
+
+      - name: Commit the generated candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "MAXESS V16 Builder"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add MAXESS-RESULTS-UPDATED-V16.html MAXESS-V16-BUILD-METADATA.txt
+          git commit -m "MAXESS Results V16: generate complete updated candidate" || exit 0
+          git push origin HEAD:maxess-v16-results-reconstruction
