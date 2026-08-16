@@ -58,7 +58,7 @@ jobs:
               'V3 hero purity': 'naya-results-experience-v3' in s,
               'V4 refinement': 'maxess-results-v4-refinement' in s,
               'V5 data guard': 'maxess-results-v5-guard' in s,
-              'V6 Naya profile layer': 'maxess-results-v6-naya-profile' in s,
+              'V6 Naya profile layer': 'MAXESS-RESULTS-V6-NAYA-PROFILE' in s,
               'Naya profile asset source': 'Naya%20Profile%20white.jpg' in s,
           }
           failed = [k for k, v in checks.items() if not v]
