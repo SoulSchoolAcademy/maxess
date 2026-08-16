@@ -1,7 +1,7 @@
 name: Naya Law — AAA Results Implementation Pass
 
 # One-time controlled migration. It self-removes after the authoritative artifact is updated.
-# Retry marker: validation now checks the actual circular-gauge implementation marker.
+# Trigger source is included because repository automation commits are treated as implementation events.
 
 on:
   push:
@@ -9,6 +9,7 @@ on:
       - naya/maxess-results-aaa
     paths:
       - .github/workflows/naya-law-aaa-results-pass.yml
+      - .github/naya_law_aaa_results_pass.py
 
 permissions:
   contents: write
