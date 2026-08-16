@@ -36,7 +36,7 @@ jobs:
           grep -q 'MAXESS RESULTS V16 TOWER' MAXESS-RESULTS-10-GROOVE.html
           grep -q 'window.MAXESS_RESULT' MAXESS-RESULTS-10-GROOVE.html
           grep -q 'MAXESS-RESULTS-CONTRACT-1' MAXESS-RESULTS-10-GROOVE.html
-          grep -q 'Writing &amp; Communication' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'Writing & Communication' MAXESS-RESULTS-10-GROOVE.html
           grep -q 'AI Orchestration' MAXESS-RESULTS-10-GROOVE.html
 
       - name: Static HTML fragment and JavaScript checks
@@ -105,8 +105,21 @@ jobs:
             'REPEAT'; do
             grep -q "$marker" MAXESS-RESULTS-10-GROOVE.html
           done
-          test "$(grep -o 'name>[^<]*' MAXESS-RESULTS-10-GROOVE.html | grep -E 'Writing &amp; Communication|Research &amp; Information|Brainstorming &amp; Ideas|Content Creation|Business &amp; Strategy|Marketing &amp; Sales|Learning &amp; Education|Coding &amp; Software|Images &amp; Visual Creation|Video &amp; Media|Audio &amp; Music|Data &amp; Analysis|Productivity &amp; Organization|Career &amp; Professional Growth|Decision Making|Creative Development|Systems &amp; Automation|AI Orchestration' | wc -l)" -ge 18
-          echo 'PRODUCT MARKERS PASS'
+          python3 - <<'PY'
+          from pathlib import Path
+          s=Path('MAXESS-RESULTS-10-GROOVE.html').read_text(encoding='utf-8')
+          names=[
+            'Writing & Communication','Research & Information','Brainstorming & Ideas','Content Creation',
+            'Business & Strategy','Marketing & Sales','Learning & Education','Coding & Software',
+            'Images & Visual Creation','Video & Media','Audio & Music','Data & Analysis',
+            'Productivity & Organization','Career & Professional Growth','Decision Making',
+            'Creative Development','Systems & Automation','AI Orchestration'
+          ]
+          missing=[name for name in names if name not in s]
+          assert not missing, f'missing canonical pathways: {missing}'
+          assert sum(name in s for name in names)==18
+          print('18 SPECIALIST AREAS PASS')
+          PY
 
       - name: Commit generated candidate
         shell: bash
