@@ -37,11 +37,20 @@ jobs:
           python3 -m py_compile tools/results_experience_oscar_pass_3.py
           python3 tools/results_experience_oscar_pass_3.py
 
+      - name: Integrate MAXESS 10.1 live visual and Naya layer
+        run: |
+          set -euo pipefail
+          python3 -m py_compile tools/integrate_living_signature_10_1.py
+          python3 tools/integrate_living_signature_10_1.py
+
       - name: Verify final Results artifacts
         run: |
           set -euo pipefail
           python3 -m py_compile tools/verify_results_10.py
           python3 tools/verify_results_10.py
+          test "$(grep -c 'MAXESS-LIVING-SIGNATURE-10.1' MAXESS-RESULTS-10-GROOVE.html)" -eq 1
+          grep -q 'maxess-result-live-bridge' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'maxess-live-naya-audio' MAXESS-RESULTS-10-GROOVE.html
 
       - name: Commit authoritative artifacts
         run: |
@@ -61,12 +70,13 @@ jobs:
             tools/results_experience_oscar_pass_3.py \
             tools/append_results_10_manifest.py \
             tools/format_results_10_artifacts.py \
+            tools/integrate_living_signature_10_1.py \
             tools/verify_results_10.py \
             .naya/memory/30-GROWING-LESSON-002-OSCAR-PASS-2.md \
             .naya/memory/31-GROWING-LESSON-003-10-STAR-LIVE-PRODUCT-GATE.md \
             .github/workflows/build-final-results-groove.yml
           if ! git diff --cached --quiet; then
-            git commit -m 'Apply Growing Lesson 003 literal 10-star pass'
+            git commit -m 'Integrate MAXESS 10.1 live Results experience'
             git pull --rebase origin main
             git push
           fi
