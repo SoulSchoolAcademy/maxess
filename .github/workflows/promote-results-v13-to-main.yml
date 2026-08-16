@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+    paths:
+      - MAXESS-RESULTS-10-GROOVE.html
 
 permissions:
   contents: write
