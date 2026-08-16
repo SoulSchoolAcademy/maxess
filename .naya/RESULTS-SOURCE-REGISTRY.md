@@ -1,61 +1,85 @@
 # MAXESS RESULTS — SOURCE REGISTRY
 
 Status: AUTHORITATIVE CONTROL DOCUMENT
-Version: 1.3
+Version: 2.0
 Updated: 2026-08-16
 
 ## PURPOSE
 
-This registry is the single source-of-truth map for the MAXESS Results surface.
-
-The repository contains many historical Results files. Their names are not authority. Their role is determined here.
+This registry is the single source-of-truth map for the MAXESS Results surface. Historical files are reference material only unless explicitly promoted here.
 
 ## CURRENT AUTHORITATIVE ENGINEERING SOURCE
 
 Repository: `SoulSchoolAcademy/maxess`
 
-Branch: `main`
+Execution branch for this AAA v2 release: `naya/results-aaa-v2`
 
-Current authoritative Results artifact:
+Foundation:
 
 `MAXESS-RESULTS-10-GROOVE.html`
 
-Current presentation layer:
+Presentation layer:
 
 `MAXESS-RESULTS-EXPERIENCE.js`
 
-Current complete Groove delivery artifact:
+Presentation-layer content SHA for this release:
+
+`648c7908d093052b956c3c879af1dea05768659f`
+
+Complete Groove delivery artifact:
 
 `MAXESS-RESULTS-10.10-GROOVE-EMBED-COMPLETE.html`
 
-The complete Groove artifact is the file Shawn copies into Groove. It is self-contained and MUST NOT require a second Results JavaScript file or a GitHub-hosted loader.
+Complete artifact content SHA for this release:
+
+`74cc12718cadd7673b3c313398c91ea30f027d91`
+
+The complete Groove artifact is the preferred delivery file. It is self-contained and MUST NOT require a GitHub-hosted Results renderer.
 
 Public verification target:
 
 `https://results.nayanet.xyz/`
 
-## DEPLOYMENT STATUS
+## RELEASE STATUS
 
-As of 2026-08-16, the public target is NOT in parity with the new complete Groove artifact.
+GitHub implementation status:
 
-Therefore:
+**AAA V2 IMPLEMENTED ON EXECUTION BRANCH**
+
+Public deployment status:
 
 **LIVE-VERIFIED = FALSE**
 
-**DELIVERY STATUS = READY FOR GROOVE — LIVE PARITY NOT YET VERIFIED**
+The public URL must not be called live, verified, 9.5+, or AAA until the external Groove publishing source is updated and the actual public URL is independently re-fetched and compared.
 
-GitHub acceptance is not deployment proof.
+## AUTHORITATIVE DATA BOUNDARY
 
-## AUTHORITATIVE ARCHITECTURE
+`window.MAXESS_RESULT` is authoritative.
+
+The Results presentation layer reads and interprets that contract. It does not calculate assessment scoring and must not manufacture production data from DOM content.
+
+Authoritative dimensions:
+
+1. Direction
+2. Communication
+3. Evaluation
+4. Iteration
+5. Systems Thinking
+
+Legacy alternate dimension names are not part of the current Results contract.
+
+## ARCHITECTURE
 
 ```text
 MAXESS Assessment
       ↓
-Result Contract
+window.MAXESS_RESULT
       ↓
-MAXESS-RESULTS-10-GROOVE.html + MAXESS-RESULTS-EXPERIENCE.js
+MAXESS-RESULTS-10-GROOVE.html
       ↓
-COMPLETE GROOVE EMBED
+MAXESS-RESULTS-EXPERIENCE.js
+      ↓
+MAXESS-RESULTS-10.10-GROOVE-EMBED-COMPLETE.html
       ↓
 Groove deployment
       ↓
@@ -64,56 +88,33 @@ https://results.nayanet.xyz/
 Independent live verification
 ```
 
-`nayanetpagecode` is the preserved NayaNET foundation. It is not a competing Results renderer.
+`nayanetpagecode` remains the preserved NayaNET foundation. It is not a competing Results renderer.
 
-The presentation layer is not a second scoring engine. It consumes `window.MAXESS_RESULT` and is responsible for the user-facing Results experience.
+## AAA V2 EXPERIENCE CONTRACT
 
-## FILE CLASSIFICATIONS
+The Results layer must present:
 
-### AUTHORITATIVE SOURCE
+- score-first hero;
+- large score-reactive MAXESS Orb;
+- Naya ↔ Orb resonance;
+- personal report framing;
+- five premium circular dimension gauges;
+- real five-dimension relationship visualization;
+- strongest dimension;
+- dynamically determined biggest lever;
+- one clear next move;
+- current KNOW → TELL → ASK → CREATE → SCORE → IMPROVE → FREEZE method;
+- all 18 Naya Masters;
+- solution/conversion after personal value;
+- responsive/mobile behavior;
+- accessibility and reduced motion;
+- print/PDF treatment.
 
-- `MAXESS-RESULTS-10-GROOVE.html` — authoritative Results foundation.
-- `MAXESS-RESULTS-EXPERIENCE.js` — authoritative presentation implementation.
-
-### COMPLETE GROOVE DELIVERY
-
-- `MAXESS-RESULTS-10.10-GROOVE-EMBED-COMPLETE.html` — **complete self-contained Groove artifact; preferred delivery file.**
-
-### LEGACY / DEPLOYMENT MIRRORS
-
-- `MAXESS-RESULTS-GROOVE-EMBED.html` — previously used Groove artifact; it contained only a bootstrap/loader and is NOT a valid complete delivery artifact under Naya Law 19.
-- `MAXESS-RESULTS-FINAL-GROOVE-EMBED.html` — previous deployment artifact; do not use for new delivery unless independently verified as complete.
-- `MAXESS-RESULTS-FINAL-GROOVE.html` — mirror of the older source.
-- `MAXESS-RESULTS-GROOVE-EMBED-9.95.html` — historical artifact.
-
-### HISTORICAL / REFERENCE RESULTS
-
-- `MAXESS-RESULTS-10-10-EXECUTABLE.html`
-- `MAXESS-RESULTS-10-10-FULL-BUILD.html`
-- `MAXESS-RESULTS-10-6-NORTH-STAR-FULL-READABLE.html`
-- `MAXESS-RESULTS-10-6-NORTH-STAR-PREVIEW.html`
-- `MAXESS-RESULTS-9-5-GROOVE.html`
-- `MAXESS-RESULTS-9-5-COMPLETE-GROOVE.html`
-- `MAXESS-RESULTS-9-0-FULL-GROOVE.html`
-- `MAXESS-RESULTS-9-0-GROOVE-EMBED.html`
-
-These are reference material only.
-
-### LEGACY / SEPARATE RENDERER
-
-- `results` — older standalone Results renderer.
-- `results-v5-prototype.html` — prototype.
-
-### UPSTREAM ASSESSMENT FILES
-
-- `CURRENT WORKING FILE`
-- `RESULTS PAGE CODE`
-
-These are upstream of the Result Contract boundary.
+“Pattern” is reserved primarily for the relationship visualization. It must not dominate the hero.
 
 ## COMPLETE EMBED RULE
 
-The preferred Groove delivery is one complete file:
+The preferred Groove delivery is exactly one complete file:
 
 `MAXESS-RESULTS-10.10-GROOVE-EMBED-COMPLETE.html`
 
@@ -126,30 +127,42 @@ It must contain:
 - responsive behavior;
 - accessibility behavior;
 - requested Results sections;
-- requested Naya interactions;
-- no external GitHub Results renderer dependency.
-
-A snippet, bootstrap, loader, or partial file is not acceptable delivery.
+- Naya interactions;
+- print/PDF behavior;
+- no external GitHub Results renderer dependency;
+- no iframe/loader shortcut used as the Results implementation.
 
 ## DEVELOPMENT DATA RULE
 
-The deterministic fixture inside the complete artifact is explicitly a preview fallback only. Production results must arrive through the real `window.MAXESS_RESULT` contract.
+The complete artifact contains a deterministic fixture only when the explicit `fixture=demo` query parameter is supplied. Production URLs without that parameter do not receive fixture data.
 
-Production architecture remains:
+Production remains:
 
-`Assessment → Result Contract → Results renderer`
+`Assessment → window.MAXESS_RESULT → Results renderer`
 
-The Results renderer must not become a second scoring engine.
+## PRESERVATION RULE
 
-## DELIVERY TEST
+The presentation layer must preserve pre-existing media when it exists inside the Results root before runtime rendering. It must also preserve the surrounding NayaNET foundation and later conversion architecture outside the Results root.
 
-Before a Groove link is delivered, verify:
+Do not invent a media URL or replace missing real media with a fake production video.
 
-1. The linked file is the complete artifact.
-2. It does not load the Results renderer from GitHub.
-3. It contains the requested experience.
-4. It is materially more than a bootstrap/snippet.
-5. It is the exact file intended for Groove.
-6. The public target is separately checked after Groove publication.
+## DELIVERY GATE
 
-If these cannot be proven, status is BLOCKED.
+Before Groove publication, prove:
+
+1. The branch contains the intended source and presentation changes.
+2. The complete artifact is self-contained.
+3. The complete artifact does not load a second Results renderer.
+4. `window.MAXESS_RESULT` remains the production data boundary.
+5. All five authoritative dimensions are present.
+6. All 18 Naya Masters are present.
+7. No silent production fixture exists.
+8. Static JavaScript syntax passes.
+9. Runtime bootstrap smoke test passes.
+10. Reduced-motion and print rules exist.
+11. Existing media/foundation/conversion behavior is preserved where present.
+12. The public URL is re-fetched after Groove publication.
+
+If any deployment-parity proof is missing:
+
+**BLOCKED — DEPLOYMENT PARITY FAILURE**
