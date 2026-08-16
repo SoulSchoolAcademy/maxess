@@ -6192,5 +6192,67 @@ window.addEventListener('maxess:result-ready',sync);
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',mount,{once:true}); else mount();
 })();
 </script>
+
+<!-- MAXESS-RESULTS-V6-NAYA-PROFILE -->
+<style id="maxess-naya-profile-v6">
+  #maxess-naya-profile-v6 {
+    --naya-purple:#7b2cff;
+    --naya-magenta:#d946ef;
+    --naya-ink:#08050d;
+    margin:clamp(24px,4vw,56px) auto;
+    width:min(1120px,calc(100% - 32px));
+    position:relative;
+    isolation:isolate;
+  }
+  #maxess-naya-profile-v6 .naya-v6-inner {
+    display:grid;
+    grid-template-columns:96px 1fr;
+    gap:24px;
+    align-items:center;
+    padding:28px 32px;
+    border:1px solid rgba(255,255,255,.14);
+    border-radius:28px;
+    background:linear-gradient(135deg,rgba(123,44,255,.20),rgba(217,70,239,.10) 52%,rgba(255,255,255,.05));
+    box-shadow:0 24px 70px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.08);
+    overflow:hidden;
+  }
+  #maxess-naya-profile-v6 .naya-v6-avatar {
+    width:96px;height:96px;border-radius:50%;object-fit:cover;display:block;
+    border:3px solid rgba(255,255,255,.82);
+    box-shadow:0 0 0 8px rgba(123,44,255,.16),0 14px 36px rgba(0,0,0,.28);
+    background:#fff;
+  }
+  #maxess-naya-profile-v6 .naya-v6-kicker {
+    margin:0 0 6px;text-transform:uppercase;letter-spacing:.16em;font-size:11px;font-weight:800;opacity:.72;
+  }
+  #maxess-naya-profile-v6 .naya-v6-title {margin:0;font-size:clamp(20px,2.2vw,30px);line-height:1.08;font-weight:850;letter-spacing:-.025em;}
+  #maxess-naya-profile-v6 .naya-v6-copy {margin:8px 0 0;max-width:760px;font-size:clamp(15px,1.3vw,18px);line-height:1.55;opacity:.82;}
+  #maxess-naya-profile-v6 .naya-v6-glow {position:absolute;inset:auto -10% -70%;height:180px;background:radial-gradient(circle,rgba(217,70,239,.25),transparent 65%);z-index:-1;pointer-events:none;}
+  @media (max-width:680px){
+    #maxess-naya-profile-v6 .naya-v6-inner{grid-template-columns:64px 1fr;gap:16px;padding:20px;border-radius:22px;}
+    #maxess-naya-profile-v6 .naya-v6-avatar{width:64px;height:64px;}
+  }
+  @media (prefers-reduced-motion:reduce){#maxess-naya-profile-v6 .naya-v6-inner{transition:none!important}}
+</style>
+<script id="maxess-naya-profile-v6-script">
+(function(){
+  'use strict';
+  function mount(){
+    if(document.getElementById('maxess-naya-profile-v6')) return;
+    var main=document.querySelector('main');
+    if(!main) return;
+    var card=document.createElement('section');
+    card.id='maxess-naya-profile-v6';
+    card.setAttribute('aria-label','Naya personal guide');
+    card.innerHTML='<div class="naya-v6-inner">'+
+      '<img class="naya-v6-avatar" src="https://raw.githubusercontent.com/SoulSchoolAcademy/maxess/main/Naya%20Profile%20white.jpg" width="96" height="96" loading="eager" decoding="async" alt="Naya, your AI guide">'+
+      '<div><p class="naya-v6-kicker">YOUR AI GUIDE · NAYA</p><h2 class="naya-v6-title">I’m here to help you understand what your score means.</h2><p class="naya-v6-copy">Your score is the starting point. I’ll help you see the strengths, the opportunities, and the next move that makes the most sense for you.</p></div>'+
+      '</div><div class="naya-v6-glow" aria-hidden="true"></div>';
+    var first=main.firstElementChild;
+    if(first && first.nextSibling) main.insertBefore(card,first.nextSibling); else main.appendChild(card);
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',mount,{once:true}); else mount();
+})();
+</script>
 </body>
 </html>
