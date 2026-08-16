@@ -1,465 +1,481 @@
 /*
- MAXESS — LIVING SIGNATURE 10.0
+ MAXESS V13 — EXECUTION PATCH
 
- Purpose
- -------
- Upgrade the existing MAXESS results hero from a conventional score orb into
- the signature MAXESS visual language:
+ Purpose:
+ Turn the existing MAXESS Results experience into a personal AI mastery report
+ without replacing the authoritative result architecture.
 
-   Living Signature + Resonance Orb + five-dimensional energy + Naya reactivity
-
- Design rules
- ------------
- - Preserve the existing MAXESS result architecture and authoritative data.
- - Never recalculate assessment scores here.
+ Preservation:
+ - window.MAXESS_RESULT remains authoritative.
+ - Existing markup, video, CTAs, audio, assessment handoff and conversion assets remain.
+ - This patch upgrades/reorders existing sections in place.
  - No external libraries.
- - SVG for the generative signature; CSS for the atmosphere and motion.
- - Responsive and reduced-motion friendly.
- - Graceful fallback when MAXESS_RESULT is unavailable.
- - Naya playback can drive the visual through a shared CustomEvent contract.
- - If a real audio element is available, Web Audio can drive pulse intensity.
+ - Reduced-motion and keyboard-safe behavior are retained.
 
- Integration
- -----------
- Load this file after the existing MAXESS results markup/scripts.
- It looks for #maxess-results-10 .mx-score-orb and upgrades that hero in place.
+ North Star:
+ SCORE -> NAYA -> REPORT -> DIMENSIONS -> PATTERN -> MEANING -> STRENGTHS -> LEVER -> NEXT MOVE -> MASTERS -> SOLUTION -> ACTION
+
+ Iteration: V13
 */
 (function () {
   'use strict';
 
   const ROOT_ID = 'maxess-results-10';
-  const SIGNATURE_ID = 'maxessLivingSignature';
-  const STYLE_ID = 'maxessLivingSignatureStyles';
+  const PATCH_ID = 'maxessV13Execution';
+  const NAYA_IMAGE_BLACK = 'https://i.postimg.cc/RF3XFWJ7/grok-image-c6a924fd-1f75-4ac8-840d-35b224fb3e52.jpg';
+  const NAYA_IMAGE_WHITE = 'https://i.postimg.cc/dVXw7sRN/grok-image-f75a6f12-4e3a-4c99-a334-5684ba0f7401.jpg';
+  const LOGO_IMAGE = 'https://i.postimg.cc/Twqw14vv/ICON-LOGO.png';
 
-  const DIMENSION_META = [
-    { key: 'direction', label: 'Direction', short: 'DIR', hue: 274 },
-    { key: 'context', label: 'Context', short: 'CTX', hue: 252 },
-    { key: 'collaboration', label: 'Collaboration', short: 'COL', hue: 218 },
-    { key: 'evaluation', label: 'Evaluation', short: 'EVA', hue: 300 },
-    { key: 'iteration', label: 'Iteration', short: 'ITR', hue: 186 }
-  ];
+  const clamp = (n, a, b) => Math.max(a, Math.min(b, n));
+  const scoreOf = (d) => clamp(Number(d && d.score) || 0, 0, 100);
+  const result = window.MAXESS_RESULT || {};
+  const dimensions = Array.isArray(result.dimensions) ? result.dimensions.map((d, i) => ({
+    ...d,
+    score: scoreOf(d),
+    index: i
+  })) : [];
+  const overall = clamp(Number(result.overallScore) || (dimensions.length ? dimensions.reduce((s, d) => s + d.score, 0) / dimensions.length : 0), 0, 100);
 
-  const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
-  const num = (v, fallback = 0) => {
-    const n = Number(v);
-    return Number.isFinite(n) ? n : fallback;
-  };
+  function esc(value) {
+    return String(value == null ? '' : value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
 
-  function readResult() {
-    const r = window.MAXESS_RESULT || {};
-    const rawDims = Array.isArray(r.dimensions) ? r.dimensions : [];
-    const byName = new Map(rawDims.map(d => [String(d.name || d.id || '').toLowerCase(), d]));
-    const dimensions = DIMENSION_META.map((meta, i) => {
-      const source = rawDims[i] || byName.get(meta.label.toLowerCase()) || {};
-      return {
-        ...meta,
-        score: clamp(num(source.score, 0), 0, 100),
-        name: source.name || meta.label,
-        insight: source.insight || '',
-        description: source.description || ''
-      };
-    });
-    const overall = clamp(num(r.overallScore, dimensions.reduce((a, d) => a + d.score, 0) / Math.max(1, dimensions.length)), 0, 100);
-    return { ...r, overallScore: overall, dimensions };
+  function bandFor(score) {
+    if (score < 50) return 'Building';
+    if (score < 65) return 'Developing';
+    if (score < 75) return 'Advancing';
+    if (score < 85) return 'Strong';
+    if (score < 95) return 'Mastery';
+    return 'Exceptional';
+  }
+
+  function colorFor(score) {
+    const stops = [
+      [0, [255, 62, 62]],
+      [50, [255, 148, 42]],
+      [65, [247, 215, 77]],
+      [75, [81, 226, 173]],
+      [85, [57, 190, 218]],
+      [90, [77, 112, 255]],
+      [95, [181, 77, 255]],
+      [100, [255, 62, 198]]
+    ];
+    for (let i = 1; i < stops.length; i++) {
+      if (score <= stops[i][0]) {
+        const a = stops[i - 1], b = stops[i];
+        const t = (score - a[0]) / (b[0] - a[0]);
+        return b[1].map((v, j) => Math.round(a[1][j] + (v - a[1][j]) * t));
+      }
+    }
+    return stops[stops.length - 1][1];
+  }
+
+  function setVars(root) {
+    const [r,g,b] = colorFor(overall);
+    root.style.setProperty('--v13-r', r);
+    root.style.setProperty('--v13-g', g);
+    root.style.setProperty('--v13-b', b);
+    root.style.setProperty('--v13-rgb', `${r},${g},${b}`);
+    root.style.setProperty('--v13-band', `'${bandFor(overall)}'`);
   }
 
   function addStyles() {
-    if (document.getElementById(STYLE_ID)) return;
+    if (document.getElementById('maxessV13Styles')) return;
     const style = document.createElement('style');
-    style.id = STYLE_ID;
+    style.id = 'maxessV13Styles';
     style.textContent = `
-      #${ROOT_ID} .mx-hero-grid{position:relative}
-      #${ROOT_ID} .mx-ls-stage{
-        position:relative;
-        width:min(620px,92vw);
-        aspect-ratio:1;
-        margin:auto;
-        display:grid;
-        place-items:center;
-        isolation:isolate;
+      #${ROOT_ID}{
+        --v13-rgb:166,108,255;
+        --v13-r:166;--v13-g:108;--v13-b:255;
+        --v13-accent:rgb(var(--v13-rgb));
+        --v13-soft:rgba(var(--v13-rgb),.16);
+        --v13-line:rgba(255,255,255,.11);
       }
-      #${ROOT_ID} .mx-ls-stage::before{
-        content:"";
-        position:absolute;
-        inset:8%;
-        border-radius:50%;
-        background:radial-gradient(circle,rgba(176,86,255,.24),rgba(96,42,168,.08) 35%,transparent 70%);
-        filter:blur(24px);
-        z-index:-3;
-        opacity:calc(.35 + var(--mx-energy, .6) * .65);
+      #${ROOT_ID} .v13-hidden{display:none!important}
+      #${ROOT_ID} .v13-kicker{
+        display:inline-flex;align-items:center;gap:9px;margin-bottom:13px;
+        color:rgba(255,255,255,.54);font-size:10px;font-weight:900;letter-spacing:.2em;text-transform:uppercase;
       }
-      #${ROOT_ID} .mx-ls-stage::after{
-        content:"";
-        position:absolute;
-        inset:2%;
-        border-radius:50%;
-        border:1px solid rgba(255,255,255,.035);
-        box-shadow:0 0 80px rgba(142,64,255,.08), inset 0 0 80px rgba(110,50,210,.05);
-        pointer-events:none;
+      #${ROOT_ID} .v13-kicker:before{content:"";width:26px;height:1px;background:linear-gradient(90deg,var(--v13-accent),transparent)}
+      #${ROOT_ID} .v13-chapter{
+        position:relative;display:grid;grid-template-columns:auto 1fr;gap:15px;align-items:start;
+        margin-bottom:25px;
       }
-      #${ROOT_ID} .mx-ls-svg{
-        position:absolute;
-        inset:0;
-        width:100%;
-        height:100%;
-        overflow:visible;
+      #${ROOT_ID} .v13-number{
+        display:grid;place-items:center;width:42px;height:42px;border-radius:13px;
+        background:linear-gradient(145deg,rgba(255,255,255,.12),rgba(var(--v13-rgb),.14));
+        border:1px solid rgba(255,255,255,.14);font-size:10px;font-weight:950;letter-spacing:.08em;
+        box-shadow:0 8px 28px rgba(0,0,0,.2);
       }
-      #${ROOT_ID} .mx-ls-path{
-        fill:none;
-        stroke-linecap:round;
-        vector-effect:non-scaling-stroke;
-        transform-origin:50% 50%;
-        transition:opacity .7s ease,filter .7s ease;
+      #${ROOT_ID} .v13-subtitle{margin:5px 0 0;color:rgba(255,255,255,.54);font-size:15px;line-height:1.55;max-width:760px}
+
+      /* HERO: score first, everything else second. */
+      #${ROOT_ID} .mx-hero{min-height:min(900px,94vh)!important;padding-top:52px!important;padding-bottom:66px!important}
+      #${ROOT_ID} .mx-hero-grid{gap:24px!important}
+      #${ROOT_ID} .mx-hero-copy{max-width:1000px!important;text-align:center!important;order:3}
+      #${ROOT_ID} .mx-hero-copy .mx-eyebrow{justify-content:center}
+      #${ROOT_ID} .mx-hero-copy .mx-title{font-size:clamp(34px,5vw,68px)!important;margin-top:8px!important}
+      #${ROOT_ID} .mx-hero-copy .mx-title em{background:linear-gradient(110deg,#fff,#fff 40%,rgb(var(--v13-rgb)) 100%);-webkit-background-clip:text;background-clip:text}
+      #${ROOT_ID} .mx-hero-copy .mx-copy{max-width:640px!important;margin:14px auto 0!important;font-size:16px!important;color:rgba(255,255,255,.62)!important}
+      #${ROOT_ID} .mx-score-orb,#${ROOT_ID} .mx-ls-stage{order:1!important}
+      #${ROOT_ID} .mx-hero-actions{order:4;margin-top:22px!important}
+      #${ROOT_ID} .mx-proof{order:5;margin-top:16px!important;max-width:760px;width:100%;margin-left:auto;margin-right:auto}
+      #${ROOT_ID} .v13-hero-label{order:2;display:flex;align-items:center;justify-content:center;gap:10px;margin-top:-10px;color:#fff;font-size:clamp(22px,2.6vw,36px);font-weight:850;letter-spacing:-.035em}
+      #${ROOT_ID} .v13-score-status{display:inline-flex;align-items:center;gap:8px;margin-left:5px;padding:7px 11px;border:1px solid rgba(255,255,255,.16);border-radius:999px;background:rgba(255,255,255,.055);color:rgba(255,255,255,.72);font-size:10px;font-weight:900;letter-spacing:.13em;text-transform:uppercase;vertical-align:middle}
+      #${ROOT_ID} .v13-score-status:before{content:"";width:7px;height:7px;border-radius:50%;background:rgb(var(--v13-rgb));box-shadow:0 0 15px rgb(var(--v13-rgb))}
+      #${ROOT_ID} .v13-print{position:absolute;right:clamp(20px,4vw,72px);top:24px;z-index:10}
+      #${ROOT_ID} .v13-print button{display:inline-flex;align-items:center;gap:9px;padding:10px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.055);color:#fff;font-size:11px;font-weight:800;cursor:pointer;backdrop-filter:blur(12px)}
+      #${ROOT_ID} .v13-print button:hover{background:rgba(255,255,255,.1);transform:translateY(-1px)}
+      #${ROOT_ID} .v13-print svg{width:15px;height:15px}
+
+      /* NAYA: person, not advertisement. */
+      #${ROOT_ID} .v13-naya-intro{position:relative;overflow:hidden;margin:0 auto clamp(20px,3vw,45px);width:min(1200px,100%);border:1px solid rgba(255,255,255,.13);border-radius:30px;background:linear-gradient(115deg,rgba(255,255,255,.07),rgba(var(--v13-rgb),.09) 52%,rgba(255,255,255,.025));box-shadow:0 30px 90px rgba(0,0,0,.32)}
+      #${ROOT_ID} .v13-naya-inner{display:grid;grid-template-columns:180px 1fr auto;gap:28px;align-items:center;padding:28px 32px}
+      #${ROOT_ID} .v13-naya-photo{width:148px;height:148px;border-radius:50%;object-fit:cover;object-position:center;border:3px solid rgba(255,255,255,.75);box-shadow:0 0 0 7px rgba(var(--v13-rgb),.09),0 18px 50px rgba(0,0,0,.4)}
+      #${ROOT_ID} .v13-naya-copy h2{margin:0;font-size:clamp(25px,3vw,42px);line-height:1;letter-spacing:-.045em}
+      #${ROOT_ID} .v13-naya-copy p{margin:10px 0 0;max-width:680px;color:rgba(255,255,255,.68);font-size:15px;line-height:1.6}
+      #${ROOT_ID} .v13-naya-name{display:block;margin-bottom:7px;color:rgb(var(--v13-rgb));font-size:10px;font-weight:950;letter-spacing:.18em;text-transform:uppercase}
+      #${ROOT_ID} .v13-naya-listen{display:inline-flex;align-items:center;gap:10px;min-height:52px;padding:0 18px;border-radius:15px;border:1px solid rgba(255,255,255,.18);background:linear-gradient(135deg,rgba(255,255,255,.12),rgba(var(--v13-rgb),.18));color:#fff;font-weight:850;cursor:pointer;white-space:nowrap}
+      #${ROOT_ID} .v13-naya-listen:hover{filter:brightness(1.1);transform:translateY(-2px)}
+      #${ROOT_ID} .v13-naya-listen .play{display:grid;place-items:center;width:25px;height:25px;border-radius:50%;background:#fff;color:#13091e;font-size:10px}
+
+      /* Section rhythm: report chapters breathe, but do not drift apart. */
+      #${ROOT_ID} .v13-report-section{padding-top:clamp(54px,6vw,88px)!important;padding-bottom:clamp(54px,6vw,88px)!important}
+      #${ROOT_ID} .v13-report-section.v13-light{background:#f8f7fb;color:#0b0910}
+      #${ROOT_ID} .v13-report-section.v13-light .v13-kicker{color:rgba(15,12,20,.5)}
+      #${ROOT_ID} .v13-report-section.v13-light .v13-subtitle{color:rgba(15,12,20,.58)}
+      #${ROOT_ID} .v13-report-section.v13-light .mx-section-head p{color:rgba(15,12,20,.58)}
+      #${ROOT_ID} .v13-report-section.v13-light .mx-section-head h2{color:#0b0910}
+
+      /* Dimension cards: score and meaning are seen before microcopy. */
+      #${ROOT_ID} .mx-dim-grid{gap:16px!important}
+      #${ROOT_ID} .mx-dim{position:relative;overflow:hidden;min-height:310px!important;border-radius:27px!important;background:linear-gradient(160deg,rgba(255,255,255,.085),rgba(255,255,255,.018))!important}
+      #${ROOT_ID} .mx-dim:before{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:linear-gradient(90deg,transparent,rgb(var(--v13-rgb)),transparent);opacity:.85}
+      #${ROOT_ID} .mx-dim-head strong{font-size:34px!important;text-shadow:0 0 22px rgba(var(--v13-rgb),.25)}
+      #${ROOT_ID} .mx-track{height:7px!important;background:rgba(255,255,255,.07)!important}
+      #${ROOT_ID} .mx-track span{background:linear-gradient(90deg,rgba(var(--v13-rgb),.55),rgb(var(--v13-rgb)))!important}
+      #${ROOT_ID} .mx-lever b{font-size:13px!important}
+
+      /* Strength / lever cards become visual statements. */
+      #${ROOT_ID} .v13-visual-card{position:relative;overflow:hidden;border-radius:28px;border:1px solid rgba(255,255,255,.12);background:linear-gradient(145deg,rgba(255,255,255,.08),rgba(255,255,255,.018));padding:28px;min-height:190px}
+      #${ROOT_ID} .v13-visual-card:after{content:"";position:absolute;width:180px;height:180px;right:-90px;top:-90px;border-radius:50%;background:radial-gradient(circle,rgba(var(--v13-rgb),.28),transparent 70%)}
+      #${ROOT_ID} .v13-card-score{font-size:clamp(46px,5vw,72px);font-weight:900;line-height:.9;letter-spacing:-.07em}
+      #${ROOT_ID} .v13-card-name{margin-top:12px;font-size:18px;font-weight:850}
+      #${ROOT_ID} .v13-card-copy{margin-top:7px;color:rgba(255,255,255,.58);font-size:13px;line-height:1.5;max-width:460px}
+
+      /* Pattern visualization: connect the five dimensions. */
+      #${ROOT_ID} .v13-pattern{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:30px;align-items:center;padding:clamp(24px,4vw,50px);border:1px solid rgba(255,255,255,.12);border-radius:32px;background:radial-gradient(circle at 50% 50%,rgba(var(--v13-rgb),.1),transparent 48%),rgba(255,255,255,.025);overflow:hidden}
+      #${ROOT_ID} .v13-pattern-map{position:relative;min-height:380px;display:grid;place-items:center}
+      #${ROOT_ID} .v13-pattern-map svg{width:min(520px,100%);height:380px;overflow:visible}
+      #${ROOT_ID} .v13-pattern-center{position:absolute;display:grid;place-items:center;width:115px;height:115px;border-radius:50%;background:radial-gradient(circle at 35% 25%,#fff,rgba(var(--v13-rgb),.95) 22%,rgba(var(--v13-rgb),.22) 68%,transparent 100%);box-shadow:0 0 55px rgba(var(--v13-rgb),.35)}
+      #${ROOT_ID} .v13-pattern-center b{font-size:30px;line-height:1;color:#fff;text-shadow:0 2px 12px #000}
+      #${ROOT_ID} .v13-pattern-center span{font-size:8px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.78)}
+      #${ROOT_ID} .v13-pattern-copy h3{margin:0;font-size:clamp(27px,3.5vw,46px);line-height:.98;letter-spacing:-.05em}
+      #${ROOT_ID} .v13-pattern-copy p{margin:14px 0 0;color:rgba(255,255,255,.62);line-height:1.6;font-size:15px}
+      #${ROOT_ID} .v13-pattern-list{display:grid;gap:8px;margin-top:22px}
+      #${ROOT_ID} .v13-pattern-item{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:11px 13px;border:1px solid rgba(255,255,255,.08);border-radius:13px;background:rgba(255,255,255,.025)}
+      #${ROOT_ID} .v13-pattern-item span{font-size:12px;color:rgba(255,255,255,.58)}
+      #${ROOT_ID} .v13-pattern-item b{font-size:13px}
+
+      /* Pathways: personalized first, complete library remains accessible. */
+      #${ROOT_ID} .v13-path-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+      #${ROOT_ID} .v13-path{position:relative;overflow:hidden;min-height:190px;padding:22px;border-radius:23px;border:1px solid rgba(255,255,255,.11);background:linear-gradient(145deg,rgba(255,255,255,.075),rgba(255,255,255,.018));transition:transform .2s ease,border-color .2s ease}
+      #${ROOT_ID} .v13-path:hover{transform:translateY(-4px);border-color:rgba(var(--v13-rgb),.42)}
+      #${ROOT_ID} .v13-path-icon{width:46px;height:46px;border-radius:15px;display:grid;place-items:center;background:linear-gradient(145deg,rgba(255,255,255,.16),rgba(var(--v13-rgb),.22));font-size:20px;box-shadow:inset 0 1px rgba(255,255,255,.35)}
+      #${ROOT_ID} .v13-path h3{margin:16px 0 0;font-size:17px}
+      #${ROOT_ID} .v13-path p{margin:6px 0 0;color:rgba(255,255,255,.54);font-size:12px;line-height:1.45}
+      #${ROOT_ID} .v13-path-badge{position:absolute;right:13px;top:13px;color:rgb(var(--v13-rgb));font-size:8px;font-weight:950;letter-spacing:.14em;text-transform:uppercase}
+      #${ROOT_ID} .v13-view-all{display:flex;justify-content:center;margin-top:20px}
+      #${ROOT_ID} .v13-view-all button{border:0;background:none;color:rgba(255,255,255,.58);font-weight:800;cursor:pointer;padding:10px 14px}
+      #${ROOT_ID} .v13-view-all button:hover{color:#fff}
+
+      /* Action plan: a visual journey rather than a paragraph. */
+      #${ROOT_ID} .v13-journey{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;position:relative}
+      #${ROOT_ID} .v13-step{position:relative;padding:24px 20px;border:1px solid rgba(255,255,255,.11);border-radius:22px;background:rgba(255,255,255,.035);min-height:180px}
+      #${ROOT_ID} .v13-step:after{content:"";position:absolute;right:-17px;top:38px;width:32px;height:1px;background:linear-gradient(90deg,rgba(var(--v13-rgb),.6),transparent)}
+      #${ROOT_ID} .v13-step:last-child:after{display:none}
+      #${ROOT_ID} .v13-step-no{color:rgb(var(--v13-rgb));font-size:10px;font-weight:950;letter-spacing:.16em}
+      #${ROOT_ID} .v13-step h3{margin:12px 0 0;font-size:19px}
+      #${ROOT_ID} .v13-step p{margin:7px 0 0;color:rgba(255,255,255,.53);font-size:12px;line-height:1.5}
+
+      /* Keep the commercial message at the end of the story. */
+      #${ROOT_ID} .v13-deprioritize{opacity:.94}
+
+      @media(max-width:1000px){
+        #${ROOT_ID} .v13-naya-inner{grid-template-columns:120px 1fr}
+        #${ROOT_ID} .v13-naya-listen{grid-column:2;justify-self:start}
+        #${ROOT_ID} .v13-pattern{grid-template-columns:1fr}
+        #${ROOT_ID} .v13-path-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+        #${ROOT_ID} .v13-journey{grid-template-columns:repeat(2,1fr)}
+        #${ROOT_ID} .v13-step:nth-child(2):after{display:none}
       }
-      #${ROOT_ID} .mx-ls-orbit{
-        fill:none;
-        stroke:rgba(225,199,255,.13);
-        stroke-width:1;
-        stroke-dasharray:2 12;
-        transform-origin:50% 50%;
-      }
-      #${ROOT_ID} .mx-ls-node{
-        fill:#fff;
-        stroke:rgba(224,193,255,.9);
-        stroke-width:1;
-        filter:drop-shadow(0 0 7px rgba(191,106,255,.8));
-      }
-      #${ROOT_ID} .mx-ls-label{
-        position:absolute;
-        left:50%;
-        top:50%;
-        min-width:72px;
-        padding:7px 10px;
-        border:1px solid rgba(255,255,255,.12);
-        border-radius:999px;
-        background:rgba(5,3,9,.68);
-        backdrop-filter:blur(12px);
-        -webkit-backdrop-filter:blur(12px);
-        color:rgba(255,255,255,.76);
-        font-size:9px;
-        font-weight:900;
-        letter-spacing:.13em;
-        text-align:center;
-        text-transform:uppercase;
-        opacity:0;
-        transform:translate(-50%,-50%) scale(.92);
-        pointer-events:none;
-        transition:opacity .35s ease,transform .35s ease;
-      }
-      #${ROOT_ID} .mx-ls-stage:hover .mx-ls-label,
-      #${ROOT_ID} .mx-ls-stage:focus-within .mx-ls-label,
-      #${ROOT_ID} .mx-ls-stage.mx-ls-open .mx-ls-label{
-        opacity:1;
-        transform:translate(-50%,-50%) scale(1);
-      }
-      #${ROOT_ID} .mx-ls-core{
-        position:relative;
-        width:min(235px,38vw);
-        aspect-ratio:1;
-        border-radius:50%;
-        display:grid;
-        place-items:center;
-        cursor:pointer;
-        outline:none;
-        transform:scale(calc(.94 + var(--mx-energy,.6) * .07));
-        transition:transform .5s cubic-bezier(.2,.8,.2,1),filter .5s ease;
-      }
-      #${ROOT_ID} .mx-ls-core:hover{filter:brightness(1.08)}
-      #${ROOT_ID} .mx-ls-core:focus-visible{box-shadow:0 0 0 4px rgba(220,188,255,.35),0 0 60px rgba(170,80,255,.35)}
-      #${ROOT_ID} .mx-ls-core::before{
-        content:"";
-        position:absolute;
-        inset:7%;
-        border-radius:50%;
-        background:
-          radial-gradient(circle at 31% 22%,rgba(255,255,255,.72) 0,rgba(255,255,255,.18) 7%,transparent 18%),
-          radial-gradient(circle at 50% 47%,rgba(207,150,255,.85) 0,rgba(126,48,220,.48) 31%,rgba(36,11,66,.94) 69%,#050208 100%);
-        box-shadow:
-          inset 0 4px 18px rgba(255,255,255,.14),
-          inset 0 -30px 55px rgba(12,2,25,.8),
-          0 0 0 1px rgba(255,255,255,.2),
-          0 0 40px rgba(168,83,255,.38),
-          0 0 95px rgba(132,52,225,.22);
-      }
-      #${ROOT_ID} .mx-ls-core::after{
-        content:"";
-        position:absolute;
-        inset:0;
-        border-radius:50%;
-        border:1px solid rgba(225,197,255,.24);
-        box-shadow:inset 0 0 28px rgba(185,105,255,.16);
-        animation:mxLsBreathe 4.2s ease-in-out infinite;
-      }
-      #${ROOT_ID} .mx-ls-core-copy{
-        position:relative;
-        z-index:3;
-        text-align:center;
-        pointer-events:none;
-      }
-      #${ROOT_ID} .mx-ls-score{
-        display:block;
-        font-size:clamp(60px,8vw,104px);
-        line-height:.8;
-        letter-spacing:-.085em;
-        font-weight:850;
-        text-shadow:0 4px 22px rgba(0,0,0,.62),0 0 34px rgba(198,135,255,.18);
-      }
-      #${ROOT_ID} .mx-ls-core-label{
-        display:block;
-        margin-top:22px;
-        color:rgba(235,214,255,.82);
-        font-size:9px;
-        font-weight:900;
-        letter-spacing:.22em;
-        text-transform:uppercase;
-      }
-      #${ROOT_ID} .mx-ls-ripple{
-        position:absolute;
-        inset:7%;
-        border-radius:50%;
-        border:1px solid rgba(215,170,255,0);
-        pointer-events:none;
-        opacity:0;
-      }
-      #${ROOT_ID} .mx-ls-stage.mx-ls-speaking .mx-ls-ripple{animation:mxLsVoice 1.15s ease-out infinite}
-      #${ROOT_ID} .mx-ls-stage.mx-ls-speaking .mx-ls-core::after{animation:mxLsSpeak .72s ease-in-out infinite}
-      #${ROOT_ID} .mx-ls-stage.mx-ls-excited .mx-ls-core{filter:brightness(1.16)}
-      #${ROOT_ID} .mx-ls-stage.mx-ls-excited .mx-ls-ripple{animation:mxLsVoice .72s ease-out 2}
-      #${ROOT_ID} .mx-ls-hint{
-        position:absolute;
-        left:50%;
-        bottom:2%;
-        transform:translateX(-50%);
-        color:rgba(255,255,255,.36);
-        font-size:9px;
-        font-weight:700;
-        letter-spacing:.11em;
-        text-transform:uppercase;
-        white-space:nowrap;
-      }
-      @keyframes mxLsBreathe{0%,100%{transform:scale(.985);opacity:.62}50%{transform:scale(1.018);opacity:1}}
-      @keyframes mxLsSpeak{0%,100%{transform:scale(.985);opacity:.5}45%{transform:scale(1.065);opacity:1}70%{transform:scale(1.025);opacity:.8}}
-      @keyframes mxLsVoice{0%{transform:scale(.72);opacity:.75}100%{transform:scale(1.22);opacity:0}}
-      @media(max-width:900px){
-        #${ROOT_ID} .mx-hero-grid{grid-template-columns:1fr;}
-        #${ROOT_ID} .mx-ls-stage{order:-1;width:min(620px,94vw);}
-        #${ROOT_ID} .mx-hero-copy{text-align:center;margin:auto;}
-        #${ROOT_ID} .mx-hero-copy .mx-eyebrow{justify-content:center;}
-        #${ROOT_ID} .mx-hero-copy .mx-copy{margin-left:auto;margin-right:auto;}
-        #${ROOT_ID} .mx-hero-actions,#${ROOT_ID} .mx-proof{justify-content:center;}
-      }
-      @media(max-width:600px){
-        #${ROOT_ID} .mx-ls-stage{width:96vw;}
-        #${ROOT_ID} .mx-ls-core{width:min(205px,43vw);}
-        #${ROOT_ID} .mx-ls-score{font-size:clamp(54px,14vw,78px);}
-        #${ROOT_ID} .mx-ls-label{font-size:8px;min-width:62px;padding:6px 8px;}
-        #${ROOT_ID} .mx-ls-hint{bottom:0;font-size:8px;}
+      @media(max-width:700px){
+        #${ROOT_ID} .v13-print{position:relative;right:auto;top:auto;display:flex;justify-content:flex-end;margin-bottom:10px}
+        #${ROOT_ID} .v13-hero-label{font-size:25px}
+        #${ROOT_ID} .v13-naya-inner{grid-template-columns:1fr;text-align:center;padding:24px}
+        #${ROOT_ID} .v13-naya-photo{margin:auto}
+        #${ROOT_ID} .v13-naya-listen{grid-column:auto;justify-self:center}
+        #${ROOT_ID} .v13-path-grid,#${ROOT_ID} .v13-journey{grid-template-columns:1fr}
+        #${ROOT_ID} .v13-step:after{display:none!important}
+        #${ROOT_ID} .v13-pattern-map{min-height:300px}
+        #${ROOT_ID} .v13-pattern-map svg{height:300px}
       }
       @media(prefers-reduced-motion:reduce){
-        #${ROOT_ID} .mx-ls-core::after,#${ROOT_ID} .mx-ls-stage.mx-ls-speaking .mx-ls-ripple{animation:none!important}
-        #${ROOT_ID} .mx-ls-path{transition:none!important}
+        #${ROOT_ID} .v13-path,#${ROOT_ID} .v13-naya-listen,#${ROOT_ID} .v13-print button{transition:none!important}
+      }
+
+      /* PRINT: white paper, black text, no web chrome. */
+      @media print{
+        #${ROOT_ID}{background:#fff!important;color:#111!important;overflow:visible!important}
+        #${ROOT_ID} *{box-shadow:none!important;text-shadow:none!important}
+        #${ROOT_ID} .v13-print,#${ROOT_ID} button,#${ROOT_ID} .mx-hero-actions,#${ROOT_ID} .mx-proof,#${ROOT_ID} .mx-band{display:none!important}
+        #${ROOT_ID} .mx-section,#${ROOT_ID} .v13-report-section{background:#fff!important;color:#111!important;padding:36px 24px!important}
+        #${ROOT_ID} .mx-title,#${ROOT_ID} .mx-section-head h2,#${ROOT_ID} .v13-pattern-copy h3,#${ROOT_ID} .v13-naya-copy h2{color:#111!important}
+        #${ROOT_ID} .mx-copy,#${ROOT_ID} .mx-section-head p,#${ROOT_ID} .mx-dim p,#${ROOT_ID} .v13-naya-copy p,#${ROOT_ID} .v13-pattern-copy p,#${ROOT_ID} .v13-path p,#${ROOT_ID} .v13-step p{color:#333!important}
+        #${ROOT_ID} .v13-naya-intro,#${ROOT_ID} .mx-dim,#${ROOT_ID} .v13-pattern,#${ROOT_ID} .v13-path,#${ROOT_ID} .v13-step{border-color:#ddd!important;background:#fff!important}
+        #${ROOT_ID} .mx-score-orb,#${ROOT_ID} .mx-ls-stage{break-inside:avoid;page-break-inside:avoid}
+        #${ROOT_ID} .mx-dim,#${ROOT_ID} .v13-path,#${ROOT_ID} .v13-step{break-inside:avoid;page-break-inside:avoid}
+        #${ROOT_ID} .v13-naya-photo{border-color:#222!important}
       }
     `;
     document.head.appendChild(style);
   }
 
-  function polar(cx, cy, r, angle) {
-    const a = angle - Math.PI / 2;
-    return [cx + Math.cos(a) * r, cy + Math.sin(a) * r];
+  function printButton(root) {
+    if (root.querySelector('.v13-print')) return;
+    const hero = root.querySelector('.mx-hero');
+    if (!hero) return;
+    const wrap = document.createElement('div');
+    wrap.className = 'v13-print';
+    wrap.innerHTML = '<button type="button" aria-label="Print or save your MAXESS report as PDF"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M6 14h12v7H6z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg> Print / Save PDF</button>';
+    wrap.querySelector('button').addEventListener('click', () => window.print());
+    hero.appendChild(wrap);
   }
 
-  function makePath(score, index, points = 48) {
-    const baseR = 118 + index * 7;
-    const amp = 13 + score * .19;
-    const phase = index * 1.31;
-    const pts = [];
-    for (let i = 0; i <= points; i++) {
-      const t = i / points;
-      const angle = t * Math.PI * 2;
-      const wave1 = Math.sin(angle * (2 + index * .33) + phase) * amp;
-      const wave2 = Math.sin(angle * (5 + index * .17) - phase * .7) * (amp * .32);
-      const wave3 = Math.cos(angle * 3.1 + score * .02) * (score * .06);
-      const r = baseR + wave1 + wave2 + wave3;
-      pts.push(polar(300, 300, r, angle));
-    }
-    let d = '';
-    pts.forEach((p, i) => {
-      const prev = pts[(i - 1 + pts.length) % pts.length];
-      const next = pts[(i + 1) % pts.length];
-      const cx = (prev[0] + p[0]) / 2;
-      const cy = (prev[1] + p[1]) / 2;
-      if (i === 0) d += `M ${cx.toFixed(2)} ${cy.toFixed(2)} `;
-      d += `Q ${p[0].toFixed(2)} ${p[1].toFixed(2)} ${(p[0] + next[0]) / 2} ${(p[1] + next[1]) / 2} `;
-    });
-    d += 'Z';
-    return d;
+  function heroLabel(root) {
+    if (root.querySelector('.v13-hero-label')) return;
+    const orb = root.querySelector('.mx-score-orb, .mx-ls-stage');
+    if (!orb || !orb.parentNode) return;
+    const label = document.createElement('div');
+    label.className = 'v13-hero-label';
+    label.innerHTML = 'Your AI Score <span class="v13-score-status">' + esc(bandFor(overall)) + '</span>';
+    orb.parentNode.insertBefore(label, orb.nextSibling);
   }
 
-  function signatureMarkup(result) {
-    const paths = result.dimensions.map((d, i) => {
-      const hue = DIMENSION_META[i].hue;
-      const score = d.score;
-      const width = (1.2 + score / 100 * 2.4).toFixed(2);
-      const opacity = (.16 + score / 100 * .42).toFixed(2);
-      const dash = (650 - score * 2.1).toFixed(0);
-      const dur = (18 - score * .055 + i * .7).toFixed(2);
-      return `<path class="mx-ls-path" data-index="${i}" d="${makePath(score, i)}" stroke="hsla(${hue},92%,76%,${opacity})" stroke-width="${width}" style="filter:drop-shadow(0 0 ${Math.round(5 + score/16)}px hsla(${hue},90%,70%,.34));stroke-dasharray:${dash};stroke-dashoffset:0;animation:mxLsOrbit${i} ${dur}s linear infinite"/>`;
-    }).join('');
-
-    const labelPositions = [
-      ['50%', '10%'], ['88%', '34%'], ['76%', '83%'], ['24%', '83%'], ['12%', '34%']
-    ];
-    const labels = result.dimensions.map((d, i) => `<span class="mx-ls-label" style="left:${labelPositions[i][0]};top:${labelPositions[i][1]}">${d.name}</span>`).join('');
-    const nodes = result.dimensions.map((d, i) => {
-      const p = polar(300, 300, 171, i * (Math.PI * 2 / 5));
-      const size = 2.4 + d.score / 35;
-      return `<circle class="mx-ls-node" cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="${size.toFixed(1)}" opacity="${(.35 + d.score/160).toFixed(2)}"/>`;
-    }).join('');
-    return `
-      <div class="mx-ls-stage" id="${SIGNATURE_ID}" tabindex="0" role="button" aria-label="MAXESS Living Signature. Tap or hover to reveal the five dimensions.">
-        <svg class="mx-ls-svg" viewBox="0 0 600 600" aria-hidden="true">
-          <defs>
-            <radialGradient id="mxLsField" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stop-color="#d9b4ff" stop-opacity=".22"/>
-              <stop offset="35%" stop-color="#7e36d7" stop-opacity=".08"/>
-              <stop offset="100%" stop-color="#000" stop-opacity="0"/>
-            </radialGradient>
-            <filter id="mxLsGlow"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-          </defs>
-          <circle cx="300" cy="300" r="238" fill="url(#mxLsField)"/>
-          <circle class="mx-ls-orbit" cx="300" cy="300" r="207"/>
-          <circle class="mx-ls-orbit" cx="300" cy="300" r="185" opacity=".55"/>
-          <g filter="url(#mxLsGlow)">${paths}</g>
-          ${nodes}
-        </svg>
-        ${labels}
-        <div class="mx-ls-core" id="mxLsCore" tabindex="0" aria-label="Overall MAXESS score ${Math.round(result.overallScore)} out of 100">
-          <div class="mx-ls-ripple"></div>
-          <div class="mx-ls-core-copy">
-            <strong class="mx-ls-score">${Math.round(result.overallScore)}</strong>
-            <span class="mx-ls-core-label">MAXESS SCORE</span>
+  function nayaIntro(root) {
+    if (root.querySelector('.v13-naya-intro')) return;
+    const hero = root.querySelector('.mx-hero');
+    if (!hero) return;
+    const section = document.createElement('section');
+    section.className = 'mx-section v13-report-section';
+    section.setAttribute('aria-label','Naya introduction to your personalized report');
+    section.innerHTML = `
+      <div class="mx-wide">
+        <div class="v13-naya-intro">
+          <div class="v13-naya-inner">
+            <picture><img class="v13-naya-photo" src="${NAYA_IMAGE_BLACK}" alt="Naya, your AI report guide" loading="eager"></picture>
+            <div class="v13-naya-copy">
+              <span class="v13-naya-name">Naya · Your AI Report Guide</span>
+              <h2>Hi. I'm Naya. Let's make sense of your results.</h2>
+              <p>I’ve taken your MAXESS result and turned it into a personal report. I’ll help you see what you already do well, where your biggest leverage is, and what your next move can be.</p>
+            </div>
+            <button class="v13-naya-listen" type="button" aria-label="Listen to Naya explain your results"><span class="play">▶</span><span>Listen to your results</span></button>
           </div>
         </div>
-        <div class="mx-ls-hint">Your intelligence signature · hover or tap</div>
       </div>`;
+    hero.parentNode.insertBefore(section, hero.nextSibling);
+    const button = section.querySelector('.v13-naya-listen');
+    button.addEventListener('click', () => {
+      const existing = root.querySelector('#maxessNayaPlay');
+      if (existing) existing.click();
+      else if ('speechSynthesis' in window) {
+        const strongest = dimensions.slice().sort((a,b)=>b.score-a.score)[0];
+        const weakest = dimensions.slice().sort((a,b)=>a.score-b.score)[0];
+        const text = `Hi. I'm Naya. Your MAXESS AI score is ${Math.round(overall)}. Your current level is ${bandFor(overall)}. Your strongest area is ${strongest ? strongest.name : 'your current strengths'}, and your biggest opportunity is ${weakest ? weakest.name : 'your next area of growth'}. This report will help you turn that insight into action.`;
+        window.speechSynthesis.cancel();
+        window.speechSynthesis.speak(new SpeechSynthesisUtterance(text));
+      }
+    });
   }
 
-  function installKeyframes() {
-    if (document.getElementById('mxLsDynamicKeyframes')) return;
-    const s = document.createElement('style');
-    s.id = 'mxLsDynamicKeyframes';
-    let css = '';
-    for (let i = 0; i < 5; i++) {
-      css += `@keyframes mxLsOrbit${i}{from{transform:rotate(0deg)}to{transform:rotate(${i % 2 ? -360 : 360}deg)}}`;
-    }
-    s.textContent = css;
-    document.head.appendChild(s);
+  function findSections(root) {
+    const all = [...root.querySelectorAll('section')];
+    return all.map((el, i) => {
+      const text = (el.innerText || '').replace(/\s+/g,' ').trim().toLowerCase();
+      return { el, i, text };
+    });
   }
 
-  function upgradeHero() {
+  function scoreSection(text, words) {
+    return words.reduce((n,w)=>n + (text.includes(w) ? 1 : 0), 0);
+  }
+
+  function reorderReport(root) {
+    const sections = findSections(root);
+    if (sections.length < 3) return;
+    const main = root.querySelector('.mx-wrap') || root;
+    const hero = root.querySelector('.mx-hero');
+    const naya = root.querySelector('.v13-naya-intro') && root.querySelector('.v13-naya-intro').closest('section');
+    if (!hero || !main) return;
+
+    const candidates = sections.filter(s => s.el !== hero.parentElement && s.el !== naya);
+    const patterns = [
+      ['dimensions','five dimensions','capability profile'],
+      ['pattern','capability signature','fingerprint'],
+      ['strength','superpower','already have'],
+      ['leverage','highest leverage','biggest lever','opportunity'],
+      ['next move','next chapter','action plan','next step'],
+      ['18 naya','18 ai','pathways','masters'],
+      ['playground','open now','naya writer','brainstormer'],
+      ['solution','technology should','amplify your human']
+    ];
+    const chosen = [];
+    patterns.forEach(words => {
+      const hit = candidates.filter(s => !chosen.includes(s.el)).sort((a,b)=>scoreSection(b.text,words)-scoreSection(a.text,words))[0];
+      if (hit && scoreSection(hit.text,words) > 0) chosen.push(hit.el);
+    });
+    if (!chosen.length) return;
+
+    const anchors = [hero.parentElement, naya].filter(Boolean);
+    let cursor = naya || hero.parentElement;
+    chosen.forEach((el, idx) => {
+      if (!el || el === cursor || el.contains(cursor)) return;
+      cursor.parentNode.appendChild(el);
+      el.classList.add('v13-report-section');
+      cursor = el;
+    });
+  }
+
+  function enhanceDimensions(root) {
+    const cards = [...root.querySelectorAll('.mx-dim')];
+    if (!cards.length) return;
+    cards.forEach((card, i) => {
+      card.dataset.v13Dimension = 'true';
+      const score = dimensions[i] ? dimensions[i].score : Number((card.querySelector('strong') || {}).textContent) || 0;
+      const [r,g,b] = colorFor(score);
+      card.style.setProperty('--dim-rgb', `${r},${g},${b}`);
+      card.style.setProperty('--w', `${score}%`);
+      const heading = card.querySelector('h3');
+      if (heading) heading.setAttribute('aria-label', `${heading.textContent.trim()}, score ${Math.round(score)} out of 100`);
+    });
+  }
+
+  function addPatternVisualization(root) {
+    if (root.querySelector('.v13-pattern')) return;
+    const candidates = findSections(root);
+    const target = candidates.find(s => scoreSection(s.text,['pattern','capability signature','fingerprint']) > 0 && s.el !== root.querySelector('.mx-hero'));
+    if (!target) return;
+    const sorted = dimensions.slice().sort((a,b)=>b.score-a.score);
+    const points = dimensions.map((d,i)=>{
+      const a = i * Math.PI * 2 / Math.max(1,dimensions.length) - Math.PI/2;
+      const r = 135 + d.score * .55;
+      const x = 260 + Math.cos(a)*r, y = 190 + Math.sin(a)*r;
+      return {x,y,d};
+    });
+    const poly = points.map(p=>`${p.x},${p.y}`).join(' ');
+    const rings = [55,95,135,175].map(r=>`<circle cx="260" cy="190" r="${r}" fill="none" stroke="rgba(255,255,255,.09)"/>`).join('');
+    const lines = points.map(p=>`<line x1="260" y1="190" x2="${p.x}" y2="${p.y}" stroke="rgba(255,255,255,.08)"/>`).join('');
+    const nodes = points.map((p,i)=>`<circle cx="${p.x}" cy="${p.y}" r="${5 + p.d.score/35}" fill="rgb(${colorFor(p.d.score).join(',')})" filter="url(#v13Glow)"/>`).join('');
+    const panel = document.createElement('div');
+    panel.className = 'v13-pattern';
+    panel.innerHTML = `<div class="v13-pattern-map"><svg viewBox="0 0 520 380" role="img" aria-label="Five-dimensional MAXESS capability pattern"><defs><filter id="v13Glow"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>${rings}${lines}<polygon points="${poly}" fill="rgba(var(--v13-rgb),.12)" stroke="rgb(var(--v13-rgb))" stroke-width="2" stroke-linejoin="round"/>${nodes}</svg><div class="v13-pattern-center"><b>${Math.round(overall)}</b><span>MAXESS</span></div></div><div class="v13-pattern-copy"><span class="v13-kicker">04 · YOUR PATTERN</span><h3>See how your strengths work together.</h3><p>Your score tells you where you are. Your pattern shows how your capabilities combine. That relationship is where the most useful insight lives.</p><div class="v13-pattern-list">${sorted.slice(0,5).map(d=>`<div class="v13-pattern-item"><span>${esc(d.name)}</span><b>${Math.round(d.score)}</b></div>`).join('')}</div></div>`;
+    target.el.querySelector('.mx-wide,.mx-reading')?.appendChild(panel) || target.el.appendChild(panel);
+  }
+
+  function addJourney(root) {
+    if (root.querySelector('.v13-journey')) return;
+    const target = findSections(root).find(s=>scoreSection(s.text,['next move','next chapter','action plan','next step'])>0);
+    if (!target) return;
+    const lever = dimensions.slice().sort((a,b)=>a.score-b.score)[0];
+    const strong = dimensions.slice().sort((a,b)=>b.score-a.score)[0];
+    const journey = document.createElement('div');
+    journey.className='v13-journey';
+    journey.innerHTML=`
+      <div class="v13-step"><span class="v13-step-no">01 · SEE</span><h3>Know your profile</h3><p>Start with your ${Math.round(overall)} MAXESS score and the five capabilities behind it.</p></div>
+      <div class="v13-step"><span class="v13-step-no">02 · USE</span><h3>Exploit your strength</h3><p>Use ${strong ? esc(strong.name) : 'your strongest dimension'} as the foundation for better AI work.</p></div>
+      <div class="v13-step"><span class="v13-step-no">03 · BUILD</span><h3>Work your biggest lever</h3><p>Focus on ${lever ? esc(lever.name) : 'your next growth area'} where improvement can create the most upside.</p></div>
+      <div class="v13-step"><span class="v13-step-no">04 · REPEAT</span><h3>Turn skill into advantage</h3><p>Create, score, improve and repeat until better AI work becomes your normal way of operating.</p></div>`;
+    target.el.querySelector('.mx-wide,.mx-reading')?.appendChild(journey) || target.el.appendChild(journey);
+  }
+
+  function addPathways(root) {
+    if (root.querySelector('.v13-path-grid')) return;
+    const target = findSections(root).find(s=>scoreSection(s.text,['18 naya','18 ai','pathways','masters'])>0);
+    if (!target) return;
+    const names = ['Naya Writer','Naya Researcher','Naya Strategist','Naya Marketer','Naya Brainstormer','Naya Coder','Naya Designer','Naya Video','Naya Teacher','Naya Analyst','Naya Organizer','Naya Communicator','Naya Planner','Naya Creator','Naya Problem Solver','Naya Image Master','Naya Systems Master','Talk to Naya'];
+    const icons = ['✍','⌕','◆','↗','✦','⌘','◈','▶','◎','◌','▦','◉','◇','✺','⊙','✧','⬡','●'];
+    const ranked = dimensions.slice().sort((a,b)=>b.score-a.score);
+    const six = names.slice(0,6).map((name,i)=>({name, i, basis: ranked[i % Math.max(1,ranked.length)]}));
+    const grid = document.createElement('div');
+    grid.className='v13-path-grid';
+    grid.innerHTML=six.map((p)=>`<article class="v13-path"><span class="v13-path-badge">Recommended</span><div class="v13-path-icon">${icons[p.i]}</div><h3>${p.name}</h3><p>Build stronger ${p.basis ? esc(p.basis.name.toLowerCase()) : 'AI'} capability with a focused specialist workflow.</p></article>`).join('');
+    const more = document.createElement('div');
+    more.className='v13-view-all';
+    more.innerHTML='<button type="button" aria-expanded="false">View all 18 Naya Masters ↓</button>';
+    const all = document.createElement('div');
+    all.className='v13-path-grid v13-hidden';
+    all.style.marginTop='14px';
+    all.innerHTML=names.slice(6).map((name,i)=>`<article class="v13-path"><div class="v13-path-icon">${icons[i+6]}</div><h3>${name}</h3><p>A specialist pathway for turning AI capability into useful results.</p></article>`).join('');
+    more.querySelector('button').addEventListener('click',e=>{const open=all.classList.toggle('v13-hidden');e.currentTarget.setAttribute('aria-expanded',String(open?'false':'true'));e.currentTarget.textContent=open?'View all 18 Naya Masters ↓':'Hide the additional Naya Masters ↑';});
+    const container=target.el.querySelector('.mx-wide,.mx-reading') || target.el;
+    container.appendChild(grid);container.appendChild(more);container.appendChild(all);
+  }
+
+  function moveCommercialToEnd(root) {
+    const all = findSections(root);
+    const commercial = all.filter(s=>scoreSection(s.text,['technology should','amplify your human','meaningful ai foundation','ai path','get started','join'])>=2).map(s=>s.el);
+    commercial.forEach(el=>{ if (el !== root.querySelector('.mx-hero')) root.appendChild(el); });
+  }
+
+  function addChapterMarkers(root) {
+    const sections = [...root.querySelectorAll('.v13-report-section')];
+    let n = 1;
+    sections.forEach(section=>{
+      if (section.querySelector('.v13-chapter')) return;
+      const head = section.querySelector('.mx-section-head');
+      if (!head) return;
+      const title = head.querySelector('h2');
+      if (!title) return;
+      const text = title.textContent.trim().toLowerCase();
+      if (/solution|technology should|playground|conversion|cta/.test(text)) return;
+      const kicker = document.createElement('div');
+      kicker.className='v13-chapter';
+      kicker.innerHTML=`<span class="v13-number">${String(n).padStart(2,'0')}</span><div><span class="v13-kicker">MAXESS · PERSONAL REPORT</span><div class="v13-subtitle">${esc(title.textContent.trim())}</div></div>`;
+      head.parentNode.insertBefore(kicker,head);
+      n++;
+    });
+  }
+
+  function observeNaya(root) {
+    const stage = root.querySelector('.mx-score-orb,.mx-ls-stage');
+    if (!stage) return;
+    window.addEventListener('maxess:naya:start',()=>stage.classList.add('v13-naya-speaking'));
+    window.addEventListener('maxess:naya:stop',()=>stage.classList.remove('v13-naya-speaking'));
+  }
+
+  function run() {
+    if (document.getElementById(PATCH_ID)) return;
     const root = document.getElementById(ROOT_ID);
-    if (!root || document.getElementById(SIGNATURE_ID)) return false;
-    const orb = root.querySelector('.mx-score-orb');
-    if (!orb) return false;
-
-    const result = readResult();
-    const stage = document.createElement('div');
-    stage.innerHTML = signatureMarkup(result);
-    const signature = stage.firstElementChild;
-    orb.replaceWith(signature);
-
-    root.style.setProperty('--mx-energy', String(result.overallScore / 100));
-    installKeyframes();
-    bindInteraction(signature, result);
-    return true;
-  }
-
-  function bindInteraction(stage, result) {
-    const core = stage.querySelector('#mxLsCore');
-    const paths = [...stage.querySelectorAll('.mx-ls-path')];
-    const orbEnergy = result.overallScore / 100;
-
-    const setSpeaking = (on, excited = false) => {
-      stage.classList.toggle('mx-ls-speaking', !!on);
-      stage.classList.toggle('mx-ls-excited', !!excited);
-    };
-
-    core.addEventListener('click', () => stage.classList.toggle('mx-ls-open'));
-    core.addEventListener('keydown', e => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        stage.classList.toggle('mx-ls-open');
-      }
-    });
-
-    // Public Naya visual contract. Any Naya player can dispatch these events.
-    window.addEventListener('maxess:naya:start', () => setSpeaking(true, false));
-    window.addEventListener('maxess:naya:word', e => {
-      const energy = clamp(num(e.detail && e.detail.energy, .72), 0, 1);
-      stage.style.setProperty('--mx-energy', String(Math.max(orbEnergy, energy)));
-      setSpeaking(true, energy > .82);
-      paths.forEach((p, i) => {
-        p.style.opacity = String(.3 + energy * .55);
-        p.style.strokeWidth = String(1.2 + energy * 2.8 + i * .06);
-      });
-    });
-    window.addEventListener('maxess:naya:positive', () => {
-      setSpeaking(true, true);
-      window.setTimeout(() => setSpeaking(true, false), 700);
-    });
-    window.addEventListener('maxess:naya:stop', () => {
-      setSpeaking(false, false);
-      stage.style.setProperty('--mx-energy', String(orbEnergy));
-      paths.forEach(p => { p.style.opacity = ''; p.style.strokeWidth = ''; });
-    });
-
-    // If a compatible audio element exists, sample its energy with Web Audio.
-    // This is deliberately optional: the visual still works without it.
-    const audio = document.querySelector('#maxessNayaAudioElement, audio[data-maxess-naya], .mx-naya-audio audio');
-    if (audio && window.AudioContext && window.AnalyserNode) {
-      try {
-        const AudioCtx = window.AudioContext || window.webkitAudioContext;
-        const ctx = new AudioCtx();
-        const source = ctx.createMediaElementSource(audio);
-        const analyser = ctx.createAnalyser();
-        analyser.fftSize = 256;
-        source.connect(analyser);
-        analyser.connect(ctx.destination);
-        const data = new Uint8Array(analyser.frequencyBinCount);
-        const tick = () => {
-          if (!audio.paused && !audio.ended) {
-            if (ctx.state === 'suspended') ctx.resume().catch(() => {});
-            analyser.getByteFrequencyData(data);
-            let sum = 0;
-            for (let i = 0; i < data.length; i++) sum += data[i];
-            const energy = clamp(sum / (data.length * 255), 0, 1);
-            stage.style.setProperty('--mx-energy', String(Math.max(orbEnergy, .5 + energy * .5)));
-            setSpeaking(true, energy > .68);
-            paths.forEach((p, i) => {
-              p.style.opacity = String(.24 + energy * .66);
-              p.style.strokeWidth = String(1.2 + energy * 3 + i * .04);
-            });
-          } else if (stage.classList.contains('mx-ls-speaking')) {
-            setSpeaking(false, false);
-            stage.style.setProperty('--mx-energy', String(orbEnergy));
-          }
-          requestAnimationFrame(tick);
-        };
-        tick();
-      } catch (err) {
-        // Cross-origin media or browser policy may prevent analysis. Event sync remains available.
-      }
-    }
-  }
-
-  function boot() {
+    if (!root) return;
+    const marker=document.createElement('meta');marker.id=PATCH_ID;marker.name='maxess-v13-execution';marker.content='executed';document.head.appendChild(marker);
+    setVars(root);
     addStyles();
-    upgradeHero();
+    printButton(root);
+    heroLabel(root);
+    nayaIntro(root);
+    enhanceDimensions(root);
+    reorderReport(root);
+    addPatternVisualization(root);
+    addJourney(root);
+    addPathways(root);
+    moveCommercialToEnd(root);
+    addChapterMarkers(root);
+    observeNaya(root);
+    root.dataset.maxessV13='executed';
+    root.dataset.maxessV13Score=String(Math.round(overall));
+    console.info('%cMAXESS V13 EXECUTED','color:#b76cff;font-weight:900;font-size:14px', {score:overall,band:bandFor(overall),dimensions:dimensions.map(d=>({name:d.name,score:d.score}))});
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => setTimeout(boot, 60), { once: true });
-  } else {
-    setTimeout(boot, 60);
-  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded',()=>setTimeout(run,120));
+  else setTimeout(run,120);
 })();
