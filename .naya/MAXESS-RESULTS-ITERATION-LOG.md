@@ -9,27 +9,48 @@ Date: 2026-08-16
 - `window.MAXESS_RESULT` is already established as the authoritative result source.
 - The live product must be judged by the public Results experience, not by GitHub alone.
 
-### User-directed improvements
-- Hero becomes **YOUR AI SCORE**.
-- Orb becomes the primary emotional focal point.
-- Naya is introduced immediately after the score and becomes the guide.
-- “Your AI capability has shape” is removed from the hero.
-- “Meaningful AI foundation / next leap is leverage” is not a top-of-page sales message.
-- Report is ordered as a personal story rather than a generic dashboard.
-- Five dimensions become premium visual instruments.
-- Pattern is used intentionally, not repeatedly.
-- Biggest Lever is framed as opportunity.
-- 18 pathways are progressively disclosed rather than presented as an overwhelming wall.
-- Conversion is earned late.
-- Naya profile imagery is integrated as a recurring human presence.
-- PDF/print is black-on-white and readable.
+### Execution performed
+- Created the permanent V11 Master Naya instruction set.
+- Created the permanent iteration log.
+- Replaced the presentation renderer with a single deterministic V11 renderer on the execution branch.
+- Preserved the authoritative `window.MAXESS_RESULT` contract.
+- Added explicit no-result behavior; production does not invent a score.
+- Added explicit demo fixture behavior only for `?fixture=demo`.
+- Rebuilt the visible journey around: score → Naya → five dimensions → pattern/meaning → strengths/lever → next move → Naya Masters → playground → Human + AI → continuation.
+- Added score-driven Orb color interpolation.
+- Added five visual gauges.
+- Added Naya profile image and voice-preview interaction.
+- Added Print / Save PDF with a black-on-white print stylesheet.
+- Added responsive/mobile layouts and reduced-motion handling.
+- Added six-pathway progressive disclosure with an Explore all 18 control.
+- Kept conversion late in the journey.
 
-### Root causes being addressed
-1. Additive patch accumulation created competing CSS/JS authorities.
-2. Presentation changes were not always accompanied by a single authoritative renderer.
-3. “Code changed” was sometimes treated as “product changed.”
-4. Section order drifted away from the emotional journey.
-5. Too much text competed with visual communication.
+### Exact implementation commits
+- Instruction set: `81a0401b660c6ed03e8861ad50dfac84099d0300`
+- Initial renderer replacement: `606bec15993dad68871e7f55ff56fed249327895`
+- Asset correction / final renderer: `504fdb931c62225b0c062db4c38a75d1e7ea204f`
+
+### Oscar review — static/code-level
+PASS:
+- Single presentation renderer is now the intentional V11 authority.
+- Result data remains authoritative in `window.MAXESS_RESULT`.
+- No production fake score fallback.
+- Fixture is explicitly gated by query parameter.
+- Hero hierarchy is score + Orb first.
+- Naya follows the score rather than competing with it.
+- Sales material is late.
+- Print mode is explicitly black-on-white.
+- Reduced motion is defined.
+- Mobile breakpoints are defined.
+
+REMAINING RELEASE BLOCKERS:
+- Live public parity has not yet been verified from this branch.
+- Browser/runtime smoke test has not been performed in the real Groove environment.
+- The exact rendered visual quality cannot honestly be scored 95+ until the live page is inspected.
+- The canonical HTML still contains legacy inline presentation code; V11 intentionally neutralizes it by replacing the root presentation at runtime, but a future cleanup pass should remove obsolete inline presentation layers once live parity is confirmed.
+
+### Root cause lesson
+The previous architecture allowed many additive visual authorities to accumulate. That made it possible for an AI to “make changes” without a single unambiguous presentation owner. V11 moves the visible Results experience into one external renderer while preserving the protected data contract. This makes future visual iteration substantially easier to reason about and verify.
 
 ### New permanent rules
 - One presentation-layer authority.
@@ -38,6 +59,7 @@ Date: 2026-08-16
 - Every execution records failure/root-cause/correction.
 - Duplicate visible components are a release defect.
 - The public experience is the final truth.
+- A static/code pass can never be reported as live success.
 
 ### Status
-Execution in progress on branch `naya/master-execution-v11`.
+**READY FOR LIVE VERIFICATION — NOT YET DECLARED LIVE VERIFIED.**
