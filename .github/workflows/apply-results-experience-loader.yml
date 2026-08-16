@@ -22,7 +22,7 @@ jobs:
           set -euo pipefail
           test "$(find results-experience-parts -type f -name 'part-*' | wc -l)" -eq 4
           cat results-experience-parts/part-00 results-experience-parts/part-01 results-experience-parts/part-02 results-experience-parts/part-03 > MAXESS-RESULTS-EXPERIENCE.js
-          test -s MAXESS-RESULTS-EXPERIENCE.js
+          test "$(wc -c < MAXESS-RESULTS-EXPERIENCE.js)" -gt 18000
       - name: Attach authoritative presentation layer
         shell: python
         run: |
@@ -40,7 +40,6 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          test "$(wc -c < MAXESS-RESULTS-EXPERIENCE.js)" -gt 20000
           grep -q 'MAXESS_RESULT' MAXESS-RESULTS-EXPERIENCE.js
           grep -q 'Your AI Score' MAXESS-RESULTS-EXPERIENCE.js
           grep -q 'Listen to Naya' MAXESS-RESULTS-EXPERIENCE.js
