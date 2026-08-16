@@ -27,7 +27,7 @@ jobs:
         run: |
           git config user.name 'Naya Law'
           git config user.email 'naya-law@users.noreply.github.com'
-          git add MAXESS-RESULTS-10-GROOVE.html .naya/EXECUTE-RESULTS-SECTION-PASS
+          git add -A
           if git diff --cached --quiet; then exit 0; fi
           git commit -m 'MAXESS Results: section-by-section visual and narrative flow pass'
           git push
