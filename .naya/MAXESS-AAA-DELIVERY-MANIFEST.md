@@ -1,11 +1,9 @@
 # MAXESS AAA DELIVERY MANIFEST
 
-- Source master: `MAXESS-RESULTS-10-GROOVE.html`
-- Source commit: `e17c24fccd1d207ce2c5f9a6df1dfed45a5cc092`
-- Delivery: `MAXESS-RESULTS-AAA-GROOVE-EMBED.html`
+- Preserved source master: `MAXESS-RESULTS-10-GROOVE.html`
+- Source commit: `f4217d241b26ba8768ad8ae666b0a4821e811d5c`
+- Complete delivery: `MAXESS-RESULTS-AAA-GROOVE-EMBED.html`
 - Upgrade layer: `MAXESS-AAA-10.4-UPGRADE`
-- Architecture: additive; master preserved
-- Production data: `window.MAXESS_RESULT`
-- Verification gates: PASS
-
-This is the complete readable source master plus the AAA upgrade layer.
+- Architecture: additive; source master preserved
+- Production data boundary: `window.MAXESS_RESULT`
+- Structural build gates: PASS
