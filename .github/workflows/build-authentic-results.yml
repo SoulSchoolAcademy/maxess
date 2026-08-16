@@ -38,5 +38,6 @@ jobs:
             echo 'Canonical UI is already current.'
           else
             git commit -m 'Build canonical MAXESS Results UI'
+            git pull --rebase origin "${GITHUB_REF_NAME}"
             git push origin "HEAD:${GITHUB_REF_NAME}"
           fi
