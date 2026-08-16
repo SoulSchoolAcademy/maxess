@@ -2,7 +2,7 @@ name: Naya Law — MAXESS Results AAA Pass
 
 on:
   push:
-    branches: [main, 'feat/naya-law-results-aaa']
+    branches: ['feat/naya-law-results-aaa']
   workflow_dispatch:
 
 permissions:
