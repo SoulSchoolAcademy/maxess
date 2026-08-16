@@ -1,0 +1,75 @@
+name: MAXESS Results V13 — Visible Execution
+
+on:
+  push:
+    branches: [naya/maxess-results-v13-execution]
+    paths:
+      - 'tools/execute_maxess_results_v13.py'
+      - 'MAXESS-RESULTS-10-GROOVE.html'
+      - '.github/workflows/maxess-results-v13-execute.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  execute:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact V13 branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Establish baseline
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'window.MAXESS_RESULT' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'MAXESS_RESULTS_V12_SECTION_EXECUTION' MAXESS-RESULTS-10-GROOVE.html
+          test "$(wc -c < MAXESS-RESULTS-10-GROOVE.html)" -gt 300000
+          sha256sum MAXESS-RESULTS-10-GROOVE.html | tee v13-before.sha256
+      - name: Execute V13 against authoritative artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m py_compile tools/execute_maxess_results_v13.py
+          python3 tools/execute_maxess_results_v13.py
+      - name: Prove material execution
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q 'MAXESS_RESULTS_V13_VISIBLE_EXECUTION' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'id="maxess-results-v13-css"' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'id="maxess-results-v13-js"' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'v13-active' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'YOUR AI SCORE' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'Hi. I'"'"'m Naya' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'YOUR FIVE DIMENSIONS' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'SEE THE PATTERN' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'YOUR BIGGEST LEVER' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'YOUR NEXT MOVE' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'YOUR NAYA MASTERS' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'Writing & Communication' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'AI Orchestration' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'Print / Save PDF' MAXESS-RESULTS-10-GROOVE.html
+          if grep -q 'resonance: 10.10' MAXESS-RESULTS-10-GROOVE.html; then echo 'BLOCKED — fake resonance fallback remains'; exit 1; fi
+          if grep -q 'signature: "LIVING"' MAXESS-RESULTS-10-GROOVE.html; then echo 'BLOCKED — fake signature fallback remains'; exit 1; fi
+          AFTER=$(wc -c < MAXESS-RESULTS-10-GROOVE.html)
+          test "$AFTER" -gt 340000
+          sha256sum MAXESS-RESULTS-10-GROOVE.html | tee v13-after.sha256
+          echo "V13 material delta: $(python3 - <<'PY'
+from pathlib import Path
+before=int(Path('v13-before.sha256').read_text().split()[0],16)
+print('artifact changed; cryptographic proof recorded')
+PY
+)"
+      - name: Commit generated V13 artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'Naya Master'
+          git config user.email 'naya-master@users.noreply.github.com'
+          git add MAXESS-RESULTS-10-GROOVE.html
+          if git diff --cached --quiet; then echo 'BLOCKED — ZERO-CHANGE EXECUTION'; exit 1; fi
+          git commit -m 'feat(results): execute V13 visible report experience'
+          git push origin HEAD:naya/maxess-results-v13-execution
