@@ -62,7 +62,11 @@ for target in TARGETS:
         changed += 1
         continue
 
-    raise SystemExit(f'Missing </body> and </html> anchors in {target}')
+    # Groove embed can be a fragment rather than a complete HTML document.
+    # Append the self-contained visual/Naya block without manufacturing an
+    # outer document wrapper; Oscar Pass owns document-integrity rules.
+    target.write_text(html + block, encoding='utf-8')
+    changed += 1
 
 if changed == 0:
     raise SystemExit('No Results artifacts were changed; integration marker may already exist or artifacts are missing.')
