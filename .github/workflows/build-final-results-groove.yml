@@ -43,6 +43,7 @@ jobs:
           python3 -m py_compile tools/integrate_living_signature_10_1.py
           python3 tools/integrate_living_signature_10_1.py
 
+      # The integration step above is now safe for bodyless Groove embeds.
       - name: Bootstrap MAXESS_RESULT before every visual script
         run: |
           set -euo pipefail
