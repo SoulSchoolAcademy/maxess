@@ -1,0 +1,600 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#050507">
+<title>MAXESS — Your Personal AI Mastery Report</title>
+<style>
+:root{
+  --black:#050507;
+  --black2:#09090d;
+  --panel:#111118;
+  --white:#fff;
+  --ink:#0a0a0e;
+  --muted:#6b6d77;
+  --purple:#7d45d5;
+  --violet:#bd91ff;
+  --cyan:#39ddd2;
+  --green:#52e5a5;
+  --gold:#e7c76c;
+  --blue:#69a9ff;
+  --line:rgba(10,10,18,.11);
+  --darkline:rgba(255,255,255,.12);
+  --shadow:0 30px 100px rgba(0,0,0,.28);
+  --ease:cubic-bezier(.2,.8,.2,1);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:#fff;
+  color:var(--ink);
+  overflow-x:hidden;
+}
+button{font:inherit}
+button:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--cyan);outline-offset:4px}
+.page{width:100%;overflow:hidden}
+.container{width:min(1680px,100%);margin:auto;padding-inline:clamp(20px,5vw,100px)}
+.section{position:relative;padding-block:clamp(78px,9vw,145px)}
+.light{background:linear-gradient(180deg,#fff,#f4f1f8)}
+.dark{background:#060609;color:#fff}
+.purple{background:radial-gradient(circle at 82% 20%,rgba(125,69,213,.25),transparent 31%),linear-gradient(135deg,#190b2c,#050507 72%);color:#fff}
+.kicker{font-size:11px;font-weight:950;letter-spacing:.25em;text-transform:uppercase;color:var(--cyan)}
+.section-head{display:flex;justify-content:space-between;align-items:end;gap:50px;margin-bottom:48px}
+.section-head h2{font-size:clamp(42px,5.6vw,88px);line-height:.9;letter-spacing:-.07em;margin:9px 0 0}
+.section-head p{max-width:650px;margin:0;color:var(--muted);font-size:17px;line-height:1.75}
+.dark .section-head p,.purple .section-head p{color:rgba(255,255,255,.64)}
+
+/* BUTTON SYSTEM */
+.actions{display:flex;justify-content:center;align-items:center;gap:12px;flex-wrap:wrap;margin:28px 0}
+.btn{
+  min-height:58px;
+  padding:0 28px;
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,.16);
+  color:#fff;
+  background:linear-gradient(145deg,rgba(255,255,255,.12),rgba(255,255,255,.035));
+  font-weight:950;
+  cursor:pointer;
+  box-shadow:0 18px 45px rgba(0,0,0,.3),inset 0 1px rgba(255,255,255,.18);
+  transition:transform .25s var(--ease),box-shadow .25s var(--ease),filter .25s var(--ease);
+}
+.btn:hover{transform:translateY(-3px);filter:brightness(1.08);box-shadow:0 27px 70px rgba(0,0,0,.4),0 0 34px rgba(189,145,255,.16)}
+.btn.primary{background:linear-gradient(135deg,#d5bbff,#8b4fd4 45%,#30104e);box-shadow:0 22px 65px rgba(93,38,160,.45),inset 0 1px rgba(255,255,255,.72)}
+.btn.green{background:linear-gradient(135deg,#a1f7d4,#36bf94,#123d32)}
+
+/* HERO */
+.hero{
+  min-height:100svh;
+  position:relative;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 50% 42%,rgba(125,69,213,.31),transparent 25%),
+    radial-gradient(circle at 14% 18%,rgba(57,221,210,.1),transparent 23%),
+    radial-gradient(circle at 88% 76%,rgba(231,199,108,.08),transparent 20%),
+    #050507;
+  color:#fff;
+}
+.hero:before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+  background-size:72px 72px;
+  mask-image:linear-gradient(to bottom,black,transparent 92%);
+  pointer-events:none;
+}
+.hero-inner{position:relative;z-index:2;width:100%;padding-block:70px 55px;text-align:center}
+.hero h1{max-width:1100px;margin:18px auto 40px;font-size:clamp(50px,7.4vw,116px);line-height:.86;letter-spacing:-.078em}
+.hero h1 em{font-style:normal;color:var(--violet)}
+.stage{width:min(790px,92vw);aspect-ratio:1;position:relative;margin:auto;display:grid;place-items:center}
+.orb{
+  width:55%;aspect-ratio:1;position:relative;z-index:5;display:grid;place-items:center;border-radius:50%;
+  background:radial-gradient(circle at 30% 22%,rgba(255,255,255,.38),transparent 7%),radial-gradient(circle at 54% 55%,#4c2872 0,#1d0d30 39%,#09050e 70%,#020203 100%);
+  box-shadow:0 0 0 1px rgba(255,255,255,.22),inset 0 0 120px rgba(189,145,255,.35),inset -35px -35px 75px rgba(0,0,0,.72),0 0 150px rgba(125,69,213,.44);
+  animation:breathe 5.4s ease-in-out infinite;
+}
+.orb:before{content:"";position:absolute;inset:-7%;border-radius:50%;border:1px solid rgba(189,145,255,.45);box-shadow:0 0 55px rgba(189,145,255,.14);animation:spin 18s linear infinite}
+.orb:after{content:"";position:absolute;inset:-15%;border-radius:50%;border:1px dashed rgba(57,221,210,.22);animation:spinReverse 26s linear infinite}
+.score{position:relative;z-index:8}
+.score strong{display:block;font-size:clamp(105px,14vw,195px);line-height:.72;letter-spacing:-.105em}
+.score small{display:block;margin-top:28px;color:#dfccff;font-size:11px;font-weight:950;letter-spacing:.25em}
+.orbit{position:absolute;inset:0;border-radius:50%;animation:spin 32s linear infinite}
+.orbit-path{position:absolute;inset:8%;border-radius:50%;border:1px solid rgba(255,255,255,.08);transform:rotate(17deg) skewY(-7deg)}
+.orbit-node{position:absolute;width:14px;height:14px;border-radius:50%;box-shadow:0 0 30px currentColor}
+.n1{top:13%;left:49%;color:var(--violet)}
+.n2{right:14%;top:36%;color:var(--cyan)}
+.n3{right:23%;bottom:14%;color:var(--gold)}
+.n4{left:17%;bottom:20%;color:var(--green)}
+.n5{left:12%;top:32%;color:var(--blue)}
+.hero-sub{max-width:850px;margin:4px auto;color:rgba(255,255,255,.69);font-size:18px;line-height:1.7}
+.naya-hero{width:min(950px,100%);margin:auto;padding:21px 25px;text-align:left;border:1px solid rgba(82,229,165,.22);border-radius:25px;background:linear-gradient(135deg,rgba(82,229,165,.075),rgba(125,69,213,.11));box-shadow:0 20px 65px rgba(0,0,0,.2)}
+.naya-hero b{display:block;margin-bottom:7px;color:var(--green);font-size:11px;letter-spacing:.18em;text-transform:uppercase}
+.naya-hero span{color:rgba(255,255,255,.85);line-height:1.65}
+
+/* GAUGES */
+.gauge-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:17px}
+.gauge{position:relative;overflow:hidden;padding:25px;border:1px solid var(--line);border-radius:32px;background:linear-gradient(145deg,#fff,#ece8f3);box-shadow:0 25px 75px rgba(38,18,60,.09);transition:.3s var(--ease)}
+.gauge:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 0,rgba(125,69,213,.09),transparent 48%);pointer-events:none}
+.gauge:hover{transform:translateY(-8px);box-shadow:0 36px 95px rgba(38,18,60,.17)}
+.gauge-top{position:relative;z-index:1;display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.gauge-name{font-size:15px;font-weight:900;line-height:1.25}
+.gauge-score{font-size:35px;font-weight:950;letter-spacing:-.06em}
+.dial{width:100%;aspect-ratio:1;position:relative;display:grid;place-items:center;margin:23px 0;border-radius:50%;background:conic-gradient(from -90deg,var(--accent) 0 var(--value),rgba(10,10,15,.07) var(--value) 100%);box-shadow:inset 0 0 35px rgba(0,0,0,.05)}
+.dial:before{content:"";position:absolute;inset:8%;border-radius:50%;background:radial-gradient(circle at 35% 25%,#fff,#f4f1f8);box-shadow:inset 0 0 30px rgba(0,0,0,.05)}
+.dial:after{content:"";position:absolute;inset:3%;border-radius:50%;border:1px solid color-mix(in srgb,var(--accent) 42%,transparent)}
+.dial b{position:relative;z-index:2;font-size:39px;letter-spacing:-.06em}
+.gauge-foot{margin:0;color:#5c5e67;font-size:13px;line-height:1.55}
+.gauge-tag{display:inline-block;margin-top:14px;padding:7px 10px;border-radius:999px;background:rgba(125,69,213,.08);color:#6940a8;font-size:10px;font-weight:950;letter-spacing:.1em;text-transform:uppercase}
+
+/* LIVING SIGNATURE */
+.pattern-layout{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(40px,8vw,130px);align-items:center}
+.signature{min-height:650px;position:relative;display:grid;place-items:center}
+.signature svg{width:min(720px,100%);height:auto;overflow:visible}
+.sig-path{fill:none;stroke-linecap:round;stroke-width:4;stroke-dasharray:10 18;animation:dash 14s linear infinite}
+.sig-path.p2{animation-duration:17s;animation-direction:reverse}
+.sig-path.p3{animation-duration:20s}
+.sig-node{cursor:pointer;transform-box:fill-box;transform-origin:center;transition:transform .2s ease}
+.sig-node:hover{transform:scale(1.18)}
+.sig-node:focus circle:first-child{stroke:#fff;stroke-width:4}
+.signature-copy h3{margin:10px 0 24px;font-size:clamp(40px,5vw,74px);line-height:.92;letter-spacing:-.065em}
+.signature-copy h3 em{color:var(--purple);font-style:normal}
+.signature-copy p{max-width:650px;color:#62636d;font-size:19px;line-height:1.75}
+.insight-list{display:grid;gap:12px;margin-top:30px}
+.insight-row{display:flex;align-items:center;gap:14px;padding:16px 18px;border:1px solid rgba(10,10,15,.08);border-radius:18px;background:rgba(255,255,255,.66);cursor:pointer;transition:.25s var(--ease)}
+.insight-row:hover{transform:translateX(6px);box-shadow:0 15px 38px rgba(0,0,0,.07)}
+.insight-row b{font-size:14px}
+.insight-row span{margin-left:auto;color:#6a6b74;font-size:13px}
+.dot{width:12px;height:12px;flex:none;border-radius:50%;box-shadow:0 0 17px currentColor}
+
+/* NAYA READ */
+.read-grid{display:grid;grid-template-columns:.65fr 1.35fr;gap:70px;align-items:center}
+.read-badge{width:115px;height:115px;display:grid;place-items:center;border-radius:50%;background:radial-gradient(circle,#bd91ff,#56308d 60%,#150b23);box-shadow:0 0 75px rgba(189,145,255,.24);color:#fff;font-size:12px;font-weight:950;letter-spacing:.1em;text-align:center}
+.read-quote{font-size:clamp(39px,5vw,78px);line-height:.92;letter-spacing:-.067em}
+.read-quote em{color:var(--violet);font-style:normal}
+.read-copy{max-width:900px;color:rgba(255,255,255,.68);font-size:19px;line-height:1.75}
+
+/* LEVER */
+.lever-layout{display:grid;grid-template-columns:.7fr 1.3fr;gap:75px;align-items:center}
+.lever-number{color:#fff;font-size:clamp(150px,21vw,315px);font-weight:950;line-height:.65;letter-spacing:-.12em;text-shadow:0 0 75px rgba(189,145,255,.35)}
+.lever-card{padding:46px;border:1px solid rgba(255,255,255,.14);border-radius:38px;background:linear-gradient(145deg,rgba(189,145,255,.15),rgba(255,255,255,.025));box-shadow:var(--shadow)}
+.lever-card h3{margin:13px 0 20px;font-size:clamp(32px,4vw,56px);line-height:.95;letter-spacing:-.05em}
+.lever-card p{color:rgba(255,255,255,.66);font-size:18px;line-height:1.7}
+.meter{height:14px;margin-top:27px;overflow:hidden;border-radius:999px;background:rgba(255,255,255,.08)}
+.meter span{display:block;width:18%;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--violet),var(--cyan));box-shadow:0 0 28px rgba(189,145,255,.45);transition:width 1.2s var(--ease)}
+
+/* PROBLEM */
+.problem{max-width:1220px}
+.problem h2{margin:14px 0 28px;font-size:clamp(49px,6.5vw,104px);line-height:.9;letter-spacing:-.078em}
+.problem h2 em{color:var(--violet);font-style:normal}
+.problem p{max-width:1050px;margin:0;color:rgba(255,255,255,.68);font-size:20px;line-height:1.76}
+.proof-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:32px}
+.proof{padding:11px 15px;border:1px solid rgba(255,255,255,.12);border-radius:999px;background:rgba(255,255,255,.04);color:rgba(255,255,255,.73);font-size:12px;font-weight:900}
+
+/* NAYA MASTERS */
+.masters-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:17px}
+.master{position:relative;overflow:hidden;padding:31px;border:1px solid rgba(10,10,15,.1);border-radius:32px;background:linear-gradient(145deg,#fff,#eeeaf4);box-shadow:0 22px 65px rgba(35,18,55,.08);transition:.28s var(--ease)}
+.master:after{content:"";position:absolute;width:190px;height:190px;top:-95px;right:-95px;border-radius:50%;background:radial-gradient(circle,rgba(125,69,213,.17),transparent 68%)}
+.master:hover{transform:translateY(-7px);box-shadow:0 36px 95px rgba(35,18,55,.16)}
+.master-icon{width:59px;height:59px;display:grid;place-items:center;margin-bottom:19px;border-radius:20px;background:linear-gradient(135deg,var(--violet),var(--cyan),var(--gold));color:#08070b;font-weight:950;box-shadow:0 13px 32px rgba(90,50,130,.16)}
+.master h3{margin:0;font-size:20px}
+.master p{margin:10px 0 0;color:#60616a;line-height:1.55}
+
+/* FLOATING CONTROLS */
+.floating-controls{position:fixed;z-index:50;right:20px;bottom:20px;display:flex;gap:8px}
+.control{width:46px;height:46px;display:grid;place-items:center;border:1px solid rgba(255,255,255,.16);border-radius:50%;background:rgba(7,7,10,.82);color:#fff;cursor:pointer;box-shadow:0 12px 35px rgba(0,0,0,.3);backdrop-filter:blur(12px);transition:.2s}
+.control:hover{transform:translateY(-2px)}
+
+/* MODAL */
+.modal{position:fixed;inset:0;z-index:100;display:none;place-items:center;padding:20px;background:rgba(2,2,5,.72);backdrop-filter:blur(16px)}
+.modal.open{display:grid}
+.modal-card{width:min(720px,100%);max-height:90vh;overflow:auto;padding:38px;border:1px solid rgba(255,255,255,.15);border-radius:32px;background:linear-gradient(145deg,#16131d,#09090d);color:#fff;box-shadow:0 40px 120px rgba(0,0,0,.5)}
+.modal-card h2{margin:7px 0 15px;font-size:clamp(34px,5vw,58px);line-height:.95;letter-spacing:-.06em}
+.modal-card p{color:rgba(255,255,255,.68);line-height:1.7}
+.modal-close{float:right;width:42px;height:42px;border:1px solid rgba(255,255,255,.15);border-radius:50%;background:rgba(255,255,255,.06);color:#fff;cursor:pointer}
+
+/* FOOTER */
+.footer{padding:90px 20px;background:#040406;color:#fff;text-align:center}
+.footer h2{margin:0 0 28px;font-size:clamp(42px,5.4vw,80px);line-height:.92;letter-spacing:-.065em}
+.footer p{max-width:600px;margin:0 auto 28px;color:rgba(255,255,255,.58);line-height:1.6}
+
+/* RESPONSIVE */
+@media(max-width:1100px){
+  .gauge-grid{grid-template-columns:repeat(2,1fr)}
+  .pattern-layout,.read-grid,.lever-layout{grid-template-columns:1fr}
+  .masters-grid{grid-template-columns:repeat(2,1fr)}
+  .section-head{display:block}
+  .section-head p{margin-top:17px}
+}
+@media(max-width:650px){
+  .container{padding-inline:18px}
+  .hero-inner{padding-top:48px}
+  .stage{width:96vw}
+  .gauge-grid,.masters-grid{grid-template-columns:1fr}
+  .gauge{border-radius:28px}
+  .signature{min-height:450px}
+  .lever-card{padding:30px}
+  .floating-controls{right:12px;bottom:12px}
+}
+
+/* REDUCED MOTION */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.001ms!important}
+}
+
+/* PRINT / PDF */
+@page{size:letter;margin:.45in}
+@media print{
+  body{background:#fff}
+  .floating-controls,.actions,.footer,.modal{display:none!important}
+  .hero{min-height:auto;padding:34px 0 40px;background:#070609!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;page-break-after:always}
+  .hero:before{display:none}
+  .hero-inner{padding:0}
+  .stage{width:380px}
+  .orb{animation:none!important;box-shadow:none}
+  .section{padding-block:36px;page-break-inside:avoid}
+  .dark,.purple{background:#fff!important;color:#08080c!important}
+  .dark .kicker,.purple .kicker{color:#6940a8}
+  .section-head p,.read-copy,.lever-card p,.problem p{color:#333!important}
+  .gauge-grid{grid-template-columns:repeat(5,1fr);gap:8px}
+  .gauge{padding:12px;box-shadow:none;border-color:#ddd}
+  .dial{margin:12px 0;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .dial b{font-size:24px}
+  .masters-grid{grid-template-columns:repeat(3,1fr);gap:8px}
+  .master{padding:15px;box-shadow:none}
+  .master-icon{width:42px;height:42px}
+}
+</style>
+</head>
+<body>
+<div class="page" id="maxess-report">
+
+<section class="hero" aria-labelledby="hero-title">
+<div class="container hero-inner">
+<div class="kicker">MAXESS PERSONAL REPORT</div>
+<h1 id="hero-title">This is your<br><em>AI mastery pattern.</em></h1>
+<div class="stage" id="signature-stage" aria-label="MAXESS resonance signature">
+<div class="orbit-path" aria-hidden="true"></div>
+<div class="orbit" aria-hidden="true">
+<i class="orbit-node n1"></i>
+<i class="orbit-node n2"></i>
+<i class="orbit-node n3"></i>
+<i class="orbit-node n4"></i>
+<i class="orbit-node n5"></i>
+</div>
+<div class="orb" id="hero-orb">
+<div class="score"><strong id="overall-score">82</strong><small>MAXESS SCORE</small></div>
+</div>
+</div>
+<p class="hero-sub">Naya has looked at your results. This report is about you — what is strong, what your pattern reveals, where your biggest opportunity sits, and what to do next.</p>
+<div class="actions">
+<button class="btn primary" id="listen-button">Listen to Your Results</button>
+<button class="btn" id="print-button">Print / Save PDF</button>
+</div>
+<div class="naya-hero">
+<b>Naya is ready</b>
+<span id="naya-welcome">I have your results. Listen to your results and I’ll walk you through the pattern I see — what is strong, what can move, and what I would do next.</span>
+</div>
+</div>
+</section>
+
+<section class="section light" id="dimensions">
+<div class="container">
+<div class="section-head">
+<div><div class="kicker" style="color:#6940a8">YOUR PATTERN</div><h2>See the pattern,<br>not just the score.</h2></div>
+<p>Your overall score is only the beginning. These five dimensions show the shape behind it — the different capabilities that combine to determine how effectively you work with AI.</p>
+</div>
+<div class="gauge-grid" id="gauge-grid" aria-label="Five MAXESS dimensions"></div>
+</div>
+</section>
+
+<section class="section light">
+<div class="container pattern-layout">
+<div class="signature" id="signature">
+<svg viewBox="0 0 720 650" role="img" aria-label="Living Signature of your five dimensions">
+<defs>
+<radialGradient id="coreGlow"><stop offset="0" stop-color="#bd91ff" stop-opacity=".35"/><stop offset=".58" stop-color="#7d45d5" stop-opacity=".12"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
+<filter id="glow"><feGaussianBlur stdDeviation="2.5" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+<circle cx="360" cy="325" r="255" fill="url(#coreGlow)"/>
+<circle cx="360" cy="325" r="176" fill="#08070b" stroke="rgba(255,255,255,.15)" stroke-width="2"/>
+<path class="sig-path p1" stroke="#bd91ff" filter="url(#glow)" d="M360 110 C510 150 610 230 590 350 C560 500 450 560 350 530 C210 500 125 430 150 315 C175 190 250 125 360 110Z"/>
+<path class="sig-path p2" stroke="#39ddd2" filter="url(#glow)" d="M360 135 C470 165 550 235 555 330 C560 445 480 505 365 510 C245 515 165 445 165 335 C165 220 245 155 360 135Z"/>
+<path class="sig-path p3" stroke="#e7c76c" filter="url(#glow)" d="M360 175 C450 195 500 255 500 330 C500 420 445 465 360 470 C270 465 220 415 220 330 C220 245 275 195 360 175Z"/>
+<g class="sig-node" tabindex="0" role="button" data-index="0" transform="translate(360 110)"><circle r="18" fill="#bd91ff" opacity=".18"/><circle r="8" fill="#bd91ff"/></g>
+<g class="sig-node" tabindex="0" role="button" data-index="1" transform="translate(590 350)"><circle r="18" fill="#39ddd2" opacity=".18"/><circle r="8" fill="#39ddd2"/></g>
+<g class="sig-node" tabindex="0" role="button" data-index="2" transform="translate(350 530)"><circle r="18" fill="#e7c76c" opacity=".18"/><circle r="8" fill="#e7c76c"/></g>
+<g class="sig-node" tabindex="0" role="button" data-index="3" transform="translate(150 315)"><circle r="18" fill="#52e5a5" opacity=".18"/><circle r="8" fill="#52e5a5"/></g>
+<g class="sig-node" tabindex="0" role="button" data-index="4" transform="translate(220 195)"><circle r="18" fill="#69a9ff" opacity=".18"/><circle r="8" fill="#69a9ff"/></g>
+<text x="360" y="316" text-anchor="middle" fill="#fff" font-size="13" font-weight="900" letter-spacing="3">LIVING</text>
+<text x="360" y="342" text-anchor="middle" fill="#bd91ff" font-size="13" font-weight="900" letter-spacing="3">SIGNATURE</text>
+</svg>
+</div>
+<div class="signature-copy">
+<div class="kicker" style="color:#6940a8">THIS IS YOU</div>
+<h3>Your results aren't five separate numbers. <em>They're a pattern.</em></h3>
+<p>Naya uses the relationship between your dimensions to understand how you currently approach AI — where you naturally excel, where friction appears, and where one improvement could unlock several others.</p>
+<div class="insight-list" id="insight-list"></div>
+</div>
+</div>
+</section>
+
+<section class="section purple" id="naya-read">
+<div class="container read-grid">
+<div><div class="read-badge">NAYA<br>READ</div></div>
+<div>
+<div class="kicker">NAYA'S READ</div>
+<div class="read-quote">“You don't need to become better at everything. <em>You need to know what matters most next.</em>”</div>
+<p class="read-copy">Your biggest gains come from understanding your current pattern and deliberately improving the capability with the greatest leverage. This is not a judgment. It is a map.</p>
+</div>
+</div>
+</section>
+
+<section class="section dark" id="lever">
+<div class="container lever-layout">
+<div><div class="kicker">YOUR BIGGEST LEVER</div><div class="lever-number" id="lever-score">18</div></div>
+<div class="lever-card">
+<div class="kicker" style="color:var(--gold)">THE NEXT OPPORTUNITY</div>
+<h3 id="lever-title">One move can change the pattern.</h3>
+<p id="lever-copy">Your lowest dimension is not a failure. It is a signal. This is where focused practice can create the greatest improvement in your overall ability to direct AI toward the result you actually want.</p>
+<div class="meter"><span id="lever-meter"></span></div>
+</div>
+</div>
+</section>
+
+<section class="section dark" id="problem">
+<div class="container problem">
+<div class="kicker">THE PROBLEM WE SOLVE</div>
+<h2>Frustrated with AI not giving you the results you <em>actually want?</em></h2>
+<p>You know AI is capable of more. But knowing that doesn't help when the output is generic, shallow, inconsistent, or simply not what you had in your head. MAXESS gives you a proven process for directing, scoring, improving and repeating until the result gets where you want it to go.</p>
+<div class="proof-row">
+<span class="proof">KNOW</span><span class="proof">TELL</span><span class="proof">ASK</span><span class="proof">CREATE</span><span class="proof">SCORE</span><span class="proof">IMPROVE</span><span class="proof">REPEAT</span>
+</div>
+</div>
+</section>
+
+<section class="section light" id="masters">
+<div class="container">
+<div class="section-head">
+<div><div class="kicker" style="color:#6940a8">YOUR MASTERY LIBRARY</div><h2>18 Naya Masters.</h2></div>
+<p>We've fine-tuned specialized Naya Masters for the areas where people most often need high-level AI help. You don't have to become eighteen experts. You can put the right expert to work.</p>
+</div>
+<div class="masters-grid" id="masters-grid"></div>
+</div>
+</section>
+
+<footer class="footer">
+<h2>Ready to master<br>your results?</h2>
+<p>Your report tells you where you are. Your next move determines where you go.</p>
+<button class="btn primary" id="continue-button">Continue with MAXESS</button>
+</footer>
+</div>
+
+<div class="floating-controls" aria-label="Report controls">
+<button class="control" id="freeze-button" title="Freeze signature" aria-label="Freeze signature">❄</button>
+<button class="control" id="focus-button" title="Focus mode" aria-label="Focus mode">◉</button>
+<button class="control" id="print-control" title="Print or save PDF" aria-label="Print or save PDF">↥</button>
+</div>
+
+<div class="modal" id="insight-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+<div class="modal-card">
+<button class="modal-close" id="modal-close" aria-label="Close">×</button>
+<div class="kicker" id="modal-kicker">DIMENSION</div>
+<h2 id="modal-title">Dimension</h2>
+<p id="modal-copy"></p>
+<button class="btn primary" id="modal-action">Close Insight</button>
+</div>
+</div>
+
+<script>
+/* MAXESS RESULT CONTRACT */
+window.MAXESS_RESULT=window.MAXESS_RESULT||null;
+
+(function(){
+'use strict';
+
+const FALLBACK={
+ masterScore:82,
+ dimensions:{writing:88,research:81,ideas:92,creation:76,strategy:73}
+};
+
+function decodeResult(){
+ const params=new URLSearchParams(location.search);
+ const encoded=params.get('result');
+ if(!encoded)return null;
+ try{
+  let value=encoded.replace(/-/g,'+').replace(/_/g,'/');
+  while(value.length%4)value+='=';
+  const binary=atob(value);
+  const bytes=new Uint8Array(binary.length);
+  for(let i=0;i<binary.length;i++)bytes[i]=binary.charCodeAt(i);
+  return JSON.parse(new TextDecoder().decode(bytes));
+ }catch(error){
+  console.warn('MAXESS result handoff unavailable',error);
+  return null;
+ }
+}
+
+const supplied=window.MAXESS_RESULT||decodeResult();
+const result=supplied||FALLBACK;
+window.MAXESS_RESULT=result;
+
+const definitions=[
+ {key:'writing',name:'Writing & Communication',job:'Communicate',color:'#bd91ff',description:'Turn thoughts into clear, powerful communication.',insight:'You can use AI to shape ideas into language that is clearer, more persuasive and more human.'},
+ {key:'research',name:'Research & Information',job:'Understand',color:'#39ddd2',description:'Find, understand and use information intelligently.',insight:'Strong research direction helps you move from information overload to useful understanding and evidence.'},
+ {key:'ideas',name:'Brainstorming & Ideas',job:'Imagine',color:'#e7c76c',description:'Generate and develop better possibilities.',insight:'This dimension reflects how effectively you can use AI as a thinking partner rather than simply an answer machine.'},
+ {key:'creation',name:'Content Creation',job:'Create',color:'#52e5a5',description:'Turn ideas into useful, compelling outputs.',insight:'Creation is where thinking becomes something people can see, hear, read, use or share.'},
+ {key:'strategy',name:'Business & Strategy',job:'Direct',color:'#69a9ff',description:'Connect AI capability to meaningful outcomes.',insight:'Strategy determines whether AI activity becomes useful action, leverage and measurable progress.'}
+];
+
+function getScore(def){
+ const data=result.dimensions||{};
+ const aliases={
+  writing:['writing','communication'],
+  research:['research','information'],
+  ideas:['ideas','brainstorming'],
+  creation:['creation','content'],
+  strategy:['strategy','business']
+ }[def.key]||[def.key];
+ for(const key of aliases){if(typeof data[key]==='number')return Number(data[key]);}
+ const fuzzy=Object.keys(data).find(k=>aliases.some(a=>k.toLowerCase().includes(a)));
+ return fuzzy&&typeof data[fuzzy]==='number'?Number(data[fuzzy]):FALLBACK.dimensions[def.key];
+}
+
+const dimensions=definitions.map(def=>({...def,score:Math.max(0,Math.min(100,getScore(def)))}));
+const overall=Number(result.masterScore??result.overall??result.score??result.resonance??82);
+
+document.getElementById('overall-score').textContent=Math.round(overall);
+
+function renderGauges(){
+ const target=document.getElementById('gauge-grid');
+ target.innerHTML=dimensions.map((item,index)=>`
+ <article class="gauge" data-index="${index}" tabindex="0" role="button" aria-label="Open ${item.name} insight">
+  <div class="gauge-top">
+   <div class="gauge-name">${item.name}</div>
+   <div class="gauge-score">${Math.round(item.score)}</div>
+  </div>
+  <div class="dial" style="--accent:${item.color};--value:${item.score}%"><b>${Math.round(item.score)}</b></div>
+  <p class="gauge-foot">${item.description}</p>
+  <span class="gauge-tag">${item.job}</span>
+ </article>`).join('');
+ target.querySelectorAll('.gauge').forEach(card=>{
+  const open=()=>openInsight(Number(card.dataset.index));
+  card.addEventListener('click',open);
+  card.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();open();}});
+ });
+}
+
+function renderInsights(){
+ const target=document.getElementById('insight-list');
+ target.innerHTML=dimensions.map((item,index)=>`
+ <div class="insight-row" data-index="${index}" tabindex="0" role="button">
+  <span class="dot" style="color:${item.color};background:${item.color}"></span>
+  <b>${item.name}</b>
+  <span>${Math.round(item.score)} / 100 →</span>
+ </div>`).join('');
+ target.querySelectorAll('.insight-row').forEach(row=>{
+  const open=()=>openInsight(Number(row.dataset.index));
+  row.addEventListener('click',open);
+  row.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();open();}});
+ });
+}
+
+function renderMasters(){
+ const list=[
+  ['Naya Writer','Turn rough thoughts into polished, human writing.'],
+  ['Naya Brainstormer','Generate possibilities, angles and better ideas.'],
+  ['Naya Researcher','Find, organize and make sense of information.'],
+  ['Naya Architect','Design systems, workflows and connected experiences.'],
+  ['Naya Strategist','Turn goals and information into clear strategy.'],
+  ['Naya Marketer','Build stronger messages, campaigns and offers.'],
+  ['Naya Sales','Improve conversations, offers and conversion.'],
+  ['Naya Educator','Learn faster and turn knowledge into understanding.'],
+  ['Naya Coder','Think through, build and improve software.'],
+  ['Naya Designer','Create stronger visual and UX direction.'],
+  ['Naya Image','Develop powerful visual concepts and prompts.'],
+  ['Naya Video','Plan and create compelling video and media.'],
+  ['Naya Business','Turn AI capability into practical business value.'],
+  ['Naya Productivity','Build smarter personal workflows.'],
+  ['Naya Analyst','Turn data and complexity into decisions.'],
+  ['Naya Automation','Design repeatable AI-powered processes.'],
+  ['Naya Creator','Turn ideas into content people care about.'],
+  ['Naya Master','Bring the whole MAXESS method together.']
+ ];
+ document.getElementById('masters-grid').innerHTML=list.map((item,index)=>`
+ <article class="master">
+  <div class="master-icon">${String(index+1).padStart(2,'0')}</div>
+  <h3>${item[0]}</h3>
+  <p>${item[1]}</p>
+ </article>`).join('');
+}
+
+function renderLever(){
+ const lowest=dimensions.reduce((a,b)=>b.score<a.score?b:a,dimensions[0]);
+ document.getElementById('lever-score').textContent=Math.round(lowest.score);
+ document.getElementById('lever-title').textContent=`${lowest.name} is your biggest lever.`;
+ document.getElementById('lever-copy').textContent=`Your ${lowest.name} score is ${Math.round(lowest.score)}. That is not a failure. It is a signal. Focused improvement here may create the greatest lift in your overall ability to direct AI toward the results you actually want.`;
+ document.getElementById('lever-meter').style.width=`${lowest.score}%`;
+}
+
+const modal=document.getElementById('insight-modal');
+function openInsight(index){
+ const item=dimensions[index];
+ if(!item)return;
+ document.getElementById('modal-kicker').textContent=`${item.job} • ${Math.round(item.score)} / 100`;
+ document.getElementById('modal-title').textContent=item.name;
+ document.getElementById('modal-copy').textContent=item.insight;
+ modal.classList.add('open');
+ document.getElementById('modal-close').focus();
+}
+function closeInsight(){modal.classList.remove('open');}
+
+document.querySelectorAll('.sig-node').forEach(node=>{
+ const open=()=>openInsight(Number(node.dataset.index));
+ node.addEventListener('click',open);
+ node.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();open();}});
+});
+document.getElementById('modal-close').addEventListener('click',closeInsight);
+document.getElementById('modal-action').addEventListener('click',closeInsight);
+modal.addEventListener('click',event=>{if(event.target===modal)closeInsight();});
+
+document.addEventListener('keydown',event=>{
+ if(event.key==='Escape')closeInsight();
+ if(/^[1-5]$/.test(event.key)&&!event.metaKey&&!event.ctrlKey)openInsight(Number(event.key)-1);
+});
+
+document.getElementById('listen-button').addEventListener('click',()=>{
+ document.getElementById('naya-welcome').textContent=`I’m Naya. I’ve got your ${Math.round(overall)} MAXESS result. Let’s look at the pattern together — what you already do well, what your scores are telling us, and the one area I’d focus on next.`;
+ document.getElementById('naya-hero').scrollIntoView({behavior:'smooth',block:'center'});
+ const orb=document.getElementById('hero-orb');
+ if(orb.animate)orb.animate([{transform:'scale(1)'},{transform:'scale(1.055)'},{transform:'scale(1)'}],{duration:1200,easing:'cubic-bezier(.2,.8,.2,1)'});
+});
+
+document.getElementById('print-button').addEventListener('click',()=>window.print());
+document.getElementById('print-control').addEventListener('click',()=>window.print());
+
+let frozen=false;
+document.getElementById('freeze-button').addEventListener('click',event=>{
+ frozen=!frozen;
+ document.body.classList.toggle('signature-frozen',frozen);
+ event.currentTarget.textContent=frozen?'▶':'❄';
+});
+
+let focus=false;
+document.getElementById('focus-button').addEventListener('click',event=>{
+ focus=!focus;
+ document.body.classList.toggle('focus-mode',focus);
+ event.currentTarget.textContent=focus?'×':'◉';
+ if(focus)document.getElementById('signature').scrollIntoView({behavior:'smooth',block:'center'});
+});
+
+document.getElementById('continue-button').addEventListener('click',()=>document.getElementById('masters').scrollIntoView({behavior:'smooth'}));
+
+/* Ambient pointer energy — visual only, never modifies the result. */
+const trail=document.createElement('div');
+trail.style.cssText='position:fixed;z-index:90;width:7px;height:7px;border-radius:50%;pointer-events:none;background:#39ddd2;box-shadow:0 0 20px #39ddd2;opacity:0;transition:opacity .2s';
+document.body.appendChild(trail);
+let tx=0,ty=0;
+window.addEventListener('pointermove',event=>{
+ tx+=(event.clientX-tx)*.16;
+ ty+=(event.clientY-ty)*.16;
+ trail.style.left=tx+'px';
+ trail.style.top=ty+'px';
+ trail.style.opacity='.42';
+},{passive:true});
+
+renderGauges();
+renderInsights();
+renderMasters();
+renderLever();
+
+console.log('%cMAXESS 10.10 — RESULTS ENGINE READY','color:#39ddd2;font-size:16px;font-weight:900');
+console.log('Authoritative MAXESS_RESULT:',window.MAXESS_RESULT);
+})();
+</script>
+</body>
+</html>
