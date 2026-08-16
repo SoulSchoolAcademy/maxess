@@ -2,7 +2,7 @@ name: Build Definitive MAXESS Results
 
 on:
   push:
-    branches: [main, 'feat/maxess-final-results-99', 'feat/maxess-results-10-self-optimized']
+    branches: [main, 'feat/maxess-final-results-99', 'feat/maxess-results-10-self-optimized', 'feat/maxess-10-10-authoritative-results']
   workflow_dispatch:
 
 permissions:
