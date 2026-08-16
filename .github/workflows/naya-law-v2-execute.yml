@@ -1,0 +1,67 @@
+name: Naya Law v2 — MAXESS Results Execute
+
+on:
+  push:
+    branches: ['feat/maxess-results-naya-law-v2']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: maxess-results-naya-law-v2
+  cancel-in-progress: true
+
+jobs:
+  execute:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Naya Law — source-of-truth and preservation gate
+        run: |
+          set -euo pipefail
+          test -f MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'MAXESS-MASTER-BASELINE-PRESERVATION-10-10' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'window.MAXESS_RESULT' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'ny-youtube-player' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'Naya Writer' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'Naya Brainstormer' MAXESS-RESULTS-10-GROOVE.html
+          echo 'NAYA LAW: PRESERVATION GATE PASS'
+
+      - name: Naya Law — execute real implementation
+        run: |
+          set -euo pipefail
+          python3 -m py_compile tools/maxess_results_naya_law_v2.py
+          python3 tools/maxess_results_naya_law_v2.py
+
+      - name: Naya Law — zero-change and completeness gate
+        run: |
+          set -euo pipefail
+          for f in MAXESS-RESULTS-10-GROOVE.html MAXESS-RESULTS-FINAL-GROOVE.html MAXESS-RESULTS-GROOVE-EMBED.html MAXESS-RESULTS-FINAL-GROOVE-EMBED.html MAXESS-RESULTS-GROOVE-EMBED-9.95.html; do
+            test -f "$f"
+            grep -q 'NAYA-LAW-AAA-RESULTS-PASS-3' "$f"
+            grep -q 'nl3-naya' "$f"
+            grep -q 'nl3-gauges' "$f"
+            grep -q 'MAXESS_RESULT' "$f"
+            grep -q 'ny-youtube-player' "$f"
+          done
+          echo 'NAYA LAW: REAL DELTA + COMPLETENESS GATE PASS'
+
+      - name: Naya Law — inspect diff footprint
+        run: |
+          set -euo pipefail
+          git diff --stat
+          test "$(git diff --numstat | awk '{a+=$1;d+=$2} END {print a+d+0}')" -gt 100
+          echo 'NAYA LAW: MEANINGFUL CHANGE FOOTPRINT PASS'
+
+      - name: Commit executed artifacts
+        run: |
+          set -euo pipefail
+          git config user.name 'Naya Law Results Execution System'
+          git config user.email 'actions@github.com'
+          git add MAXESS-RESULTS-10-GROOVE.html MAXESS-RESULTS-FINAL-GROOVE.html MAXESS-RESULTS-GROOVE-EMBED.html MAXESS-RESULTS-FINAL-GROOVE-EMBED.html MAXESS-RESULTS-GROOVE-EMBED-9.95.html tools/maxess_results_naya_law_v2.py .github/workflows/naya-law-v2-execute.yml
+          git diff --cached --quiet && { echo 'BLOCKED — ZERO MEANINGFUL IMPLEMENTATION CHANGE DETECTED'; exit 1; } || true
+          git commit -m 'Execute MAXESS Results Naya Law AAA v2'
+          git push origin HEAD:${{ github.ref_name }}
