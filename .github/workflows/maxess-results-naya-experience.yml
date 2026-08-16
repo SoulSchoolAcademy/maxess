@@ -9,12 +9,15 @@ on:
       - '.naya/apply_maxess_results_experience.py'
       - '.naya/MAXESS-RESULTS-MASTER-INSTRUCTION-SET.md'
       - '.naya/NAYA-GOVERNANCE.md'
+  pull_request:
+    types: [opened, synchronize, reopened]
 
 permissions:
   contents: write
 
 jobs:
   apply-results-experience:
+    if: github.event_name == 'push' || github.event.pull_request.head.ref == 'naya-results-master-instruction-set'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -27,7 +30,7 @@ jobs:
 
       - name: Structural safety checks
         run: |
-          python3 - <<'PY'
+          python3 - <<'PY2'
           from pathlib import Path
           p = Path('MAXESS-RESULTS-10-GROOVE.html')
           s = p.read_text(encoding='utf-8')
@@ -48,15 +51,15 @@ jobs:
           for k, v in checks.items(): print(('PASS' if v else 'FAIL') + ' — ' + k)
           if failed: raise SystemExit('BLOCKED — structural checks failed: ' + ', '.join(failed))
           if p.stat().st_size < 100000: raise SystemExit('BLOCKED — authoritative Results artifact unexpectedly small')
-          PY
+          PY2
 
       - name: Diff and whitespace check
         run: |
           git diff --check
           git diff --stat
-          git diff -- MAXESS-RESULTS-10-GROOVE.html | sed -n '1,220p'
 
       - name: Commit applied Results artifact
+        if: github.event_name == 'push'
         run: |
           if git diff --quiet -- MAXESS-RESULTS-10-GROOVE.html; then
             echo 'No Results artifact diff; nothing to commit.'
