@@ -67,3 +67,56 @@ Do not ask Shawn to paste or test a known-invalid replacement.
 ## OPERATING STANDARD
 
 **READ → MAP → FREEZE → MODIFY IN PLACE → REASSEMBLE → REFETCH → DIFF → TEST → OSCAR → LIVE-CHECK → DELIVER THE COMPLETE ARTIFACT.**
+
+---
+
+# V13 EXECUTION RECORD — 2026-08-16
+
+## EXECUTION
+
+**System Execution #002**
+
+## ARTIFACT TARGET
+
+`MAXESS-RESULTS-10-GROOVE.html`
+
+## MATERIAL CHANGE PROOF
+
+The authoritative HTML changed by **389 inserted lines with 0 deletions** relative to the pre-V13 baseline.
+
+The artifact now contains the V13 execution marker and V13 experience layer directly inside the complete HTML artifact.
+
+## V13 EXPERIENCE CHANGES
+
+- Score is explicitly established as the primary visual reveal.
+- Score and Orb are visually dominant before explanatory content.
+- Hero clutter is suppressed so the user understands the result immediately.
+- A dedicated Naya introduction is placed immediately after the score reveal.
+- Naya is framed as the user's guide and interpreter, not as an advertisement.
+- “Technology should amplify your human.” is treated as philosophy/context, not commercial copy.
+- Redundant “Results chapter is complete / next chapter is NayaNET” dead-end copy is removed.
+- Mid-report commercial CTA noise is reduced so value precedes conversion.
+- Dimension, pattern, strengths, lever, next-move, and pathway chapters receive tighter hierarchy.
+- Mobile and reduced-motion behavior receive explicit safeguards.
+- Existing MAXESS result contract, Orb, content, pathways, and downstream system are preserved.
+
+## VERIFICATION
+
+- GitHub Actions V13 execution passed.
+- V13 artifact was re-fetched from GitHub.
+- Main authoritative source now carries the V13 artifact.
+- Public `https://results.nayanet.xyz/` was checked after the source update and still exposes the prior public experience.
+
+## STATUS
+
+**SOURCE UPDATED — LIVE UNVERIFIED / EXTERNAL GROOVE PUBLISH BLOCKED**
+
+This is intentionally not reported as live completion. The deployment contract states that GitHub changes cannot prove Groove publication.
+
+## LEARNING
+
+The critical distinction is now permanent:
+
+**ARTIFACT EXECUTION ≠ LIVE DEPLOYMENT.**
+
+A successful code mutation is a real execution. A live result requires the separate Groove publication and public parity gate.
