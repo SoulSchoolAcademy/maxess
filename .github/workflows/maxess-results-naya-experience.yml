@@ -20,10 +20,11 @@ jobs:
     if: github.event_name == 'push' || github.event.pull_request.head.ref == 'naya-results-master-instruction-set'
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout branch
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: naya-results-master-instruction-set
 
       - name: Apply deterministic Results experience patch
         run: python3 .naya/apply_maxess_results_experience.py
@@ -59,7 +60,6 @@ jobs:
           git diff --stat
 
       - name: Commit applied Results artifact
-        if: github.event_name == 'push'
         run: |
           if git diff --quiet -- MAXESS-RESULTS-10-GROOVE.html; then
             echo 'No Results artifact diff; nothing to commit.'
