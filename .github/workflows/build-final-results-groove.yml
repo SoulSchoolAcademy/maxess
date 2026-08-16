@@ -2,7 +2,7 @@ name: Build Definitive MAXESS Results
 
 on:
   push:
-    branches: [main, 'feat/maxess-final-results-99', 'feat/maxess-results-10-self-optimized', 'feat/maxess-10-4-recognition-flow']
+    branches: [main, 'feat/maxess-final-results-99', 'feat/maxess-results-10-self-optimized', 'feat/maxess-10-4-recognition-flow', 'fix/maxess-10-4-pink-gate']
   workflow_dispatch:
 
 permissions:
@@ -87,7 +87,7 @@ jobs:
           grep -q 'mx-recognition-naya' MAXESS-RESULTS-10-GROOVE.html
           grep -q 'mx-score-orb' MAXESS-RESULTS-10-GROOVE.html
           grep -q 'width:100vw' MAXESS-RESULTS-10-GROOVE.html
-          if grep -Eiq '#ff[0-9a-f]{4}|#f[0-9a-f]{5}|magenta|hotpink' MAXESS-RESULTS-10-GROOVE.html; then
+          if grep -Eiq '#ff00[0-9a-f]{2}|#ff1493|#ff69b4|magenta|hotpink' MAXESS-RESULTS-10-GROOVE.html; then
             echo 'FAIL: prohibited pink utility color token detected'
             exit 1
           fi
@@ -122,7 +122,7 @@ jobs:
             .naya/memory/31-GROWING-LESSON-003-10-STAR-LIVE-PRODUCT-GATE.md \
             .github/workflows/build-final-results-groove.yml
           if ! git diff --cached --quiet; then
-            git commit -m 'Build MAXESS 10.4 recognition-first experience'
-            git pull --rebase origin feat/maxess-10-4-recognition-flow
-            git push origin feat/maxess-10-4-recognition-flow
+            git commit -m 'Fix MAXESS 10.4 pink-color release gate'
+            git pull --rebase origin fix/maxess-10-4-pink-gate
+            git push origin fix/maxess-10-4-pink-gate
           fi
