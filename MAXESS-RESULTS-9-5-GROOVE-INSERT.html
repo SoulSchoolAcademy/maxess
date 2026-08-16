@@ -1,0 +1,40 @@
+<!--
+MAXESS 9.5+ GROOVE INSERT
+
+EXECUTION:
+1. Keep the existing MAXESS Results/Groove embed intact.
+2. Paste this entire block immediately AFTER the existing Results embed.
+3. It is intentionally additive: it preserves the existing product and applies the
+   9.5 experience pass over it.
+4. The source CSS is also stored as MAXESS-RESULTS-9-5-EXECUTION-PASS.css.
+
+North Star:
+RESULT -> RECOGNITION -> PATTERN -> LEVERAGE -> PATH -> NAYA -> ACTION
+
+Do not replace the assessment engine or existing NayaNET endpoint with this patch.
+-->
+<style id="maxess-9-5-execution-pass">
+/* Load the canonical 9.5 rules when hosted with the repository assets. */
+@import url("https://raw.githubusercontent.com/SoulSchoolAcademy/maxess/main/MAXESS-RESULTS-9-5-EXECUTION-PASS.css");
+
+/* Groove-safe local reinforcement for the most important UX rules. */
+#maxess-results-10{width:100%!important;max-width:none!important;}
+#maxess-results-10 .mx-wide{width:min(1420px,94vw);margin-left:auto;margin-right:auto}
+#maxess-results-10 .mx-reading{width:min(900px,92vw);margin-left:auto;margin-right:auto}
+#maxess-results-10 .mx-cta{min-height:58px;border-radius:18px;}
+#maxess-results-10 .mx-cta:focus-visible{outline:2px solid #fff;outline-offset:4px}
+#maxess-results-10 .mx-cta span[aria-hidden="true"]{display:inline-grid;place-items:center;width:26px;height:26px;flex:0 0 26px;border:1px solid rgba(255,255,255,.24);border-radius:50%;background:rgba(255,255,255,.08)}
+#maxess-results-10 .mx-cta-primary{background:linear-gradient(135deg,#d9b8ff 0%,#9458ed 42%,#4a177f 100%);box-shadow:0 18px 42px rgba(84,30,156,.46),0 0 34px rgba(166,108,255,.14),inset 0 1px rgba(255,255,255,.8)}
+#maxess-results-10 .mx-cta-ghost{background:linear-gradient(180deg,rgba(255,255,255,.075),rgba(255,255,255,.025))}
+#maxess-results-10 .mx-score-orb{width:min(450px,78vw)}
+#maxess-results-10 .mx-proof div{border-left:2px solid rgba(205,165,255,.48);border-radius:14px;background:linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.012))}
+#maxess-results-10 .mx-insight-card{max-width:1180px;border-radius:32px;box-shadow:0 35px 100px rgba(0,0,0,.32),0 0 70px rgba(123,60,210,.08)}
+#maxess-results-10 .mx-naya-bridge{padding-block:clamp(68px,7vw,108px)}
+#maxess-results-10 .mx-bridge-card{width:min(1180px,94vw);border-radius:38px;box-shadow:0 48px 125px rgba(0,0,0,.48),0 0 110px rgba(145,75,230,.15)}
+@media(max-width:620px){
+  #maxess-results-10 .mx-wide,#maxess-results-10 .mx-reading{width:100%}
+  #maxess-results-10 .mx-hero-actions,#maxess-results-10 .mx-growth-cta{flex-direction:column}
+  #maxess-results-10 .mx-hero-actions .mx-cta,#maxess-results-10 .mx-growth-cta .mx-cta{width:100%;min-width:0}
+  #maxess-results-10 .mx-score-orb{width:min(300px,78vw)}
+}
+</style>
