@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 """Growing Lesson 003: literal 10-star composition pass.
 
-This is a post-build refinement layer. It deliberately changes only the
-canonical MAXESS Results surface and leaves the preserved NayaNET foundation
-outside #maxess-results-10 untouched.
+The override is inserted before </body> so generated Groove artifacts remain
+valid HTML. It never appends executable markup after </html>.
 """
 from pathlib import Path
 
@@ -18,7 +17,6 @@ FILES = [
 
 OVERRIDE = r'''
 <style id="maxess-oscar-pass-3">
-/* GROWING LESSON 003 — make the page feel composed, connected and alive. */
 #maxess-results-10{--mx-space:clamp(34px,4vw,64px);--mx-glow:rgba(171,105,255,.13)}
 #maxess-results-10 .mx-section{padding-block:var(--mx-space);position:relative;isolation:isolate}
 #maxess-results-10 .mx-section::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse 75% 55% at 50% 0,var(--mx-glow),transparent 70%);opacity:.7}
@@ -82,13 +80,19 @@ OVERRIDE = r'''
 </style>
 '''
 
+
 def apply(path: Path):
-    text = path.read_text(encoding="utf-8")
+    text = path.read_text(encoding='utf-8')
     if 'id="maxess-oscar-pass-3"' in text:
         return False
-    text += OVERRIDE
-    path.write_text(text, encoding="utf-8")
+    if '</body>' in text:
+        text = text.replace('</body>', OVERRIDE + '</body>', 1)
+    elif '</html>' in text:
+        text = text.replace('</html>', OVERRIDE + '</html>', 1)
+    else:
+        text += OVERRIDE
+    path.write_text(text, encoding='utf-8')
     return True
 
 changed = sum(1 for f in FILES if f.exists() and apply(f))
-print(f"Oscar Pass 3 applied to {changed} canonical Results artifacts")
+print(f'Oscar Pass 3 applied to {changed} canonical Results artifacts')
