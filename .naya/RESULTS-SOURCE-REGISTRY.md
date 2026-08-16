@@ -1,7 +1,7 @@
 # MAXESS RESULTS — SOURCE REGISTRY
 
 Status: AUTHORITATIVE CONTROL DOCUMENT
-Version: 1.1
+Version: 1.2
 Updated: 2026-08-16
 
 ## PURPOSE
@@ -20,9 +20,13 @@ Current authoritative Results artifact:
 
 `MAXESS-RESULTS-10-GROOVE.html`
 
-Current baseline SHA:
+Current presentation layer consumed by that artifact:
 
-`524e14a31df7da958adf8090c3220a26adea7056`
+`MAXESS-RESULTS-EXPERIENCE.js`
+
+Current authoritative Results source SHA:
+
+`9036c27a58f1a8552ea86c6ce598883a3dc12bd7`
 
 Public verification target:
 
@@ -51,6 +55,8 @@ Result Contract
       ↓
 MAXESS-RESULTS-10-GROOVE.html
       ↓
+MAXESS-RESULTS-EXPERIENCE.js
+      ↓
 Groove deployment artifact / publisher
       ↓
 https://results.nayanet.xyz/
@@ -60,11 +66,14 @@ Independent live verification
 
 `nayanetpagecode` is the preserved NayaNET foundation appended to the Results experience. It is not a competing Results source.
 
+The presentation layer is not a second scoring engine. It consumes `window.MAXESS_RESULT` and is responsible for the user-facing Results experience only.
+
 ## FILE CLASSIFICATIONS
 
 ### AUTHORITATIVE SOURCE
 
-- `MAXESS-RESULTS-10-GROOVE.html`
+- `MAXESS-RESULTS-10-GROOVE.html` — authoritative Results deployment source/foundation.
+- `MAXESS-RESULTS-EXPERIENCE.js` — authoritative Results presentation layer loaded by the source above.
 
 ### DEPLOYMENT ARTIFACTS / MIRRORS
 
