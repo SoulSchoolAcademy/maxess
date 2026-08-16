@@ -1,0 +1,241 @@
+<!--
+  MAXESS RESULTS — AUTHENTIC TOWER
+  The NayaNET page is the ground floor.
+  This document is intentionally designed as one continuous experience:
+  MAXESS intelligence above -> Naya guidance -> NayaNET conversion foundation below.
+
+  IMPORTANT:
+  The canonical NayaNET source remains `nayanetpagecode`.
+  This file is the Results tower shell and design-system extension; the final
+  integration should place the unchanged NayaNET markup at the bottom rather
+  than iframe or visually isolate it.
+-->
+
+<style>
+:root{
+  --mx-bg:#030305;
+  --mx-purple:#9b4dff;
+  --mx-purple-2:#c98aff;
+  --mx-purple-deep:#42118d;
+  --mx-white:#fff;
+  --mx-muted:rgba(255,255,255,.72);
+  --mx-line:rgba(255,255,255,.14);
+  --mx-panel:linear-gradient(145deg,rgba(37,34,45,.92),rgba(7,7,10,.96));
+  --mx-radius:clamp(18px,1.55vw,25px);
+  --mx-shadow:0 20px 65px rgba(0,0,0,.52),0 0 55px rgba(130,53,244,.12);
+  --mx-ease:cubic-bezier(.2,.8,.2,1);
+}
+
+.mx-results-tower{position:relative;width:100%;overflow:hidden;color:#fff;background:var(--mx-bg);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+.mx-results-tower *,.mx-results-tower *::before,.mx-results-tower *::after{box-sizing:border-box}
+.mx-results-tower a{color:inherit}
+.mx-atmosphere{position:absolute;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse 90% 34% at 50% 0,rgba(196,100,255,.32),transparent 72%),radial-gradient(ellipse 40% 28% at 7% 28%,rgba(118,35,255,.12),transparent 72%),radial-gradient(ellipse 42% 30% at 94% 48%,rgba(36,112,255,.09),transparent 72%)}
+.mx-section{position:relative;z-index:1;width:100%;padding:clamp(72px,8vw,150px) clamp(18px,5vw,90px)}
+.mx-inner{width:min(1500px,100%);margin:auto}
+.mx-kicker{display:inline-flex;align-items:center;gap:9px;margin-bottom:18px;color:rgba(255,255,255,.7);font-size:clamp(10px,.78vw,13px);font-weight:800;letter-spacing:.18em;text-transform:uppercase}
+.mx-kicker i{width:8px;height:8px;border-radius:50%;background:radial-gradient(circle at 30% 20%,#fff,#c98aff 35%,#7a32e5 72%,#42118d);box-shadow:0 0 15px rgba(167,80,255,.8)}
+.mx-heading{margin:0;max-width:1050px;font-size:clamp(38px,6.4vw,100px);line-height:.94;letter-spacing:-.055em;font-weight:850;text-wrap:balance}
+.mx-heading span{background:linear-gradient(120deg,#fff 0%,#efd9ff 32%,#a95aff 66%,#fff 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.mx-lead{max-width:760px;margin:24px 0 0;color:rgba(255,255,255,.7);font-size:clamp(16px,1.35vw,21px);line-height:1.55}
+
+/* HERO */
+.mx-hero{min-height:min(900px,94vh);display:grid;place-items:center;text-align:center;padding-top:clamp(70px,8vw,130px);padding-bottom:clamp(60px,7vw,110px)}
+.mx-hero .mx-inner{display:flex;flex-direction:column;align-items:center}
+.mx-score-orbit{position:relative;width:min(440px,76vw);aspect-ratio:1;margin:30px auto 34px;display:grid;place-items:center;filter:drop-shadow(0 35px 75px rgba(72,15,145,.45))}
+.mx-score-orbit::before,.mx-score-orbit::after{content:"";position:absolute;border-radius:50%;inset:2%;border:1px solid rgba(255,255,255,.16);box-shadow:0 0 40px rgba(155,77,255,.15) inset}
+.mx-score-orbit::after{inset:8%;border-color:rgba(201,138,255,.22);transform:rotate(24deg);border-left-color:transparent;border-bottom-color:transparent}
+.mx-score-ring{position:absolute;inset:9%;border-radius:50%;background:conic-gradient(#fff 0deg,#c98aff 80deg,#7a32e5 190deg,#42118d 270deg,rgba(255,255,255,.12) 270deg);padding:3px;animation:mx-spin 16s linear infinite}
+.mx-score-ring::before{content:"";display:block;width:100%;height:100%;border-radius:50%;background:radial-gradient(circle at 32% 22%,#362441,#09070d 55%,#020203 100%);box-shadow:inset 0 0 70px rgba(141,58,238,.28)}
+.mx-score-core{position:relative;z-index:2;width:61%;aspect-ratio:1;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(circle at 34% 20%,rgba(255,255,255,.15),rgba(17,9,24,.96) 58%);border:1px solid rgba(255,255,255,.22);box-shadow:inset 0 2px 8px rgba(255,255,255,.15),0 0 55px rgba(151,70,255,.28)}
+.mx-score-number{font-size:clamp(72px,11vw,142px);line-height:.82;letter-spacing:-.075em;font-weight:900;background:linear-gradient(180deg,#fff,#e7c2ff 55%,#9b4dff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.mx-score-label{margin-top:12px;color:rgba(255,255,255,.68);font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:800}
+.mx-band{display:inline-flex;align-items:center;gap:9px;padding:10px 16px;border:1px solid rgba(201,138,255,.32);border-radius:999px;background:rgba(125,42,226,.1);box-shadow:0 0 25px rgba(130,53,244,.1);font-size:12px;font-weight:800;letter-spacing:.11em;text-transform:uppercase}
+.mx-band::before{content:"";width:9px;height:9px;border-radius:50%;background:#63f2a4;box-shadow:0 0 15px rgba(99,242,164,.8)}
+
+/* SHARED PREMIUM CARD */
+.mx-card{position:relative;border:1px solid var(--mx-line);border-radius:var(--mx-radius);background:var(--mx-panel);box-shadow:var(--mx-shadow);overflow:hidden}
+.mx-card::before{content:"";position:absolute;left:10%;right:10%;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.7),rgba(201,138,255,.65),transparent);opacity:.72}
+.mx-card-pad{padding:clamp(24px,3vw,46px)}
+
+/* MEANING */
+.mx-meaning-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(18px,2vw,30px);align-items:stretch}
+.mx-statement{font-size:clamp(28px,4vw,58px);line-height:1.02;letter-spacing:-.045em;font-weight:800;margin:0}
+.mx-statement em{font-style:normal;color:#c98aff}
+.mx-micro{color:rgba(255,255,255,.58);font-size:13px;line-height:1.6;margin-top:20px}
+.mx-signal{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:center;margin-top:26px}
+.mx-signal-icon{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;border:1px solid rgba(241,217,255,.8);background:radial-gradient(circle at 30% 20%,#fff,#d28cff 28%,#9747ff 52%,#22043f);box-shadow:inset 0 2px 4px rgba(255,255,255,.8),0 0 22px rgba(167,80,255,.35);font-weight:900}
+.mx-signal strong{display:block;font-size:14px}.mx-signal span{display:block;margin-top:4px;color:rgba(255,255,255,.56);font-size:12px}
+
+/* FINGERPRINT */
+.mx-fingerprint-wrap{display:grid;grid-template-columns:minmax(300px,1fr) minmax(300px,.8fr);gap:clamp(24px,4vw,70px);align-items:center}
+.mx-radar{position:relative;width:min(650px,100%);margin:auto;aspect-ratio:1}
+.mx-radar svg{width:100%;height:100%;overflow:visible}
+.mx-radar-ring{fill:none;stroke:rgba(255,255,255,.1);stroke-width:1}
+.mx-radar-axis{stroke:rgba(255,255,255,.08);stroke-width:1}
+.mx-radar-shape{fill:url(#mxRadarFill);stroke:#d6a3ff;stroke-width:3;filter:drop-shadow(0 0 14px rgba(169,84,255,.55));transform-origin:center;animation:mx-breathe 4.5s ease-in-out infinite}
+.mx-radar-dot{fill:#fff;stroke:#a85cff;stroke-width:3;filter:drop-shadow(0 0 8px rgba(169,84,255,.8))}
+.mx-dimension-list{display:grid;gap:12px}
+.mx-dimension{display:grid;grid-template-columns:42px 1fr auto;gap:12px;align-items:center;padding:15px 16px;border:1px solid rgba(255,255,255,.1);border-radius:16px;background:linear-gradient(145deg,rgba(255,255,255,.07),rgba(255,255,255,.025));transition:transform 220ms var(--mx-ease),border-color 220ms ease,background 220ms ease}
+.mx-dimension:hover{transform:translateX(5px);border-color:rgba(201,138,255,.34);background:linear-gradient(145deg,rgba(155,77,255,.13),rgba(255,255,255,.025))}
+.mx-dimension-icon{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;border:1px solid rgba(255,255,255,.18);background:linear-gradient(145deg,rgba(255,255,255,.14),rgba(99,33,180,.22));font-size:18px}
+.mx-dimension-name{font-weight:800;font-size:14px}.mx-dimension-note{margin-top:3px;color:rgba(255,255,255,.5);font-size:11px}.mx-dimension-score{font-weight:900;font-size:20px;color:#d6a3ff}
+
+/* STATUS / LEVERAGE */
+.mx-status-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,1.5vw,22px)}
+.mx-status{padding:clamp(22px,2.5vw,36px);min-height:230px}
+.mx-status-top{display:flex;align-items:center;justify-content:space-between;gap:12px}.mx-status-title{font-size:12px;font-weight:850;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.56)}
+.mx-status-score{font-size:clamp(42px,4.8vw,72px);font-weight:900;letter-spacing:-.06em;margin:25px 0 10px}
+.mx-status-bar{height:8px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden}.mx-status-fill{height:100%;border-radius:inherit;background:linear-gradient(90deg,#42118d,#9b4dff,#e7c2ff);box-shadow:0 0 18px rgba(155,77,255,.5)}
+.mx-status-copy{color:rgba(255,255,255,.6);font-size:12px;line-height:1.55;margin-top:16px}
+.mx-green .mx-status-fill{background:linear-gradient(90deg,#168f5d,#63f2a4)}.mx-amber .mx-status-fill{background:linear-gradient(90deg,#b56b14,#ffd166)}.mx-red .mx-status-fill{background:linear-gradient(90deg,#8d2330,#ff6b7d)}
+
+/* LEVERAGE */
+.mx-leverage{display:grid;grid-template-columns:.75fr 1.25fr;gap:0;overflow:hidden}
+.mx-leverage-meter{min-height:420px;display:grid;place-items:center;background:radial-gradient(circle at 50% 45%,rgba(155,77,255,.28),transparent 54%)}
+.mx-gauge{width:min(330px,70vw);aspect-ratio:1;border-radius:50%;position:relative;background:conic-gradient(from 220deg,#ff6675 0 25%,#ffd166 25% 55%,#63f2a4 55% 76%,rgba(255,255,255,.1) 76% 100%);padding:16px;box-shadow:0 0 55px rgba(155,77,255,.2)}
+.mx-gauge::before{content:"";position:absolute;inset:16px;border-radius:50%;background:radial-gradient(circle at 35% 25%,#33213d,#07060a 60%);box-shadow:inset 0 0 45px rgba(155,77,255,.22)}
+.mx-gauge-inner{position:absolute;inset:0;display:grid;place-items:center;text-align:center;z-index:2}.mx-gauge-value{font-size:70px;font-weight:900;letter-spacing:-.07em}.mx-gauge-caption{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.55)}
+.mx-leverage-copy{padding:clamp(30px,4vw,65px)}
+.mx-leverage-copy h3{font-size:clamp(30px,4vw,58px);line-height:1;letter-spacing:-.045em;margin:0}.mx-leverage-copy h3 span{color:#c98aff}.mx-leverage-copy p{max-width:650px;color:rgba(255,255,255,.62);line-height:1.65;margin:22px 0 0}
+.mx-bullet-list{display:grid;gap:12px;margin-top:26px}.mx-bullet{display:flex;gap:12px;align-items:flex-start;color:rgba(255,255,255,.75);font-size:13px;line-height:1.5}.mx-bullet i{flex:0 0 25px;width:25px;height:25px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 30% 20%,#fff,#c98aff 30%,#7a32e5 70%,#42118d);box-shadow:0 0 12px rgba(155,77,255,.3);font-style:normal;font-size:11px;font-weight:900}
+
+/* PATH */
+.mx-path{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;position:relative}.mx-path::before{content:"";position:absolute;top:49px;left:12%;right:12%;height:1px;background:linear-gradient(90deg,transparent,#9b4dff,rgba(255,255,255,.7),#9b4dff,transparent);opacity:.4}.mx-step{position:relative;z-index:1;padding:30px 24px}.mx-step-number{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 30% 20%,#fff,#c98aff 25%,#7a32e5 58%,#22043f);border:1px solid rgba(255,255,255,.8);box-shadow:0 0 25px rgba(155,77,255,.3);font-weight:900}.mx-step h3{margin:22px 0 8px;font-size:20px}.mx-step p{margin:0;color:rgba(255,255,255,.56);font-size:12px;line-height:1.6}
+
+/* BUTTONS */
+.mx-action{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:12px;min-height:58px;padding:2px;border-radius:18px;background:linear-gradient(135deg,#fff6ff,#b565ff 24%,#42118d 62%,#e8c0ff);text-decoration:none!important;color:#fff!important;box-shadow:0 0 0 1px rgba(255,255,255,.2),0 15px 35px rgba(74,20,157,.25),0 0 35px rgba(150,69,255,.18);transition:transform 220ms var(--mx-ease),filter 220ms ease}
+.mx-action:hover{transform:translateY(-4px);filter:brightness(1.07)}.mx-action:active{transform:translateY(1px) scale(.995)}.mx-action:focus-visible{outline:3px solid rgba(222,190,255,.96);outline-offset:5px}.mx-action span{display:flex;align-items:center;gap:10px;width:100%;height:100%;padding:14px 22px;border-radius:16px;background:linear-gradient(145deg,#29222d,#09080b 68%);font-weight:800;font-size:13px}.mx-action b{width:31px;height:31px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 30% 20%,#fff,#d28cff 25%,#7a32e5 65%,#22043f);box-shadow:inset 0 2px 3px rgba(255,255,255,.8),0 0 14px rgba(167,80,255,.35);font-size:12px}
+.mx-section-actions{display:flex;justify-content:center;margin-top:38px}
+
+/* RESPONSIVE */
+@media(max-width:900px){.mx-meaning-grid,.mx-fingerprint-wrap,.mx-leverage{grid-template-columns:1fr}.mx-status-grid{grid-template-columns:1fr}.mx-path{grid-template-columns:1fr}.mx-path::before{display:none}.mx-status{min-height:0}.mx-leverage-meter{min-height:340px}}
+@media(max-width:620px){.mx-section{padding:58px 14px}.mx-heading{font-size:clamp(38px,13vw,62px)}.mx-score-orbit{width:min(350px,92vw)}.mx-card-pad{padding:22px}.mx-dimension{grid-template-columns:38px 1fr auto;padding:12px}.mx-dimension-icon{width:38px;height:38px}.mx-lead{font-size:15px}.mx-action{width:100%}.mx-action span{justify-content:center}}
+@media(prefers-reduced-motion:reduce){.mx-score-ring,.mx-radar-shape{animation:none!important}.mx-action,.mx-dimension{transition:none!important}}
+@keyframes mx-spin{to{transform:rotate(360deg)}}
+@keyframes mx-breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.015)}}
+</style>
+
+<section class="mx-results-tower" id="maxess-results-tower" aria-label="MAXESS AI Mastery Results">
+  <div class="mx-atmosphere" aria-hidden="true"></div>
+
+  <section class="mx-section mx-hero">
+    <div class="mx-inner">
+      <div class="mx-kicker"><i></i> MAXESS AI MASTERY ASSESSMENT</div>
+      <h1 class="mx-heading">See your AI mastery.<br><span>See what comes next.</span></h1>
+      <div class="mx-score-orbit" aria-label="Your MAXESS score">
+        <div class="mx-score-ring"></div>
+        <div class="mx-score-core"><div class="mx-score-number" data-maxess-score>--</div><div class="mx-score-label">MAXESS SCORE</div></div>
+      </div>
+      <div class="mx-band" data-maxess-band><span data-maxess-band-text>YOUR MASTERY LEVEL</span></div>
+      <p class="mx-lead" data-maxess-summary>Your result is more than a number. It is a map of how you currently turn AI into useful outcomes—and where your next breakthrough may be.</p>
+    </div>
+  </section>
+
+  <section class="mx-section">
+    <div class="mx-inner mx-meaning-grid">
+      <article class="mx-card mx-card-pad">
+        <div class="mx-kicker"><i></i> WHAT YOUR SCORE MEANS</div>
+        <h2 class="mx-statement">Your score shows <em>how effectively</em> you currently turn AI into results.</h2>
+        <p class="mx-micro">It is not a judgment of your intelligence. It is a snapshot of your current capability, habits and leverage—and a starting point for becoming substantially better.</p>
+        <div class="mx-signal"><div class="mx-signal-icon">↗</div><div><strong>Measure → understand → improve.</strong><span>The assessment becomes valuable when you use the result to decide what to do next.</span></div></div>
+      </article>
+      <article class="mx-card mx-card-pad">
+        <div class="mx-kicker"><i></i> THE BIG IDEA</div>
+        <h2 class="mx-statement" style="font-size:clamp(28px,3.5vw,52px)">You don't need to improve <em>everything.</em></h2>
+        <p class="mx-micro">The highest-value move is finding the capability that creates the greatest downstream improvement.</p>
+        <div class="mx-bullet-list">
+          <div class="mx-bullet"><i>✓</i><span>Recognize what you already do well.</span></div>
+          <div class="mx-bullet"><i>✓</i><span>Find the capability with the most leverage.</span></div>
+          <div class="mx-bullet"><i>✓</i><span>Turn insight into a practical path forward.</span></div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="mx-section">
+    <div class="mx-inner">
+      <div class="mx-kicker"><i></i> YOUR AI FINGERPRINT</div>
+      <h2 class="mx-heading" style="font-size:clamp(38px,5vw,76px)">The pattern behind <span>your score.</span></h2>
+      <p class="mx-lead">Your five capabilities combine into a personal AI fingerprint. The shape matters—not just the individual numbers.</p>
+      <div class="mx-card mx-card-pad" style="margin-top:36px">
+        <div class="mx-fingerprint-wrap">
+          <div class="mx-radar" aria-label="Your five-dimension AI fingerprint">
+            <svg viewBox="0 0 500 500" role="img">
+              <defs><linearGradient id="mxRadarFill" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d6a3ff" stop-opacity=".48"/><stop offset="1" stop-color="#7a32e5" stop-opacity=".08"/></linearGradient></defs>
+              <polygon class="mx-radar-ring" points="250,45 445,187 370,410 130,410 55,187"/>
+              <polygon class="mx-radar-ring" points="250,95 392,198 338,360 162,360 108,198"/>
+              <polygon class="mx-radar-ring" points="250,145 338,209 306,310 194,310 162,209"/>
+              <g class="mx-radar-axis"><line x1="250" y1="250" x2="250" y2="45"/><line x1="250" y1="250" x2="445" y2="187"/><line x1="250" y1="250" x2="370" y2="410"/><line x1="250" y1="250" x2="130" y2="410"/><line x1="250" y1="250" x2="55" y2="187"/></g>
+              <polygon class="mx-radar-shape" data-maxess-radar points="250,105 382,207 330,356 170,356 118,207"/>
+              <g data-maxess-radar-dots><circle class="mx-radar-dot" cx="250" cy="105" r="6"/><circle class="mx-radar-dot" cx="382" cy="207" r="6"/><circle class="mx-radar-dot" cx="330" cy="356" r="6"/><circle class="mx-radar-dot" cx="170" cy="356" r="6"/><circle class="mx-radar-dot" cx="118" cy="207" r="6"/></g>
+            </svg>
+          </div>
+          <div class="mx-dimension-list" data-maxess-dimensions>
+            <div class="mx-dimension"><div class="mx-dimension-icon">✦</div><div><div class="mx-dimension-name">Capability One</div><div class="mx-dimension-note">Your AI capability</div></div><div class="mx-dimension-score">--</div></div>
+            <div class="mx-dimension"><div class="mx-dimension-icon">◈</div><div><div class="mx-dimension-name">Capability Two</div><div class="mx-dimension-note">Your AI capability</div></div><div class="mx-dimension-score">--</div></div>
+            <div class="mx-dimension"><div class="mx-dimension-icon">✧</div><div><div class="mx-dimension-name">Capability Three</div><div class="mx-dimension-note">Your AI capability</div></div><div class="mx-dimension-score">--</div></div>
+            <div class="mx-dimension"><div class="mx-dimension-icon">◉</div><div><div class="mx-dimension-name">Capability Four</div><div class="mx-dimension-note">Your AI capability</div></div><div class="mx-dimension-score">--</div></div>
+            <div class="mx-dimension"><div class="mx-dimension-icon">◇</div><div><div class="mx-dimension-name">Capability Five</div><div class="mx-dimension-note">Your AI capability</div></div><div class="mx-dimension-score">--</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-section">
+    <div class="mx-inner">
+      <div class="mx-kicker"><i></i> YOUR SIGNALS</div>
+      <h2 class="mx-heading" style="font-size:clamp(38px,5vw,76px)">Where you're <span>strong.</span><br>Where to focus.</h2>
+      <div class="mx-status-grid" style="margin-top:36px">
+        <article class="mx-card mx-status mx-green"><div class="mx-status-top"><div class="mx-status-title">Your advantage</div><div>●</div></div><div class="mx-status-score" data-maxess-strength-score>--</div><div class="mx-status-bar"><div class="mx-status-fill" data-maxess-strength-fill style="width:0%"></div></div><p class="mx-status-copy" data-maxess-strength>We're identifying your strongest capability.</p></article>
+        <article class="mx-card mx-status mx-amber"><div class="mx-status-top"><div class="mx-status-title">Your leverage</div><div>●</div></div><div class="mx-status-score" data-maxess-leverage-score>--</div><div class="mx-status-bar"><div class="mx-status-fill" data-maxess-leverage-fill style="width:0%"></div></div><p class="mx-status-copy" data-maxess-leverage>The highest-value improvement opportunity will appear here.</p></article>
+        <article class="mx-card mx-status"><div class="mx-status-top"><div class="mx-status-title">Your range</div><div>●</div></div><div class="mx-status-score" data-maxess-range-score>--</div><div class="mx-status-bar"><div class="mx-status-fill" data-maxess-range-fill style="width:0%"></div></div><p class="mx-status-copy">The distance between your strongest and weakest capabilities.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-section">
+    <div class="mx-inner">
+      <div class="mx-card mx-leverage">
+        <div class="mx-leverage-meter"><div class="mx-gauge"><div class="mx-gauge-inner"><div><div class="mx-gauge-value" data-maxess-gauge>--</div><div class="mx-gauge-caption">LEVERAGE SCORE</div></div></div></div></div>
+        <div class="mx-leverage-copy"><div class="mx-kicker"><i></i> YOUR BIGGEST OPPORTUNITY</div><h3>Don't chase every gap.<br><span>Exploit the right one.</span></h3><p data-maxess-leverage-copy>Your results will identify the capability where improvement can create the greatest return across your AI mastery.</p><div class="mx-bullet-list"><div class="mx-bullet"><i>↗</i><span>Strengthen the highest-impact capability.</span></div><div class="mx-bullet"><i>↗</i><span>Apply it to real work, learning and creation.</span></div><div class="mx-bullet"><i>↗</i><span>Measure the improvement and iterate.</span></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-section">
+    <div class="mx-inner">
+      <div class="mx-kicker"><i></i> YOUR MAXESS PATH</div>
+      <h2 class="mx-heading" style="font-size:clamp(38px,5vw,76px)">Turn insight into <span>momentum.</span></h2>
+      <p class="mx-lead">Your result should not end with a score. It should tell you what to do next.</p>
+      <div class="mx-path" style="margin-top:36px">
+        <article class="mx-card mx-step"><div class="mx-step-number">01</div><h3>Understand</h3><p>See the pattern in your result and understand what is creating it.</p></article>
+        <article class="mx-card mx-step"><div class="mx-step-number">02</div><h3>Apply</h3><p>Practice the capability against real problems, projects and opportunities.</p></article>
+        <article class="mx-card mx-step"><div class="mx-step-number">03</div><h3>Master</h3><p>Create, score, improve and repeat until the capability becomes natural.</p></article>
+      </div>
+      <div class="mx-section-actions"><a class="mx-action" href="#nayanet-ground-floor"><span><b>→</b> Continue with Naya</span></a></div>
+    </div>
+  </section>
+
+  <!-- NAYANET GROUND FLOOR: the canonical `nayanetpagecode` belongs here unchanged. -->
+  <div id="nayanet-ground-floor" data-nayanet-ground-floor></div>
+</section>
+
+<script>
+(function(){
+  const root=document.getElementById('maxess-results-tower');
+  if(!root)return;
+  /* The renderer is intentionally data-driven. Integrate the authoritative
+     MAXESS_RESULT object from the assessment engine here; no score is invented. */
+  const result=window.MAXESS_RESULT;
+  if(!result)return;
+  const score=Number(result.overallScore ?? result.score);
+  if(Number.isFinite(score)){
+    const el=root.querySelector('[data-maxess-score]'); if(el)el.textContent=Math.round(score);
+    const gauge=root.querySelector('[data-maxess-gauge]'); if(gauge)gauge.textContent=Math.round(score);
+  }
+  const dims=Array.isArray(result.dimensions)?result.dimensions:[];
+  const cards=[...root.querySelectorAll('[data-maxess-dimensions] .mx-dimension')];
+  dims.slice(0,5).forEach((d,i)=>{const c=cards[i];if(!c)return;c.querySelector('.mx-dimension-name').textContent=d.name??d.label??`Capability ${i+1}`;c.querySelector('.mx-dimension-score').textContent=Number.isFinite(Number(d.score))?Math.round(Number(d.score)): '--';if(d.description)c.querySelector('.mx-dimension-note').textContent=d.description});
+})();
+</script>
