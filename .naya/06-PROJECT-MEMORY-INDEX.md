@@ -56,6 +56,9 @@ When creating durable product decisions, add or update a clearly named file unde
 ### Engineering
 - `.naya/memory/16-MAXESS-GROOVE-ENGINEERING-LAWS.md` — contained assessment vs flowing Results, single-embed principle, cross-domain result boundary, explicit states, determinism, QA profiles, graceful degradation, Groove release gate.
 
+### Execution learning
+- `.naya/smart-notes/2026-08-16-execution-flow-law.md` — authoritative anti-loop execution law: execute upstream work without waiting on Groove publishing, 1–3 cycle concrete handoff target, 10-cycle loop-failure threshold, no-regression/upstream movement, and required completion handoff.
+
 ## DEPLOYMENT / DELIVERY
 - `LIVE-DEPLOYMENT-SOURCE-OF-TRUTH.md` — current documented mismatch between the authoritative GitHub Results artifact and the public Results URL; live parity is blocked until the actual Groove/public source is connected and verified.
 - `.naya/GROOVE-DEPLOYMENT-CONTRACT.md` — exact external deployment facts, release chain, required parity proof, and the current external-source blocker.
