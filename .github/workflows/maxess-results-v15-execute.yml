@@ -131,7 +131,6 @@ jobs:
           set -euo pipefail
           python3 - <<'PY'
           from pathlib import Path
-          import re
           s = Path('MAXESS-RESULTS-10-GROOVE.html').read_text(encoding='utf-8')
           failures = []
           checks = {
@@ -148,7 +147,8 @@ jobs:
               'responsive layer': '@media(max-width:720px)' in s,
               'naya/orb relationship': 'is-naya-speaking' in s and 'maxess:naya-speaking' in s,
               'visual master treatment': 'v15-master-icon' in s,
-              'material v15 diff': s.count('MAXESS-RESULTS-V15-RECONSTRUCTION') == 2,
+              'material v15 reconstruction': s.count('<!-- MAXESS-RESULTS-V15-RECONSTRUCTION -->') == 1,
+              'material v15 polish': s.count('<!-- MAXESS-RESULTS-V15-POLISH -->') == 1,
           }
           for name, ok in checks.items():
               print(('PASS ' if ok else 'FAIL ') + name)
