@@ -12,6 +12,7 @@ This file is the map of durable project memory. It tells Naya where to look with
 ## GOVERNANCE
 - `.naya/NAYA-GOVERNANCE.md` — master entrypoint, trigger phrases, and reading chain.
 - `.naya/NAYA-LAW.md` — authoritative execution-integrity law: zero-change gate, source-lock, baseline, requirement traceability, write/refetch/diff proof, live parity, regression safeguards, and delivery proof chain.
+- `.naya/NAYA-DIGITAL-CODEX-v2.md` — canonical operational execution protocol.
 - `.naya/REPOSITORY-OPERATING-MAP.md` — fast operational map: authoritative paths, file classifications, workflow rules, hard blocks, and the one-task/one-path/one-proof-chain rule.
 - `.naya/RESULTS-SOURCE-REGISTRY.md` — authoritative MAXESS Results source registry and current deployment status.
 - `.naya/00-UNDERSTANDING-FIRST.md` — understanding gate and preservation/source-of-truth law.
@@ -21,6 +22,19 @@ This file is the map of durable project memory. It tells Naya where to look with
 - `.naya/04-EXECUTION-PROCEDURE.md` — action sequence.
 - `.naya/05-QUALITY-AND-OSCAR.md` — adversarial QA and release gate.
 - `.naya/NAYA-WORK-PROTOCOL.md` — startup sequence and delivery protocol.
+
+## SMART MEMORY / SELF-OPTIMIZATION
+- `.naya/07-MEMORY-SYSTEM.md` — authoritative learning architecture and promotion rules.
+- `.naya/MEMORY/00-READ-FIRST.md` — memory routing and context-loading rules.
+- `.naya/MEMORY/01-SMART-NOTES.md` — structured raw observation/lesson ledger.
+- `.naya/MEMORY/02-DAILY-SYNTHESIS/` — daily compressed context for the next day.
+- `.naya/MEMORY/03-WEEKLY-SYNTHESIS/` — weekly compression into reusable patterns.
+- `.naya/MEMORY/04-PERMANENT-KNOWLEDGE.md` — promoted durable knowledge.
+- `.naya/MEMORY/05-FAILURE-PATTERNS.md` — reusable failure classes and safeguards.
+- `.naya/MEMORY/06-SUCCESS-PATTERNS.md` — reusable successful methods and conditions.
+- `.naya/MEMORY/07-DECISION-MEMORY.md` — durable decisions and rationale.
+- `.naya/MEMORY/08-EXECUTION-LEDGER.md` — execution number, artifact version, proof, failures, and learning history.
+- `.naya/MEMORY/09-EVOLUTION-LOG.md` — changes to the AI operating system itself.
 
 ## PRODUCT / SYSTEM MEMORY
 When creating durable product decisions, add or update a clearly named file under `.naya/memory/` and add it here.
@@ -98,5 +112,17 @@ Good memory is:
 - Scoped
 - Date/version aware when needed
 - Linked to related files
+- Promoted only when justified
 
-Avoid dumping raw conversation transcripts into memory. Capture decisions, rationale, constraints, and acceptance criteria.
+Avoid dumping raw conversation transcripts into memory. Capture decisions, rationale, constraints, acceptance criteria, reusable lessons, and the evidence needed to understand them.
+
+## SELF-OPTIMIZATION RULE
+The objective is not maximum memory. The objective is maximum useful learning per unit of memory.
+
+Prefer:
+
+**RAW → DISTILLED → REUSABLE → VERIFIED**
+
+over:
+
+**RAW → RAW → RAW → CLUTTER.**
