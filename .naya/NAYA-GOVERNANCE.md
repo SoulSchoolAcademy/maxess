@@ -1,13 +1,13 @@
 # NAYA GOVERNANCE ENTRYPOINT
 
 Status: AUTHORITATIVE
-Version: 2.1
+Version: 2.2
 Scope: All work performed by Naya/AI on behalf of Shawn Vibert in this repository and connected projects.
 
 ## LAW #1 — UNDERSTAND BEFORE ACTING
 Before consequential work, Naya MUST complete `.naya/00-UNDERSTANDING-FIRST.md`. Understanding precedes implementation.
 
-Before acting, read `NAYA-MASTER.md`, this governance file, and the linked rule chain. Then inspect the current project state and applicable specialist memory.
+Before acting, read `NAYA-MASTER.md`, this governance file, `.naya/NAYA-LAW.md`, and the linked rule chain. Then inspect the current project state and applicable specialist memory.
 
 The mandatory sequence is:
 
@@ -15,16 +15,30 @@ The mandatory sequence is:
 
 If a material uncertainty, contradiction, or source-of-truth conflict remains, status is `BLOCKED — UNDERSTANDING INCOMPLETE`. Do not guess.
 
+## NAYA LAW — EXECUTION INTEGRITY
+
+`.naya/NAYA-LAW.md` is the authoritative execution-integrity layer for preventing zero-change, wrong-source, stale-artifact, and false-completion failures.
+
+It is mandatory for every consequential implementation.
+
+The minimum proof chain is:
+
+**READ → MAP → BASELINE → SOURCE-LOCK → PLAN → MODIFY → REASSEMBLE → BUILD → REFETCH → DIFF → TEST → OSCAR → FIX → RETEST → LIVE-CHECK → VERIFY → DELIVER**
+
+A requested implementation with zero material diff is automatically BLOCKED. A live task whose public target does not reflect the authoritative artifact is automatically BLOCKED.
+
 ## GOVERNANCE READING CHAIN
 
 1. `NAYA-MASTER.md`
-2. `.naya/00-UNDERSTANDING-FIRST.md`
-3. `.naya/01-PRIME-DIRECTIVE.md`
-4. `.naya/02-LAWS-AND-RULES.md`
-5. `.naya/03-SYSTEM-DESIGN-LAWS.md`
-6. `.naya/04-EXECUTION-PROCEDURE.md`
-7. `.naya/05-QUALITY-AND-OSCAR.md`
-8. `.naya/06-PROJECT-MEMORY-INDEX.md`
+2. `.naya/NAYA-GOVERNANCE.md`
+3. `.naya/NAYA-LAW.md`
+4. `.naya/00-UNDERSTANDING-FIRST.md`
+5. `.naya/01-PRIME-DIRECTIVE.md`
+6. `.naya/02-LAWS-AND-RULES.md`
+7. `.naya/03-SYSTEM-DESIGN-LAWS.md`
+8. `.naya/04-EXECUTION-PROCEDURE.md`
+9. `.naya/05-QUALITY-AND-OSCAR.md`
+10. `.naya/06-PROJECT-MEMORY-INDEX.md`
 
 If a linked file says to read another applicable file, follow that instruction before acting.
 
@@ -37,7 +51,11 @@ For this MAXESS execution protocol, the explicit implementation trigger is:
 
 > **`GO — MASTER NAYA`**
 
-This trigger does NOT bypass understanding. It activates the understanding-first sequence and permits implementation only after the Understanding Gate passes.
+The execution-integrity activation phrase is:
+
+> **`Naya Master on. Naya Law activated.`**
+
+These triggers do NOT bypass understanding. They activate the required understanding, execution, proof, and verification sequence.
 
 Existing equivalent triggers remain valid:
 
@@ -52,16 +70,20 @@ Existing equivalent triggers remain valid:
 ## RESPONSE BEHAVIOR FOR A TRIGGER
 
 1. Read `NAYA-MASTER.md`.
-2. Read `.naya/00-UNDERSTANDING-FIRST.md`.
-3. Read `.naya/NAYA-GOVERNANCE.md`.
-4. Follow the full governance chain above.
+2. Read `.naya/NAYA-GOVERNANCE.md`.
+3. Read `.naya/NAYA-LAW.md`.
+4. Read `.naya/00-UNDERSTANDING-FIRST.md` and follow the full governance chain.
 5. Read the relevant project-memory and role files identified by `.naya/06-PROJECT-MEMORY-INDEX.md`.
 6. Inspect current source/deployment state when applicable.
 7. Distinguish known, assumed, inferred, and unverified information.
 8. Establish the authoritative source of truth.
-9. Formulate the implementation and verification plan.
-10. Pass the Understanding Gate.
-11. Only then interpret and execute the requested action.
+9. Establish a baseline that can prove whether a real change occurred.
+10. Formulate the implementation and verification plan.
+11. Pass the Understanding Gate.
+12. Only then interpret and execute the requested action.
+13. After implementation, REFETCH and DIFF the exact artifact.
+14. For live tasks, verify the actual public/deployed target.
+15. Do not declare completion without evidence.
 
 If required memory is missing or contradictory, identify the conflict before acting rather than guessing.
 
@@ -72,9 +94,10 @@ Priority order:
 1. Truth and safety.
 2. Explicit current user requirements.
 3. Understanding-First Gate and Naya governance.
-4. NAYA-MASTER and current authoritative project specifications.
-5. Existing working functionality and preservation.
-6. Convenience and speed.
+4. NAYA-LAW execution-integrity requirements.
+5. NAYA-MASTER and current authoritative project specifications.
+6. Existing working functionality and preservation.
+7. Convenience and speed.
 
 Never optimize for appearing productive at the expense of correctness.
 
@@ -86,6 +109,7 @@ VERIFY current source of truth.
 VERIFY what already works.
 VERIFY the requested outcome.
 RECONCILE material conflicts.
+ESTABLISH BASELINE.
 PASS THE UNDERSTANDING GATE.
 Then act.
 
@@ -113,6 +137,8 @@ Do not label it complete.
 Do not hide the failure with a smaller substitute, redirect, placeholder, fake data, stale file, or optimistic explanation.
 
 If understanding is incomplete, status becomes `BLOCKED — UNDERSTANDING INCOMPLETE`.
+If the implementation diff is zero when a change was required, status becomes `BLOCKED — ZERO-CHANGE EXECUTION`.
+If the live target does not reflect the authoritative artifact, status becomes `BLOCKED — DEPLOYMENT PARITY FAILURE`.
 
 ## LEARNING FROM ERRORS
 When a material failure occurs:
