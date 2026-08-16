@@ -8,6 +8,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: maxess-definitive-results-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
     if: github.actor != 'github-actions[bot]'
@@ -57,5 +61,8 @@ jobs:
             tools/verify_results_10.py \
             .naya/memory/30-GROWING-LESSON-002-OSCAR-PASS-2.md \
             .github/workflows/build-final-results-groove.yml
-          git diff --cached --quiet || git commit -m 'Apply Growing Lesson 002 Oscar Pass 2'
-          git push
+          if ! git diff --cached --quiet; then
+            git commit -m 'Apply Growing Lesson 002 Oscar Pass 2'
+            git pull --rebase origin main
+            git push
+          fi
