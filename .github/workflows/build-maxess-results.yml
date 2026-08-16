@@ -1,8 +1,0 @@
-name: Legacy MAXESS Results Builder (archived)
-on:
-  workflow_dispatch:
-jobs:
-  archived:
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo 'Archived. The 9.9 Results builder is tools/build_maxess_results_9_9.py and .github/workflows/build-final-results-groove.yml.'
