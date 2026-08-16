@@ -1,0 +1,40 @@
+name: Naya Law — Assessment Results Handoff Pass
+
+on:
+  push:
+    branches:
+      - naya/maxess-results-aaa
+    paths:
+      - .naya/NAYA-LAW-HANDOFF-TRIGGER
+
+permissions:
+  contents: write
+
+jobs:
+  handoff:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Apply deterministic assessment handoff
+        run: python .github/naya_law_assessment_handoff.py
+
+      - name: Validate handoff
+        run: |
+          node --check code
+          grep -q 'MAXESS_9_5_CROSS_DOMAIN_HANDOFF' code
+          grep -q 'https://results.nayanet.xyz/?result=' code
+          grep -q 'responses: state.responses' code
+          echo 'Assessment → Results handoff validation: PASS'
+
+      - name: Commit handoff and remove migrator
+        run: |
+          git config user.name 'Naya Law Automation'
+          git config user.email 'actions@users.noreply.github.com'
+          git add code
+          git rm -f .github/workflows/naya-law-assessment-handoff-pass.yml .github/naya_law_assessment_handoff.py .naya/NAYA-LAW-HANDOFF-TRIGGER
+          git commit -m 'Connect MAXESS assessment to authoritative Results contract [naya-law-handoff-complete]'
+          git push
