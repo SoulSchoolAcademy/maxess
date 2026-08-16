@@ -5874,8 +5874,74 @@ root.querySelector('.mx-hero .mx-band')?.remove();
 })();
 </script>
 
-</body>
-</html>
+
+<!-- MAXESS-RESULTS-V5-GUARD -->
+<!-- MAXESS RESULTS V5 — data integrity, document normalization, runtime proof -->
+<style id="maxess-results-v5-guard">
+#maxess-results-10 .mx-data-warning{display:none}
+#maxess-results-10[data-result-state="awaiting"] .mx-data-warning{display:block}
+#maxess-results-10 .mx-scorecard-row,#maxess-results-10 .mx-list-row,#maxess-results-10 .mx-dim{transition:opacity .2s ease}
+#maxess-results-10[data-result-state="awaiting"] .mx-scorecard-row,#maxess-results-10[data-result-state="awaiting"] .mx-list-row,#maxess-results-10[data-result-state="awaiting"] .mx-dim{opacity:.45}
+</style>
+<script id="maxess-results-v5-guard-js">
+(function(){
+'use strict';
+const root=document.getElementById('maxess-results-10');
+if(!root)return;
+const R=()=>window.MAXESS_RESULT||null;
+const clamp=n=>Math.max(0,Math.min(100,n));
+const n=v=>{const x=Number(v);return Number.isFinite(x)?clamp(x):null};
+function dims(){
+ const r=R();
+ if(!r)return [];
+ const raw=Array.isArray(r.dimensions)?r.dimensions:[];
+ return raw.map((d,i)=>({id:d.id||String(i+1),name:d.name||d.label||`Dimension ${i+1}`,score:n(d.score??d.value??d.percentage??0)??0,description:d.description||d.insight||''})).slice(0,5);
+}
+function overall(){const r=R();if(!r)return null;return n(r.overallScore??r.score??r.masterScore??r.overall)}
+function setText(el,value){if(el&&value!==null&&value!==undefined)el.textContent=String(value)}
+function sync(){
+ const r=R(),s=overall(),ds=dims();
+ if(!r||s===null){root.setAttribute('data-result-state','awaiting');return false}
+ root.setAttribute('data-result-state','ready');
+ root.setAttribute('data-mode','result-contract');
+ root.dataset.fixtureActive='0';
+ const scoreNodes=root.querySelectorAll('.mx-score strong');scoreNodes.forEach(el=>setText(el,Math.round(s)));
+ root.querySelectorAll('.mx-radar-center b').forEach(el=>setText(el,Math.round(s)));
+ const band=s>=91?'Mastering':s>=76?'Advancing':s>=51?'Developing':'Foundation';
+ root.querySelectorAll('.mx-band').forEach(el=>setText(el,band));
+ const dimCards=Array.from(root.querySelectorAll('.mx-dim')).slice(0,5);
+ dimCards.forEach((card,i)=>{
+   const d=ds[i];if(!d)return;
+   card.dataset.score=String(d.score);card.style.setProperty('--score',d.score);card.style.setProperty('--dim-score',d.score);
+   const h=card.querySelector('.mx-dim-head h3');if(h)setText(h,d.name);
+   const scoreEl=card.querySelector('.mx-dim-head strong');if(scoreEl){scoreEl.childNodes[0].nodeValue=String(Math.round(d.score));}
+   const track=card.querySelector('.mx-track span');if(track)track.style.setProperty('--w',d.score+'%');
+   const p=card.querySelector('.mx-dim p');if(p&&d.description)setText(p,d.description);
+ });
+ const rows=Array.from(root.querySelectorAll('.mx-list-row')).slice(0,5);
+ rows.forEach((row,i)=>{const d=ds[i];if(!d)return;const b=row.querySelector('b');const strong=row.querySelector('strong');const bar=row.querySelector('.mx-bar i');if(b)setText(b,d.name);if(strong)setText(strong,Math.round(d.score));if(bar)bar.style.setProperty('--w',d.score+'%')});
+ const scoreRows=Array.from(root.querySelectorAll('.mx-scorecard-row')).slice(0,5);
+ scoreRows.forEach((row,i)=>{const d=ds[i];if(!d)return;const label=row.querySelector('span');const val=row.querySelector('b');const bar=row.querySelector('.mx-scorecard-track i');if(label)setText(label,d.name);if(val)setText(val,Math.round(d.score));if(bar)bar.style.setProperty('--w',d.score+'%')});
+ root.querySelectorAll('[data-results-score]').forEach(el=>setText(el,Math.round(s)));
+ root.dispatchEvent(new CustomEvent('maxess:result-ready',{detail:{score:s,dimensions:ds}}));
+ return true;
+}
+function removeFixtureOnlyContent(){
+ root.querySelectorAll('[data-development-fixture],.development-fixture').forEach(el=>el.remove());
+}
+function boot(){
+ removeFixtureOnlyContent();
+ sync();
+ if(!R()){
+   const guard=root.querySelector('#maxess-result-contract-guard');
+   if(guard)root.setAttribute('data-result-state','awaiting');
+ }
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(boot,0),{once:true});else setTimeout(boot,0);
+window.addEventListener('maxess:result-ready',sync);
+})();
+</script>
+
 
 <style id="maxess-oscar-pass-3">
 /* GROWING LESSON 003 — make the page feel composed, connected and alive. */
@@ -6064,3 +6130,5 @@ root.querySelector('.mx-hero .mx-band')?.remove();
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(boot,80)},{once:true});else setTimeout(boot,80);
 })();
 </script>
+</body>
+</html>
