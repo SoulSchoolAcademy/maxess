@@ -4612,14 +4612,50 @@ function renderResults(){
    SHOW RESULTS AFTER INTERESTS
 ========================================================= */
 
+/* MAXESS_9_5_CROSS_DOMAIN_HANDOFF */
 function finishInterestSelection(){
 
   DOM.interestsView.classList.remove(
     "visible"
   );
 
-  renderResults();
+  /* Naya Law: the assessment remains the scoring authority.
+     Results receives the completed result through an explicit
+     cross-domain contract rather than shared browser storage. */
+  const results = calculateResults();
+  const payload = {
+    version: "MAXESS-RESULTS-CONTRACT-1",
+    assessmentId: "ai-max",
+    assessmentVersion: "MAXESS-1.0",
+    completed: true,
+    overall: results.overall,
+    dimensions: Object.fromEntries(
+      results.dimensions.map(
+        dimension => [dimension.id, dimension.score]
+      )
+    ),
+    strongest: [...results.dimensions]
+      .sort((a,b)=>b.score-a.score)[0]?.id || null,
+    opportunity: [...results.dimensions]
+      .sort((a,b)=>a.score-b.score)[0]?.id || null,
+    responses: state.responses,
+    selectedInterests: [...state.selectedInterests],
+    completedAt: new Date().toISOString()
+  };
 
+  const bytes = new TextEncoder().encode(JSON.stringify(payload));
+  let binary = "";
+  bytes.forEach(byte => binary += String.fromCharCode(byte));
+
+  const encoded = btoa(binary)
+    .replace(/\+/g,"-")
+    .replace(/\//g,"_")
+    .replace(/=+$/g,"");
+
+  window.location.assign(
+    "https://results.nayanet.xyz/?result=" +
+    encodeURIComponent(encoded)
+  );
 }
 
 
