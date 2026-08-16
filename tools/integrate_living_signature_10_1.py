@@ -8,10 +8,12 @@ TARGETS = [
     Path('MAXESS-RESULTS-GROOVE-EMBED-9.95.html'),
 ]
 PATCH = Path('MAXESS-LIVING-SIGNATURE-10-10.js')
+DYNAMIC = Path('MAXESS-RESULTS-DYNAMIC-10-10.js')
 AUDIO = Path('MAXESS-NAYA-RESULT-AUDIO-9.js')
 MARKER = '<!-- MAXESS-LIVING-SIGNATURE-10.10 -->'
 
 patch = PATCH.read_text(encoding='utf-8')
+dynamic = DYNAMIC.read_text(encoding='utf-8')
 audio = AUDIO.read_text(encoding='utf-8')
 
 fallback_css = r'''<style id="maxess-10-10-fallback-style">
@@ -25,13 +27,7 @@ fallback_runtime = r'''<script id="maxess-10-10-loading-fallback">\
     var root=document.getElementById('maxess-results-10');\
     var orb=root&&root.querySelector('.mx-score-orb');\
     if(!orb)return;\
-    if(!orb.querySelector('.mx-ls-loading')){\
-      var el=document.createElement('div');\
-      el.className='mx-ls-loading';\
-      el.setAttribute('aria-live','polite');\
-      el.innerHTML='Preparing your MAXESS signature<span>Your result is loading</span>';\
-      orb.appendChild(el);\
-    }\
+    if(!orb.querySelector('.mx-ls-loading')){var el=document.createElement('div');el.className='mx-ls-loading';el.setAttribute('aria-live','polite');el.innerHTML='Preparing your MAXESS signature<span>Your result is loading</span>';orb.appendChild(el);}\
   }\
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();\
 })();\
@@ -44,16 +40,7 @@ legacy_gate = r'''<script id="maxess-modern-browser-gate">\
   document.documentElement.setAttribute('data-maxess-browser',modern?'modern':'limited');\
   function neutralize(){\
     var nodes=document.querySelectorAll('body *');\
-    for(var i=0;i<nodes.length;i++){\
-      var el=nodes[i];\
-      if(el.children.length===0){\
-        var t=(el.textContent||'').replace(/\\s+/g,' ').trim().toLowerCase();\
-        if(t.indexOf("this site doesn't support internet explorer")!==-1||t.indexOf('this site does not support internet explorer')!==-1){\
-          el.style.display='none';\
-          if(el.parentElement&&el.parentElement.children.length===1)el.parentElement.style.display='none';\
-        }\
-      }\
-    }\
+    for(var i=0;i<nodes.length;i++){var el=nodes[i];if(el.children.length===0){var t=(el.textContent||'').replace(/\\s+/g,' ').trim().toLowerCase();if(t.indexOf("this site doesn't support internet explorer")!==-1||t.indexOf('this site does not support internet explorer')!==-1){el.style.display='none';if(el.parentElement&&el.parentElement.children.length===1)el.parentElement.style.display='none';}}}\
   }\
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',neutralize,{once:true});else neutralize();\
   if(window.MutationObserver)new MutationObserver(neutralize).observe(document.documentElement,{childList:true,subtree:true});\
@@ -67,10 +54,8 @@ anchor = r'''<script id="maxess-live-anchor">\
 })();\
 </script>'''
 
-no_external_loader = '<script id="maxessLivingSignatureScript"></script>'
-
 block = ('\n' + MARKER + '\n' + fallback_css + '\n' + legacy_gate + '\n' + fallback_runtime + '\n'
-         + no_external_loader + '\n'
+         + '<script id="maxess-live-result-renderer">\n' + dynamic + '\n</script>\n'
          + '<script id="maxess-live-living-signature-engine">\n' + patch + '\n</script>\n'
          + anchor + '\n' + '<script id="maxess-live-naya-audio">\n' + audio + '\n</script>\n')
 
