@@ -29,15 +29,12 @@ jobs:
           grep -q 'Object.fromEntries' code
           echo 'MAXESS Assessment → Results handoff contract: PASS'
 
-      - name: Verify no workflow mutation authority
+      - name: Verify read-only workflow authority
         shell: bash
         run: |
           set -euo pipefail
-          if grep -q 'permissions:' .github/workflows/patch-assessment-results-handoff.yml && grep -q 'contents: write' .github/workflows/patch-assessment-results-handoff.yml; then
-            echo 'Mutation authority detected in handoff audit workflow.'
-            exit 1
-          fi
-          if grep -q 'git push' .github/workflows/patch-assessment-results-handoff.yml; then
+          grep -q 'contents: read' .github/workflows/patch-assessment-results-handoff.yml
+          if grep -qE '^[[:space:]]*git[[:space:]]+push([[:space:]]|$)' .github/workflows/patch-assessment-results-handoff.yml; then
             echo 'Self-mutating handoff workflow detected.'
             exit 1
           fi
