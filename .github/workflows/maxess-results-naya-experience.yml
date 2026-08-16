@@ -1,0 +1,69 @@
+name: MAXESS Results — Apply Naya Experience
+
+on:
+  push:
+    branches:
+      - naya-results-master-instruction-set
+    paths:
+      - '.naya/MAXESS-RESULTS-NAYA-EXPERIENCE-FRAGMENT.html'
+      - '.naya/apply_maxess_results_experience.py'
+      - '.naya/MAXESS-RESULTS-MASTER-INSTRUCTION-SET.md'
+      - '.naya/NAYA-GOVERNANCE.md'
+
+permissions:
+  contents: write
+
+jobs:
+  apply-results-experience:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Apply deterministic Results experience patch
+        run: python3 .naya/apply_maxess_results_experience.py
+
+      - name: Structural safety checks
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('MAXESS-RESULTS-10-GROOVE.html')
+          s = p.read_text(encoding='utf-8')
+          checks = {
+              'MAXESS_RESULT data boundary': 'window.MAXESS_RESULT' in s,
+              'Results contract': 'MAXESS-RESULTS-CONTRACT-1' in s,
+              'Complete video system': 'ny-youtube-player' in s,
+              'Original CTA': 'Start Your Free Trial' in s,
+              'New hero': 'YOUR AI SCORE' in s,
+              'Naya presence': 'naya-presence' in s,
+              'Five dimensions': 'your-dimensions' in s,
+              'Biggest lever': 'biggest-lever' in s,
+              '18 Naya Masters': 'naya-masters' in s,
+              'Human + AI bridge': 'naya-human-bridge' in s,
+              'Final solution relocation': 'naya-final-solution' in s,
+          }
+          failed = [k for k, v in checks.items() if not v]
+          for k, v in checks.items(): print(('PASS' if v else 'FAIL') + ' — ' + k)
+          if failed: raise SystemExit('BLOCKED — structural checks failed: ' + ', '.join(failed))
+          if p.stat().st_size < 100000: raise SystemExit('BLOCKED — authoritative Results artifact unexpectedly small')
+          PY
+
+      - name: Diff and whitespace check
+        run: |
+          git diff --check
+          git diff --stat
+          git diff -- MAXESS-RESULTS-10-GROOVE.html | sed -n '1,220p'
+
+      - name: Commit applied Results artifact
+        run: |
+          if git diff --quiet -- MAXESS-RESULTS-10-GROOVE.html; then
+            echo 'No Results artifact diff; nothing to commit.'
+            exit 0
+          fi
+          git config user.name 'Naya Master'
+          git config user.email 'naya-master@users.noreply.github.com'
+          git add -- MAXESS-RESULTS-10-GROOVE.html
+          git commit -m 'Execute MAXESS Results Naya experience master instruction set [skip ci]'
+          git push origin HEAD:naya-results-master-instruction-set
