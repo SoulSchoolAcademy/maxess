@@ -43,12 +43,12 @@ jobs:
           python3 -m py_compile tools/integrate_living_signature_10_1.py
           python3 tools/integrate_living_signature_10_1.py
 
-      # The integration step above is now safe for bodyless Groove embeds.
+      # Bootstrap must be the first executable layer in every canonical artifact.
       - name: Bootstrap MAXESS_RESULT before every visual script
         run: |
           set -euo pipefail
-          python3 -m py_compile tools/bootstrap_maxess_result_10_10.py
-          python3 tools/bootstrap_maxess_result_10_10.py
+          python3 -m py_compile tools/bootstrap_maxess_result_10_10_v2.py
+          python3 tools/bootstrap_maxess_result_10_10_v2.py
 
       - name: Verify final Results artifacts
         run: |
@@ -83,6 +83,7 @@ jobs:
             tools/format_results_10_artifacts.py \
             tools/integrate_living_signature_10_1.py \
             tools/bootstrap_maxess_result_10_10.py \
+            tools/bootstrap_maxess_result_10_10_v2.py \
             tools/verify_results_10.py \
             .naya/memory/30-GROWING-LESSON-002-OSCAR-PASS-2.md \
             .naya/memory/31-GROWING-LESSON-003-10-STAR-LIVE-PRODUCT-GATE.md \
