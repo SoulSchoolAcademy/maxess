@@ -46,11 +46,25 @@ The authoritative `MAXESS-RESULTS-10-GROOVE.html` was materially modified and me
 
 ## Deployment Verification Attempt — 2026-08-16
 
-The live target `https://results.nayanet.xyz/` was fetched after the V14 merge. It is still serving the older Results experience and does not expose the V14 Personal Profile layer.
+The live target `https://results.nayanet.xyz/` was fetched after the V14 merge. It is still serving the older Results experience and does not expose the V14 Personal Profile layer. The public response currently exposes the older visible structure beginning with `YOUR MAXESS RESULT`, `THE MEANING`, `YOUR CAPABILITY SIGNATURE`, and `THE TWO THINGS THAT MATTER MOST`.
 
 The authoritative `GROOVE-DEPLOYMENT-CONTRACT.md` was read before attempting further action. It explicitly establishes that the connected environment has **no authenticated Groove editor/publishing integration** and therefore cannot honestly perform the external publish stage from GitHub alone.
 
 A repository/plugin capability check was also performed for Groove deployment; no connected Groove publishing plugin/integration is available.
+
+## Exact Deployment Findings
+
+The repository identifies the public target as Groove-hosted and identifies the authoritative engineering chain as:
+
+`MAXESS-RESULTS-10-GROOVE.html` → `MAXESS-RESULTS-EXPERIENCE.js` → Groove deployment artifact/publisher → `https://results.nayanet.xyz/`
+
+However, repository inspection does not reveal the authenticated Groove site/funnel ID, exact page ID, exact code-element location, or publish credential/action. Those values cannot be safely guessed.
+
+## Minimal Probe Status
+
+The contract requires a harmless deployment probe to be placed through the real Groove editor, published, and verified publicly before replacing it with the complete V14 payload.
+
+That probe was **NOT executed** because authenticated Groove editor access is unavailable. The probe must not be simulated in GitHub; doing so would falsely validate the external delivery channel.
 
 ## Exact Blocker
 
