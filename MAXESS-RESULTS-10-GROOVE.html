@@ -1763,6 +1763,234 @@ transition:none}
 @media(prefers-reduced-motion:reduce){#maxess-results-10.v13-active .v13-score-orb,#maxess-results-10.v13-active .v13-score-orb:before,#maxess-results-10.v13-active .v13-score-orb:after{animation:none!important}}
 @media print{#maxess-results-10.v13-active{background:#fff!important;color:#111!important}#maxess-results-10.v13-active .v13-shell{background:#fff!important;color:#111!important}#maxess-results-10.v13-active .v13-hero,#maxess-results-10.v13-active .v13-dimensions,#maxess-results-10.v13-active .v13-next,#maxess-results-10.v13-active .v13-video{background:#fff!important;color:#111!important}#maxess-results-10.v13-active .v13-hero-tools,#maxess-results-10.v13-active .v13-hero-actions{display:none!important}#maxess-results-10.v13-active .v13-score-orb{width:250px!important;box-shadow:none!important;background:#f2f2f4!important;animation:none!important}#maxess-results-10.v13-active .v13-score-number{font-size:95px!important;background:none!important;color:#111!important;-webkit-text-fill-color:#111!important}#maxess-results-10.v13-active .v13-naya-card,#maxess-results-10.v13-active .v13-dim,#maxess-results-10.v13-active .v13-node,#maxess-results-10.v13-active .v13-master,#maxess-results-10.v13-active .v13-step{break-inside:avoid;box-shadow:none!important}#maxess-results-10.v13-active .v13-final{background:#fff!important}#maxess-results-10.v13-active .v13-original{display:none!important}}
 </style>
+<style id="maxess-results-v13">
+/* ================================================================
+   MAXESS RESULTS V13 — EXPERIENCE / CLARITY / CONVERSION LAYER
+   Preservation-first additive upgrade. Existing functionality remains
+   authoritative; this layer improves hierarchy, narrative order,
+   personalization, mobile clarity, accessibility, and CTA discipline.
+   ================================================================ */
+#maxess-results-10.mx-v13-active{
+  --v13-purple:#9a62ff;
+  --v13-violet:#d9bdff;
+  --v13-cyan:#55dfff;
+  --v13-green:#52e0a4;
+  --v13-ink:#0a0910;
+}
+
+/* 1. THE REVEAL: nothing competes with the score. */
+#maxess-results-10 .mx-hero.v13-hero{
+  min-height:auto!important;
+  padding:clamp(34px,5vw,72px) clamp(16px,4vw,64px) clamp(28px,4vw,54px)!important;
+  background:
+    radial-gradient(circle at 50% 35%,rgba(154,98,255,.23),transparent 30%),
+    radial-gradient(circle at 50% 75%,rgba(85,223,255,.06),transparent 34%),
+    linear-gradient(180deg,#020205 0%,#07040c 76%,#030307 100%)!important;
+}
+#maxess-results-10 .v13-hero-grid{
+  width:min(1180px,100%)!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  gap:18px!important;
+  margin-inline:auto!important;
+  text-align:center!important;
+}
+#maxess-results-10 .v13-score-label{
+  order:0;
+  color:rgba(255,255,255,.52);
+  font-size:10px;
+  font-weight:950;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+}
+#maxess-results-10 .v13-score-value{
+  order:1;
+  margin-top:-8px;
+  font-size:clamp(76px,11vw,148px);
+  line-height:.78;
+  letter-spacing:-.09em;
+  font-weight:900;
+  background:linear-gradient(120deg,#fff 0%,#dfc9ff 34%,#a56aff 65%,#55dfff 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  text-shadow:0 0 45px rgba(154,98,255,.18);
+}
+#maxess-results-10 .v13-score-caption{
+  order:2;
+  margin-top:-2px;
+  color:rgba(255,255,255,.56);
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+}
+#maxess-results-10 .v13-orb-wrap{
+  order:3;
+  position:relative;
+  width:min(610px,86vw);
+  margin:2px auto 0;
+}
+#maxess-results-10 .v13-orb-wrap::after{
+  content:"";
+  position:absolute;
+  left:50%;bottom:-8%;
+  width:68%;height:20%;
+  transform:translateX(-50%);
+  background:radial-gradient(ellipse,rgba(154,98,255,.25),transparent 70%);
+  filter:blur(16px);
+  pointer-events:none;
+}
+#maxess-results-10 .v13-orb-wrap .mx-score-orb{
+  width:100%!important;
+  max-width:none!important;
+  margin:0!important;
+}
+#maxess-results-10 .v13-orb-wrap .mx-score{
+  opacity:.42;
+  transform:scale(.72);
+}
+#maxess-results-10 .v13-orb-wrap .mx-score strong{font-size:clamp(72px,9vw,126px)!important}
+#maxess-results-10 .v13-hero-actions{
+  order:4;
+  margin:4px 0 0!important;
+}
+#maxess-results-10 .v13-hero-actions .mx-cta-primary{
+  min-width:min(330px,88vw);
+  min-height:58px!important;
+  border-radius:18px!important;
+}
+#maxess-results-10 .v13-hero-actions .mx-cta-primary::before{
+  content:"";
+  position:absolute;
+  inset:-8px;
+  border-radius:24px;
+  border:1px solid rgba(154,98,255,.18);
+  opacity:.9;
+}
+
+/* 2. NAYA: companion, not advertisement. */
+#maxess-results-10 .v13-naya-intro{
+  width:min(1120px,calc(100% - 32px));
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:92px minmax(0,1fr);
+  gap:20px;
+  align-items:center;
+  padding:24px 26px;
+  border:1px solid rgba(154,98,255,.20);
+  border-radius:30px;
+  background:linear-gradient(105deg,rgba(154,98,255,.11),rgba(255,255,255,.035) 48%,rgba(85,223,255,.045));
+  box-shadow:0 28px 90px rgba(0,0,0,.28),inset 0 1px rgba(255,255,255,.10);
+}
+#maxess-results-10 .v13-naya-intro img{
+  width:92px;height:92px;border-radius:50%;object-fit:cover;
+  border:2px solid rgba(255,255,255,.72);
+  box-shadow:0 0 0 7px rgba(154,98,255,.08),0 18px 42px rgba(0,0,0,.30);
+}
+#maxess-results-10 .v13-naya-kicker{
+  color:#cdb1ff;font-size:10px;font-weight:950;letter-spacing:.18em;text-transform:uppercase;
+}
+#maxess-results-10 .v13-naya-title{
+  margin:6px 0 0;color:#fff;font-size:clamp(22px,2.8vw,34px);line-height:1.05;letter-spacing:-.04em;font-weight:820;
+}
+#maxess-results-10 .v13-naya-copy{
+  max-width:820px;margin:9px 0 0;color:rgba(255,255,255,.67);font-size:14px;line-height:1.58;
+}
+#maxess-results-10 .v13-naya-signature{
+  display:block;margin-top:9px;color:rgba(255,255,255,.42);font-size:11px;font-style:italic;
+}
+
+/* 3. CHAPTER RHYTHM: less clutter, stronger information hierarchy. */
+#maxess-results-10 .v13-chapter-anchor{
+  scroll-margin-top:24px;
+}
+#maxess-results-10 .v13-chapter-label{
+  display:inline-flex;align-items:center;gap:9px;
+  color:rgba(255,255,255,.46);font-size:9px;font-weight:950;letter-spacing:.18em;text-transform:uppercase;
+}
+#maxess-results-10 .v13-chapter-label::before{
+  content:"";width:22px;height:1px;background:linear-gradient(90deg,#9a62ff,transparent);
+}
+#maxess-results-10 .v13-primary-action{
+  display:flex;justify-content:center;margin-top:24px;
+}
+#maxess-results-10 .v13-primary-action .mx-cta{min-width:min(360px,100%)}
+
+/* 4. DIMENSIONS: scores first, copy second, one job per card. */
+#maxess-results-10 .v13-dimension-section .mx-section-head{margin-bottom:26px}
+#maxess-results-10 .v13-dimension-section .mx-dim-grid{gap:14px!important}
+#maxess-results-10 .v13-dimension-section .mx-dim{
+  min-height:300px!important;
+  padding:20px 16px!important;
+}
+#maxess-results-10 .v13-dimension-section .mx-dim p{font-size:12px;line-height:1.5}
+#maxess-results-10 .v13-dimension-section .mx-lever b{font-size:11px}
+
+/* 5. PATTERN: one visual, one explanation. */
+#maxess-results-10 .v13-pattern-section .mx-section-head{margin-bottom:22px}
+#maxess-results-10 .v13-pattern-section .mx-section-head p{max-width:620px}
+
+/* 6. STRENGTH / LEVER: contrast without shame. */
+#maxess-results-10 .v13-story-section .mx-panel{
+  border-radius:28px!important;
+  padding:clamp(26px,3.4vw,42px)!important;
+}
+#maxess-results-10 .v13-story-section .mx-panel h3{
+  font-size:clamp(30px,4vw,52px)!important;
+  letter-spacing:-.05em!important;
+}
+
+/* 7. NEXT MOVE: exactly one primary action. */
+#maxess-results-10 .v13-next-section .mx-path{gap:10px}
+#maxess-results-10 .v13-next-section .mx-step{min-height:210px}
+#maxess-results-10 .v13-next-section .mx-step:first-child{border-color:rgba(154,98,255,.34);box-shadow:0 18px 55px rgba(0,0,0,.24)}
+
+/* 8. PATHWAYS: make them a library, not a wall. */
+#maxess-results-10 .v13-pathways-section .mx-areas{gap:8px}
+#maxess-results-10 .v13-pathways-section .mx-area{min-height:76px!important}
+#maxess-results-10 .v13-pathways-section .mx-area-relevance{min-width:150px}
+#maxess-results-10 .v13-pathways-note{
+  max-width:760px;margin:18px auto 0;text-align:center;color:rgba(255,255,255,.48);font-size:12px;line-height:1.55;
+}
+
+/* 9. REMOVE REDUNDANT / COMMERCIAL NOISE FROM THE REPORT CHAPTER. */
+#maxess-results-10 .v13-hide-report-noise{display:none!important}
+#maxess-results-10 .v13-noise-copy{display:none!important}
+
+/* 10. FINAL REPORT ENDING: no false chapter marker / no dead-end sentence. */
+#maxess-results-10 .v13-final-report{
+  padding-top:clamp(44px,5vw,76px)!important;
+  padding-bottom:clamp(56px,6vw,92px)!important;
+  text-align:center;
+}
+#maxess-results-10 .v13-final-report .mx-final-note{display:none!important}
+#maxess-results-10 .v13-final-report::before{
+  content:"YOUR RESULTS ARE YOUR STARTING POINT";
+  display:block;color:rgba(255,255,255,.42);font-size:9px;font-weight:950;letter-spacing:.18em;
+}
+#maxess-results-10 .v13-final-report::after{
+  content:"The next move is yours.";
+  display:block;margin-top:10px;color:rgba(255,255,255,.72);font-size:clamp(18px,2.2vw,25px);font-weight:750;letter-spacing:-.025em;
+}
+
+@media(max-width:760px){
+  #maxess-results-10 .v13-naya-intro{
+    grid-template-columns:58px minmax(0,1fr);gap:14px;padding:18px;border-radius:24px;
+  }
+  #maxess-results-10 .v13-naya-intro img{width:58px;height:58px}
+  #maxess-results-10 .v13-naya-copy{font-size:13px}
+  #maxess-results-10 .v13-score-value{font-size:clamp(70px,19vw,104px)}
+  #maxess-results-10 .v13-orb-wrap{width:min(390px,88vw)}
+  #maxess-results-10 .v13-orb-wrap .mx-score strong{font-size:72px!important}
+  #maxess-results-10 .v13-pathways-section .mx-area-relevance{display:none}
+  #maxess-results-10 .v13-pathways-section .mx-area{grid-template-columns:30px 1fr auto!important}
+}
+@media(prefers-reduced-motion:reduce){
+  #maxess-results-10 .v13-orb-wrap .mx-score-orb{animation:none!important}
+}
+</style>
 </head>
 <body>
 <main id="maxess-results-10" data-contract="MAXESS-RESULTS-CONTRACT-1" data-mode="result-contract" data-fixture-available="true">
@@ -7143,6 +7371,167 @@ function preserveMedia(){const video=findVideo();const conversion=findConversion
 function build(){const s=getScore();if(s===null)return false;const ds=getDims();if(ds.length!==5)return false;const shell=document.createElement('div');shell.className='v13-shell';shell.innerHTML=scoreHero()+nayaBlock()+reportBlock()+dimensionsBlock(ds)+patternBlock(ds)+strengthsBlock(ds)+leverBlock(ds)+nextBlock()+mastersBlock()+preserveMedia();const original=[...root.children];original.forEach(el=>{if(el.tagName==='SCRIPT'||el.tagName==='STYLE')return;if(el.id==='maxess-v13')return;el.classList.add('v13-original')});root.insertBefore(shell,root.firstElementChild);root.querySelector('#v13-print').onclick=()=>window.print();const listen=root.querySelector('#v13-listen');if(listen)listen.onclick=()=>{const candidates=[...root.querySelectorAll('button,a')];const b=candidates.find(x=>/listen|naya/i.test(x.textContent||''));if(b&&b!==listen)b.click();else root.dispatchEvent(new CustomEvent('maxess:naya-listen',{bubbles:true}))};return true}
 let attempts=0;function start(){if(root.dataset.v13Built==='1')return;if(build()){root.dataset.v13Built='1';return}if(++attempts<80)setTimeout(start,150)}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();window.addEventListener('maxess:result-ready',start);
+})();
+</script>
+<!-- MAXESS_RESULTS_V13_EXECUTED -->
+<script id="maxess-results-v13-script">
+/* ================================================================
+   MAXESS RESULTS V13 — DATA + EXPERIENCE ORCHESTRATOR
+   ================================================================ */
+(function(){
+  'use strict';
+  function ready(fn){
+    if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',fn,{once:true});
+    else fn();
+  }
+  ready(function(){
+    var root=document.getElementById('maxess-results-10');
+    if(!root || root.dataset.v13Applied==='true') return;
+    root.dataset.v13Applied='true';
+    root.classList.add('mx-v13-active');
+
+    var result=window.MAXESS_RESULT||{};
+    var score=Number(result.overallScore ?? result.score ?? 0);
+    if(!Number.isFinite(score)) score=0;
+    score=Math.max(0,Math.min(100,Math.round(score)));
+
+    function all(selector){return Array.prototype.slice.call(root.querySelectorAll(selector));}
+    function text(el){return (el&&el.textContent||'').replace(/\\s+/g,' ').trim().toLowerCase();}
+    function findByHeading(words){
+      var candidates=all('.mx-section,.mx-growth,.mx-naya-playground,.mx-naya-bridge,.mx-final');
+      return candidates.find(function(sec){
+        var t=text(sec);
+        return words.some(function(w){return t.indexOf(w.toLowerCase())!==-1;});
+      });
+    }
+    function setText(selector,value){var el=root.querySelector(selector);if(el)el.textContent=value;return el;}
+
+    /* Build the score reveal without deleting the existing score/orb. */
+    var hero=root.querySelector('.mx-hero');
+    var grid=hero&&hero.querySelector('.mx-hero-grid');
+    var orb=hero&&hero.querySelector('.mx-score-orb');
+    if(hero&&grid&&orb){
+      hero.classList.add('v13-hero');
+      grid.classList.add('v13-hero-grid');
+      var scoreLabel=document.createElement('div');
+      scoreLabel.className='v13-score-label';
+      scoreLabel.textContent='YOUR AI SCORE';
+      var scoreValue=document.createElement('div');
+      scoreValue.className='v13-score-value';
+      scoreValue.textContent=String(score);
+      scoreValue.setAttribute('aria-label','Your AI score is '+score+' out of 100');
+      var caption=document.createElement('div');
+      caption.className='v13-score-caption';
+      caption.textContent='AI MASTERY · '+(result.band||'YOUR RESULTS');
+      var wrap=document.createElement('div');
+      wrap.className='v13-orb-wrap';
+      orb.parentNode.insertBefore(wrap,orb);
+      wrap.appendChild(orb);
+      var existingHeroCopy=grid.querySelector(':scope > div:first-child');
+      grid.insertBefore(scoreLabel,grid.firstChild);
+      grid.insertBefore(scoreValue,scoreLabel.nextSibling);
+      grid.insertBefore(caption,scoreValue.nextSibling);
+      if(existingHeroCopy && existingHeroCopy!==scoreLabel && existingHeroCopy!==scoreValue && existingHeroCopy!==caption){
+        var actions=existingHeroCopy.querySelector('.mx-hero-actions');
+        if(actions){
+          actions.classList.add('v13-hero-actions');
+          grid.appendChild(actions);
+        }
+        existingHeroCopy.classList.add('v13-hide-report-noise');
+      }
+    }
+
+    /* Turn the existing Naya welcome into the first human conversation. */
+    var welcome=root.querySelector('.v11-naya-welcome');
+    var nayaReport=root.querySelector('#naya-report');
+    var nayaImg=(root.querySelector('img[alt*="Naya" i]')||root.querySelector('.v11-naya-avatar'));
+    var naya=document.createElement('section');
+    naya.className='mx-section';
+    naya.id='v13-naya-introduction';
+    naya.innerHTML='<div class="v13-naya-intro"><div class="v13-naya-image-slot"></div><div><span class="v13-naya-kicker">NAYA · YOUR GUIDE</span><h2 class="v13-naya-title">Hi. I’ve looked at your results.</h2><p class="v13-naya-copy">This isn’t a judgment. It’s a map. I’m here to help you understand what you already do well, where your biggest opportunity is, and what to do next.</p><span class="v13-naya-signature">Technology should amplify your human.</span></div></div>';
+    var imageSlot=naya.querySelector('.v13-naya-image-slot');
+    if(nayaImg){
+      var clone=nayaImg.cloneNode(true);
+      clone.removeAttribute('id');
+      imageSlot.appendChild(clone);
+    }else{
+      imageSlot.innerHTML='<div style="width:92px;height:92px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 35% 30%,#fff, #caa8ff 18%, #7440c4 55%, #160b25 100%);color:#fff;font-size:30px;font-weight:900;box-shadow:0 0 0 7px rgba(154,98,255,.08),0 18px 42px rgba(0,0,0,.30)">N</div>';
+    }
+    if(welcome) welcome.remove();
+    if(nayaReport) nayaReport.classList.add('v13-hide-report-noise');
+    if(hero) hero.insertAdjacentElement('afterend',naya);
+
+    /* Rewrite the redundant final sentence that previously blocked the flow. */
+    var final=root.querySelector('.mx-final');
+    if(final){
+      final.classList.add('v13-final-report');
+      var note=final.querySelector('.mx-final-note');
+      if(note) note.remove();
+    }
+
+    /* Label the major chapters and assign the intended narrative order. */
+    var dimension=findByHeading(['02 · what it means','every score has']);
+    if(dimension) dimension.classList.add('v13-dimension-section','v13-chapter-anchor');
+    var fingerprint=root.querySelector('#your-fingerprint')||root.querySelector('#v11-fingerprint');
+    if(fingerprint) fingerprint.classList.add('v13-pattern-section','v13-chapter-anchor');
+    var strengths=findByHeading(['03 · your advantage','what you already']);
+    if(strengths) strengths.classList.add('v13-story-section','v13-chapter-anchor');
+    var next=findByHeading(['04 · your next chapter','from capability']);
+    if(next) next.classList.add('v13-next-section','v13-chapter-anchor');
+    var pathways=findByHeading(['05 · your 18 ai pathways','don’t learn ai','do not learn ai']);
+    if(pathways) pathways.classList.add('v13-pathways-section','v13-chapter-anchor');
+
+    /* Remove the redundant commercial CTA from the middle growth card; preserve the actual CTA later. */
+    var growth=root.querySelector('#growth-scorecard');
+    if(growth){
+      var growthCta=growth.querySelector('.mx-growth-cta');
+      if(growthCta) growthCta.classList.add('v13-hide-report-noise');
+      var micro=growth.querySelector('.mx-micro');
+      if(micro) micro.classList.add('v13-hide-report-noise');
+    }
+
+    /* Make pathway relevance personalized from actual dimension scores when possible. */
+    var dims=Array.isArray(result.dimensions)?result.dimensions:[];
+    var scoreMap={};
+    dims.forEach(function(d){if(d&&d.name!=null)scoreMap[text({textContent:d.name})]=Number(d.score)||0;});
+    all('.mx-area').forEach(function(area){
+      area.setAttribute('tabindex','0');
+      var button=area.querySelector('.mx-mini');
+      if(button){
+        button.setAttribute('aria-label','Explore '+(area.getAttribute('data-name')||'this pathway'));
+      }
+    });
+
+    /* Make the existing hard-coded score presentation match the authoritative result. */
+    all('.mx-score strong,.mx-radar-center b').forEach(function(el){el.textContent=String(score);});
+    all('.mx-hero .mx-score span').forEach(function(el){el.textContent='MAXESS SCORE';});
+
+    /* Kill the old dead-end sentence everywhere it occurs. */
+    all('*').forEach(function(el){
+      if(el.children.length===0 && text(el)==='the results chapter is complete. the next chapter is nayanet.'){
+        el.textContent='';
+        el.classList.add('v13-hide-report-noise');
+      }
+    });
+
+    /* Smooth, accessible chapter navigation for the single primary action. */
+    all('a[href="#naya-report"],a[href="#naya-playground"]').forEach(function(a){
+      a.addEventListener('click',function(e){
+        var target=root.querySelector('#v13-naya-introduction')||naya;
+        if(target){e.preventDefault();target.scrollIntoView({behavior:'smooth',block:'start'});}
+      });
+    });
+
+    /* Re-run reveal observers for dynamically moved/created content. */
+    var observer=('IntersectionObserver' in window)?new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){if(entry.isIntersecting)entry.target.classList.add('is-visible');});
+    },{threshold:.12}):null;
+    if(observer) all('.mx-reveal').forEach(function(el){observer.observe(el);});
+
+    console.log('%cMAXESS RESULTS V13 EXECUTED','color:#55dfff;font-weight:900;font-size:16px');
+    root.setAttribute('data-results-version','13');
+    root.setAttribute('data-execution-status','material-change-applied');
+  });
 })();
 </script>
 </body>

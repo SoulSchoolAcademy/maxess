@@ -136,3 +136,43 @@ Read-first routing, memory routing, promotion rules, daily/weekly compression, e
 
 ## NEXT EXECUTION
 Run the memory system during real work, record meaningful notes, perform the next daily synthesis, and verify that the system improves context retrieval without creating unnecessary reading overhead.
+
+
+---
+
+# SYSTEM EXECUTION #002
+
+## DATE
+2026-08-16
+
+## PROJECT / AREA
+MAXESS Results / v13 Experience Upgrade
+
+## DIRECTIVE
+Execute the complete Results experience improvement pass under the Digital Codex, with exceptional UX, clarity, personalization, conversion discipline, preservation, and measurable material change.
+
+## VERSION / TARGET
+Results v13 — material experience upgrade
+
+## AUTHORITATIVE SOURCE
+`MAXESS-RESULTS-10-GROOVE.html` on `codex-smart-memory-v1`.
+
+## MATERIAL CHANGES
+- Reframed the hero around the actual AI score as the primary reveal.
+- Increased the score/orb dominance and removed competing hero noise.
+- Added a dedicated Naya introduction immediately after the score reveal.
+- Reframed Naya as the user's guide rather than a commercial advertisement.
+- Removed the redundant “Results chapter is complete / next chapter is NayaNET” dead-end copy.
+- Reduced mid-report commercial friction and duplicate CTA noise.
+- Tightened dimension, strengths, lever, next-move, and pathway presentation.
+- Preserved the existing MAXESS result contract, Orb, content, pathways, and downstream NayaNET system.
+- Added responsive and reduced-motion safeguards.
+
+## ZERO-CHANGE GATE
+The HTML must contain the V13 execution marker and `data-results-version="13"` behavior before this execution may be considered materially changed.
+
+## STATUS
+EXECUTED — AWAITING LIVE PARITY VERIFICATION
+
+## LEARNING
+The previous failure pattern was not lack of design ideas; it was failure to mutate and verify the authoritative artifact. V13 therefore treats the artifact mutation itself as a release gate.
