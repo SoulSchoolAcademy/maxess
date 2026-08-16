@@ -30,7 +30,8 @@ When creating durable product decisions, add or update a clearly named file unde
 ### Results experience
 - `.naya/memory/08-MAXESS-RESULTS-MASTER-SPEC.md` — locked MAXESS Results product architecture, psychological journey, five AI character dimensions, personalization, result contract, Naya transition, AAA standard.
 - `.naya/memory/15-MAXESS-10-STAR-RESULTS-EXPERIENCE.md` — expanded 10-star Results experience, reveal sequence, luxury digital hospitality direction, motion, report, personalization integrity, final user-value test.
-- `.naya/memory/23-MAXESS-9-9-BUILD-BLUEPRINT.md` — current authoritative Results build architecture, release gate, single publisher rule, and production artifact definition.
+- `.naya/memory/23-MAXESS-9-9-BUILD-BLUEPRINT.md` — current Results build architecture, release gate, single publisher rule, and production artifact history.
+- `.naya/memory/28-MAXESS-FINAL-RESULTS-BUILD-DIRECTIVE.md` — AUTHORITATIVE final-build law: new Results experience, NayaNET Page Code foundation, locked score bands, growth architecture, preservation rules, execution gate, and 9.9 completion standard.
 
 ### Naya operating modes
 - `.naya/memory/09-NAYA-ROLE-ROLODEX.md` — one Naya / many expert modes, expanded role index, activation syntax, multi-role orchestration, shared craft loop.

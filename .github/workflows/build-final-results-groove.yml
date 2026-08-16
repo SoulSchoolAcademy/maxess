@@ -1,8 +1,8 @@
-name: Build Authoritative MAXESS Royal Results
+name: Build Definitive MAXESS Results
 
 on:
   push:
-    branches: [main]
+    branches: [main, 'feat/maxess-final-results-99']
   workflow_dispatch:
 
 permissions:
@@ -15,84 +15,70 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Build MAXESS 9.9 transformation
+      - name: Build definitive MAXESS Results
         run: |
           set -euo pipefail
-          python3 tools/build_maxess_results_9_9.py
+          python3 -m py_compile tools/build_maxess_results_final.py
+          python3 tools/build_maxess_results_final.py
 
-      - name: Apply Royal 9.95 experience layer
+      - name: Verify final Results artifacts
         run: |
           set -euo pipefail
-          python3 tools/build_maxess_results_royal_9_95.py || python3 tools/verify_maxess_results_royal_9_95.py
-
-      - name: Verify Royal source contract
-        run: |
-          set -euo pipefail
-          python3 tools/verify_maxess_results_royal_9_95.py
-
-      - name: Build Groove-native embed artifact
-        run: |
-          set -euo pipefail
-          python3 tools/build_maxess_results_groove_embed.py
-
-      - name: Final source inventory
-        run: |
-          set -euo pipefail
-          test -f MAXESS-RESULTS-10-GROOVE.html
-          test -f MAXESS-RESULTS-GROOVE-EMBED.html
-          test -f MAXESS-RESULTS-GROOVE-EMBED-9.95.html
-          lines=$(wc -l < MAXESS-RESULTS-10-GROOVE.html)
-          bytes=$(wc -c < MAXESS-RESULTS-10-GROOVE.html)
-          embed_lines=$(wc -l < MAXESS-RESULTS-GROOVE-EMBED.html)
-          embed_bytes=$(wc -c < MAXESS-RESULTS-GROOVE-EMBED.html)
-          embed995_lines=$(wc -l < MAXESS-RESULTS-GROOVE-EMBED-9.95.html)
-          embed995_bytes=$(wc -c < MAXESS-RESULTS-GROOVE-EMBED-9.95.html)
-          echo "MAXESS Royal artifact: ${lines} lines / ${bytes} bytes"
-          echo "MAXESS Groove embed: ${embed_lines} lines / ${embed_bytes} bytes"
-          echo "MAXESS 9.95 Groove embed: ${embed995_lines} lines / ${embed995_bytes} bytes"
-
-          # The Groove artifact is deliberately required to preserve the complete
-          # authoritative Results source. A tiny preview is a release regression.
-          test "$lines" -ge 3000
-          test "$bytes" -ge 90000
-          test "$embed_lines" -ge 3000
-          test "$embed_bytes" -ge 100000
-          test "$embed995_lines" -ge 3000
-          test "$embed995_bytes" -ge 100000
-
-          grep -q 'MAXESS_RESULTS_ROYAL_9_95' MAXESS-RESULTS-10-GROOVE.html
-          grep -q 'MAXESS-RESULTS-CONTRACT-1' MAXESS-RESULTS-10-GROOVE.html
-          grep -q 'rr-naya-avatar' MAXESS-RESULTS-10-GROOVE.html
-          grep -q 'const MASTERS=' MAXESS-RESULTS-10-GROOVE.html
-          grep -q 'Writing & Communication' MAXESS-RESULTS-10-GROOVE.html
-          grep -q 'Advanced AI Work' MAXESS-RESULTS-10-GROOVE.html
-          grep -q 'https://nayanet.xyz/' MAXESS-RESULTS-10-GROOVE.html
-          ! grep -qi '<iframe' MAXESS-RESULTS-10-GROOVE.html
-
-          for artifact in MAXESS-RESULTS-GROOVE-EMBED.html MAXESS-RESULTS-GROOVE-EMBED-9.95.html; do
-            ! grep -qi '<!doctype' "$artifact"
-            ! grep -qi '<html' "$artifact"
-            ! grep -qi '<head' "$artifact"
-            ! grep -qi '<body' "$artifact"
-            ! grep -qi '<iframe' "$artifact"
-            grep -q 'MAXESS_RESULTS_ROYAL_9_95' "$artifact"
-            grep -q 'MAXESS-RESULTS-CONTRACT-1' "$artifact"
-            grep -q 'MAXESS_GROOVE_RESULT_BRIDGE' "$artifact"
-            grep -q 'rr-naya-hero' "$artifact"
-            grep -q 'rr-fingerprint' "$artifact"
-            grep -q 'rr-insight' "$artifact"
-            grep -q 'rr-path' "$artifact"
-            grep -q 'rr-finale' "$artifact"
-            grep -q 'const MASTERS=' "$artifact"
+          for artifact in \
+            MAXESS-RESULTS-FINAL-GROOVE.html \
+            MAXESS-RESULTS-FINAL-GROOVE-EMBED.html \
+            MAXESS-RESULTS-10-GROOVE.html \
+            MAXESS-RESULTS-GROOVE-EMBED.html \
+            MAXESS-RESULTS-GROOVE-EMBED-9.95.html; do
+            test -f "$artifact"
           done
 
-          echo 'MAXESS Royal + FULL Groove Embed release gate: PASS'
+          lines=$(wc -l < MAXESS-RESULTS-FINAL-GROOVE.html)
+          bytes=$(wc -c < MAXESS-RESULTS-FINAL-GROOVE.html)
+          embed_lines=$(wc -l < MAXESS-RESULTS-FINAL-GROOVE-EMBED.html)
+          embed_bytes=$(wc -c < MAXESS-RESULTS-FINAL-GROOVE-EMBED.html)
+          echo "FINAL: ${lines} lines / ${bytes} bytes"
+          echo "FINAL EMBED: ${embed_lines} lines / ${embed_bytes} bytes"
+
+          test "$lines" -ge 3000
+          test "$bytes" -ge 100000
+          test "$embed_lines" -ge 3000
+          test "$embed_bytes" -ge 100000
+
+          grep -q 'MAXESS-RESULTS-CONTRACT-1' MAXESS-RESULTS-FINAL-GROOVE.html
+          grep -q 'Foundation' MAXESS-RESULTS-FINAL-GROOVE.html
+          grep -q 'Developing' MAXESS-RESULTS-FINAL-GROOVE.html
+          grep -q 'Advancing' MAXESS-RESULTS-FINAL-GROOVE.html
+          grep -q 'Mastering' MAXESS-RESULTS-FINAL-GROOVE.html
+          grep -q 'Writing & Communication' MAXESS-RESULTS-FINAL-GROOVE.html
+          grep -q 'Advanced AI Work' MAXESS-RESULTS-FINAL-GROOVE.html
+          grep -q 'Naya — Listen to Your Report' MAXESS-RESULTS-FINAL-GROOVE.html
+          grep -q 'nayanet-foundation-anchor' MAXESS-RESULTS-FINAL-GROOVE.html
+          grep -q 'https://takeyourpowerback.xyz/services' MAXESS-RESULTS-FINAL-GROOVE.html
+
+          ! grep -qi '<!doctype' MAXESS-RESULTS-FINAL-GROOVE-EMBED.html
+          ! grep -qi '<html' MAXESS-RESULTS-FINAL-GROOVE-EMBED.html
+          ! grep -qi '<head' MAXESS-RESULTS-FINAL-GROOVE-EMBED.html
+          ! grep -qi '<body' MAXESS-RESULTS-FINAL-GROOVE-EMBED.html
+          grep -q 'nayanet-foundation-anchor' MAXESS-RESULTS-FINAL-GROOVE-EMBED.html
+          grep -q 'MAXESS-RESULTS-CONTRACT-1' MAXESS-RESULTS-GROOVE-EMBED.html
+
+          echo 'DEFINITIVE MAXESS RESULTS RELEASE GATE: PASS'
 
       - name: Commit authoritative artifacts
         run: |
           set -euo pipefail
-          git config user.name 'MAXESS Royal Release System'
+          git config user.name 'MAXESS Definitive Results Release System'
           git config user.email 'actions@github.com'
-          git add MAXESS-RESULTS-10-GROOVE.html MAXESS-RESULTS-GROOVE-EMBED.html MAXESS-RESULTS-GROOVE-EMBED-9.95.html tools/build_maxess_results_groove_embed.py tools/build_maxess_results_royal_9_95.py tools/verify_maxess_results_royal_9_95.py .github/workflows/build-final-results-groove.yml
-          git diff --cached --quiet || git commit -m 'Publish complete authoritative MAXESS Results Groove embed'
+          git add \
+            MAXESS-RESULTS-FINAL-GROOVE.html \
+            MAXESS-RESULTS-FINAL-GROOVE-EMBED.html \
+            MAXESS-RESULTS-10-GROOVE.html \
+            MAXESS-RESULTS-GROOVE-EMBED.html \
+            MAXESS-RESULTS-GROOVE-EMBED-9.95.html \
+            tools/build_maxess_results_final.py \
+            .naya/memory/28-MAXESS-FINAL-RESULTS-BUILD-DIRECTIVE.md \
+            .naya/06-PROJECT-MEMORY-INDEX.md \
+            .github/workflows/build-final-results-groove.yml
+          git diff --cached --quiet || git commit -m 'Publish definitive MAXESS Results experience'
           git push
