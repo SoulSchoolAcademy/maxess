@@ -78,9 +78,11 @@ for path in FILES:
     text = path.read_text(encoding="utf-8")
     if "maxess-growing-lesson-001-polish" in text:
         continue
-    marker = "</head>"
-    if marker not in text:
-        raise SystemExit(f"Missing </head> in {path.name}")
-    text = text.replace(marker, POLISH + "\n" + marker, 1)
+    if "</head>" in text:
+        text = text.replace("</head>", POLISH + "\n</head>", 1)
+    elif "</style>" in text:
+        text = text.replace("</style>", "</style>\n" + POLISH, 1)
+    else:
+        text = POLISH + text
     path.write_text(text, encoding="utf-8")
     print(f"optimized {path.name}: {len(text)} bytes")
