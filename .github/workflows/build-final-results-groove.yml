@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'MAXESS-RESULTS-10-GROOVE.html'
+      - 'MAXESS-RESULTS-EXPERIENCE.js'
       - '.naya/**'
       - 'tools/**'
       - '.github/workflows/**'
@@ -12,6 +13,7 @@ on:
     branches: [main]
     paths:
       - 'MAXESS-RESULTS-10-GROOVE.html'
+      - 'MAXESS-RESULTS-EXPERIENCE.js'
       - '.naya/**'
       - 'tools/**'
       - '.github/workflows/**'
@@ -41,6 +43,7 @@ jobs:
           test -f .naya/REPOSITORY-OPERATING-MAP.md
           test -f .naya/GROOVE-DEPLOYMENT-CONTRACT.md
           test -f MAXESS-RESULTS-10-GROOVE.html
+          test -f MAXESS-RESULTS-EXPERIENCE.js
           grep -q 'MAXESS-RESULTS-10-GROOVE.html' .naya/RESULTS-SOURCE-REGISTRY.md
           grep -q 'results.nayanet.xyz' .naya/RESULTS-SOURCE-REGISTRY.md
 
@@ -57,15 +60,30 @@ jobs:
           grep -q 'width:100vw' MAXESS-RESULTS-10-GROOVE.html
           grep -q 'prefers-reduced-motion' MAXESS-RESULTS-10-GROOVE.html
 
-      - name: Run deterministic Results verifier
+      - name: Verify presentation engine is the new whole-system build
         shell: bash
         run: |
           set -euo pipefail
-          if test -f tools/verify_results_10.py; then
-            python3 -m py_compile tools/verify_results_10.py
-            python3 tools/verify_results_10.py
-          else
-            echo 'No legacy verifier present; structural gate above remains authoritative.'
+          grep -q 'MAXESS RESULTS — WHOLE-SYSTEM AAA PRESENTATION ENGINE' MAXESS-RESULTS-EXPERIENCE.js
+          grep -q 'MAXESS-RESULTS-WHOLE-SYSTEM-AAA-1.0' MAXESS-RESULTS-EXPERIENCE.js
+          grep -q 'OH... THAT' MAXESS-RESULTS-EXPERIENCE.js
+          grep -q 'Your Highest-Leverage Opportunity' MAXESS-RESULTS-EXPERIENCE.js
+          grep -q 'PERSONALIZED AI MASTERY LIBRARY' MAXESS-RESULTS-EXPERIENCE.js
+          grep -q 'Naya Director' MAXESS-RESULTS-EXPERIENCE.js
+          grep -q 'KNOW' MAXESS-RESULTS-EXPERIENCE.js
+          grep -q 'Print / Save PDF' MAXESS-RESULTS-EXPERIENCE.js
+          node --check MAXESS-RESULTS-EXPERIENCE.js
+
+      - name: Verify result contract boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q 'window.MAXESS_RESULT' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'normalizeResult' MAXESS-RESULTS-EXPERIENCE.js
+          grep -q 'Never calculate a new assessment score' MAXESS-RESULTS-EXPERIENCE.js
+          if grep -q 'localStorage' MAXESS-RESULTS-EXPERIENCE.js; then
+            echo 'BLOCKED — Results presentation must not use localStorage for the cross-origin handoff.'
+            exit 1
           fi
 
       - name: Detect silent fake-result fallback
