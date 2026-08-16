@@ -34,6 +34,8 @@ jobs:
           python3 tools/format_results_10_artifacts.py
           python3 -m py_compile tools/results_experience_oscar_pass_2.py
           python3 tools/results_experience_oscar_pass_2.py
+          python3 -m py_compile tools/results_experience_oscar_pass_3.py
+          python3 tools/results_experience_oscar_pass_3.py
 
       - name: Verify final Results artifacts
         run: |
@@ -56,13 +58,15 @@ jobs:
             tools/enhance_results_10_experience.py \
             tools/results_experience_10_self_optimization_pass.py \
             tools/results_experience_oscar_pass_2.py \
+            tools/results_experience_oscar_pass_3.py \
             tools/append_results_10_manifest.py \
             tools/format_results_10_artifacts.py \
             tools/verify_results_10.py \
             .naya/memory/30-GROWING-LESSON-002-OSCAR-PASS-2.md \
+            .naya/memory/31-GROWING-LESSON-003-10-STAR-LIVE-PRODUCT-GATE.md \
             .github/workflows/build-final-results-groove.yml
           if ! git diff --cached --quiet; then
-            git commit -m 'Apply Growing Lesson 002 Oscar Pass 2'
+            git commit -m 'Apply Growing Lesson 003 literal 10-star pass'
             git pull --rebase origin main
             git push
           fi
