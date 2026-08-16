@@ -66,6 +66,7 @@ if 'window.MAXESS_RESULT={overallScore:Number(score.textContent)||0' in text:
     if count != 1:
         raise SystemExit('Expected live Result bridge was not found; refusing blind modification.')
 
+text = text.replace('using bootstrap fallback.', 'leaving MAXESS_RESULT empty.')
 text = text.replace('data-mode="development-fixture"', 'data-mode="result-contract" data-fixture-available="true"', 1)
 TARGET.write_text(text, encoding='utf-8')
 print('HARDENED:', TARGET)
