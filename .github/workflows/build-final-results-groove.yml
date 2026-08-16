@@ -46,89 +46,8 @@ jobs:
       - name: Bootstrap MAXESS_RESULT before every visual script
         run: |
           set -euo pipefail
-          python3 - <<'PY'
-          from pathlib import Path
-          import re
-
-          artifacts = [
-              'MAXESS-RESULTS-FINAL-GROOVE.html',
-              'MAXESS-RESULTS-FINAL-GROOVE-EMBED.html',
-              'MAXESS-RESULTS-10-GROOVE.html',
-              'MAXESS-RESULTS-GROOVE-EMBED.html',
-              'MAXESS-RESULTS-GROOVE-EMBED-9.95.html',
-          ]
-
-          marker = 'MAXESS_RESULT_10_10_BOOTSTRAP'
-
-          bootstrap = r'''<!-- MAXESS_RESULT_10_10_BOOTSTRAP -->
-  <script>
-  (function () {
-    "use strict";
-
-    /*
-      MAXESS_RESULT must exist before ANY visual layer executes.
-      A real cross-domain ?result= payload always wins.
-      The 10.10 object is only the deterministic development fallback.
-    */
-    var result = null;
-
-    try {
-      var encoded = new URLSearchParams(window.location.search).get("result");
-      if (encoded) {
-        var normalized = encoded.replace(/-/g, "+").replace(/_/g, "/");
-        while (normalized.length % 4) normalized += "=";
-        var binary = atob(normalized);
-        var bytes = new Uint8Array(binary.length);
-        for (var i = 0; i < binary.length; i++) {
-          bytes[i] = binary.charCodeAt(i);
-        }
-        result = JSON.parse(new TextDecoder().decode(bytes));
-      }
-    } catch (error) {
-      console.warn("MAXESS_RESULT query payload could not be decoded; using bootstrap fallback.", error);
-    }
-
-    window.MAXESS_RESULT = result || {
-      resonance: 10.10,
-      signature: "LIVING",
-      naya: "AWAKENED",
-      groove: "MAXIMAL",
-      status: "FULL_ACTIVATION",
-      timestamp: new Date().toISOString()
-    };
-
-    console.log(
-      "%cMAXESS 10.10 INITIALIZED",
-      "color:#00ffcc; font-size:18px; font-weight:bold;"
-    );
-  })();
-  </script>
-'''
-
-          changed = 0
-          for filename in artifacts:
-              path = Path(filename)
-              if not path.exists():
-                  print(f'SKIP: {filename} does not exist')
-                  continue
-
-              source = path.read_text(encoding='utf-8')
-              if marker in source:
-                  print(f'PASS: {filename} already contains {marker}')
-                  continue
-
-              match = re.search(r'<head(?:\s[^>]*)?>', source, flags=re.I)
-              if not match:
-                  raise SystemExit(f'FAIL: {filename} has no <head> element for early MAXESS_RESULT injection')
-
-              patched = source[:match.end()] + '\n' + bootstrap + source[match.end():]
-              path.write_text(patched, encoding='utf-8')
-              changed += 1
-              print(f'INJECTED: {filename}')
-
-          if changed == 0:
-              print('No artifact required a new bootstrap injection.')
-          PY
+          python3 -m py_compile tools/bootstrap_maxess_result_10_10.py
+          python3 tools/bootstrap_maxess_result_10_10.py
 
       - name: Verify final Results artifacts
         run: |
@@ -162,6 +81,7 @@ jobs:
             tools/append_results_10_manifest.py \
             tools/format_results_10_artifacts.py \
             tools/integrate_living_signature_10_1.py \
+            tools/bootstrap_maxess_result_10_10.py \
             tools/verify_results_10.py \
             .naya/memory/30-GROWING-LESSON-002-OSCAR-PASS-2.md \
             .naya/memory/31-GROWING-LESSON-003-10-STAR-LIVE-PRODUCT-GATE.md \
