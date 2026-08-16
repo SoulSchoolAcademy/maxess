@@ -30,54 +30,8 @@ jobs:
       - name: Verify final Results artifacts
         run: |
           set -euo pipefail
-          for artifact in \
-            MAXESS-RESULTS-FINAL-GROOVE.html \
-            MAXESS-RESULTS-FINAL-GROOVE-EMBED.html \
-            MAXESS-RESULTS-10-GROOVE.html \
-            MAXESS-RESULTS-GROOVE-EMBED.html \
-            MAXESS-RESULTS-GROOVE-EMBED-9.95.html; do
-            test -f "$artifact"
-          done
-
-          lines=$(wc -l < MAXESS-RESULTS-FINAL-GROOVE.html)
-          bytes=$(wc -c < MAXESS-RESULTS-FINAL-GROOVE.html)
-          embed_lines=$(wc -l < MAXESS-RESULTS-FINAL-GROOVE-EMBED.html)
-          embed_bytes=$(wc -c < MAXESS-RESULTS-FINAL-GROOVE-EMBED.html)
-          echo "FINAL: ${lines} lines / ${bytes} bytes"
-          echo "FINAL EMBED: ${embed_lines} lines / ${embed_bytes} bytes"
-
-          # The new builder is intentionally leaner than the historical 100k+ artifact,
-          # while remaining substantially above the project's minimum inspectability floor.
-          test "$lines" -ge 3000
-          test "$bytes" -ge 80000
-          test "$embed_lines" -ge 3000
-          test "$embed_bytes" -ge 65000
-
-          grep -q 'MAXESS-RESULTS-CONTRACT-1' MAXESS-RESULTS-FINAL-GROOVE.html
-          grep -q 'Foundation' MAXESS-RESULTS-FINAL-GROOVE.html
-          grep -q 'Developing' MAXESS-RESULTS-FINAL-GROOVE.html
-          grep -q 'Advancing' MAXESS-RESULTS-FINAL-GROOVE.html
-          grep -q 'Mastering' MAXESS-RESULTS-FINAL-GROOVE.html
-          grep -q 'Writing & Communication' MAXESS-RESULTS-FINAL-GROOVE.html
-          grep -q 'Advanced AI Work' MAXESS-RESULTS-FINAL-GROOVE.html
-          grep -q 'Naya — Listen to Your Report' MAXESS-RESULTS-FINAL-GROOVE.html
-          grep -q 'nayanet-foundation-anchor' MAXESS-RESULTS-FINAL-GROOVE.html
-          grep -q 'ny-primary' MAXESS-RESULTS-FINAL-GROOVE.html
-          grep -q 'https://takeyourpowerback.xyz/services' MAXESS-RESULTS-FINAL-GROOVE.html
-          grep -q 'growth-scorecard' MAXESS-RESULTS-FINAL-GROOVE.html
-          grep -q 'maxess-results-experience-manifest' MAXESS-RESULTS-FINAL-GROOVE.html
-
-          ! grep -qi '<!doctype' MAXESS-RESULTS-FINAL-GROOVE-EMBED.html
-          ! grep -qi '<html' MAXESS-RESULTS-FINAL-GROOVE-EMBED.html
-          ! grep -qi '<head' MAXESS-RESULTS-FINAL-GROOVE-EMBED.html
-          ! grep -qi '<body' MAXESS-RESULTS-FINAL-GROOVE-EMBED.html
-          grep -q 'nayanet-foundation-anchor' MAXESS-RESULTS-FINAL-GROOVE-EMBED.html
-          grep -q 'ny-primary' MAXESS-RESULTS-FINAL-GROOVE-EMBED.html
-          grep -q 'MAXESS-RESULTS-CONTRACT-1' MAXESS-RESULTS-GROOVE-EMBED.html
-          grep -q 'growth-scorecard' MAXESS-RESULTS-GROOVE-EMBED.html
-          grep -q 'maxess-results-experience-manifest' MAXESS-RESULTS-GROOVE-EMBED.html
-
-          echo 'DEFINITIVE MAXESS RESULTS RELEASE GATE: PASS'
+          python3 -m py_compile tools/verify_results_10.py
+          python3 tools/verify_results_10.py
 
       - name: Commit authoritative artifacts
         run: |
@@ -94,6 +48,7 @@ jobs:
             tools/enhance_results_10_experience.py \
             tools/append_results_10_manifest.py \
             tools/format_results_10_artifacts.py \
+            tools/verify_results_10.py \
             .github/workflows/build-final-results-groove.yml
           git diff --cached --quiet || git commit -m 'Publish self-optimized MAXESS Results experience'
           git push
