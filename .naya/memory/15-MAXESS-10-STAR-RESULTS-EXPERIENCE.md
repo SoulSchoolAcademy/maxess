@@ -1,7 +1,7 @@
 # 15 — MAXESS 10-STAR RESULTS EXPERIENCE
 
 Status: LOCKED EXPERIENCE DIRECTION
-Version: 1.0
+Version: 1.1
 
 ## North Star
 
@@ -69,11 +69,11 @@ Do not overload the first viewport with the 18-area library or sales CTAs.
 
 One authoritative overall score /100 plus mastery level and meaning.
 
-Mastery bands:
-- Foundation: 0–49
-- Developing: 50–74
-- Advancing: 75–89
-- Mastering: 90–100
+Authoritative mastery bands:
+- Foundation: 0–50
+- Developing: 51–75
+- Advancing: 76–90
+- Mastering: 91–100
 
 Mastering does not mean finished; it means the person is ready for a higher level of mastery.
 
@@ -212,6 +212,8 @@ Before release ask:
 - Does it preserve MAXESS DNA?
 - Does it feel distinctive?
 - Does it make people glad they took the assessment?
+- Has the latest Growing Lesson been applied?
+- Has the actual deployed experience been reviewed rather than inferred from source code?
 
 ## Hard prohibitions
 
@@ -227,6 +229,17 @@ Do not:
 - call something 9.5 because the filename says 9.5
 - claim live browser testing that did not occur
 - release a known 8.x candidate as a 9.5 candidate
+- treat technical completion as product completion
+- repeat a documented failure without explicitly diagnosing why
+
+## Continuous learning
+
+Every significant below-target Results output should produce a Growing Lesson in project memory when it contains reusable knowledge.
+
+Required loop:
+**OUTPUT → SCORE → DIAGNOSE → LEARN → UPDATE RULES → APPLY → VERIFY**
+
+The purpose is not to preserve mistakes. It is to make mistakes useful enough that the next output is materially better.
 
 ## Final user-value test
 
