@@ -1,0 +1,39 @@
+name: Promote verified MAXESS Results v13 to main
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  promote:
+    if: ${{ !contains(github.event.head_commit.message, '[v13-promote]') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Fetch verified v13 branch artifact
+        run: |
+          git fetch origin codex-smart-memory-v1:refs/remotes/origin/codex-smart-memory-v1
+          git show origin/codex-smart-memory-v1:MAXESS-RESULTS-10-GROOVE.html > MAXESS-RESULTS-10-GROOVE.html
+
+      - name: Require material v13 artifact change
+        run: |
+          grep -q 'MAXESS_RESULTS_V13_EXECUTED' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'maxess-results-v13' MAXESS-RESULTS-10-GROOVE.html
+          git diff --quiet -- MAXESS-RESULTS-10-GROOVE.html && { echo 'ERROR: zero-change promotion'; exit 1; } || true
+
+      - name: Commit promoted artifact
+        run: |
+          git config user.name "Naya Master"
+          git config user.email "naya-master@users.noreply.github.com"
+          git add -- MAXESS-RESULTS-10-GROOVE.html
+          git commit -m "feat(results): promote v13 experience artifact [v13-promote]"
+          git push origin HEAD:main
