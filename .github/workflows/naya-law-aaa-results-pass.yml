@@ -1,5 +1,7 @@
 name: Naya Law — AAA Results Implementation Pass
 
+# One-time controlled migration. It self-removes after the authoritative artifact is updated.
+
 on:
   push:
     branches:
