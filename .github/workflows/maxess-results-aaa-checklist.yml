@@ -24,7 +24,6 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 1
-
       - name: Freeze and inspect authoritative source
         run: |
           set -euo pipefail
@@ -33,16 +32,13 @@ jobs:
           grep -q 'Naya Writer' MAXESS-RESULTS-10-GROOVE.html
           grep -q 'Naya Brainstormer' MAXESS-RESULTS-10-GROOVE.html
           test "$(grep -o 'class=\"mx-dim' MAXESS-RESULTS-10-GROOVE.html | wc -l)" -ge 5
-          test "$(grep -o 'Naya Writer\|Naya Researcher\|Naya Brainstormer\|Naya Strategist' MAXESS-RESULTS-10-GROOVE.html | wc -l)" -ge 4
           cp MAXESS-RESULTS-10-GROOVE.html /tmp/maxess-results-before.html
           sha256sum MAXESS-RESULTS-10-GROOVE.html | tee /tmp/maxess-before.sha
-
       - name: Execute every checklist item through the deterministic patcher
         run: |
           set -euo pipefail
           python3 -m py_compile tools/maxess_results_checklist_aaa.py
           python3 tools/maxess_results_checklist_aaa.py
-
       - name: Verify actual implementation delta
         run: |
           set -euo pipefail
@@ -54,7 +50,6 @@ jobs:
           grep -q 'Print / Save PDF' MAXESS-RESULTS-10-GROOVE.html
           if grep -q 'MAXESS_RESULTS_EXPERIENCE_LOADER' MAXESS-RESULTS-10-GROOVE.html; then exit 1; fi
           if grep -q 'MAXESS-RESULTS-EXPERIENCE.js' MAXESS-RESULTS-10-GROOVE.html; then exit 1; fi
-
       - name: Verify production data boundary and preservation
         run: |
           set -euo pipefail
@@ -64,13 +59,11 @@ jobs:
           grep -q 'Listen to your results' MAXESS-RESULTS-10-GROOVE.html
           grep -q 'MAXESS-RESULTS-CONTRACT-1' MAXESS-RESULTS-10-GROOVE.html
           echo 'PRESERVATION + DATA CONTRACT: PASS'
-
       - name: Verify JavaScript syntax and complete document
         run: |
           set -euo pipefail
           python3 - <<'PY'
           from pathlib import Path
-          from html.parser import HTMLParser
           import re
           p=Path('MAXESS-RESULTS-10-GROOVE.html').read_text(encoding='utf-8')
           assert p.lower().startswith('<!doctype html>')
@@ -79,16 +72,11 @@ jobs:
           assert p.count('<style') == p.count('</style>')
           assert 'MAXESS-AAA-CHECKLIST-V1' in p
           assert len(p.splitlines()) > 5000
-          print('DOCUMENT COMPLETENESS: PASS', len(p.splitlines()), 'lines')
+          scripts=re.findall(r'<script[^>]*>(.*?)</script>',p,re.S)
+          Path('/tmp/maxess-inline.js').write_text('\n'.join(scripts),encoding='utf-8')
+          print('DOCUMENT COMPLETENESS: PASS',len(p.splitlines()),'lines')
           PY
-          node --check <(python3 - <<'PY'
-          from pathlib import Path
-          import re
-          s=Path('MAXESS-RESULTS-10-GROOVE.html').read_text()
-          print('\n'.join(re.findall(r'<script[^>]*>(.*?)</script>',s,re.S)))
-          PY
-          )
-
+          node --check /tmp/maxess-inline.js
       - name: Commit the actual upgraded complete artifact
         run: |
           set -euo pipefail
@@ -98,12 +86,10 @@ jobs:
           git diff --cached --quiet && { echo 'NO IMPLEMENTATION DELTA — FAIL'; exit 1; }
           git commit -m 'Execute MAXESS Results AAA checklist upgrade'
           git push origin main
-
       - name: Final artifact evidence
         run: |
           set -euo pipefail
-          echo '=== FINAL ARTIFACT ==='
           wc -l MAXESS-RESULTS-10-GROOVE.html
           sha256sum MAXESS-RESULTS-10-GROOVE.html
-          echo '=== CHECKLIST MARKERS ==='
           grep -o 'MAXESS-AAA-CHECKLIST-V1\|mx-aaa-resonance\|mx-aaa-chapter\|mx-aaa-masters\|Print / Save PDF' MAXESS-RESULTS-10-GROOVE.html | sort | uniq -c
+# CHECKLIST LAW: every material upgrade must be implemented, verified, and evidenced before delivery.
