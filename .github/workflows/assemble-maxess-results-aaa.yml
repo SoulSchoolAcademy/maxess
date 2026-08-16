@@ -7,6 +7,7 @@ on:
     paths:
       - 'MAXESS-RESULTS-10-GROOVE.html'
       - 'MAXESS-RESULTS-EXPERIENCE.js'
+      - 'MAXESS-RESULTS-NAYA-EXPERIENCE.js'
       - 'tools/assemble_maxess_results_aaa.py'
       - '.github/workflows/assemble-maxess-results-aaa.yml'
   workflow_dispatch:
@@ -38,21 +39,29 @@ jobs:
         run: |
           set -euo pipefail
           grep -q 'MAXESS-WHOLE-SYSTEM-AAA-INLINE-1.0' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'MAXESS-NAYA-EXPERIENCE-INLINE-1.0' MAXESS-RESULTS-10-GROOVE.html
           grep -q 'MAXESS RESULTS — WHOLE-SYSTEM AAA PRESENTATION ENGINE' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'MAXESS RESULTS — NAYA EXPERIENCE LAYER' MAXESS-RESULTS-10-GROOVE.html
           grep -q 'data-maxess-build="whole-system-aaa-1.0"' MAXESS-RESULTS-10-GROOVE.html
           grep -q 'window.MAXESS_RESULT' MAXESS-RESULTS-10-GROOVE.html
           grep -q 'Naya Writer' MAXESS-RESULTS-10-GROOVE.html
-          grep -q 'Naya Brainstormer' MAXESS-RESULTS-10-GROOVE.html
-          grep -q 'ny-youtube-player' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'Naya Director' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'NAYA_IMAGE' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'naya-led-organic-1.0' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'mx-playground' MAXESS-RESULTS-10-GROOVE.html
           grep -q 'prefers-reduced-motion' MAXESS-RESULTS-10-GROOVE.html
           test "$(grep -o '<body' MAXESS-RESULTS-10-GROOVE.html | wc -l)" -eq 1
           test "$(grep -o '</body>' MAXESS-RESULTS-10-GROOVE.html | wc -l)" -eq 1
           node --check MAXESS-RESULTS-EXPERIENCE.js
+          node --check MAXESS-RESULTS-NAYA-EXPERIENCE.js
           python3 - <<'PY'
           from pathlib import Path
           p = Path('MAXESS-RESULTS-10-GROOVE.html').read_text(encoding='utf-8')
           assert p.count('MAXESS-WHOLE-SYSTEM-AAA-INLINE-1.0') == 1
+          assert p.count('MAXESS-NAYA-EXPERIENCE-INLINE-1.0') == 1
           assert len(p.splitlines()) > 5000
+          for marker in ['mx-result-arrival','mx-signature','mx-meaning','mx-advantage','mx-opportunity','mx-dimensions','mx-revelation','mx-next','mx-pathways','mx-playground','mx-masters','mx-craftsmanship','mx-master-ai','mx-naya','mx-report','mx-transition']:
+              assert marker in p, marker
           print('COMPLETE GROOVE ARTIFACT:', len(p.splitlines()), 'lines')
           print('BYTES:', len(p.encode('utf-8')))
           PY
@@ -70,4 +79,4 @@ jobs:
           git commit -m 'Assemble complete MAXESS Results AAA Groove artifact'
           git push origin naya/maxess-results-aaa-whole-system
 
-# Execution integrity: the final review artifact must contain the inline whole-system engine.
+# Execution integrity: source layers must be present in the final complete artifact before release review.
