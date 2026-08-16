@@ -1,18 +1,14 @@
 # MAXESS RESULTS — SOURCE REGISTRY
 
 Status: AUTHORITATIVE CONTROL DOCUMENT
-Version: 2.0
+Version: 2.1
 Updated: 2026-08-16
-
-## PURPOSE
-
-This registry is the single source-of-truth map for the MAXESS Results surface. Historical files are reference material only unless explicitly promoted here.
 
 ## CURRENT AUTHORITATIVE ENGINEERING SOURCE
 
 Repository: `SoulSchoolAcademy/maxess`
 
-Execution branch for this AAA v2 release: `naya/results-aaa-v2`
+Execution branch: `naya/results-aaa-v2`
 
 Foundation:
 
@@ -22,19 +18,19 @@ Presentation layer:
 
 `MAXESS-RESULTS-EXPERIENCE.js`
 
-Presentation-layer content SHA for this release:
+Current presentation content SHA:
 
-`648c7908d093052b956c3c879af1dea05768659f`
+`9ba5ce3a5763a25b6ebbaff66a1b1343d9074c23`
 
 Complete Groove delivery artifact:
 
 `MAXESS-RESULTS-10.10-GROOVE-EMBED-COMPLETE.html`
 
-Complete artifact content SHA for this release:
+Current complete artifact content SHA:
 
 `74cc12718cadd7673b3c313398c91ea30f027d91`
 
-The complete Groove artifact is the preferred delivery file. It is self-contained and MUST NOT require a GitHub-hosted Results renderer.
+The complete Groove artifact is a self-contained compiled delivery snapshot. It must not depend on a GitHub-hosted Results renderer at runtime.
 
 Public verification target:
 
@@ -66,8 +62,6 @@ Authoritative dimensions:
 4. Iteration
 5. Systems Thinking
 
-Legacy alternate dimension names are not part of the current Results contract.
-
 ## ARCHITECTURE
 
 ```text
@@ -79,7 +73,7 @@ MAXESS-RESULTS-10-GROOVE.html
       ↓
 MAXESS-RESULTS-EXPERIENCE.js
       ↓
-MAXESS-RESULTS-10.10-GROOVE-EMBED-COMPLETE.html
+COMPLETE GROOVE EMBED
       ↓
 Groove deployment
       ↓
@@ -118,19 +112,9 @@ The preferred Groove delivery is exactly one complete file:
 
 `MAXESS-RESULTS-10.10-GROOVE-EMBED-COMPLETE.html`
 
-It must contain:
+It must contain markup, CSS, JavaScript behavior, result decoding/handoff, responsive behavior, accessibility behavior, requested Results sections, Naya interactions, print/PDF behavior, and no external GitHub Results renderer dependency.
 
-- markup;
-- CSS;
-- JavaScript behavior;
-- result decoding/handoff;
-- responsive behavior;
-- accessibility behavior;
-- requested Results sections;
-- Naya interactions;
-- print/PDF behavior;
-- no external GitHub Results renderer dependency;
-- no iframe/loader shortcut used as the Results implementation.
+A snippet, bootstrap, loader, or partial file is not acceptable delivery.
 
 ## DEVELOPMENT DATA RULE
 
@@ -142,15 +126,15 @@ Production remains:
 
 ## PRESERVATION RULE
 
-The presentation layer must preserve pre-existing media when it exists inside the Results root before runtime rendering. It must also preserve the surrounding NayaNET foundation and later conversion architecture outside the Results root.
+The presentation layer captures pre-existing video/iframe media inside the Results root before runtime replacement and reattaches it to the solution chapter. It does not invent a replacement media URL when no authoritative media exists.
 
-Do not invent a media URL or replace missing real media with a fake production video.
+The surrounding NayaNET foundation and later conversion architecture remain outside the Results renderer and are not rebuilt by the presentation layer.
 
 ## DELIVERY GATE
 
 Before Groove publication, prove:
 
-1. The branch contains the intended source and presentation changes.
+1. The intended source and presentation files changed.
 2. The complete artifact is self-contained.
 3. The complete artifact does not load a second Results renderer.
 4. `window.MAXESS_RESULT` remains the production data boundary.
