@@ -69,3 +69,5 @@ jobs:
           fi
           git commit -m 'Assemble complete MAXESS Results AAA Groove artifact'
           git push origin naya/maxess-results-aaa-whole-system
+
+# Execution integrity: the final review artifact must contain the inline whole-system engine.
