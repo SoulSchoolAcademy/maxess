@@ -1,0 +1,44 @@
+name: MAXESS AAA Final Build
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build complete readable Groove artifact from preserved master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import subprocess
+          master=Path('MAXESS-RESULTS-10-GROOVE.html').read_text(encoding='utf-8')
+          wf=Path('.github/workflows/maxess-aaa-results.yml').read_text(encoding='utf-8')
+          start=wf.index("upgrade = r'''", wf.index("marker ="))+len("upgrade = r'''")
+          end=wf.index("'''", start)
+          upgrade=wf[start:end]
+          if '<!-- MAXESS-AAA-10.4-UPGRADE -->' not in upgrade: raise SystemExit('AAA upgrade layer not found')
+          if '<!-- MAXESS-AAA-10.4-UPGRADE -->' in master:
+              built=master
+          else:
+              idx=master.lower().rfind('</body>')
+              if idx<0: raise SystemExit('master has no closing body tag')
+              built=master[:idx]+'\n'+upgrade+'\n'+master[idx:]
+          out=Path('MAXESS-RESULTS-AAA-GROOVE-EMBED.html')
+          out.write_text(built,encoding='utf-8')
+          checks={'doctype':'<!doctype html>' in built.lower(),'result_contract':'window.MAXESS_RESULT' in built,'five_dimensions':all(n in built for n in ['Direction','Communication','Evaluation','Iteration','Systems Thinking']),'18_pathways':built.count('class="mx-area')>=18,'video_system':'ny-screen-frame' in built,'aaa_marker':'<!-- MAXESS-AAA-10.4-UPGRADE -->' in built,'master_key_freeze':'FREEZE' in built,'complete_body':built.lower().count('</html>')>=1}
+          failed=[k for k,v in checks.items() if not v]
+          if failed: raise SystemExit('FAILED BUILD GATES: '+', '.join(failed))
+          sha=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
+          Path('.naya/MAXESS-AAA-DELIVERY-MANIFEST.md').write_text(f'''# MAXESS AAA DELIVERY MANIFEST\n\n- Preserved source master: `MAXESS-RESULTS-10-GROOVE.html`\n- Source commit: `{sha}`\n- Complete delivery: `MAXESS-RESULTS-AAA-GROOVE-EMBED.html`\n- Upgrade layer: `MAXESS-AAA-10.4-UPGRADE`\n- Architecture: additive; source master preserved\n- Production data boundary: `window.MAXESS_RESULT`\n- Structural build gates: PASS\n''',encoding='utf-8')
+          subprocess.run(['git','config','user.name','MAXESS Naya Builder'],check=True)
+          subprocess.run(['git','config','user.email','noreply@maxess.local'],check=True)
+          subprocess.run(['git','add','MAXESS-RESULTS-AAA-GROOVE-EMBED.html','.naya/MAXESS-AAA-DELIVERY-MANIFEST.md'],check=True)
+          subprocess.run(['git','commit','-m','MAXESS AAA final: complete readable Groove artifact'],check=True)
+          subprocess.run(['git','push'],check=True)
+          PY
