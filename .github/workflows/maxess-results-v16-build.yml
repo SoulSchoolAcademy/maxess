@@ -8,6 +8,7 @@ on:
       - nayanetpagecode
       - tools/build_maxess_results_v16.py
       - tools/build_maxess_results_v16_fragment.py
+      - tools/scope_maxess_results_v16_css.py
       - .github/workflows/maxess-results-v16-build.yml
   workflow_dispatch:
 
@@ -32,6 +33,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 tools/build_maxess_results_v16_fragment.py
+          python3 tools/scope_maxess_results_v16_css.py
           test -s MAXESS-RESULTS-10-GROOVE.html
           grep -q 'MAXESS RESULTS V16 TOWER' MAXESS-RESULTS-10-GROOVE.html
           grep -q 'window.MAXESS_RESULT' MAXESS-RESULTS-10-GROOVE.html
@@ -64,7 +66,20 @@ jobs:
           assert 'fetch(' not in tower
           assert 'iframe' not in tower.lower()
           assert 'document.write' not in tower
-          print('STATIC STRUCTURE PASS', p.stat().st_size, 'bytes; foundation bytes=', len(foundation.encode('utf-8')))
+          css_start=tower.index('<style id="maxess-results-v16-css">')+len('<style id="maxess-results-v16-css">')
+          css_end=tower.index('</style>',css_start)
+          css=tower[css_start:css_end]
+          unscoped=[]
+          for line in css.splitlines():
+              if '{' not in line or line.lstrip().startswith('@'):
+                  continue
+              prelude=line.split('{',1)[0]
+              for selector in prelude.split(','):
+                  selector=selector.strip()
+                  if selector and not selector.startswith('#maxess-results-v16'):
+                      unscoped.append(selector)
+          assert not unscoped, f'unscoped Results selectors: {unscoped[:10]}'
+          print('STATIC STRUCTURE + CSS NAMESPACE PASS', p.stat().st_size, 'bytes')
           PY
           python3 - <<'PY'
           from pathlib import Path
@@ -81,6 +96,47 @@ jobs:
                       raise SystemExit(f'JavaScript syntax failed in script {i}')
           print('JAVASCRIPT SYNTAX PASS', len(scripts), 'script blocks')
           PY
+
+      - name: Runtime production contract and failure-state QA
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf /tmp/maxess-v16-jsdom
+          mkdir -p /tmp/maxess-v16-jsdom
+          cd /tmp/maxess-v16-jsdom
+          npm init -y >/dev/null 2>&1
+          npm install jsdom@26 --no-save >/dev/null 2>&1
+          cd - >/dev/null
+          node <<'JS'
+          const fs=require('fs');
+          const {JSDOM}=require('/tmp/maxess-v16-jsdom/node_modules/jsdom');
+          const source=fs.readFileSync('MAXESS-RESULTS-10-GROOVE.html','utf8');
+          const foundation=fs.readFileSync('nayanetpagecode','utf8');
+          const tower=source.slice(0,source.length-foundation.length);
+          const result={assessmentId:'ai-mastery',assessmentVersion:'2.0.0',resultVersion:'test-v16',completionState:'completed',participant:{name:'QA Participant',role:'Builder'},overallScore:82,dimensions:[{id:'direction',name:'Direction',score:86},{id:'communication',name:'Communication',score:91},{id:'evaluation',name:'Evaluation',score:79},{id:'iteration',name:'Iteration',score:74},{id:'systems',name:'Systems Thinking',score:80}]};
+          function render(input,url='https://results.nayanet.xyz/'){
+            const dom=new JSDOM('<!doctype html><html><head></head><body>'+tower+'</body></html>',{url,runScripts:'dangerously',resources:'usable',beforeParse(w){if(input!==undefined)w.MAXESS_RESULT=input;w.print=()=>{};}});
+            return dom;
+          }
+          let dom=render(result);
+          let root=dom.window.document.querySelector('#maxess-results-v16');
+          if(root.dataset.resultState!=='ready') throw new Error('valid production result did not render ready state');
+          if(dom.window.document.querySelector('[data-score]').textContent!=='82') throw new Error('overall score mismatch');
+          if(dom.window.document.querySelectorAll('.mxv16__dimension').length!==5) throw new Error('five dimensions did not render');
+          if(dom.window.document.querySelectorAll('.mxv16__master').length!==18) throw new Error('18 specialist areas did not render');
+          if(dom.window.document.querySelector('[data-strongest-name]').textContent!=='Communication') throw new Error('strongest signal is not deterministic');
+          if(dom.window.document.querySelector('[data-lever-name]').textContent!=='Iteration') throw new Error('biggest lever is not deterministic');
+          dom.window.close();
+          dom=render(undefined);
+          root=dom.window.document.querySelector('#maxess-results-v16');
+          if(root.dataset.resultState!=='missing') throw new Error('missing production result did not enter missing state');
+          dom.window.close();
+          dom=render({assessmentId:'ai-mastery',assessmentVersion:'2.0.0',resultVersion:'bad',completionState:'completed',overallScore:101,dimensions:[]});
+          root=dom.window.document.querySelector('#maxess-results-v16');
+          if(root.dataset.resultState!=='error') throw new Error('malformed production result did not enter error state');
+          console.log('RUNTIME CONTRACT QA PASS — production, missing, malformed, 5 dimensions, 18 pathways, strongest signal, biggest lever');
+          dom.window.close();
+          JS
 
       - name: Verify required product markers
         shell: bash
