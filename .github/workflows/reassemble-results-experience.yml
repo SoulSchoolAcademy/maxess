@@ -1,0 +1,35 @@
+name: MAXESS Results — Reassemble Corrected Experience
+
+on:
+  push:
+    branches: [maxess-results-rebuild-10-10]
+    paths:
+      - 'results-experience-parts/**'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  assemble:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reassemble corrected presentation layer
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat results-experience-parts/part-00 results-experience-parts/part-01 results-experience-parts/part-02 results-experience-parts/part-03 > MAXESS-RESULTS-EXPERIENCE.js
+          node --check MAXESS-RESULTS-EXPERIENCE.js
+          grep -q '.rows{' MAXESS-RESULTS-EXPERIENCE.js
+          grep -q 'document.getElementById(I)' MAXESS-RESULTS-EXPERIENCE.js
+      - name: Commit corrected assembled artifact and remove workflow
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'Naya'
+          git config user.email 'naya@users.noreply.github.com'
+          rm -f .github/workflows/reassemble-results-experience.yml
+          git add -- MAXESS-RESULTS-EXPERIENCE.js .github/workflows/reassemble-results-experience.yml
+          git commit -m 'Fix Results experience assembly syntax'
+          git push origin HEAD:maxess-results-rebuild-10-10
