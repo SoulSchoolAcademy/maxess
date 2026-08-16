@@ -1,44 +1,26 @@
-name: Apply MAXESS Master Preservation Upgrade
+name: MAXESS — Legacy Preservation Audit (Manual)
 
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 permissions:
-  contents: write
-
-concurrency:
-  group: maxess-master-preservation-main
-  cancel-in-progress: true
+  contents: read
 
 jobs:
-  apply:
-    if: github.actor != 'github-actions[bot]'
+  audit:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Preserve baseline and apply final upgrade
+      - name: Audit preservation markers without modifying the repository
+        shell: bash
         run: |
           set -euo pipefail
-          python3 -m py_compile tools/preserve_and_upgrade_groove_10_10.py
-          python3 tools/preserve_and_upgrade_groove_10_10.py
+          test -f MAXESS-RESULTS-10-GROOVE.html
           grep -q 'MAXESS-MASTER-BASELINE-PRESERVATION-10-10' MAXESS-RESULTS-10-GROOVE.html
           grep -q 'width:100vw' MAXESS-RESULTS-10-GROOVE.html
           grep -q 'ny-youtube-player' MAXESS-RESULTS-10-GROOVE.html
           grep -q 'Naya Writer' MAXESS-RESULTS-10-GROOVE.html
           grep -q 'Naya Brainstormer' MAXESS-RESULTS-10-GROOVE.html
-          grep -q 'Listen to Your Results' MAXESS-RESULTS-10-GROOVE.html
-          grep -q 'maxess-master-baseline-preservation-10-10' MAXESS-RESULTS-10-GROOVE.html
-
-      - name: Commit upgraded master artifact
-        run: |
-          set -euo pipefail
-          git config user.name 'MAXESS Master Preservation System'
-          git config user.email 'actions@github.com'
-          git add MAXESS-RESULTS-10-GROOVE.html tools/preserve_and_upgrade_groove_10_10.py .github/workflows/apply-master-preservation-10-10.yml
-          if ! git diff --cached --quiet; then
-            git commit -m 'Apply MAXESS master preservation upgrade 10.10 [skip ci]'
-            git push origin HEAD:main
-          fi
+          echo 'LEGACY PRESERVATION AUDIT: PASS'
+          echo 'This workflow is audit-only. It no longer edits or pushes the authoritative Results artifact.'

@@ -1,100 +1,171 @@
 # MAXESS RESULTS — SOURCE REGISTRY
 
 Status: AUTHORITATIVE CONTROL DOCUMENT
+Version: 1.1
 Updated: 2026-08-16
 
 ## PURPOSE
 
-This registry exists to eliminate ambiguity between source files, previews, generated artifacts, Groove content, and the public Results experience.
+This registry is the single source-of-truth map for the MAXESS Results surface.
 
-## CURRENT AUTHORITATIVE RESULTS SOURCE
+The repository contains many historical Results files. Their names are not authority. Their role is determined here.
 
-**Repository:** `SoulSchoolAcademy/maxess`
+## CURRENT AUTHORITATIVE ENGINEERING SOURCE
 
-**Branch:** `main`
+Repository: `SoulSchoolAcademy/maxess`
 
-**Authoritative Results artifact currently designated by project memory:**
+Branch: `main`
+
+Current authoritative Results artifact:
 
 `MAXESS-RESULTS-10-GROOVE.html`
 
-**Current file SHA:** `524e14a31df7da958adf8090c3220a26adea7056`
+Current baseline SHA:
 
-**Public verification target:**
+`524e14a31df7da958adf8090c3220a26adea7056`
+
+Public verification target:
 
 `https://results.nayanet.xyz/`
 
-## CRITICAL DEPLOYMENT FINDING — 2026-08-16
+## DEPLOYMENT STATUS
 
-The public verification target has been documented as serving a materially different Results implementation from the authoritative GitHub artifact.
+As of 2026-08-16, the public target is NOT in parity with the authoritative engineering artifact.
 
-Therefore:
+The public page currently exposes an older/different Results implementation, including different visible section structure and copy. Therefore:
 
-**GitHub source = authoritative engineering artifact.**
+**LIVE-VERIFIED = FALSE**
 
-**Public URL = verification target, not an independent source of truth.**
+**DELIVERY STATUS = BLOCKED — DEPLOYMENT PARITY FAILURE**
 
-The public experience is NOT considered live-verified until it demonstrably matches the authoritative artifact after publication.
+GitHub acceptance is not deployment proof.
 
-## FILE CLASSIFICATION RULE
+The actual deployment owner/source for `results.nayanet.xyz` still needs to be identified and connected to the authoritative Results artifact. Repository inspection indicates the target is Groove-hosted, but GitHub alone does not provide sufficient evidence of the external Groove publishing source or credentials.
 
-Files with names such as `FULL-BUILD`, `EXECUTABLE`, `PREVIEW`, `NORTH-STAR`, `10-10`, `9-0`, `CURRENT WORKING FILE`, `FINAL`, or similar are not authoritative merely because of their names.
+## AUTHORITATIVE ARCHITECTURE
 
-Every candidate must be classified as one of:
+```text
+MAXESS Assessment
+      ↓
+Result Contract
+      ↓
+MAXESS-RESULTS-10-GROOVE.html
+      ↓
+Groove deployment artifact / publisher
+      ↓
+https://results.nayanet.xyz/
+      ↓
+Independent live verification
+```
 
-- AUTHORITATIVE SOURCE
-- GENERATED ARTIFACT
-- GROOVE DEPLOYMENT ARTIFACT
-- PREVIEW
-- PROTOTYPE
-- LEGACY
-- SPECIFICATION
-- BACKUP
-- UNKNOWN
+`nayanetpagecode` is the preserved NayaNET foundation appended to the Results experience. It is not a competing Results source.
 
-Unknown candidates must not be edited for a consequential release.
+## FILE CLASSIFICATIONS
 
-## REQUIRED EXECUTION BEHAVIOR
+### AUTHORITATIVE SOURCE
 
-For a Results implementation request:
+- `MAXESS-RESULTS-10-GROOVE.html`
 
-1. Read Naya Law.
-2. Read this registry.
-3. Fetch the authoritative source.
-4. Record its current SHA/baseline.
-5. Inspect its architecture and protected functionality.
-6. Implement the requested delta in the authoritative path.
-7. Re-fetch the exact written artifact.
-8. Prove the requested delta exists.
-9. Reassemble/build the actual Groove/public artifact when required.
-10. Verify the public target.
-11. Compare public output against the authoritative source.
-12. Block delivery if parity fails.
+### DEPLOYMENT ARTIFACTS / MIRRORS
+
+- `MAXESS-RESULTS-FINAL-GROOVE.html` — currently identical to the authoritative source; do not edit independently.
+- `MAXESS-RESULTS-GROOVE-EMBED.html` — Groove-oriented deployment artifact.
+- `MAXESS-RESULTS-FINAL-GROOVE-EMBED.html` — deployment artifact/mirror.
+- `MAXESS-RESULTS-GROOVE-EMBED-9.95.html` — historical deployment artifact; not current.
+
+### HISTORICAL / REFERENCE RESULTS
+
+- `MAXESS-RESULTS-10-10-EXECUTABLE.html`
+- `MAXESS-RESULTS-10-10-FULL-BUILD.html`
+- `MAXESS-RESULTS-10-6-NORTH-STAR-FULL-READABLE.html`
+- `MAXESS-RESULTS-10-6-NORTH-STAR-PREVIEW.html`
+- `MAXESS-RESULTS-9-5-GROOVE.html`
+- `MAXESS-RESULTS-9-5-COMPLETE-GROOVE.html`
+- `MAXESS-RESULTS-9-0-FULL-GROOVE.html`
+- `MAXESS-RESULTS-9-0-GROOVE-EMBED.html`
+
+These are reference material only. New consequential work must not be written into them.
+
+### LEGACY / SEPARATE RENDERER
+
+- `results` — older standalone Results renderer. It has its own hard-coded development defaults and is not the current public Results source.
+- `results-v5-prototype.html` — prototype.
+
+### UPSTREAM ASSESSMENT FILES
+
+- `CURRENT WORKING FILE` — assessment application/source.
+- `RESULTS PAGE CODE` — assessment-side Results rendering logic that consumes `calculateResults()`.
+
+These files are upstream of the Result Contract boundary. They are not the public Groove Results deployment source.
+
+## DEVELOPMENT DATA RULE
+
+The authoritative Results artifact currently contains a deterministic development fixture so visual engineering can be exercised before the production Result Contract is wired.
+
+That fixture MUST be explicitly marked as development-only and MUST NOT silently masquerade as production user data.
+
+Production architecture remains:
+
+`Assessment → Result Contract → Results renderer`
+
+The Results renderer must not become a second scoring engine.
+
+## REQUIRED EXECUTION
+
+For every consequential Results implementation:
+
+1. Read `NAYA-MASTER.md`.
+2. Read `.naya/NAYA-GOVERNANCE.md`.
+3. Read `.naya/NAYA-LAW.md`.
+4. Read `.naya/00-UNDERSTANDING-FIRST.md`.
+5. Read this registry and `.naya/REPOSITORY-OPERATING-MAP.md`.
+6. Inspect the current authoritative artifact.
+7. Record baseline SHA and relevant structural markers.
+8. Map every material user requirement to an implementation location and proof method.
+9. Modify only the authoritative engineering path.
+10. Re-fetch the exact artifact.
+11. Diff against the baseline.
+12. Run deterministic QA and regression checks.
+13. Reassemble the Groove/deployment artifact when required.
+14. Verify the actual public target.
+15. Run Oscar against the final experience.
+16. Fix material findings.
+17. Retest.
+18. Deliver only when the evidence chain passes.
 
 ## ZERO-CHANGE RULE
 
-If a requested implementation produces no material change to the authoritative source or required deployment artifact, the task is automatically:
+If an implementation request produces no material change to the authoritative source, status is:
 
-**BLOCKED — ZERO-CHANGE EXECUTION.**
+**BLOCKED — ZERO-CHANGE EXECUTION**
 
-## DUPLICATE FILE RULE
+## DUPLICATE-SOURCE RULE
 
-Do not create another competing Results master without an explicit architectural reason and an update to this registry.
+No new Results master may be created without:
 
-A new candidate becomes authoritative only after:
 - architectural justification;
+- explicit classification;
+- registry update;
 - preservation assessment;
-- explicit registry update;
 - verification;
 - deployment parity confirmation when applicable.
 
-## CURRENT STATUS
+## PUBLIC PARITY RULE
 
-Engineering source is identifiable.
+The public target is the human-facing truth for release verification.
 
-Public deployment parity is a known unresolved issue and therefore live verification remains blocked until the deployment source is connected and confirmed.
+If GitHub and the public target disagree:
+
+**BLOCKED — DEPLOYMENT PARITY FAILURE**
 
 ## FINAL TEST
 
-> Can another AI open this registry, identify exactly which Results artifact it is supposed to modify, prove that it changed, and determine whether the human-facing public experience actually received that change?
+Another AI must be able to open this registry and answer, without guessing:
 
-If not, this registry is incomplete and must be repaired before consequential Results work proceeds.
+- Which Results file do I modify?
+- Which files must I not modify?
+- Where does the result data come from?
+- What does the public target need to consume?
+- How do I prove my change reached the human?
+
+If any answer is ambiguous, the registry is not finished.

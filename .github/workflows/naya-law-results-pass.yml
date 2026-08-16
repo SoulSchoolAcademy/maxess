@@ -1,73 +1,35 @@
-name: Naya Law — MAXESS Results AAA Pass
+name: Naya Law — MAXESS Results Audit
 
 on:
-  push:
-    branches: ['feat/naya-law-results-aaa']
   workflow_dispatch:
 
 permissions:
-  contents: write
-
-concurrency:
-  group: naya-law-results-${{ github.ref }}
-  cancel-in-progress: true
+  contents: read
 
 jobs:
-  pass:
-    if: github.actor != 'github-actions[bot]'
+  audit:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Verify preservation baseline before modification
+      - name: Verify Naya Law preservation markers
+        shell: bash
         run: |
           set -euo pipefail
           test -f MAXESS-RESULTS-10-GROOVE.html
           grep -q 'MAXESS-MASTER-BASELINE-PRESERVATION-10-10' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'NAYA-LAW-AAA-RESULTS-PASS-2' MAXESS-RESULTS-10-GROOVE.html
           grep -q 'width:100vw' MAXESS-RESULTS-10-GROOVE.html
-          grep -q 'Naya Writer' MAXESS-RESULTS-10-GROOVE.html
-          grep -q 'Naya Brainstormer' MAXESS-RESULTS-10-GROOVE.html
-          grep -q 'Listen to Your Results' MAXESS-RESULTS-10-GROOVE.html
-          grep -q 'maxess-master-baseline-preservation-10-10' MAXESS-RESULTS-10-GROOVE.html
-          echo 'NAYA LAW PRESERVATION GATE: PASS'
-
-      - name: Apply Naya Law AAA pass
-        run: |
-          set -euo pipefail
-          python3 -m py_compile tools/maxess_results_naya_law_aaa_pass.py
-          python3 tools/maxess_results_naya_law_aaa_pass.py
-
-      - name: Verify Naya Law result artifacts
-        run: |
-          set -euo pipefail
-          for f in MAXESS-RESULTS-10-GROOVE.html MAXESS-RESULTS-FINAL-GROOVE.html MAXESS-RESULTS-GROOVE-EMBED.html MAXESS-RESULTS-FINAL-GROOVE-EMBED.html MAXESS-RESULTS-GROOVE-EMBED-9.95.html; do
-            test -f "$f"
-            grep -q 'NAYA-LAW-AAA-RESULTS-PASS-2' "$f"
-            grep -q 'nl-print' "$f"
-            grep -q 'width:100vw' "$f"
-          done
-          grep -q 'MAXESS-MASTER-BASELINE-PRESERVATION-10-10' MAXESS-RESULTS-10-GROOVE.html
           grep -q 'ny-youtube-player' MAXESS-RESULTS-10-GROOVE.html
           grep -q 'Naya Writer' MAXESS-RESULTS-10-GROOVE.html
           grep -q 'Naya Brainstormer' MAXESS-RESULTS-10-GROOVE.html
-          grep -q 'Listen to Your Results' MAXESS-RESULTS-10-GROOVE.html
-          echo 'NAYA LAW AAA RELEASE GATE: PASS'
+          echo 'NAYA LAW PRESERVATION AUDIT: PASS'
 
-      - name: Commit authoritative Results artifacts
+      - name: Verify duplicate artifacts are not silently treated as masters
+        shell: bash
         run: |
           set -euo pipefail
-          git config user.name 'Naya Law Results Release System'
-          git config user.email 'actions@github.com'
-          git add \
-            MAXESS-RESULTS-10-GROOVE.html \
-            MAXESS-RESULTS-FINAL-GROOVE.html \
-            MAXESS-RESULTS-GROOVE-EMBED.html \
-            MAXESS-RESULTS-FINAL-GROOVE-EMBED.html \
-            MAXESS-RESULTS-GROOVE-EMBED-9.95.html \
-            tools/maxess_results_naya_law_aaa_pass.py \
-            NAYA-LAW.md \
-            .github/workflows/naya-law-results-pass.yml
-          if ! git diff --cached --quiet; then
-            git commit -m 'Apply Naya Law MAXESS Results AAA pass'
-            git push origin HEAD:${{ github.ref_name }}
-          fi
+          grep -q 'MAXESS-RESULTS-10-GROOVE.html' .naya/RESULTS-SOURCE-REGISTRY.md
+          grep -q 'DUPLICATE MIRROR' .naya/RESULTS-SOURCE-REGISTRY.md
+          echo 'SOURCE-OF-TRUTH AUDIT: PASS'
+          echo 'This workflow is audit-only. It no longer edits or pushes Results artifacts.'
