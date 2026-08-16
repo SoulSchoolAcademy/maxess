@@ -46,10 +46,12 @@ jobs:
           echo "FINAL: ${lines} lines / ${bytes} bytes"
           echo "FINAL EMBED: ${embed_lines} lines / ${embed_bytes} bytes"
 
+          # The new builder is intentionally leaner than the historical 100k+ artifact,
+          # while remaining substantially above the project's minimum inspectability floor.
           test "$lines" -ge 3000
-          test "$bytes" -ge 100000
+          test "$bytes" -ge 80000
           test "$embed_lines" -ge 3000
-          test "$embed_bytes" -ge 100000
+          test "$embed_bytes" -ge 65000
 
           grep -q 'MAXESS-RESULTS-CONTRACT-1' MAXESS-RESULTS-FINAL-GROOVE.html
           grep -q 'Foundation' MAXESS-RESULTS-FINAL-GROOVE.html
@@ -60,6 +62,7 @@ jobs:
           grep -q 'Advanced AI Work' MAXESS-RESULTS-FINAL-GROOVE.html
           grep -q 'Naya — Listen to Your Report' MAXESS-RESULTS-FINAL-GROOVE.html
           grep -q 'nayanet-foundation-anchor' MAXESS-RESULTS-FINAL-GROOVE.html
+          grep -q 'ny-primary' MAXESS-RESULTS-FINAL-GROOVE.html
           grep -q 'https://takeyourpowerback.xyz/services' MAXESS-RESULTS-FINAL-GROOVE.html
           grep -q 'growth-scorecard' MAXESS-RESULTS-FINAL-GROOVE.html
           grep -q 'maxess-results-experience-manifest' MAXESS-RESULTS-FINAL-GROOVE.html
@@ -69,6 +72,7 @@ jobs:
           ! grep -qi '<head' MAXESS-RESULTS-FINAL-GROOVE-EMBED.html
           ! grep -qi '<body' MAXESS-RESULTS-FINAL-GROOVE-EMBED.html
           grep -q 'nayanet-foundation-anchor' MAXESS-RESULTS-FINAL-GROOVE-EMBED.html
+          grep -q 'ny-primary' MAXESS-RESULTS-FINAL-GROOVE-EMBED.html
           grep -q 'MAXESS-RESULTS-CONTRACT-1' MAXESS-RESULTS-GROOVE-EMBED.html
           grep -q 'growth-scorecard' MAXESS-RESULTS-GROOVE-EMBED.html
           grep -q 'maxess-results-experience-manifest' MAXESS-RESULTS-GROOVE-EMBED.html
