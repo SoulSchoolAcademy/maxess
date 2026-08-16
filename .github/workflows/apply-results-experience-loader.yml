@@ -4,7 +4,7 @@ on:
   push:
     branches: [maxess-results-rebuild-10-10]
     paths:
-      - 'MAXESS-RESULTS-EXPERIENCE.js'
+      - 'results-experience-parts/**'
   workflow_dispatch:
 
 permissions:
@@ -16,6 +16,13 @@ jobs:
     steps:
       - name: Checkout branch
         uses: actions/checkout@v4
+      - name: Assemble presentation layer
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(find results-experience-parts -type f -name 'part-*' | wc -l)" -eq 4
+          cat results-experience-parts/part-00 results-experience-parts/part-01 results-experience-parts/part-02 results-experience-parts/part-03 > MAXESS-RESULTS-EXPERIENCE.js
+          test -s MAXESS-RESULTS-EXPERIENCE.js
       - name: Attach authoritative presentation layer
         shell: python
         run: |
@@ -23,18 +30,22 @@ jobs:
           source = Path('MAXESS-RESULTS-10-GROOVE.html')
           marker = '<!-- MAXESS_RESULTS_EXPERIENCE_LOADER -->'
           text = source.read_text(encoding='utf-8')
+          loader = marker + '\n<script src="https://raw.githubusercontent.com/SoulSchoolAcademy/maxess/maxess-results-rebuild-10-10/MAXESS-RESULTS-EXPERIENCE.js"></script>\n'
           if marker not in text:
-              loader = marker + '\n<script src="https://raw.githubusercontent.com/SoulSchoolAcademy/maxess/maxess-results-rebuild-10-10/MAXESS-RESULTS-EXPERIENCE.js"></script>\n'
               pos = text.rfind('</body>')
               if pos < 0:
                   raise SystemExit('BLOCKED — Results source has no </body> insertion point.')
               source.write_text(text[:pos] + loader + text[pos:], encoding='utf-8')
-          print('Results loader attached')
-      - name: Verify source integrity
+      - name: Verify source and assembled artifact
         shell: bash
         run: |
           set -euo pipefail
-          test "$(grep -c 'MAXESS_RESULTS_EXPERIENCE_LOADER' MAXESS-RESULTS-10-GROOVE.html)" -eq 1
+          test "$(wc -c < MAXESS-RESULTS-EXPERIENCE.js)" -gt 20000
+          grep -q 'MAXESS_RESULT' MAXESS-RESULTS-EXPERIENCE.js
+          grep -q 'Your AI Score' MAXESS-RESULTS-EXPERIENCE.js
+          grep -q 'Listen to Naya' MAXESS-RESULTS-EXPERIENCE.js
+          grep -q 'Writing & Communication' MAXESS-RESULTS-EXPERIENCE.js
+          grep -q 'MAXESS_RESULTS_EXPERIENCE_LOADER' MAXESS-RESULTS-10-GROOVE.html
           grep -q 'MAXESS-RESULTS-EXPERIENCE.js' MAXESS-RESULTS-10-GROOVE.html
           test "$(grep -c 'id=\"maxess-results-10\"' MAXESS-RESULTS-10-GROOVE.html)" -eq 1
           grep -q 'MAXESS-RESULTS-CONTRACT-1' MAXESS-RESULTS-10-GROOVE.html
@@ -46,6 +57,6 @@ jobs:
           git config user.name 'Naya'
           git config user.email 'naya@users.noreply.github.com'
           rm -f .github/workflows/apply-results-experience-loader.yml
-          git add -- MAXESS-RESULTS-10-GROOVE.html .github/workflows/apply-results-experience-loader.yml
+          git add -- MAXESS-RESULTS-10-GROOVE.html MAXESS-RESULTS-EXPERIENCE.js .github/workflows/apply-results-experience-loader.yml
           git commit -m 'Rebuild MAXESS Results experience around user understanding'
           git push origin HEAD:maxess-results-rebuild-10-10
