@@ -1,16 +1,307 @@
-(function(){
-'use strict';
-var ROOT_ID='maxess-results-10';
-var DIMENSIONS=['Direction','Communication','Evaluation','Iteration','Systems Thinking'];
-var PATHWAYS=[['Writing & Communication','Turn ideas into clear words, instructions and decisions.'],['Research & Information','Find, compare and synthesize useful information.'],['Brainstorming & Ideas','Expand possibilities without losing the goal.'],['Content Creation','Create useful, human content faster and better.'],['Business & Strategy','Turn insight into positioning, offers and plans.'],['Marketing & Sales','Make value understandable and action easier.'],['Learning & Education','Use AI as tutor, teacher and thinking partner.'],['Coding & Software','Build, debug and improve software with AI.'],['Images & Visual Creation','Turn concepts into visual communication.'],['Video & Media','Plan, script and package media.'],['Documents & Presentations','Transform raw thinking into polished deliverables.'],['Data & Analysis','Use evidence and models to make better decisions.'],['Productivity & Planning','Turn intention into organized execution.'],['Career & Professional Development','Build skills, positioning and opportunity.'],['Personal Decision-Making','Think through choices with more clarity.'],['Creative Work','Explore, shape and finish original work.'],['Automation & Systems','Connect repeated work into reliable systems.'],['Advanced AI Work','Orchestrate models, agents, tools and evaluation.']];
-function esc(v){return String(v==null?'':v).replace(/[&<>\"']/g,function(c){return({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'})[c]})}
-function score(v){return Math.max(0,Math.min(100,Number(v)||0))}
-function getResult(){var r=window.MAXESS_RESULT||{};var a=Array.isArray(r.dimensions)?r.dimensions:[];var map={};a.forEach(function(x){map[String(x.name||'').toLowerCase()]=x});var d=DIMENSIONS.map(function(name,i){var x=a[i]||map[name.toLowerCase()]||{};return{name:x.name||name,score:score(x.score!=null?x.score:x.value),description:x.description||''}});return{raw:r,overall:score(r.overallScore!=null?r.overallScore:r.score),dimensions:d}}
-function meaning(name){var n=name.toLowerCase();if(n.indexOf('direction')>=0)return['You usually know what you want AI to accomplish.','Define the outcome and success test before asking AI to work.'];if(n.indexOf('communication')>=0)return['You can translate intent, context and human outcome clearly.','Turn that strength into reusable briefs, instructions and decision frameworks.'];if(n.indexOf('evaluation')>=0)return['You can judge whether AI work is actually good enough.','Use a visible scorecard before accepting important output.'];if(n.indexOf('iteration')>=0)return['You can improve a first result instead of settling for it.','Create a deliberate create → score → improve loop.'];return['You are beginning to see how separate AI interactions can become a larger system.','Turn repeated work into reusable workflows, rules and structures.']}
-function band(v){return v<=50?'Foundation':v<=75?'Developing':v<=90?'Advancing':'Mastering'}
-function styles(){return '<style id="maxess-results-10-css">#maxess-results-10{width:100vw!important;margin-left:calc(50% - 50vw)!important;overflow:hidden!important;background:#050507!important;color:#fff!important;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important}#maxess-results-10 *{box-sizing:border-box}#maxess-results-10 button,#maxess-results-10 a{font:inherit}#maxess-results-10 .mx-wrap{width:min(1480px,100%);margin:auto;padding:0 clamp(18px,4vw,64px)}#maxess-results-10 .mx-section{padding:clamp(64px,8vw,120px) 0}#maxess-results-10 .mx-light{background:#fff;color:#101014}#maxess-results-10 .mx-dark{background:#050507;color:#fff}#maxess-results-10 .mx-eyebrow{font-size:10px;font-weight:900;letter-spacing:.18em;text-transform:uppercase;color:#a98be8}#maxess-results-10 h1,#maxess-results-10 h2,#maxess-results-10 h3,#maxess-results-10 p{margin-top:0}#maxess-results-10 h2{font-size:clamp(38px,5vw,76px);line-height:.94;letter-spacing:-.055em;margin:10px 0 18px}#maxess-results-10 .mx-sub{max-width:700px;color:#777;font-size:clamp(16px,1.4vw,19px);line-height:1.6}#maxess-results-10 .mx-hero{min-height:min(850px,95vh);display:flex;align-items:center;text-align:center;background:radial-gradient(circle at 50% 42%,rgba(126,62,220,.24),transparent 34%),linear-gradient(180deg,#020204,#09050e 70%,#050507)}#maxess-results-10 .mx-hero-inner{width:100%}#maxess-results-10 .mx-orb{position:relative;width:min(480px,78vw);aspect-ratio:1;margin:26px auto 30px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 34% 25%,rgba(255,255,255,.35),transparent 9%),radial-gradient(circle at 50% 48%,rgba(132,73,222,.62),rgba(25,13,45,.96) 48%,#020207 78%);border:1px solid rgba(211,187,255,.55);box-shadow:inset 0 0 100px rgba(126,62,220,.28),0 30px 100px rgba(0,0,0,.55),0 0 110px rgba(126,62,220,.22);animation:mx-breathe 5.5s ease-in-out infinite}.mx-orb:before,.mx-orb:after{content:"";position:absolute;border-radius:50%;inset:-5%;border:1px solid rgba(196,181,253,.32);animation:mx-spin 18s linear infinite}.mx-orb:after{inset:8%;border-color:rgba(85,232,255,.18);animation-direction:reverse;animation-duration:25s}.mx-score{position:relative;z-index:2}.mx-score strong{display:block;font-size:clamp(110px,15vw,190px);line-height:.78;letter-spacing:-.09em;font-weight:900;background:linear-gradient(110deg,#d8c4ff,#9a62ff,#55e8ff);-webkit-background-clip:text;background-clip:text;color:transparent}.mx-score span{display:block;margin-top:26px;font-size:11px;font-weight:900;letter-spacing:.2em;color:#b8b1c5}.mx-band{display:inline-flex;margin-top:14px;padding:8px 13px;border:1px solid rgba(255,255,255,.16);border-radius:999px;background:rgba(255,255,255,.06);font-size:11px;font-weight:800}.mx-hero-title{font-size:clamp(18px,2vw,26px);font-weight:700;margin:0 0 8px}.mx-hero-note{color:#aaa;font-size:14px;margin:0 auto 22px}.mx-btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:56px;padding:0 24px;border-radius:16px;border:1px solid rgba(255,255,255,.18);background:linear-gradient(145deg,#24163a,#07070b);color:#fff;text-decoration:none;font-weight:850;cursor:pointer;transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}.mx-btn:hover,.mx-btn:focus-visible{transform:translateY(-2px);border-color:rgba(255,255,255,.45);box-shadow:0 12px 35px rgba(0,0,0,.25)}.mx-primary{background:linear-gradient(145deg,#c6adff,#6636b5 55%,#241033);border-color:rgba(225,208,255,.7)}.mx-hero-pattern{margin:42px auto 0;display:grid;grid-template-columns:repeat(5,1fr);gap:9px;max-width:900px}.mx-mini{padding:15px 10px;border:1px solid rgba(255,255,255,.12);border-radius:16px;background:rgba(255,255,255,.045)}.mx-mini b{display:block;font-size:28px;line-height:1}.mx-mini span{display:block;margin-top:6px;color:#aaa;font-size:10px;text-transform:uppercase;letter-spacing:.08em}.mx-fingerprint{display:grid;grid-template-columns:1fr 1fr;gap:clamp(35px,7vw,110px);align-items:center}.mx-fingerprint svg{width:100%;height:auto}.mx-rows{display:grid;gap:10px}.mx-row{padding:17px;border-radius:17px;background:#f4f2f8;border:1px solid rgba(0,0,0,.07)}.mx-row-top{display:flex;justify-content:space-between;gap:15px}.mx-row-top strong{font-size:20px;color:#6034a5}.mx-row-bar{height:5px;margin-top:10px;border-radius:99px;background:#ddd9e5;overflow:hidden}.mx-row-bar i{display:block;height:100%;width:var(--w);background:linear-gradient(90deg,#6637a8,#55cfe7)}.mx-row p{margin:9px 0 0;color:#666;font-size:12px}.mx-grid5{display:grid;grid-template-columns:repeat(5,1fr);gap:13px;margin-top:30px}.mx-dim{min-height:350px;padding:20px;border-radius:25px;background:linear-gradient(160deg,#0c0b11,#17111f);border:1px solid rgba(255,255,255,.11);text-align:center;box-shadow:inset 0 1px rgba(255,255,255,.1),0 25px 60px rgba(0,0,0,.22)}.mx-ring{position:relative;width:132px;height:132px;margin:4px auto 18px;border-radius:50%;background:conic-gradient(var(--c) calc(var(--v)*1%),rgba(255,255,255,.08) 0)}.mx-ring:after{content:"";position:absolute;inset:11px;border-radius:50%;background:#0c0b11}.mx-ring b{position:absolute;inset:0;display:grid;place-items:center;z-index:1;font-size:38px;color:var(--c)}.mx-dim h3{font-size:18px;margin:0 0 8px}.mx-dim p{color:#aaa;font-size:12px;line-height:1.5;min-height:55px}.mx-lever{padding-top:12px;border-top:1px solid rgba(255,255,255,.09);text-align:left}.mx-lever span{font-size:9px;font-weight:900;letter-spacing:.14em;color:var(--c)}.mx-lever b{display:block;margin-top:5px;font-size:11px;line-height:1.4}.mx-two{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:28px}.mx-panel{padding:30px;border-radius:27px;border:1px solid rgba(255,255,255,.12);background:linear-gradient(145deg,rgba(255,255,255,.065),rgba(255,255,255,.018))}.mx-panel.accent{border-color:rgba(166,108,255,.35);box-shadow:0 0 70px rgba(126,62,220,.08)}.mx-panel h3{font-size:clamp(28px,3vw,46px);letter-spacing:-.04em;margin:9px 0}.mx-panel p{color:#aaa;line-height:1.6}.mx-label{font-size:9px;font-weight:900;letter-spacing:.15em;color:#a98be8;text-transform:uppercase}.mx-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:30px}.mx-step{padding:25px;border-radius:22px;border:1px solid rgba(255,255,255,.11);background:rgba(255,255,255,.045)}.mx-step b{font-size:10px;color:#cdb8ff;letter-spacing:.14em}.mx-step h3{margin:9px 0 6px;font-size:21px}.mx-step p{margin:0;color:#aaa;font-size:12px;line-height:1.5}.mx-pathways{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin-top:30px}.mx-path{position:relative;padding:21px;border-radius:19px;border:1px solid rgba(0,0,0,.09);background:#faf9fc;min-height:145px;text-decoration:none;color:#111;transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}.mx-path:hover,.mx-path:focus-visible{transform:translateY(-3px);border-color:rgba(102,55,168,.35);box-shadow:0 15px 40px rgba(0,0,0,.08)}.mx-path.recommended{border-color:rgba(102,55,168,.55);box-shadow:0 0 0 1px rgba(102,55,168,.08)}.mx-path.recommended:before{content:"RECOMMENDED FOR YOU";position:absolute;top:11px;right:11px;font-size:7px;font-weight:900;color:#6637a8}.mx-path small{color:#8667bd;font-weight:900}.mx-path h3{font-size:15px;margin:12px 0 6px}.mx-path p{margin:0;color:#666;font-size:11px;line-height:1.45}.mx-play{background:radial-gradient(circle at 50% 0,rgba(126,62,220,.18),transparent 45%),#050507}.mx-tools{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;margin-top:30px}.mx-tool{min-height:280px;padding:27px;border-radius:27px;border:1px solid rgba(255,255,255,.12);background:linear-gradient(145deg,rgba(255,255,255,.065),rgba(255,255,255,.018));transition:transform .25s ease,border-color .25s ease}.mx-tool:hover{transform:translateY(-5px);border-color:rgba(255,255,255,.3)}.mx-icon{width:60px;height:60px;display:grid;place-items:center;border-radius:18px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);font-size:27px}.mx-tool h3{font-size:25px;margin:28px 0 7px}.mx-tool p{color:#aaa;font-size:13px;line-height:1.55}.mx-report{background:#fff;color:#101014}.mx-report-card{padding:clamp(34px,6vw,70px);border:1px solid rgba(0,0,0,.1);border-radius:30px;text-align:center;box-shadow:0 25px 80px rgba(0,0,0,.09)}.mx-report-card h2{max-width:850px;margin:10px auto;font-size:clamp(40px,5vw,74px)}.mx-report-card p{max-width:680px;margin:18px auto 25px;color:#555;line-height:1.6}.mx-final{text-align:center;background:radial-gradient(circle at 50% 0,rgba(126,62,220,.25),transparent 50%),#050507}.mx-final p{color:#aaa}.mx-actions{display:flex;justify-content:center;flex-wrap:wrap;gap:11px;margin-top:23px}@keyframes mx-breathe{50%{transform:scale(1.018);filter:saturate(1.12)}}@keyframes mx-spin{to{transform:rotate(360deg)}}@media(max-width:1100px){#maxess-results-10 .mx-grid5{grid-template-columns:repeat(3,1fr)}#maxess-results-10 .mx-pathways{grid-template-columns:repeat(3,1fr)}#maxess-results-10 .mx-fingerprint{grid-template-columns:1fr;max-width:850px;margin:auto}}@media(max-width:760px){#maxess-results-10 .mx-hero{min-height:auto;padding:70px 0 55px}#maxess-results-10 .mx-hero-pattern{grid-template-columns:repeat(2,1fr)}#maxess-results-10 .mx-grid5,#maxess-results-10 .mx-two,#maxess-results-10 .mx-steps,#maxess-results-10 .mx-pathways,#maxess-results-10 .mx-tools{grid-template-columns:1fr}#maxess-results-10 .mx-dim{min-height:auto;text-align:left}#maxess-results-10 .mx-ring{margin-left:0}#maxess-results-10 .mx-actions{flex-direction:column}#maxess-results-10 .mx-btn{width:100%}}@media(prefers-reduced-motion:reduce){#maxess-results-10 .mx-orb,#maxess-results-10 .mx-orb:before,#maxess-results-10 .mx-orb:after,#maxess-results-10 .mx-btn,#maxess-results-10 .mx-tool,#maxess-results-10 .mx-path{animation:none!important;transition:none!important}}@media print{#maxess-results-10{width:100%!important;margin:0!important;background:#fff!important;color:#111!important}#maxess-results-10 .mx-section{padding:28px 0;background:#fff!important;color:#111!important}#maxess-results-10 .mx-orb{width:230px;animation:none;box-shadow:none;background:#eee}#maxess-results-10 .mx-score strong{background:none;color:#111}#maxess-results-10 .mx-actions{display:none}#maxess-results-10 .mx-dim,#maxess-results-10 .mx-panel,#maxess-results-10 .mx-step,#maxess-results-10 .mx-path,#maxess-results-10 .mx-tool,#maxess-results-10 .mx-report-card{break-inside:avoid;box-shadow:none;background:#fff;color:#111;border:1px solid #aaa}}</style>'}
-function fingerprint(d){var pts=[],cx=300,cy=300,r=220;for(var i=0;i<5;i++){var a=-Math.PI/2+i*2*Math.PI/5;pts.push([cx+Math.cos(a)*r*d[i].score/100,cy+Math.sin(a)*r*d[i].score/100])}function poly(p){return p.map(function(x){return x[0].toFixed(1)+','+x[1].toFixed(1)}).join(' ')}var outer=[];for(var j=0;j<5;j++){var aa=-Math.PI/2+j*2*Math.PI/5;outer.push([cx+Math.cos(aa)*r,cy+Math.sin(aa)*r])}return '<svg viewBox="0 0 600 600" role="img" aria-label="Your five-dimension AI fingerprint"><polygon points="'+poly(outer)+'" fill="none" stroke="#0002"/><polygon points="'+poly(outer.map(function(p){return [300+(p[0]-300)*.5,300+(p[1]-300)*.5]}))+'" fill="none" stroke="#0002"/><polygon points="'+poly(outer.map(function(p){return [300+(p[0]-300)*.75,300+(p[1]-300)*.75]}))+'" fill="none" stroke="#0002"/>'+outer.map(function(p){return '<line x1="300" y1="300" x2="'+p[0]+'" y2="'+p[1]+'" stroke="#0002"/>'}).join('')+'<polygon points="'+poly(pts)+'" fill="#7545dd24" stroke="#7545dd" stroke-width="5"/>'+pts.map(function(p){return '<circle cx="'+p[0]+'" cy="'+p[1]+'" r="8" fill="#fff" stroke="#7545dd" stroke-width="3"/>'}).join('')+'</svg>'}
-function build(){var root=document.getElementById(ROOT_ID);if(!root||root.dataset.built)return;var r=getResult();if(!r.raw||!r.raw.dimensions||!r.raw.dimensions.length)return;root.dataset.built='1';var sorted=r.dimensions.slice().sort(function(a,b){return b.score-a.score});var strongest=sorted[0],opportunity=sorted[sorted.length-1];var colors=['#ffad52','#f6d35d','#4ee1a4','#57a8ff','#b17cff'];var dimCards=r.dimensions.map(function(d,i){var m=meaning(d.name);return '<article class="mx-dim" style="--v:'+d.score+';--c:'+colors[i]+'"><div class="mx-ring"><b>'+Math.round(d.score)+'</b></div><h3>'+esc(d.name)+'</h3><p>'+esc(d.description||m[0])+'</p><div class="mx-lever"><span>YOUR LEVER</span><b>'+esc(m[1])+'</b></div></article>'}).join('');var rows=r.dimensions.map(function(d){return '<div class="mx-row"><div class="mx-row-top"><strong>'+esc(d.name)+'</strong><b>'+Math.round(d.score)+'</b></div><div class="mx-row-bar"><i style="--w:'+d.score+'%"></i></div><p>'+esc(d.description||meaning(d.name)[0])+'</p></div>'}).join('');var paths=PATHWAYS.map(function(p,i){var rec=(/systems/i.test(opportunity.name)&&(/automation|advanced ai|productivity/i.test(p[0])))||(/communication/i.test(strongest.name)&&i===0);return '<a class="mx-path '+(rec?'recommended':'')+'" href="#" data-pathway="'+esc(p[0])+'"><small>'+String(i+1).padStart(2,'0')+'</small><h3>'+esc(p[0])+'</h3><p>'+esc(p[1])+'</p></a>'}).join('');root.innerHTML=styles()+'<section class="mx-section mx-hero"><div class="mx-wrap mx-hero-inner"><div class="mx-eyebrow">MAXESS · PERSONAL AI MASTERY REPORT</div><div class="mx-orb"><div class="mx-score"><strong>'+Math.round(r.overall)+'</strong><span>YOUR AI SCORE</span><em class="mx-band">'+band(r.overall)+'</em></div></div><h1 class="mx-hero-title">Your AI Score</h1><p class="mx-hero-note">See the pattern, not just the score.</p><button class="mx-btn mx-primary" id="maxessNayaPlay" type="button" aria-label="Listen to Naya explain your result">◉ &nbsp; Listen to Naya</button><div class="mx-hero-pattern">'+r.dimensions.map(function(d){return '<div class="mx-mini"><b>'+Math.round(d.score)+'</b><span>'+esc(d.name)+'</span></div>'}).join('')+'</div></div></section><section class="mx-section mx-light"><div class="mx-wrap"><div class="mx-fingerprint"><div><span class="mx-eyebrow">01 · RECOGNIZE</span><h2>This Is You</h2><p class="mx-sub">Your AI capability is more than one number. This five-dimensional fingerprint shows how your strengths fit together.</p><div class="mx-rows">'+rows+'</div></div><div>'+fingerprint(r.dimensions)+'</div></div></div></section><section class="mx-section mx-dark"><div class="mx-wrap"><span class="mx-eyebrow">02 · UNDERSTAND</span><h2>What Your Pattern Reveals</h2><p class="mx-sub">The shape matters because the relationships between your strengths tell a more useful story than any single score.</p><div class="mx-grid5">'+dimCards+'</div><div class="mx-two"><article class="mx-panel"><span class="mx-label">NATURAL ADVANTAGE</span><h3>'+esc(strongest.name)+'</h3><p>'+esc(meaning(strongest.name)[0])+' Your strongest capability can become a foundation for everything that follows.</p></article><article class="mx-panel accent"><span class="mx-label">HIGHEST-LEVERAGE OPPORTUNITY</span><h3>'+esc(opportunity.name)+'</h3><p>'+esc(meaning(opportunity.name)[0])+' Improving here can multiply strengths you already have rather than replacing them.</p></article></div></div></section><section class="mx-section mx-dark"><div class="mx-wrap"><span class="mx-eyebrow">03 · ACT</span><h2>Your Next Chapter</h2><p class="mx-sub">A simple progression: use AI deliberately, make something useful, judge the result, then make the improvement repeatable.</p><div class="mx-steps"><article class="mx-step"><b>01</b><h3>DIRECT</h3><p>Tell AI what you actually want and what success looks like.</p></article><article class="mx-step"><b>02</b><h3>CREATE</h3><p>Use AI to produce something useful instead of merely asking questions.</p></article><article class="mx-step"><b>03</b><h3>SCORE</h3><p>Judge the quality instead of automatically accepting the first answer.</p></article><article class="mx-step"><b>04</b><h3>COMPOUND</h3><p>Improve the process until better results become repeatable.</p></article></div></div></section><section class="mx-section mx-light"><div class="mx-wrap"><span class="mx-eyebrow">04 · EXPLORE</span><h2>Your 18 AI Pathways</h2><p class="mx-sub">Each pathway is a door into a different kind of useful AI capability. The highlighted doors are the most relevant starting points for this result.</p><div class="mx-pathways">'+paths+'</div></div></section><section class="mx-section mx-play"><div class="mx-wrap"><span class="mx-eyebrow">05 · CONTINUE</span><h2>Your AI Playground</h2><p class="mx-sub">Now that you can see your pattern, put it to work.</p><div class="mx-tools"><article class="mx-tool"><div class="mx-icon">✎</div><h3>Naya Writer</h3><p>Turn ideas, notes and rough thinking into clear, useful communication.</p><a class="mx-btn" href="https://nayanet.xyz/" target="_blank" rel="noopener">Open Naya Writer</a></article><article class="mx-tool"><div class="mx-icon">✦</div><h3>Naya Brainstormer</h3><p>Expand possibilities while keeping your real goal in view.</p><a class="mx-btn" href="https://nayanet.xyz/" target="_blank" rel="noopener">Open Brainstormer</a></article><article class="mx-tool"><div class="mx-icon">◉</div><h3>Talk to Naya</h3><p>Move from a written result into an ongoing conversation about what it means.</p><button class="mx-btn" type="button" data-naya-talk>Talk to Naya</button></article></div></div></section><section class="mx-section mx-report"><div class="mx-wrap"><div class="mx-report-card"><span class="mx-eyebrow">06 · PERSONALIZED REPORT</span><h2>You’ve seen the pattern. Now hear what it means.</h2><p>Naya can walk you through the result, your strongest capability, your highest-leverage opportunity and the next place to focus.</p><button class="mx-btn mx-primary" type="button" data-naya-report>◉ &nbsp; Listen to Naya</button></div></div></section><section class="mx-section mx-final"><div class="mx-wrap"><span class="mx-eyebrow">YOUR NEXT CHAPTER</span><h2>You know where you are.<br>Now build from here.</h2><p>Keep exploring your AI mastery with Naya.</p><div class="mx-actions"><a class="mx-btn mx-primary" href="https://nayanet.xyz/" target="_blank" rel="noopener">Continue with Naya</a></div></div></section>';function playNaya(){var b=document.getElementById('maxessNayaPlayOriginal');if(b){b.click();return}if(typeof window.playMaxessNaya==='function'){window.playMaxessNaya();return}if(typeof window.MAXESS_NAYA_PLAY==='function'){window.MAXESS_NAYA_PLAY();return}var hero=document.getElementById('maxessNayaPlay');if(hero)hero.setAttribute('aria-label','Naya audio is not currently available');}var hero=document.getElementById('maxessNayaPlay');if(hero)hero.addEventListener('click',playNaya);root.querySelectorAll('[data-naya-talk],[data-naya-report]').forEach(function(b){b.addEventListener('click',playNaya)});root.querySelectorAll('[data-pathway]').forEach(function(el){el.addEventListener('click',function(e){e.preventDefault();var name=el.getAttribute('data-pathway');if(window.MAXESS_PATHWAY_OPEN)window.MAXESS_PATHWAY_OPEN(name);else window.location.href='https://nayanet.xyz/'})})}
-function boot(){var root=document.getElementById(ROOT_ID);if(!root)return;if(!window.MAXESS_RESULT){setTimeout(boot,50);return}build()}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
+(function () {
+  'use strict';
+
+  var ROOT_ID = 'maxess-results-10';
+  var DIMENSIONS = [
+    'Direction',
+    'Communication',
+    'Evaluation',
+    'Iteration',
+    'Systems Thinking'
+  ];
+
+  var DIMENSION_META = [
+    { color: '#ff765f', accent: '#ffad52' },
+    { color: '#f4d35e', accent: '#ffe98a' },
+    { color: '#48d89f', accent: '#7af2bd' },
+    { color: '#55b9ff', accent: '#91d4ff' },
+    { color: '#b77cff', accent: '#e1bfff' }
+  ];
+
+  var PATHWAYS = [
+    ['Writing & Communication', 'Naya Writer', 'Turn ideas into clear words, instructions and decisions.'],
+    ['Research & Information', 'Naya Researcher', 'Find, compare and synthesize useful information.'],
+    ['Brainstorming & Ideas', 'Naya Brainstormer', 'Expand possibilities without losing the goal.'],
+    ['Content Creation', 'Naya Creator', 'Create useful, human content faster and better.'],
+    ['Business & Strategy', 'Naya Strategist', 'Turn insight into positioning, offers and plans.'],
+    ['Marketing & Sales', 'Naya Marketer', 'Make value understandable and action easier.'],
+    ['Learning & Education', 'Naya Teacher', 'Use AI as tutor, teacher and thinking partner.'],
+    ['Coding & Software', 'Naya Coder', 'Build, debug and improve software with AI.'],
+    ['Images & Visual Creation', 'Naya Designer', 'Turn concepts into visual communication.'],
+    ['Video & Media', 'Naya Media', 'Plan, script and package media.'],
+    ['Documents & Presentations', 'Naya Publisher', 'Transform raw thinking into polished deliverables.'],
+    ['Data & Analysis', 'Naya Analyst', 'Use evidence and models to make better decisions.'],
+    ['Productivity & Planning', 'Naya Planner', 'Turn intention into organized execution.'],
+    ['Career & Professional Development', 'Naya Career', 'Build skills, positioning and opportunity.'],
+    ['Personal Decision-Making', 'Naya Counsel', 'Think through choices with more clarity.'],
+    ['Creative Work', 'Naya Creative', 'Explore, shape and finish original work.'],
+    ['Automation & Systems', 'Naya Automator', 'Connect repeated work into reliable systems.'],
+    ['Advanced AI Work', 'Naya Advanced', 'Orchestrate models, agents, tools and evaluation.']
+  ];
+
+  var METHOD = [
+    ['KNOW', 'Define the outcome before the work begins.', '#ff765f'],
+    ['TELL', 'Give AI the context, audience and standard.', '#ffad52'],
+    ['ASK', 'Turn the goal into a useful request.', '#f4d35e'],
+    ['CREATE', 'Build the first useful version.', '#63c8ff'],
+    ['SCORE', 'Judge the result against the standard.', '#667eea'],
+    ['IMPROVE', 'Find the gap and make the next version better.', '#a66cff'],
+    ['FREEZE', 'Preserve what works so it can compound.', '#e25dff']
+  ];
+
+  function esc(v) {
+    return String(v == null ? '' : v).replace(/[&<>"']/g, function (c) {
+      return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c];
+    });
+  }
+
+  function score(v) {
+    var n = Number(v);
+    return Math.max(0, Math.min(100, Number.isFinite(n) ? n : 0));
+  }
+
+  function getResult() {
+    var r = window.MAXESS_RESULT || {};
+    var raw = Array.isArray(r.dimensions) ? r.dimensions : [];
+    var byName = {};
+    raw.forEach(function (d) {
+      byName[String(d.name || '').toLowerCase()] = d;
+    });
+
+    var dimensions = DIMENSIONS.map(function (name, i) {
+      var d = raw[i] || byName[name.toLowerCase()] || {};
+      return {
+        name: name,
+        score: score(d.score != null ? d.score : d.value),
+        description: d.description || d.insight || ''
+      };
+    });
+
+    return {
+      raw: r,
+      overall: score(r.overallScore != null ? r.overallScore : r.score),
+      dimensions: dimensions
+    };
+  }
+
+  function band(v) {
+    if (v <= 50) return 'Foundation';
+    if (v <= 75) return 'Developing';
+    if (v <= 90) return 'Advancing';
+    return 'Mastering';
+  }
+
+  function interpolate(a, b, t) { return a + (b - a) * t; }
+
+  function hueForScore(v) {
+    var stops = [
+      [0, 8], [49, 28], [50, 48], [64, 62], [65, 105], [74, 135],
+      [75, 165], [84, 190], [85, 215], [89, 235], [90, 265], [94, 285],
+      [95, 305], [100, 330]
+    ];
+    for (var i = 0; i < stops.length - 1; i++) {
+      if (v <= stops[i + 1][0]) {
+        var a = stops[i], b = stops[i + 1];
+        var t = (v - a[0]) / Math.max(1, b[0] - a[0]);
+        return interpolate(a[1], b[1], t);
+      }
+    }
+    return 330;
+  }
+
+  function meaning(name) {
+    var n = name.toLowerCase();
+    if (n.indexOf('direction') >= 0) return { insight: 'You usually know what you want AI to accomplish.', lever: 'Define the outcome and success test before asking AI to work.', next: 'Before your next important AI request, write the desired outcome in one sentence.' };
+    if (n.indexOf('communication') >= 0) return { insight: 'You can translate intent, context and human outcome clearly.', lever: 'Turn that strength into reusable briefs, instructions and decision frameworks.', next: 'Create one reusable instruction template for a task you repeat often.' };
+    if (n.indexOf('evaluation') >= 0) return { insight: 'You can judge whether AI work is actually good enough.', lever: 'Use a visible scorecard before accepting important output.', next: 'Score one meaningful AI output against three explicit quality criteria.' };
+    if (n.indexOf('iteration') >= 0) return { insight: 'You understand that quality improves through deliberate refinement.', lever: 'Make the create → score → improve loop explicit.', next: 'Take one AI result you already have and improve it once instead of starting over.' };
+    return { insight: 'You are beginning to see how separate AI interactions can become a larger system.', lever: 'Turn repeated work into reusable systems, components and operating rules.', next: 'Choose one repeated workflow and document the rule that would make it reusable.' };
+  }
+
+  function styles() {
+    return '<style id="maxess-results-aaa-v2-css">' +
+      '#maxess-results-10{--mx-bg:#050507;--mx-ink:#fff;--mx-muted:rgba(255,255,255,.64);--mx-line:rgba(255,255,255,.12);width:100vw!important;margin-left:calc(50% - 50vw)!important;overflow:hidden!important;background:var(--mx-bg)!important;color:#fff!important;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;line-height:1.5}' +
+      '#maxess-results-10,#maxess-results-10 *{box-sizing:border-box}' +
+      '#maxess-results-10 .mx-shell{width:min(1680px,100%);margin:auto;padding:0 clamp(18px,4vw,72px)}' +
+      '#maxess-results-10 .mx-section{padding:clamp(58px,7vw,112px) 0;position:relative}' +
+      '#maxess-results-10 .mx-light{background:#fff;color:#101014}' +
+      '#maxess-results-10 .mx-dark{background:#050507;color:#fff}' +
+      '#maxess-results-10 .mx-eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:11px;font-weight:900;letter-spacing:.18em;text-transform:uppercase;color:#bda1ed}' +
+      '#maxess-results-10 .mx-eyebrow:before{content:"";width:28px;height:1px;background:linear-gradient(90deg,#a66cff,transparent)}' +
+      '#maxess-results-10 h1,#maxess-results-10 h2,#maxess-results-10 h3,#maxess-results-10 p{margin-top:0}' +
+      '#maxess-results-10 h2{font-size:clamp(38px,5.4vw,78px);line-height:.94;letter-spacing:-.055em;margin:12px 0 18px}' +
+      '#maxess-results-10 .mx-sub{max-width:760px;font-size:clamp(16px,1.35vw,19px);line-height:1.65;color:#68636e}' +
+      '#maxess-results-10 .mx-dark .mx-sub{color:rgba(255,255,255,.64)}' +
+      '#maxess-results-10 .mx-center{text-align:center}' +
+      '#maxess-results-10 .mx-center .mx-sub{margin-left:auto;margin-right:auto}' +
+      '#maxess-results-10 .mx-hero{min-height:min(900px,96vh);display:flex;align-items:center;text-align:center;background:radial-gradient(circle at 50% 35%,hsla(var(--mx-hue),95%,62%,.24),transparent 36%),radial-gradient(circle at 50% 75%,rgba(85,232,255,.05),transparent 30%),linear-gradient(180deg,#020204,#09050e 70%,#050507);--mx-hue:265}' +
+      '#maxess-results-10 .mx-hero-inner{width:100%;padding:56px 0 44px}' +
+      '#maxess-results-10 .mx-hero-title{font-size:clamp(19px,2.1vw,28px);font-weight:800;margin:0 0 9px}' +
+      '#maxess-results-10 .mx-hero-note{max-width:650px;margin:0 auto 25px;color:rgba(255,255,255,.64);font-size:15px}' +
+      '#maxess-results-10 .mx-orb{position:relative;width:min(500px,76vw);aspect-ratio:1;margin:25px auto 30px;border-radius:50%;display:grid;place-items:center;isolation:isolate;cursor:pointer;background:radial-gradient(circle at 32% 20%,rgba(255,255,255,.42),transparent 8%),radial-gradient(circle at 50% 48%,hsla(var(--mx-hue),90%,58%,.74),rgba(28,11,48,.96) 49%,#020207 79%);border:1px solid hsla(var(--mx-hue),90%,80%,.62);box-shadow:inset 0 0 120px hsla(var(--mx-hue),90%,58%,.30),0 35px 110px rgba(0,0,0,.58),0 0 130px hsla(var(--mx-hue),90%,58%,.25);animation:mxOrbBreathe 5.5s ease-in-out infinite;transition:filter .35s ease,transform .35s ease}' +
+      '#maxess-results-10 .mx-orb:hover{filter:saturate(1.12) brightness(1.04);transform:scale(1.012)}' +
+      '#maxess-results-10 .mx-orb:before,#maxess-results-10 .mx-orb:after{content:"";position:absolute;border-radius:50%;inset:-5%;border:1px solid hsla(var(--mx-hue),90%,82%,.32);animation:mxSpin 18s linear infinite}' +
+      '#maxess-results-10 .mx-orb:after{inset:8%;border-color:rgba(85,232,255,.18);animation-direction:reverse;animation-duration:25s}' +
+      '#maxess-results-10 .mx-orb .mx-resonance{position:absolute;inset:-9%;border-radius:50%;border:1px dashed hsla(var(--mx-hue),90%,78%,.16);opacity:.7;animation:mxSpin 32s linear infinite}' +
+      '#maxess-results-10 .mx-score{position:relative;z-index:2}' +
+      '#maxess-results-10 .mx-score strong{display:block;font-size:clamp(118px,16vw,210px);line-height:.76;letter-spacing:-.09em;font-weight:900;color:#fff;text-shadow:0 5px 30px rgba(0,0,0,.55),0 0 42px hsla(var(--mx-hue),90%,70%,.22)}' +
+      '#maxess-results-10 .mx-score span{display:block;margin-top:28px;font-size:11px;font-weight:900;letter-spacing:.22em;color:rgba(255,255,255,.76)}' +
+      '#maxess-results-10 .mx-band{display:inline-flex;margin-top:14px;padding:8px 14px;border:1px solid rgba(255,255,255,.18);border-radius:999px;background:rgba(255,255,255,.06);font-size:11px;font-weight:900;letter-spacing:.08em}' +
+      '#maxess-results-10 .mx-hero-actions{display:flex;justify-content:center;flex-wrap:wrap;gap:11px}' +
+      '#maxess-results-10 .mx-btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:56px;padding:0 24px;border-radius:16px;border:1px solid rgba(255,255,255,.18);background:linear-gradient(145deg,#24163a,#07070b);color:#fff;text-decoration:none;font-weight:850;cursor:pointer;transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}' +
+      '#maxess-results-10 .mx-btn:hover,#maxess-results-10 .mx-btn:focus-visible{transform:translateY(-2px);border-color:rgba(255,255,255,.48);box-shadow:0 14px 36px rgba(0,0,0,.28);outline:2px solid transparent;outline-offset:3px}' +
+      '#maxess-results-10 .mx-btn:focus-visible{outline-color:#fff}' +
+      '#maxess-results-10 .mx-primary{background:linear-gradient(145deg,#e0c7ff,#783bc8 55%,#29103f);border-color:rgba(235,220,255,.72)}' +
+      '#maxess-results-10 .mx-report{background:#fff;color:#101014}' +
+      '#maxess-results-10 .mx-report-card{max-width:1050px;margin:auto;padding:clamp(32px,6vw,72px);border:1px solid rgba(0,0,0,.10);border-radius:34px;box-shadow:0 30px 90px rgba(0,0,0,.10)}' +
+      '#maxess-results-10 .mx-report-card h2{max-width:820px;margin:12px auto;font-size:clamp(40px,5vw,74px)}' +
+      '#maxess-results-10 .mx-report-card p{max-width:700px;margin:18px auto 26px;color:#57535d;font-size:17px;line-height:1.65}' +
+      '#maxess-results-10 .mx-gauges{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;margin-top:34px}' +
+      '#maxess-results-10 .mx-gauge{position:relative;min-height:330px;padding:22px;border-radius:26px;border:1px solid rgba(255,255,255,.12);background:linear-gradient(160deg,rgba(255,255,255,.07),rgba(255,255,255,.018));box-shadow:inset 0 1px rgba(255,255,255,.10),0 25px 65px rgba(0,0,0,.20);text-align:center;cursor:pointer;transition:transform .25s ease,border-color .25s ease,opacity .25s ease,box-shadow .25s ease}' +
+      '#maxess-results-10 .mx-gauge:hover,#maxess-results-10 .mx-gauge:focus-visible{transform:translateY(-5px);border-color:var(--c);box-shadow:inset 0 1px rgba(255,255,255,.14),0 25px 70px rgba(0,0,0,.28);outline:none}' +
+      '#maxess-results-10 .mx-gauge.is-selected{border-color:var(--c);box-shadow:0 0 0 1px var(--c),0 25px 75px rgba(0,0,0,.32)}' +
+      '#maxess-results-10 .mx-gauge.is-dim{opacity:.48}' +
+      '#maxess-results-10 .mx-ring{position:relative;width:150px;height:150px;margin:2px auto 18px;border-radius:50%;background:conic-gradient(var(--c) calc(var(--v)*1%),rgba(255,255,255,.08) 0);display:grid;place-items:center}' +
+      '#maxess-results-10 .mx-ring:before{content:"";position:absolute;inset:11px;border-radius:50%;background:#0c0b11;box-shadow:inset 0 0 25px rgba(0,0,0,.45)}' +
+      '#maxess-results-10 .mx-ring b{position:relative;z-index:2;font-size:42px;color:#fff}' +
+      '#maxess-results-10 .mx-gauge h3{font-size:18px;margin:0 0 8px}' +
+      '#maxess-results-10 .mx-gauge p{margin:0;color:rgba(255,255,255,.62);font-size:12px;line-height:1.5}' +
+      '#maxess-results-10 .mx-selected-label{margin-top:13px;color:var(--c);font-size:9px;font-weight:900;letter-spacing:.15em;text-transform:uppercase}' +
+      '#maxess-results-10 .mx-pattern{background:#fff;color:#101014}' +
+      '#maxess-results-10 .mx-pattern-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(320px,.95fr);gap:clamp(32px,7vw,100px);align-items:center}' +
+      '#maxess-results-10 .mx-network{position:relative;min-height:520px;display:grid;place-items:center}' +
+      '#maxess-results-10 .mx-network svg{width:min(600px,100%);height:auto;overflow:visible}' +
+      '#maxess-results-10 .mx-network-node{cursor:pointer}' +
+      '#maxess-results-10 .mx-pattern-copy{padding:10px 0}' +
+      '#maxess-results-10 .mx-pattern-copy h3{font-size:clamp(28px,3vw,46px);letter-spacing:-.04em;margin:10px 0}' +
+      '#maxess-results-10 .mx-pattern-copy p{font-size:16px;line-height:1.65;color:#555}' +
+      '#maxess-results-10 .mx-interpretation{background:#050507}' +
+      '#maxess-results-10 .mx-two{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:30px}' +
+      '#maxess-results-10 .mx-panel{padding:34px;border-radius:28px;border:1px solid rgba(255,255,255,.12);background:linear-gradient(145deg,rgba(255,255,255,.065),rgba(255,255,255,.018));min-height:290px}' +
+      '#maxess-results-10 .mx-panel h3{font-size:clamp(28px,3vw,46px);line-height:1;letter-spacing:-.04em;margin:12px 0}' +
+      '#maxess-results-10 .mx-panel p{color:rgba(255,255,255,.64);line-height:1.65}' +
+      '#maxess-results-10 .mx-label{font-size:9px;font-weight:900;letter-spacing:.15em;color:#cbb0f0;text-transform:uppercase}' +
+      '#maxess-results-10 .mx-lever-card{margin-top:0;border-color:rgba(166,108,255,.36);background:radial-gradient(circle at 90% 10%,rgba(166,108,255,.16),transparent 38%),linear-gradient(145deg,rgba(166,108,255,.08),rgba(255,255,255,.018))}' +
+      '#maxess-results-10 .mx-next{background:#fff;color:#101014}' +
+      '#maxess-results-10 .mx-next-card{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(320px,.9fr);gap:14px;margin-top:30px}' +
+      '#maxess-results-10 .mx-next-main,#maxess-results-10 .mx-next-action{padding:36px;border-radius:28px;border:1px solid rgba(0,0,0,.10);background:#faf9fc}' +
+      '#maxess-results-10 .mx-next-main h3,#maxess-results-10 .mx-next-action h3{font-size:clamp(28px,3vw,44px);letter-spacing:-.04em;margin:10px 0}' +
+      '#maxess-results-10 .mx-next-main p,#maxess-results-10 .mx-next-action p{color:#5b5760;line-height:1.65}' +
+      '#maxess-results-10 .mx-method{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-top:30px}' +
+      '#maxess-results-10 .mx-method button{min-height:88px;padding:13px 9px;border:1px solid rgba(0,0,0,.10);border-radius:16px;background:#fff;color:#111;text-align:left;cursor:pointer;transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease}' +
+      '#maxess-results-10 .mx-method button:hover,#maxess-results-10 .mx-method button:focus-visible{transform:translateY(-3px);box-shadow:0 12px 30px rgba(0,0,0,.10);border-color:var(--mc);outline:none}' +
+      '#maxess-results-10 .mx-method button strong{display:block;color:var(--mc);font-size:12px;letter-spacing:.1em}' +
+      '#maxess-results-10 .mx-method button span{display:block;margin-top:7px;font-size:10px;line-height:1.35;color:#666}' +
+      '#maxess-results-10 .mx-masters{background:#050507}' +
+      '#maxess-results-10 .mx-master-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;margin-top:30px}' +
+      '#maxess-results-10 .mx-master{position:relative;min-height:220px;padding:25px;border:1px solid rgba(255,255,255,.12);border-radius:25px;background:linear-gradient(145deg,rgba(255,255,255,.065),rgba(255,255,255,.018));transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease}' +
+      '#maxess-results-10 .mx-master:hover,#maxess-results-10 .mx-master:focus-within{transform:translateY(-5px);border-color:rgba(255,255,255,.30);box-shadow:0 28px 70px rgba(0,0,0,.30)}' +
+      '#maxess-results-10 .mx-master-icon{display:grid;place-items:center;width:54px;height:54px;border-radius:17px;background:linear-gradient(145deg,var(--mc),rgba(255,255,255,.08));border:1px solid rgba(255,255,255,.22);font-size:22px}' +
+      '#maxess-results-10 .mx-master small{display:block;margin-top:20px;color:rgba(255,255,255,.38);font-size:9px;font-weight:900;letter-spacing:.15em}' +
+      '#maxess-results-10 .mx-master h3{font-size:22px;margin:6px 0}' +
+      '#maxess-results-10 .mx-master p{margin:0;color:rgba(255,255,255,.60);font-size:12px;line-height:1.55}' +
+      '#maxess-results-10 .mx-solution{background:#fff;color:#101014}' +
+      '#maxess-results-10 .mx-video-slot{min-height:320px;border-radius:30px;border:1px solid rgba(0,0,0,.12);background:linear-gradient(135deg,#f7f5fa,#fff);display:grid;place-items:center;text-align:center;padding:40px}' +
+      '#maxess-results-10 .mx-video-slot.has-video{display:block}' +
+      '#maxess-results-10 .mx-video-slot video,#maxess-results-10 .mx-video-slot iframe{width:100%;max-height:620px;border:0;border-radius:22px;display:block}' +
+      '#maxess-results-10 .mx-video-placeholder{max-width:680px}' +
+      '#maxess-results-10 .mx-video-placeholder strong{display:block;font-size:clamp(26px,3vw,42px);letter-spacing:-.04em}' +
+      '#maxess-results-10 .mx-video-placeholder p{color:#666;line-height:1.6}' +
+      '#maxess-results-10 .mx-final{text-align:center;background:radial-gradient(circle at 50% 0,rgba(126,62,220,.25),transparent 50%),#050507}' +
+      '#maxess-results-10 .mx-final p{color:rgba(255,255,255,.62);max-width:700px;margin:0 auto 24px}' +
+      '@keyframes mxOrbBreathe{0%,100%{transform:scale(1);filter:saturate(1)}50%{transform:scale(1.018);filter:saturate(1.12)}}@keyframes mxSpin{to{transform:rotate(360deg)}}' +
+      '@media(max-width:1120px){#maxess-results-10 .mx-gauges{grid-template-columns:repeat(3,1fr)}#maxess-results-10 .mx-master-grid{grid-template-columns:repeat(2,1fr)}#maxess-results-10 .mx-method{grid-template-columns:repeat(4,1fr)}}' +
+      '@media(max-width:900px){#maxess-results-10 .mx-pattern-grid,#maxess-results-10 .mx-next-card{grid-template-columns:1fr}#maxess-results-10 .mx-network{min-height:430px}#maxess-results-10 .mx-gauges{grid-template-columns:repeat(2,1fr)}}' +
+      '@media(max-width:680px){#maxess-results-10 .mx-section{padding:50px 0}#maxess-results-10 .mx-orb{width:min(340px,84vw)}#maxess-results-10 .mx-gauges,#maxess-results-10 .mx-two,#maxess-results-10 .mx-master-grid{grid-template-columns:1fr}#maxess-results-10 .mx-method{grid-template-columns:1fr 1fr}#maxess-results-10 .mx-btn{width:100%}#maxess-results-10 .mx-hero-actions{flex-direction:column;max-width:420px;margin:auto}#maxess-results-10 .mx-next-main,#maxess-results-10 .mx-next-action{padding:27px}}' +
+      '@media(prefers-reduced-motion:reduce){#maxess-results-10 .mx-orb,#maxess-results-10 .mx-orb:before,#maxess-results-10 .mx-orb:after,#maxess-results-10 .mx-orb .mx-resonance,#maxess-results-10 .mx-btn,#maxess-results-10 .mx-gauge,#maxess-results-10 .mx-master,#maxess-results-10 .mx-method button{animation:none!important;transition:none!important}}' +
+      '@media print{#maxess-results-10{width:100%!important;margin:0!important;background:#fff!important;color:#111!important}#maxess-results-10 .mx-dark,#maxess-results-10 .mx-masters,#maxess-results-10 .mx-final{background:#fff!important;color:#111!important}#maxess-results-10 .mx-btn{display:none!important}#maxess-results-10 .mx-orb{animation:none!important;box-shadow:none!important;background:#eee!important}#maxess-results-10 .mx-score strong{color:#111!important;text-shadow:none!important}#maxess-results-10 .mx-gauge,#maxess-results-10 .mx-master,#maxess-results-10 .mx-panel,#maxess-results-10 .mx-next-main,#maxess-results-10 .mx-next-action,#maxess-results-10 .mx-video-slot{break-inside:avoid;box-shadow:none!important;background:#fff!important;color:#111!important}}' +
+      '</style>';
+  }
+
+  function radarSvg(dims, selected) {
+    var cx = 300, cy = 300, r = 205;
+    function point(i, radius) { var a = -Math.PI / 2 + i * Math.PI * 2 / 5; return [cx + Math.cos(a) * radius, cy + Math.sin(a) * radius]; }
+    function poly(points) { return points.map(function (p) { return p[0].toFixed(1) + ',' + p[1].toFixed(1); }).join(' '); }
+    var outer = dims.map(function (_, i) { return point(i, r); });
+    var data = dims.map(function (d, i) { return point(i, r * d.score / 100); });
+    var rings = [.25, .5, .75, 1].map(function (k) { return '<polygon points="' + poly(dims.map(function (_, i) { return point(i, r * k); })) + '" fill="none" stroke="#d8d1df" stroke-width="1"/>'; }).join('');
+    var lines = outer.map(function (p) { return '<line x1="' + cx + '" y1="' + cy + '" x2="' + p[0] + '" y2="' + p[1] + '" stroke="#ded9e4" stroke-width="1"/>'; }).join('');
+    var nodes = dims.map(function (d, i) { var p = data[i], active = i === selected; return '<g class="mx-network-node" data-node-index="' + i + '" opacity="' + (selected == null || active ? '1' : '.28') + '"><circle cx="' + p[0] + '" cy="' + p[1] + '" r="' + (active ? 10 : 7) + '" fill="' + DIMENSION_META[i].color + '" stroke="#fff" stroke-width="' + (active ? 3 : 2) + '"/><text x="' + (p[0] + (p[0] < cx ? -14 : 14)) + '" y="' + (p[1] + (p[1] < cy ? -12 : 18)) + '" text-anchor="' + (p[0] < cx ? 'end' : 'start') + '" fill="#514b58" font-size="11" font-weight="800">' + esc(d.name) + '</text></g>'; }).join('');
+    return '<svg viewBox="0 0 600 600" role="img" aria-label="Five-dimension MAXESS pattern relationship"><g>' + rings + lines + '<polygon points="' + poly(data) + '" fill="rgba(140,91,232,.20)" stroke="#8c5be8" stroke-width="4" stroke-linejoin="round"/>' + nodes + '<circle cx="300" cy="300" r="8" fill="#8c5be8"/></g></svg>';
+  }
+
+  function iconFor(i) { return ['✎','⌕','✦','◈','◎','↗','◇','</>','◌','▶','▤','∑','◫','◆','◉','✧','⟳','∞'][i] || '✦'; }
+
+  function build() {
+    var root = document.getElementById(ROOT_ID);
+    if (!root || root.dataset.aaaV2Built === '1') return;
+    var r = getResult();
+    if (!r.raw || !Array.isArray(r.raw.dimensions) || !r.raw.dimensions.length) return;
+    root.dataset.aaaV2Built = '1';
+    var sorted = r.dimensions.slice().sort(function (a, b) { return b.score - a.score; });
+    var strongest = sorted[0], opportunity = sorted[sorted.length - 1];
+    var strongestIndex = r.dimensions.indexOf(strongest), opportunityIndex = r.dimensions.indexOf(opportunity);
+    root.style.setProperty('--mx-hue', hueForScore(r.overall));
+
+    var cards = r.dimensions.map(function (d, i) { var m = meaning(d.name); return '<button class="mx-gauge" type="button" style="--v:' + d.score + ';--c:' + DIMENSION_META[i].color + '" data-dim="' + i + '" aria-label="' + esc(d.name + ' score ' + Math.round(d.score)) + '"><div class="mx-ring"><b>' + Math.round(d.score) + '</b></div><h3>' + esc(d.name) + '</h3><p>' + esc(d.description || m.insight) + '</p><div class="mx-selected-label">Select to explore</div></button>'; }).join('');
+    var masters = PATHWAYS.map(function (p, i) { var rec = p[0] === opportunity.name || (i === 0 && strongest.name === 'Communication'); return '<article class="mx-master" tabindex="0" style="--mc:' + DIMENSION_META[i % DIMENSION_META.length].color + '"><div class="mx-master-icon" aria-hidden="true">' + iconFor(i) + '</div><small>' + String(i + 1).padStart(2, '0') + (rec ? ' · RECOMMENDED' : '') + '</small><h3>' + esc(p[1]) + '</h3><p>' + esc(p[2]) + '</p></article>'; }).join('');
+    var method = METHOD.map(function (m, i) { return '<button type="button" style="--mc:' + m[2] + '" data-method="' + i + '"><strong>' + m[0] + '</strong><span>' + m[1] + '</span></button>'; }).join('');
+
+    root.innerHTML = styles() +
+      '<section class="mx-section mx-hero" aria-labelledby="mx-hero-title"><div class="mx-shell mx-hero-inner mx-center"><div class="mx-eyebrow">MAXESS AI MASTERY ASSESSMENT</div><div class="mx-orb" id="mx-orb" role="button" tabindex="0" aria-label="Your MAXESS AI Assessment Score. ' + Math.round(r.overall) + ' out of 100."><div class="mx-resonance"></div><div class="mx-score"><strong>' + Math.round(r.overall) + '</strong><span>YOUR MAXESS AI ASSESSMENT SCORE</span><em class="mx-band">' + band(r.overall) + '</em></div></div><h1 id="mx-hero-title" class="mx-hero-title">Your MAXESS AI Assessment Score</h1><p class="mx-hero-note">Your score is the headline. Your personal report is the story.</p><div class="mx-hero-actions"><a class="mx-btn mx-primary" href="#mx-report">See Your Results <span aria-hidden="true">↓</span></a><button class="mx-btn" id="mx-naya-hero" type="button">◉ Listen to Naya</button></div></div></section>' +
+      '<section class="mx-section mx-report" id="mx-report" aria-labelledby="mx-report-title"><div class="mx-shell"><div class="mx-report-card"><div class="mx-eyebrow">01 · YOUR REPORT</div><h2 id="mx-report-title">Listen to Your Results.</h2><p>Naya turns your assessment into a practical conversation about where you are, what your result reveals, and what you can do next.</p><button class="mx-btn mx-primary" type="button" data-naya-report>◉ Listen to Naya Explain Your Results</button></div></div></section>' +
+      '<section class="mx-section mx-dark" aria-labelledby="mx-dim-title"><div class="mx-shell"><div class="mx-eyebrow">02 · YOUR FIVE DIMENSIONS</div><h2 id="mx-dim-title">Your Five Dimensions.</h2><p class="mx-sub">Five capabilities reveal where you are already strong, where you are developing, and where your next improvement can create the most leverage.</p><div class="mx-gauges">' + cards + '</div></div></section>' +
+      '<section class="mx-section mx-pattern" aria-labelledby="mx-pattern-title"><div class="mx-shell mx-pattern-grid"><div class="mx-network" id="mx-network">' + radarSvg(r.dimensions, null) + '</div><div class="mx-pattern-copy"><div class="mx-eyebrow">03 · SEE THE PATTERN</div><h2 id="mx-pattern-title">See the Pattern.</h2><h3 id="mx-selected-name">How your strengths work together.</h3><p id="mx-selected-copy">Your score tells you where you are. The shape shows how your capabilities work together. Select any dimension to explore its role in the whole.</p></div></div></section>' +
+      '<section class="mx-section mx-interpretation" aria-labelledby="mx-meaning-title"><div class="mx-shell"><div class="mx-eyebrow">04 · WHAT IT MEANS</div><h2 id="mx-meaning-title">What Your Score Means.</h2><p class="mx-sub">The score is only the starting point. The value comes from understanding what it reveals and knowing what to do with it.</p><div class="mx-two"><article class="mx-panel"><div class="mx-label">YOUR STRENGTH</div><h3 id="mx-strength-name">' + esc(strongest.name) + '</h3><p id="mx-strength-copy">' + esc(meaning(strongest.name).insight) + ' This is a capability you can build from.</p></article><article class="mx-panel mx-lever-card"><div class="mx-label">YOUR BIGGEST LEVER</div><h3 id="mx-lever-name">' + esc(opportunity.name) + '</h3><p id="mx-lever-copy">' + esc(meaning(opportunity.name).lever) + '</p></article></div></div></section>' +
+      '<section class="mx-section mx-next" aria-labelledby="mx-next-title"><div class="mx-shell"><div class="mx-eyebrow">05 · YOUR NEXT MOVE</div><h2 id="mx-next-title">One Clear Next Move.</h2><p class="mx-sub">You should leave your report knowing exactly where to put your attention next.</p><div class="mx-next-card"><article class="mx-next-main"><div class="mx-label">FOCUS: ' + esc(opportunity.name) + '</div><h3 id="mx-next-head">' + esc(meaning(opportunity.name).next) + '</h3><p>Small, focused improvement is more useful than trying to improve everything at once.</p></article><article class="mx-next-action"><div class="mx-label">THE MAXESS METHOD</div><h3>Make improvement repeatable.</h3><p>Use the current Master Key to turn one good interaction into a better system.</p><div class="mx-method">' + method + '</div></article></div></div></section>' +
+      '<section class="mx-section mx-masters" aria-labelledby="mx-masters-title"><div class="mx-shell"><div class="mx-eyebrow">06 · YOUR NAYA MASTERS</div><h2 id="mx-masters-title">18 Naya Masters.</h2><p class="mx-sub">Eighteen specialist pathways designed to help you turn your existing strengths into exceptional results.</p><div class="mx-master-grid">' + masters + '</div></div></section>' +
+      '<section class="mx-section mx-solution" aria-labelledby="mx-solution-title"><div class="mx-shell"><div class="mx-eyebrow">07 · THE SOLUTION</div><h2 id="mx-solution-title">From Your Report to Your Next Level.</h2><p class="mx-sub">This is where insight becomes a system: use Naya, practice the right capability, improve deliberately, and keep what works.</p><div class="mx-video-slot" id="mx-video-slot"><div class="mx-video-placeholder"><strong>Your personalized report is the beginning.</strong><p>The existing MAXESS/NayaNET media experience remains part of the preserved foundation when supplied by the authoritative artifact. This presentation layer does not invent replacement media.</p></div></div><div style="text-align:center;margin-top:24px"><button class="mx-btn mx-primary" type="button" data-naya-solution>◉ Continue with Naya</button></div></div></section>' +
+      '<section class="mx-section mx-final" aria-labelledby="mx-final-title"><div class="mx-shell mx-center"><div class="mx-eyebrow">08 · TAKE ACTION</div><h2 id="mx-final-title">You know where you are.<br>Now build from here.</h2><p>Your result is not a label. It is a starting point.</p><div class="mx-hero-actions"><a class="mx-btn mx-primary" href="https://nayanet.xyz/" target="_blank" rel="noopener">Continue with Naya <span aria-hidden="true">→</span></a><a class="mx-btn" href="#mx-masters-title">Explore Your Naya Masters <span aria-hidden="true">↑</span></a></div></div></section>' +
+      '<div class="mx-fallback" id="mx-fallback" hidden>Preview data is being shown because no MAXESS_RESULT was supplied. Production results render from the assessment result contract.</div>';
+
+    bindInteractions(r, strongestIndex, opportunityIndex);
+  }
+
+  function setSelected(root, dims, index) {
+    root.querySelectorAll('.mx-gauge').forEach(function (el, i) { el.classList.toggle('is-selected', i === index); el.classList.toggle('is-dim', i !== index); });
+    var d = dims[index], m = meaning(d.name), network = root.querySelector('#mx-network');
+    if (network) network.innerHTML = radarSvg(dims, index);
+    var name = root.querySelector('#mx-selected-name'), copy = root.querySelector('#mx-selected-copy');
+    if (name) name.textContent = d.name + ' · ' + Math.round(d.score);
+    if (copy) copy.textContent = m.insight + ' ' + m.lever;
+    root.querySelectorAll('[data-node-index]').forEach(function (node) { node.addEventListener('click', function () { setSelected(root, dims, Number(node.getAttribute('data-node-index'))); }); });
+  }
+
+  function setNayaState(root, active) { root.classList.toggle('mx-naya-speaking', active); var orb = root.querySelector('#mx-orb'); if (orb) orb.classList.toggle('mx-speaking', active); }
+
+  function playNaya(root) {
+    setNayaState(root, true);
+    var existing = document.getElementById('maxessNayaPlayOriginal');
+    if (existing) { existing.click(); window.setTimeout(function () { setNayaState(root, false); }, 2500); return; }
+    if (typeof window.playMaxessNaya === 'function') { window.playMaxessNaya(); window.setTimeout(function () { setNayaState(root, false); }, 4500); return; }
+    if (typeof window.MAXESS_NAYA_PLAY === 'function') { window.MAXESS_NAYA_PLAY(); window.setTimeout(function () { setNayaState(root, false); }, 4500); return; }
+    var r = window.MAXESS_RESULT || {}, audio = r.nayaAudio || r.audioUrl || '';
+    if (audio) {
+      var player = root.querySelector('#mx-naya-audio');
+      if (!player) { player = document.createElement('audio'); player.id = 'mx-naya-audio'; player.controls = true; player.style.width = 'min(720px,100%)'; player.style.margin = '20px auto 0'; root.querySelector('.mx-report-card').appendChild(player); player.addEventListener('play', function () { setNayaState(root, true); }); player.addEventListener('pause', function () { setNayaState(root, false); }); player.addEventListener('ended', function () { setNayaState(root, false); }); }
+      player.src = audio; player.play().catch(function () { setNayaState(root, false); }); return;
+    }
+    window.open('https://nayanet.xyz/', '_blank', 'noopener');
+    window.setTimeout(function () { setNayaState(root, false); }, 1200);
+  }
+
+  function bindInteractions(r, strongestIndex, opportunityIndex) {
+    var root = document.getElementById(ROOT_ID); if (!root) return;
+    root.querySelectorAll('.mx-gauge').forEach(function (el) { el.addEventListener('click', function () { setSelected(root, r.dimensions, Number(el.getAttribute('data-dim'))); }); el.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setSelected(root, r.dimensions, Number(el.getAttribute('data-dim'))); } }); });
+    root.querySelectorAll('[data-method]').forEach(function (el) { el.addEventListener('click', function () { var m = METHOD[Number(el.getAttribute('data-method'))], next = root.querySelector('#mx-next-head'); if (next) next.textContent = m[0] + ': ' + m[1]; }); });
+    root.querySelectorAll('#mx-naya-hero,[data-naya-report],[data-naya-solution]').forEach(function (el) { el.addEventListener('click', function () { playNaya(root); }); });
+    ['maxess:naya:start', 'naya:speaking', 'MAXESS_NAYA_START'].forEach(function (eventName) { window.addEventListener(eventName, function () { setNayaState(root, true); }); });
+    ['maxess:naya:stop', 'naya:stopped', 'MAXESS_NAYA_STOP'].forEach(function (eventName) { window.addEventListener(eventName, function () { setNayaState(root, false); }); });
+    var orb = root.querySelector('#mx-orb'); if (orb) { orb.addEventListener('click', function () { root.querySelector('#mx-report').scrollIntoView({ behavior: 'smooth' }); }); orb.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); root.querySelector('#mx-report').scrollIntoView({ behavior: 'smooth' }); } }); }
+    setSelected(root, r.dimensions, strongestIndex);
+    root.dataset.strongestIndex = String(strongestIndex); root.dataset.opportunityIndex = String(opportunityIndex);
+  }
+
+  function boot() { var root = document.getElementById(ROOT_ID); if (!root) return; if (!window.MAXESS_RESULT) { window.setTimeout(boot, 60); return; } build(); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
 })();
