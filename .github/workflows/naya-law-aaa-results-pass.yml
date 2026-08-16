@@ -1,7 +1,7 @@
 name: Naya Law — AAA Results Implementation Pass
 
 # One-time controlled migration. It self-removes after the authoritative artifact is updated.
-# Trigger source is included because repository automation commits are treated as implementation events.
+# Trigger source is explicit so implementation commits can be observed and proven.
 
 on:
   push:
@@ -10,6 +10,7 @@ on:
     paths:
       - .github/workflows/naya-law-aaa-results-pass.yml
       - .github/naya_law_aaa_results_pass.py
+      - .naya/NAYA-LAW-AAA-TRIGGER
 
 permissions:
   contents: write
@@ -58,6 +59,6 @@ jobs:
           git config user.name 'Naya Law Automation'
           git config user.email 'actions@users.noreply.github.com'
           git add MAXESS-RESULTS-10-GROOVE.html
-          git rm -f .github/workflows/naya-law-aaa-results-pass.yml .github/naya_law_aaa_results_pass.py
+          git rm -f .github/workflows/naya-law-aaa-results-pass.yml .github/naya_law_aaa_results_pass.py .naya/NAYA-LAW-AAA-TRIGGER
           git commit -m 'Implement Naya Law AAA MAXESS Results pass [naya-law-aaa-complete]'
           git push
