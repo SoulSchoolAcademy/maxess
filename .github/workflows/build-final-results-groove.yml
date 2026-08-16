@@ -64,7 +64,7 @@ jobs:
           grep -q 'data-result-source' MAXESS-LIVING-SIGNATURE-10-10.js
           test "$(grep -c '<\\/body>' MAXESS-RESULTS-10-GROOVE.html)" -eq 1
           test "$(grep -c '<\\/html>' MAXESS-RESULTS-10-GROOVE.html)" -eq 1
-          ! grep -q 'window.MAXESS_RESULT.*querySelector' MAXESS-RESULTS-10-GROOVE.html
+          ! grep -q 'rows=\[\].slice.call(root.querySelectorAll' MAXESS-RESULTS-10-GROOVE.html
           echo 'MAXESS 10.10 integration contract PASS'
 
       - name: Commit authoritative artifacts
