@@ -20,8 +20,8 @@ def main() -> None:
 
     if not html.lstrip().lower().startswith('<!doctype html>'):
         raise SystemExit('BLOCKED — Results artifact is not a complete HTML document.')
-    if '</body>' not in html.lower():
-        raise SystemExit('BLOCKED — Results artifact has no body closing boundary.')
+    if html.lower().count('</body>') != 1:
+        raise SystemExit('BLOCKED — Results artifact must contain exactly one </body> boundary.')
     if 'id="maxess-results-10"' not in html:
         raise SystemExit('BLOCKED — Results root not found.')
     if 'window.MAXESS_RESULT' not in html:
@@ -37,12 +37,9 @@ def main() -> None:
     inline_engine = '\n<!-- ' + MARKER + ' -->\n<script id="maxess-whole-system-aaa-inline">\n' + engine + '\n</script>\n'
     inline_naya = '\n<!-- ' + NAYA_MARKER + ' -->\n<script id="maxess-naya-experience-inline">\n' + naya + '\n</script>\n'
 
-    body_close = re.search(r'</body>\s*</html>\s*$', html, flags=re.IGNORECASE)
-    if not body_close:
-        raise SystemExit('BLOCKED — Results artifact does not end with </body></html>.')
-
-    end = body_close.start()
-    html = html[:end] + inline_engine + inline_naya + html[end:]
+    html, count = re.subn(r'</body>', inline_engine + inline_naya + '</body>', html, count=1, flags=re.IGNORECASE)
+    if count != 1:
+        raise SystemExit('BLOCKED — Could not locate the Results body boundary for assembly.')
 
     if 'data-maxess-build="whole-system-aaa-1.0"' not in html:
         html = html.replace(
