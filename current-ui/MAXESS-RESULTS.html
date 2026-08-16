@@ -1,0 +1,2422 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="MAXESS personalized AI mastery results experience.">
+<title>MAXESS — Your AI Mastery Results</title>
+<style>
+:root{--ny-bg:#030305;--ny-purple:#9b4dff;--ny-purple-2:#c98aff;--ny-purple-deep:#42118d;--ny-white:#fff;--ny-muted:rgba(255,255,255,.72);--ny-soft:rgba(255,255,255,.56);--ny-line:rgba(255,255,255,.14);--ny-panel:linear-gradient(145deg,rgba(37,34,45,.94),rgba(7,7,10,.97));--ny-radius:clamp(18px,1.55vw,25px);--ny-ease:cubic-bezier(.2,.8,.2,1)}
+*{box-sizing:border-box}html{scroll-behavior:smooth;background:#030305}body{margin:0;min-width:100%;overflow-x:hidden;background:#030305;color:#fff;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}a{color:inherit}button{font:inherit}
+.mx-tower{position:relative;width:100%;isolation:isolate;overflow:hidden;background:linear-gradient(180deg,#130622 0%,#09050e 22%,#040407 58%,#020203 100%)}.mx-atmosphere{position:absolute;inset:0;pointer-events:none;z-index:-1;background:radial-gradient(ellipse 100% 30% at 50% 0,rgba(196,100,255,.46),transparent 72%),radial-gradient(ellipse 45% 30% at 5% 25%,rgba(118,35,255,.14),transparent 72%),radial-gradient(ellipse 45% 30% at 95% 42%,rgba(36,112,255,.1),transparent 72%)}.mx-grid{position:absolute;inset:0;pointer-events:none;opacity:.18;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:72px 72px;mask-image:linear-gradient(to bottom,#000,transparent 75%)}
+.mx-section{position:relative;width:100%;padding:clamp(72px,8vw,150px) clamp(18px,5vw,90px)}.mx-inner{width:min(1500px,100%);margin:auto}.mx-kicker{display:inline-flex;align-items:center;gap:9px;margin-bottom:18px;color:rgba(255,255,255,.68);font-size:clamp(10px,.78vw,13px);font-weight:800;letter-spacing:.18em;text-transform:uppercase}.mx-kicker i{width:8px;height:8px;border-radius:50%;background:radial-gradient(circle at 30% 20%,#fff,#c98aff 35%,#7a32e5 72%,#42118d);box-shadow:0 0 15px rgba(167,80,255,.8)}.mx-heading{margin:0;max-width:1120px;font-size:clamp(40px,6.4vw,100px);line-height:.94;letter-spacing:-.055em;font-weight:850;text-wrap:balance}.mx-heading span{background:linear-gradient(120deg,#fff 0%,#efd9ff 32%,#a95aff 66%,#fff 100%);-webkit-background-clip:text;background-clip:text;color:transparent}.mx-lead{max-width:780px;margin:24px 0 0;color:var(--ny-muted);font-size:clamp(16px,1.35vw,21px);line-height:1.55}.mx-card{position:relative;border:1px solid var(--ny-line);border-radius:var(--ny-radius);background:var(--ny-panel);box-shadow:0 20px 65px rgba(0,0,0,.52),0 0 55px rgba(130,53,244,.12);overflow:hidden}.mx-card:before{content:"";position:absolute;left:10%;right:10%;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.7),rgba(201,138,255,.65),transparent);opacity:.72}.mx-pad{padding:clamp(24px,3vw,46px)}
+.mx-button{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:12px;min-height:58px;padding:2px;border:0;border-radius:clamp(17px,1.35vw,22px);text-decoration:none;color:#fff;cursor:pointer;background:linear-gradient(135deg,#fff6ff,#e5baff 10%,#b565ff 24%,#7a32e5 44%,#42118d 64%,#8f42ee 83%,#e8c0ff);box-shadow:0 0 0 1px rgba(255,255,255,.28),0 12px 32px rgba(55,14,119,.48),0 0 55px rgba(150,69,255,.2);transition:transform 220ms var(--ny-ease),filter 220ms ease,box-shadow 220ms ease}.mx-button:after{content:"";position:absolute;inset:2px;border-radius:inherit;background:linear-gradient(145deg,#29222d,#151117 30%,#09080b 64%,#030305);z-index:0;box-shadow:inset 0 1px 2px rgba(255,255,255,.2),inset 0 -18px 30px rgba(0,0,0,.6)}.mx-button:hover{transform:translateY(-4px);filter:brightness(1.07)}.mx-button:active{transform:translateY(1px) scale(.995)}.mx-button:focus-visible{outline:3px solid rgba(222,190,255,.96);outline-offset:5px}.mx-button>*{position:relative;z-index:1}.mx-button-icon{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 30% 20%,#fff,#f4ddff 12%,#d28cff 29%,#9747ff 47%,#5518a7 68%,#22043f);border:1px solid rgba(241,217,255,.98);box-shadow:inset 0 2px 4px rgba(255,255,255,.9),inset 0 -8px 13px rgba(37,4,77,.72),0 0 19px rgba(167,80,255,.48),0 5px 14px rgba(0,0,0,.58);font-weight:900}.mx-button-copy{display:flex;flex-direction:column;text-align:left}.mx-button-title{font-weight:800;letter-spacing:-.02em}.mx-button-sub{font-size:11px;color:rgba(255,255,255,.7);margin-top:3px}
+.mx-hero{min-height:min(920px,96vh);display:grid;place-items:center;text-align:center;padding-top:clamp(80px,9vw,150px);padding-bottom:clamp(70px,8vw,125px)}.mx-hero .mx-inner{display:flex;flex-direction:column;align-items:center}.mx-hero-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin-top:34px}.mx-score-orbit{position:relative;width:min(460px,76vw);aspect-ratio:1;margin:34px auto;display:grid;place-items:center;filter:drop-shadow(0 35px 75px rgba(72,15,145,.45))}.mx-score-orbit:before,.mx-score-orbit:after{content:"";position:absolute;border-radius:50%;inset:2%;border:1px solid rgba(255,255,255,.16);box-shadow:0 0 40px rgba(155,77,255,.15) inset}.mx-score-orbit:after{inset:8%;border-color:rgba(201,138,255,.22);transform:rotate(24deg);border-left-color:transparent;border-bottom-color:transparent}.mx-score-ring{position:absolute;inset:9%;border-radius:50%;background:conic-gradient(#fff 0deg,#c98aff 80deg,#7a32e5 190deg,#42118d 270deg,rgba(255,255,255,.12) 270deg);padding:3px;animation:mx-spin 16s linear infinite}.mx-score-ring:before{content:"";display:block;width:100%;height:100%;border-radius:50%;background:radial-gradient(circle at 32% 22%,#362441,#09070d 55%,#020203);box-shadow:inset 0 0 70px rgba(141,58,238,.28)}.mx-score-core{position:relative;z-index:2;width:61%;aspect-ratio:1;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(circle at 34% 20%,rgba(255,255,255,.15),rgba(17,9,24,.96) 58%);border:1px solid rgba(255,255,255,.22);box-shadow:inset 0 2px 8px rgba(255,255,255,.15),0 0 55px rgba(151,70,255,.28)}.mx-score-number{font-size:clamp(74px,11vw,146px);line-height:.82;letter-spacing:-.075em;font-weight:900;background:linear-gradient(180deg,#fff,#e7c2ff 55%,#9b4dff);-webkit-background-clip:text;background-clip:text;color:transparent}.mx-score-label{margin-top:12px;color:rgba(255,255,255,.68);font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:800}.mx-band{display:inline-flex;align-items:center;gap:9px;padding:10px 16px;border:1px solid rgba(201,138,255,.32);border-radius:999px;background:rgba(125,42,226,.1);box-shadow:0 0 25px rgba(130,53,244,.1);font-size:12px;font-weight:800;letter-spacing:.11em;text-transform:uppercase}.mx-band:before{content:"";width:9px;height:9px;border-radius:50%;background:#63f2a4;box-shadow:0 0 15px rgba(99,242,164,.8)}
+.mx-meaning-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(18px,2vw,30px)}.mx-statement{font-size:clamp(28px,4vw,58px);line-height:1.02;letter-spacing:-.045em;font-weight:800;margin:0}.mx-statement em{font-style:normal;color:#c98aff}.mx-micro{color:rgba(255,255,255,.58);font-size:13px;line-height:1.6;margin-top:20px}.mx-signal{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:center;margin-top:26px}.mx-signal-icon{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;border:1px solid rgba(241,217,255,.8);background:radial-gradient(circle at 30% 20%,#fff,#d28cff 28%,#9747ff 52%,#22043f);box-shadow:inset 0 2px 4px rgba(255,255,255,.8),0 0 22px rgba(167,80,255,.35);font-weight:900}
+.mx-fingerprint-wrap{display:grid;grid-template-columns:minmax(300px,1fr) minmax(300px,.8fr);gap:clamp(24px,4vw,70px);align-items:center}.mx-radar{position:relative;width:min(650px,100%);margin:auto;aspect-ratio:1}.mx-radar svg{width:100%;height:100%;overflow:visible}.mx-radar-ring{fill:none;stroke:rgba(255,255,255,.1);stroke-width:1}.mx-radar-axis{stroke:rgba(255,255,255,.08);stroke-width:1}.mx-radar-shape{fill:url(#mxRadarFill);stroke:#d6a3ff;stroke-width:3;filter:drop-shadow(0 0 14px rgba(169,84,255,.55));transform-origin:center;animation:mx-breathe 4.5s ease-in-out infinite}.mx-radar-dot{fill:#fff;stroke:#a85cff;stroke-width:3;filter:drop-shadow(0 0 8px rgba(169,84,255,.8))}.mx-dimension-list{display:grid;gap:12px}.mx-dimension{display:grid;grid-template-columns:42px 1fr auto;gap:12px;align-items:center;padding:15px 16px;border:1px solid rgba(255,255,255,.1);border-radius:16px;background:linear-gradient(145deg,rgba(255,255,255,.07),rgba(255,255,255,.025));transition:transform 220ms var(--ny-ease),border-color 220ms ease}.mx-dimension:hover{transform:translateX(5px);border-color:rgba(201,138,255,.34)}.mx-dimension-icon{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;border:1px solid rgba(255,255,255,.18);background:linear-gradient(145deg,rgba(255,255,255,.14),rgba(99,33,180,.22));font-size:18px}.mx-dimension-name{font-weight:800;font-size:14px}.mx-dimension-note{margin-top:3px;color:rgba(255,255,255,.5);font-size:11px}.mx-dimension-score{font-weight:900;font-size:20px;color:#d6a3ff}
+.mx-status-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,1.5vw,22px)}.mx-status{padding:clamp(22px,2.5vw,36px);min-height:230px}.mx-status-top{display:flex;align-items:center;justify-content:space-between}.mx-status-title{font-size:12px;font-weight:850;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.56)}.mx-status-score{font-size:clamp(42px,4.8vw,72px);font-weight:900;letter-spacing:-.06em;margin:25px 0 10px}.mx-status-bar{height:8px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden}.mx-status-fill{height:100%;border-radius:inherit;background:linear-gradient(90deg,#42118d,#9b4dff,#e7c2ff);box-shadow:0 0 18px rgba(155,77,255,.5)}.mx-status-copy{color:rgba(255,255,255,.6);font-size:12px;line-height:1.55;margin-top:16px}.mx-green .mx-status-fill{background:linear-gradient(90deg,#168f5d,#63f2a4)}.mx-amber .mx-status-fill{background:linear-gradient(90deg,#b56b14,#ffd166)}.mx-red .mx-status-fill{background:linear-gradient(90deg,#8d2330,#ff6b7d)}
+.mx-leverage{display:grid;grid-template-columns:.75fr 1.25fr;overflow:hidden}.mx-leverage-meter{min-height:430px;display:grid;place-items:center;background:radial-gradient(circle at 50% 45%,rgba(155,77,255,.28),transparent 54%)}.mx-gauge{width:min(330px,70vw);aspect-ratio:1;border-radius:50%;position:relative;background:conic-gradient(from 220deg,#ff6675 0 25%,#ffd166 25% 55%,#63f2a4 55% 76%,rgba(255,255,255,.1) 76% 100%);padding:16px;box-shadow:0 0 55px rgba(155,77,255,.2)}.mx-gauge:before{content:"";position:absolute;inset:16px;border-radius:50%;background:radial-gradient(circle at 35% 25%,#33213d,#07060a 60%);box-shadow:inset 0 0 45px rgba(155,77,255,.22)}.mx-gauge-inner{position:absolute;inset:0;display:grid;place-items:center;text-align:center;z-index:2}.mx-gauge-value{font-size:70px;font-weight:900;letter-spacing:-.07em}.mx-gauge-caption{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.55)}.mx-leverage-copy{padding:clamp(30px,4vw,65px)}.mx-leverage-copy h3{font-size:clamp(30px,4vw,58px);line-height:1;letter-spacing:-.045em;margin:0}.mx-leverage-copy h3 span{color:#c98aff}.mx-leverage-copy p{max-width:650px;color:rgba(255,255,255,.62);line-height:1.65;margin:22px 0 0}.mx-bullet-list{display:grid;gap:12px;margin-top:26px}.mx-bullet{display:flex;gap:12px;align-items:flex-start;color:rgba(255,255,255,.75);font-size:13px;line-height:1.5}.mx-bullet i{flex:0 0 25px;width:25px;height:25px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 30% 20%,#fff,#c98aff 30%,#7a32e5 70%,#42118d);box-shadow:0 0 12px rgba(155,77,255,.3);font-style:normal;font-size:11px;font-weight:900}
+.mx-path{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;position:relative}.mx-path:before{content:"";position:absolute;top:49px;left:12%;right:12%;height:1px;background:linear-gradient(90deg,transparent,#9b4dff,rgba(255,255,255,.7),#9b4dff,transparent);opacity:.4}.mx-step{position:relative;z-index:1;padding:30px 24px}.mx-step-number{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 30% 20%,#fff,#c98aff 25%,#7a32e5 58%,#22043f);border:1px solid rgba(255,255,255,.8);box-shadow:0 0 25px rgba(155,77,255,.3);font-weight:900}.mx-step h3{margin:22px 0 8px;font-size:20px}.mx-step p{margin:0;color:rgba(255,255,255,.56);font-size:12px;line-height:1.6}
+.mx-naya-bridge{text-align:center;padding-top:clamp(85px,9vw,150px);padding-bottom:clamp(60px,7vw,110px)}.mx-naya-bridge .mx-card{padding:clamp(30px,5vw,70px);background:radial-gradient(ellipse at 50% 0,rgba(155,77,255,.24),transparent 55%),var(--ny-panel)}.mx-naya-orb{width:92px;height:92px;margin:0 auto 24px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 30% 20%,#fff,#d28cff 24%,#9747ff 48%,#22043f);border:1px solid rgba(241,217,255,.9);box-shadow:inset 0 2px 5px rgba(255,255,255,.9),0 0 38px rgba(167,80,255,.42);font-size:28px;font-weight:900}.mx-naya-bridge h2{margin:0;font-size:clamp(30px,4.5vw,62px);letter-spacing:-.045em;line-height:1}.mx-naya-bridge h2 span{color:#c98aff}.mx-naya-bridge p{max-width:720px;margin:18px auto 0;color:rgba(255,255,255,.62);line-height:1.65}.mx-ground-label{text-align:center;padding:0 clamp(18px,5vw,90px) 24px;color:rgba(255,255,255,.45);font-size:10px;font-weight:800;letter-spacing:.18em;text-transform:uppercase}.mx-ground-label span{color:#c98aff}.mx-error{display:none;max-width:760px;margin:24px auto 0;padding:16px 18px;border:1px solid rgba(255,107,125,.35);border-radius:14px;background:rgba(141,35,48,.12);color:#ffd9de;font-size:13px;line-height:1.5}
+@keyframes mx-spin{to{transform:rotate(360deg)}}@keyframes mx-breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.025)}}
+@media(max-width:900px){.mx-meaning-grid,.mx-fingerprint-wrap,.mx-leverage{grid-template-columns:1fr}.mx-status-grid{grid-template-columns:1fr}.mx-leverage-meter{min-height:350px}.mx-path{grid-template-columns:1fr}.mx-path:before{display:none}.mx-section{padding-left:20px;padding-right:20px}}@media(max-width:640px){.mx-hero{min-height:auto;padding-top:70px}.mx-score-orbit{width:min(350px,88vw)}.mx-hero-actions{width:100%;flex-direction:column}.mx-button{width:100%}.mx-dimension{grid-template-columns:38px 1fr auto}.mx-dimension-icon{width:38px;height:38px}.mx-leverage-copy{padding:28px 22px}.mx-gauge{width:min(290px,78vw)}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.mx-score-ring,.mx-radar-shape{animation:none}.mx-button,.mx-dimension{transition:none}.mx-button:hover,.mx-dimension:hover{transform:none}}
+
+/* results-experience-aaa-enhancements */
+/* MAXESS AAA Results Enhancements
+   Purpose: extend the NayaNET visual DNA upward without replacing the ground floor.
+*/
+.mx-reveal-enhancement{position:relative;z-index:3;min-height:clamp(640px,92vh,980px);display:grid;place-items:center;text-align:center;padding:clamp(96px,12vw,180px) clamp(20px,5vw,90px);overflow:hidden;background:radial-gradient(ellipse 75% 55% at 50% 35%,rgba(155,77,255,.2),transparent 68%),linear-gradient(180deg,rgba(20,7,32,.98),rgba(3,3,5,.92))}.mx-reveal-enhancement:before{content:"";position:absolute;inset:12% 10%;border:1px solid rgba(201,138,255,.12);border-radius:50%;box-shadow:0 0 120px rgba(155,77,255,.1) inset;animation:mx-reveal-breathe 7s ease-in-out infinite}.mx-reveal-enhancement:after{content:"";position:absolute;left:0;right:0;bottom:0;height:180px;background:linear-gradient(transparent,#030305);pointer-events:none}.mx-reveal-enhancement__inner{position:relative;z-index:2;max-width:1250px;margin:auto}.mx-reveal-enhancement__eyebrow{display:inline-flex;align-items:center;gap:10px;margin-bottom:22px;color:rgba(255,255,255,.64);font-size:11px;font-weight:850;letter-spacing:.22em;text-transform:uppercase}.mx-reveal-enhancement__eyebrow:before{content:"";width:9px;height:9px;border-radius:50%;background:radial-gradient(circle at 30% 20%,#fff,#c98aff 38%,#6f2bda);box-shadow:0 0 20px rgba(155,77,255,.85)}.mx-reveal-enhancement h1{margin:0;font-size:clamp(58px,10vw,168px);line-height:.84;letter-spacing:-.075em;font-weight:950;text-wrap:balance}.mx-reveal-enhancement h1 span{display:block;background:linear-gradient(180deg,#fff 0%,#f0d8ff 34%,#c98aff 66%,#7a32e5 100%);-webkit-background-clip:text;background-clip:text;color:transparent}.mx-reveal-enhancement__sub{max-width:760px;margin:30px auto 0;color:rgba(255,255,255,.68);font-size:clamp(17px,1.5vw,23px);line-height:1.55}.mx-reveal-enhancement__score{margin:36px auto 0;font-size:clamp(16px,1.4vw,21px);font-weight:800;color:#dcb8ff;letter-spacing:.08em;text-transform:uppercase}.mx-reveal-enhancement__scroll{margin-top:50px;color:rgba(255,255,255,.45);font-size:10px;letter-spacing:.2em;text-transform:uppercase}.mx-reveal-enhancement__scroll span{display:block;width:1px;height:44px;margin:14px auto 0;background:linear-gradient(#c98aff,transparent);animation:mx-scroll-pulse 2.2s ease-in-out infinite}
+.mx-next-move{position:relative;padding:clamp(72px,8vw,130px) clamp(18px,5vw,90px);background:linear-gradient(180deg,#030305,#09050e)}.mx-next-move__inner{width:min(1500px,100%);margin:auto}.mx-next-move__heading{max-width:950px;margin:0;font-size:clamp(38px,5vw,78px);line-height:.95;letter-spacing:-.055em}.mx-next-move__heading span{color:#c98aff}.mx-next-move__lead{max-width:720px;margin:20px 0 38px;color:rgba(255,255,255,.62);font-size:clamp(16px,1.2vw,19px);line-height:1.55}.mx-next-move__grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px}.mx-next-move__card{position:relative;min-height:240px;padding:22px;border:1px solid rgba(255,255,255,.12);border-radius:20px;background:linear-gradient(145deg,rgba(37,34,45,.94),rgba(7,7,10,.98));box-shadow:0 18px 55px rgba(0,0,0,.4);overflow:hidden}.mx-next-move__card:before{content:"";position:absolute;left:14%;right:14%;top:0;height:1px;background:linear-gradient(90deg,transparent,#c98aff,transparent);opacity:.7}.mx-next-move__number{font-size:10px;font-weight:850;letter-spacing:.18em;color:rgba(255,255,255,.42)}.mx-next-move__icon{width:48px;height:48px;margin:22px 0 20px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 30% 20%,#fff,#d28cff 28%,#9747ff 52%,#22043f);border:1px solid rgba(241,217,255,.9);box-shadow:inset 0 2px 4px rgba(255,255,255,.8),0 0 20px rgba(167,80,255,.32);font-weight:900}.mx-next-move__name{font-weight:850;font-size:15px}.mx-next-move__step{margin-top:9px;color:rgba(255,255,255,.68);font-size:13px;line-height:1.45}.mx-next-move__tag{display:inline-block;margin-top:17px;color:#c98aff;font-size:10px;font-weight:850;letter-spacing:.13em;text-transform:uppercase}
+.mx-naya-bridge{position:relative;display:flex;align-items:center;justify-content:space-between;gap:30px;margin:clamp(50px,7vw,100px) auto 0;padding:clamp(25px,3vw,38px);width:min(1200px,calc(100% - 36px));border:1px solid rgba(201,138,255,.28);border-radius:24px;background:linear-gradient(145deg,rgba(66,17,141,.22),rgba(8,7,11,.9));box-shadow:0 20px 70px rgba(0,0,0,.5),0 0 60px rgba(130,53,244,.12)}.mx-naya-bridge__copy strong{display:block;font-size:clamp(22px,2.2vw,34px);letter-spacing:-.035em}.mx-naya-bridge__copy span{display:block;margin-top:7px;color:rgba(255,255,255,.58);font-size:13px}.mx-naya-bridge .mx-button{flex:0 0 auto;min-width:250px}
+.mx-cinematic-reveal .mx-score-number{animation:mx-score-reveal 1.8s cubic-bezier(.16,1,.3,1) both}.mx-cinematic-reveal .mx-radar-shape{animation:mx-radar-reveal 2.1s cubic-bezier(.16,1,.3,1) both,mx-breathe 4.5s ease-in-out 2.1s infinite}.mx-cinematic-reveal .mx-radar-dot{animation:mx-dot-reveal 1.2s cubic-bezier(.16,1,.3,1) both}
+@keyframes mx-score-reveal{from{opacity:0;transform:scale(.72);filter:blur(12px)}to{opacity:1;transform:scale(1);filter:blur(0)}}@keyframes mx-radar-reveal{from{opacity:0;transform:scale(.25);filter:blur(12px)}to{opacity:1;transform:scale(1);filter:blur(0)}}@keyframes mx-dot-reveal{from{opacity:0;transform:scale(.2)}to{opacity:1;transform:scale(1)}}@keyframes mx-reveal-breathe{0%,100%{transform:scale(.98);opacity:.65}50%{transform:scale(1.02);opacity:1}}@keyframes mx-scroll-pulse{0%,100%{opacity:.25;transform:scaleY(.7)}50%{opacity:1;transform:scaleY(1)}}
+@media(max-width:1100px){.mx-next-move__grid{grid-template-columns:repeat(3,minmax(0,1fr))}.mx-naya-bridge{flex-direction:column;align-items:flex-start}.mx-naya-bridge .mx-button{width:100%}}@media(max-width:720px){.mx-reveal-enhancement{min-height:760px}.mx-reveal-enhancement h1{font-size:clamp(52px,18vw,92px)}.mx-next-move__grid{grid-template-columns:1fr 1fr}.mx-next-move__card{min-height:210px}.mx-naya-bridge{width:calc(100% - 24px)}}@media(max-width:480px){.mx-next-move__grid{grid-template-columns:1fr}.mx-next-move__card{min-height:auto}.mx-reveal-enhancement__sub{font-size:16px}.mx-naya-bridge .mx-button{min-width:0}}
+@media(prefers-reduced-motion:reduce){.mx-reveal-enhancement:before,.mx-reveal-enhancement__scroll span,.mx-cinematic-reveal .mx-score-number,.mx-cinematic-reveal .mx-radar-shape,.mx-cinematic-reveal .mx-radar-dot{animation:none!important}}
+
+</style>
+</head>
+<body>
+<main class="mx-tower" id="maxess-results">
+<div class="mx-atmosphere" aria-hidden="true"></div><div class="mx-grid" aria-hidden="true"></div>
+<section class="mx-section mx-hero" id="mx-reveal"><div class="mx-inner"><div class="mx-kicker"><i></i> MAXESS AI MASTERY RESULTS</div><h1 class="mx-heading">Your AI mastery has a <span>shape.</span></h1><p class="mx-lead">This isn't a grade. It's a map of how you currently turn artificial intelligence into useful human results.</p><div class="mx-score-orbit" aria-label="Overall MAXESS score"><div class="mx-score-ring" aria-hidden="true"></div><div class="mx-score-core"><div class="mx-score-number" id="mx-score">—</div><div class="mx-score-label">Overall mastery</div></div></div><div class="mx-band" id="mx-band">Awaiting your authoritative result</div><div class="mx-error" id="mx-error">The Results experience is intentionally refusing to invent a score. Connect the authoritative <code>MAXESS_RESULT</code> object and this page will render the real result.</div><div class="mx-hero-actions"><a class="mx-button" href="#mx-fingerprint"><span class="mx-button-icon">⌄</span><span class="mx-button-copy"><span class="mx-button-title">See my AI fingerprint</span><span class="mx-button-sub">Discover the pattern behind your score</span></span></a></div></div></section>
+<section class="mx-section" id="mx-meaning"><div class="mx-inner"><div class="mx-kicker"><i></i> WHAT IT MEANS</div><div class="mx-meaning-grid"><article class="mx-card mx-pad"><p class="mx-statement" id="mx-meaning-copy">Your result becomes useful when you understand <em>why</em> it looks the way it does.</p><p class="mx-micro" id="mx-meaning-detail">MAXESS translates measurement into practical understanding: what is already working, what is limiting you, and where improvement has the greatest leverage.</p><div class="mx-signal"><div class="mx-signal-icon">✦</div><div><strong id="mx-recognition-title">Recognition before recommendation.</strong><span id="mx-recognition-copy">See yourself first. Then decide what to do next.</span></div></div></article><article class="mx-card mx-pad"><div class="mx-kicker"><i></i> THE RULE</div><p class="mx-statement" style="font-size:clamp(26px,3.2vw,46px)">You don't need to improve <em>everything.</em></p><p class="mx-micro">The highest-value move is usually the capability that unlocks the most downstream improvement.</p></article></div></div></section>
+<section class="mx-section" id="mx-fingerprint"><div class="mx-inner"><div class="mx-kicker"><i></i> YOUR AI FINGERPRINT</div><div class="mx-fingerprint-wrap"><div class="mx-card mx-pad"><div class="mx-radar"><svg viewBox="0 0 600 600" role="img" aria-label="Five-dimension AI mastery fingerprint"><defs><radialGradient id="mxRadarFill"><stop offset="0" stop-color="#c98aff" stop-opacity=".48"/><stop offset="1" stop-color="#7a32e5" stop-opacity=".08"/></radialGradient></defs><g id="mx-radar-grid"></g><polygon id="mx-radar-shape" class="mx-radar-shape" points="300,70 519,229 435,486 165,486 81,229"/><g id="mx-radar-dots"></g></svg></div></div><div><h2 class="mx-heading" style="font-size:clamp(34px,5vw,72px)">This is <span>your pattern.</span></h2><p class="mx-lead">Five capabilities combine to create a distinctive way of working with AI. The shape matters more than any single number.</p><div class="mx-dimension-list" id="mx-dimensions" style="margin-top:28px"></div></div></div></div></section>
+<section class="mx-section" id="mx-status"><div class="mx-inner"><div class="mx-kicker"><i></i> READ THE SIGNALS</div><div class="mx-status-grid"><article class="mx-card mx-status mx-green"><div class="mx-status-top"><span class="mx-status-title">Advantage</span><span>●</span></div><div class="mx-status-score" id="mx-advantage-score">—</div><div class="mx-status-bar"><div class="mx-status-fill" id="mx-advantage-fill" style="width:0%"></div></div><p class="mx-status-copy" id="mx-advantage-copy">Your strongest capability is the asset we want to protect and amplify.</p></article><article class="mx-card mx-status mx-amber"><div class="mx-status-top"><span class="mx-status-title">Leverage</span><span>◐</span></div><div class="mx-status-score" id="mx-leverage-score">—</div><div class="mx-status-bar"><div class="mx-status-fill" id="mx-leverage-fill" style="width:0%"></div></div><p class="mx-status-copy" id="mx-leverage-copy">Your highest-value improvement opportunity.</p></article><article class="mx-card mx-status mx-red"><div class="mx-status-top"><span class="mx-status-title">Attention</span><span>!</span></div><div class="mx-status-score" id="mx-attention-score">—</div><div class="mx-status-bar"><div class="mx-status-fill" id="mx-attention-fill" style="width:0%"></div></div><p class="mx-status-copy" id="mx-attention-copy">A lower signal is not a failure. It tells us where support may matter most.</p></article></div></div></section>
+<section class="mx-section" id="mx-leverage"><div class="mx-inner"><div class="mx-card mx-leverage"><div class="mx-leverage-meter"><div class="mx-gauge" aria-label="Leverage opportunity gauge"><div class="mx-gauge-inner"><div><div class="mx-gauge-value" id="mx-gauge-value">—</div><div class="mx-gauge-caption">leverage opportunity</div></div></div></div></div><div class="mx-leverage-copy"><div class="mx-kicker"><i></i> YOUR LEVERAGE POINT</div><h3 id="mx-leverage-heading">Don't chase every gap.<br><span>Exploit the right one.</span></h3><p id="mx-leverage-description">The goal is not to become perfectly balanced. The goal is to identify the capability where focused improvement can create disproportionate value across the rest of your AI work.</p><div class="mx-bullet-list"><div class="mx-bullet"><i>✓</i><span>Protect what you're already naturally strong at.</span></div><div class="mx-bullet"><i>↗</i><span>Focus first on the capability with the highest strategic upside.</span></div><div class="mx-bullet"><i>✦</i><span>Turn insight into a practical next action with Naya.</span></div></div></div></div></div></section>
+<section class="mx-section" id="mx-path"><div class="mx-inner"><div class="mx-kicker"><i></i> YOUR MAXESS PATH</div><h2 class="mx-heading" style="font-size:clamp(38px,5.5vw,82px)">Understand. <span>Apply. Master.</span></h2><p class="mx-lead">Your result should not end with a score. It should become a sequence of useful next moves.</p><div class="mx-path" style="margin-top:34px"><article class="mx-card mx-step"><div class="mx-step-number">01</div><h3>Understand</h3><p>See your current pattern clearly. Know what each dimension means and why it matters.</p></article><article class="mx-card mx-step"><div class="mx-step-number">02</div><h3>Apply</h3><p>Practice the highest-leverage capability against real work, real decisions and real outcomes.</p></article><article class="mx-card mx-step"><div class="mx-step-number">03</div><h3>Master</h3><p>Iterate, evaluate and build repeatable habits until better AI use becomes second nature.</p></article></div></div></section>
+<section class="mx-section mx-naya-bridge" id="mx-naya"><div class="mx-inner"><article class="mx-card"><div class="mx-naya-orb">N</div><div class="mx-kicker" style="justify-content:center"><i></i> YOUR NEXT INTELLIGENCE LAYER</div><h2>You've seen the pattern.<br><span>Now let's use it.</span></h2><p>Naya turns your MAXESS result into guidance, practice and action. The next chapter belongs below.</p><a class="mx-button" href="#nayanet-ground-floor" style="margin-top:28px"><span class="mx-button-icon">→</span><span class="mx-button-copy"><span class="mx-button-title">Continue with Naya</span><span class="mx-button-sub">Enter the NayaNET experience</span></span></a></article></div></section>
+<div class="mx-ground-label" id="nayanet-ground-floor">THE GROUND FLOOR <span>• NAYANET</span></div><!-- NAYANET GROUND FLOOR: canonical source, inlined at build time -->
+<!-- ============================================================
+     NAYANET — ICONIC CINEMATIC CONVERSION PAGE
+     
+     DESIGN PRINCIPLE:
+     Premium technology + human potential + cinematic luxury.
+     
+     NO EXTERNAL LIBRARIES
+     RESPONSIVE
+     MOBILE-FIRST
+     ACCESSIBLE
+     REDUCED-MOTION FRIENDLY
+     ============================================================ -->
+
+<style>
+
+/* ============================================================
+   01 — GLOBAL FOUNDATION
+   ============================================================ */
+
+html,
+body {
+    width: 100% !important;
+    min-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow-x: hidden !important;
+    background: #030305 !important;
+    color: #fff !important;
+}
+
+html {
+    min-height: 100%;
+}
+
+body {
+    min-height: 100vh;
+    font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Helvetica,
+        Arial,
+        sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body > *,
+main,
+section,
+article,
+header,
+footer,
+div {
+    max-width: none;
+}
+
+/* ============================================================
+   02 — MASTER ATMOSPHERE
+   ============================================================ */
+
+body {
+    background:
+        radial-gradient(
+            ellipse 100% 48% at 50% -5%,
+            rgba(196, 100, 255, 0.48) 0%,
+            rgba(125, 42, 226, 0.32) 26%,
+            rgba(45, 14, 83, 0.28) 52%,
+            transparent 76%
+        ),
+        linear-gradient(
+            180deg,
+            #130622 0%,
+            #09050e 31%,
+            #040407 67%,
+            #020203 100%
+        ) !important;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: -10;
+
+    background:
+        radial-gradient(
+            ellipse 45% 30% at 8% 24%,
+            rgba(118, 35, 255, 0.13),
+            transparent 72%
+        ),
+        radial-gradient(
+            ellipse 45% 30% at 92% 24%,
+            rgba(36, 112, 255, 0.10),
+            transparent 72%
+        ),
+        radial-gradient(
+            ellipse 55% 35% at 50% 100%,
+            rgba(31, 180, 117, 0.07),
+            transparent 75%
+        );
+}
+
+/* ============================================================
+   03 — PAGE CONTAINER
+   ============================================================ */
+
+.ny-page-inner {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    isolation: isolate;
+}
+
+/* ============================================================
+   04 — CINEMATIC THEATER
+   ============================================================ */
+
+.ny-theater {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding:
+        clamp(12px, 1.7vw, 26px)
+        clamp(10px, 2.6vw, 44px)
+        clamp(9px, 1.4vw, 20px);
+
+    overflow: hidden;
+}
+
+.ny-theater::before {
+    content: "";
+    position: absolute;
+
+    width: min(1500px, 100%);
+    height: 90%;
+
+    top: 0;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    pointer-events: none;
+
+    background:
+        radial-gradient(
+            ellipse at center,
+            rgba(132, 50, 240, 0.20),
+            transparent 68%
+        );
+
+    filter: blur(12px);
+}
+
+/* ============================================================
+   05 — VIDEO FRAME OUTER JEWEL
+   ============================================================ */
+
+.ny-screen-frame {
+    position: relative;
+    z-index: 2;
+
+    width: min(1500px, 100%);
+
+    padding: clamp(2px, 0.18vw, 4px);
+
+    border-radius:
+        clamp(13px, 1.45vw, 23px);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,0.68),
+            rgba(194,135,255,0.68) 18%,
+            rgba(93,32,175,0.65) 48%,
+            rgba(255,255,255,0.25) 76%,
+            rgba(132,70,230,0.60)
+        );
+
+    box-shadow:
+        0 0 0 1px rgba(255,255,255,0.16),
+        0 15px 45px rgba(0,0,0,0.74),
+        0 25px 90px rgba(71,17,142,0.30),
+        0 0 90px rgba(130,53,244,0.18);
+}
+
+/* ============================================================
+   06 — VIDEO SCREEN
+   ============================================================ */
+
+.ny-screen {
+    position: relative;
+
+    width: 100%;
+    aspect-ratio: 16 / 9;
+
+    overflow: hidden;
+
+    background: #000;
+
+    border-radius:
+        clamp(11px, 1.25vw, 20px);
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.15),
+        inset 0 0 0 1px rgba(255,255,255,0.04);
+}
+
+.ny-screen::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    pointer-events: none;
+    z-index: 4;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(255,255,255,0.035),
+            transparent 18%,
+            transparent 82%,
+            rgba(0,0,0,0.15)
+        );
+}
+
+#ny-youtube-player {
+    position: absolute;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    border: 0 !important;
+    display: block;
+
+    background: #000;
+}
+
+/* ============================================================
+   07 — PRIMARY CTA AREA
+   ============================================================ */
+
+.ny-primary-zone {
+    position: relative;
+    z-index: 5;
+
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding:
+        clamp(9px, 1.15vw, 18px)
+        clamp(12px, 2.4vw, 36px)
+        clamp(8px, 1vw, 15px);
+}
+
+/* ============================================================
+   08 — UNIVERSAL BUTTON
+   ============================================================ */
+
+.ny-button {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    text-decoration: none !important;
+    color: #fff !important;
+
+    cursor: pointer;
+    isolation: isolate;
+
+    -webkit-tap-highlight-color: transparent;
+
+    transition:
+        transform 220ms cubic-bezier(.2,.8,.2,1),
+        filter 220ms ease,
+        box-shadow 220ms ease;
+}
+
+.ny-button:hover {
+    transform: translateY(-4px);
+    filter: brightness(1.07);
+}
+
+.ny-button:active {
+    transform: translateY(1px) scale(0.995);
+}
+
+.ny-button:focus-visible {
+    outline: 3px solid rgba(222,190,255,0.96);
+    outline-offset: 5px;
+}
+
+.ny-button-face {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    pointer-events: none;
+}
+
+.ny-button-content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: clamp(10px, 1vw, 18px);
+
+    padding:
+        clamp(12px, 1.3vw, 20px)
+        clamp(16px, 2vw, 30px);
+
+    text-align: center;
+}
+
+/* ============================================================
+   09 — PRIMARY CTA
+   ============================================================ */
+
+.ny-primary {
+    width: min(700px, 95vw);
+
+    min-height:
+        clamp(78px, 7.3vw, 112px);
+
+    padding: 2px;
+
+    border-radius:
+        clamp(18px, 1.55vw, 25px);
+
+    background:
+        linear-gradient(
+            135deg,
+            #fff6ff 0%,
+            #e5baff 9%,
+            #b565ff 23%,
+            #7a32e5 42%,
+            #42118d 63%,
+            #8f42ee 82%,
+            #e8c0ff 100%
+        );
+
+    box-shadow:
+        0 0 0 1px rgba(255,255,255,0.28),
+        0 8px 22px rgba(55,14,119,0.52),
+        0 20px 55px rgba(74,20,157,0.30),
+        0 0 65px rgba(150,69,255,0.28),
+        inset 0 1px 1px rgba(255,255,255,0.82);
+}
+
+.ny-primary .ny-button-face {
+    border-radius:
+        clamp(16px, 1.4vw, 23px);
+
+    background:
+        linear-gradient(
+            145deg,
+            #29222d 0%,
+            #151117 27%,
+            #09080b 58%,
+            #030305 100%
+        );
+
+    box-shadow:
+        inset 0 1px 2px rgba(255,255,255,0.20),
+        inset 0 -18px 30px rgba(0,0,0,0.60);
+}
+
+.ny-primary::before {
+    content: "";
+
+    position: absolute;
+    top: 2px;
+    left: 12%;
+
+    width: 76%;
+    height: 1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,0.75),
+            transparent
+        );
+
+    opacity: 0.78;
+    pointer-events: none;
+}
+
+/* ============================================================
+   10 — PRIMARY ICON
+   ============================================================ */
+
+.ny-primary .ny-icon {
+    position: relative;
+
+    width: clamp(43px, 4vw, 59px);
+    height: clamp(43px, 4vw, 59px);
+
+    flex: 0 0 auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle at 30% 20%,
+            #ffffff 0%,
+            #f4ddff 12%,
+            #d28cff 29%,
+            #9747ff 47%,
+            #5518a7 68%,
+            #22043f 100%
+        );
+
+    border: 1px solid rgba(241,217,255,0.98);
+
+    color: #fff !important;
+
+    font-size:
+        clamp(18px, 2vw, 27px);
+
+    font-weight: 900;
+
+    box-shadow:
+        inset 0 2px 4px rgba(255,255,255,0.90),
+        inset 0 -8px 13px rgba(37,4,77,0.72),
+        0 0 19px rgba(167,80,255,0.48),
+        0 5px 14px rgba(0,0,0,0.58);
+
+    text-shadow:
+        0 2px 4px rgba(0,0,0,0.75);
+}
+
+/* ============================================================
+   11 — BUTTON COPY
+   ============================================================ */
+
+.ny-copy {
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    min-width: 0;
+}
+
+.ny-title {
+    display: block;
+
+    color: #fff !important;
+
+    font-size:
+        clamp(15px, 1.42vw, 22px);
+
+    line-height: 1.08;
+
+    font-weight: 780;
+
+    letter-spacing: -0.025em;
+
+    text-shadow:
+        0 2px 9px rgba(0,0,0,0.95);
+}
+
+.ny-sub {
+    display: block;
+
+    margin-top: 6px;
+
+    color:
+        rgba(255,255,255,0.78) !important;
+
+    font-size:
+        clamp(10px, 0.84vw, 13px);
+
+    line-height: 1.15;
+
+    font-weight: 500;
+
+    letter-spacing: 0.025em;
+
+    text-shadow:
+        0 1px 6px rgba(0,0,0,0.95);
+}
+
+/* ============================================================
+   12 — SECONDARY GRID
+   ============================================================ */
+
+.ny-secondary-grid {
+    position: relative;
+    z-index: 5;
+
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap:
+        clamp(9px, 1.25vw, 19px);
+
+    padding:
+        clamp(7px, 0.9vw, 14px)
+        clamp(12px, 2.5vw, 42px)
+        clamp(10px, 1.3vw, 21px);
+}
+
+/* ============================================================
+   13 — SECONDARY BUTTON FOUNDATION
+   ============================================================ */
+
+.ny-secondary {
+    min-width: 0;
+
+    min-height:
+        clamp(94px, 8vw, 124px);
+
+    padding: 2px;
+
+    border-radius:
+        clamp(17px, 1.35vw, 22px);
+
+    background:
+        linear-gradient(
+            135deg,
+            #ffffff 0%,
+            #e7eaf0 11%,
+            #9da4ae 31%,
+            #ffffff 50%,
+            #c7ccd4 72%,
+            #6e757e 100%
+        );
+
+    box-shadow:
+        0 0 0 1px rgba(255,255,255,0.55),
+        0 10px 28px rgba(0,0,0,0.54),
+        0 0 28px rgba(255,255,255,0.06),
+        inset 0 1px 1px rgba(255,255,255,0.94);
+}
+
+.ny-secondary .ny-button-face {
+    border-radius:
+        clamp(15px, 1.18vw, 20px);
+
+    background:
+        linear-gradient(
+            145deg,
+            #25272d 0%,
+            #131519 29%,
+            #08090b 62%,
+            #020203 100%
+        );
+
+    box-shadow:
+        inset 0 1px 2px rgba(255,255,255,0.18),
+        inset 0 -14px 27px rgba(0,0,0,0.63);
+}
+
+.ny-secondary::before {
+    content: "";
+
+    position: absolute;
+    top: 2px;
+    left: 9%;
+
+    width: 82%;
+    height: 1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,0.55),
+            transparent
+        );
+
+    pointer-events: none;
+    z-index: 3;
+}
+
+/* ============================================================
+   14 — ICON PLATFORM
+   ============================================================ */
+
+.ny-secondary .ny-icon {
+    position: relative;
+
+    width: clamp(43px, 4vw, 58px);
+    height: clamp(43px, 4vw, 58px);
+
+    flex: 0 0 auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 17px;
+
+    color: #fff !important;
+
+    font-size:
+        clamp(18px, 1.8vw, 25px);
+
+    font-weight: 900;
+
+    border: 1px solid rgba(255,255,255,0.82);
+
+    box-shadow:
+        inset 0 2px 4px rgba(255,255,255,0.72),
+        inset 0 -7px 13px rgba(0,0,0,0.58),
+        0 5px 14px rgba(0,0,0,0.62);
+
+    text-shadow:
+        0 2px 4px rgba(0,0,0,0.82);
+
+    overflow: hidden;
+}
+
+.ny-secondary .ny-icon::after {
+    content: "";
+
+    position: absolute;
+    top: 5%;
+    left: 14%;
+
+    width: 45%;
+    height: 25%;
+
+    border-radius: 50%;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(255,255,255,0.72),
+            transparent
+        );
+
+    filter: blur(2px);
+
+    opacity: 0.7;
+}
+
+/* ============================================================
+   15 — FREE GIFTS ICON
+   MAGENTA / CROWN-ENERGY
+   ============================================================ */
+
+.ny-secondary:nth-child(1) .ny-icon {
+    border-radius: 15px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #ffdcfa 0%,
+            #ff77dc 18%,
+            #e62ab8 39%,
+            #9d1680 64%,
+            #470635 100%
+        );
+
+    box-shadow:
+        inset 0 2px 4px rgba(255,255,255,0.82),
+        inset 0 -8px 14px rgba(70,0,48,0.65),
+        0 0 24px rgba(241,42,190,0.34),
+        0 5px 14px rgba(0,0,0,0.62);
+}
+
+/* Gift box */
+
+.ny-gift-symbol {
+    position: relative;
+
+    width: 25px;
+    height: 21px;
+
+    border: 2px solid rgba(255,255,255,0.94);
+
+    border-radius: 3px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent 42%,
+            rgba(255,255,255,0.9) 43%,
+            rgba(255,255,255,0.9) 57%,
+            transparent 58%
+        );
+}
+
+.ny-gift-symbol::before {
+    content: "";
+
+    position: absolute;
+
+    left: -3px;
+    top: -6px;
+
+    width: 29px;
+    height: 8px;
+
+    border: 2px solid rgba(255,255,255,0.94);
+
+    border-radius: 3px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent 40%,
+            rgba(255,255,255,0.9) 41%,
+            rgba(255,255,255,0.9) 59%,
+            transparent 60%
+        );
+}
+
+.ny-gift-symbol::after {
+    content: "";
+
+    position: absolute;
+
+    width: 11px;
+    height: 7px;
+
+    left: 5px;
+    top: -11px;
+
+    border-top: 2px solid #fff;
+    border-radius: 50%;
+}
+
+/* ============================================================
+   16 — PROMAX PLAYER ICON
+   SAPPHIRE BLUE
+   ============================================================ */
+
+.ny-secondary:nth-child(2) .ny-icon {
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle at 30% 20%,
+            #d9f7ff 0%,
+            #6bdcff 20%,
+            #1689ed 43%,
+            #0755a9 68%,
+            #032550 100%
+        );
+
+    box-shadow:
+        inset 0 2px 4px rgba(255,255,255,0.85),
+        inset 0 -8px 15px rgba(0,22,64,0.70),
+        0 0 25px rgba(30,158,255,0.38),
+        0 5px 14px rgba(0,0,0,0.62);
+}
+
+/* Play jewel */
+
+.ny-play-symbol {
+    position: relative;
+
+    width: 0;
+    height: 0;
+
+    margin-left: 4px;
+
+    border-top:
+        10px solid transparent;
+
+    border-bottom:
+        10px solid transparent;
+
+    border-left:
+        16px solid #ffffff;
+
+    filter:
+        drop-shadow(
+            0 2px 3px rgba(0,0,0,0.55)
+        );
+}
+
+/* ============================================================
+   17 — AI MASTERCLASS ICON
+   INDIGO / ELECTRIC VIOLET
+   ============================================================ */
+
+.ny-secondary:nth-child(3) .ny-icon {
+    border-radius: 18px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #d8d7ff 0%,
+            #7674ff 18%,
+            #4b42d6 40%,
+            #29228e 68%,
+            #100b45 100%
+        );
+
+    box-shadow:
+        inset 0 2px 4px rgba(255,255,255,0.82),
+        inset 0 -8px 14px rgba(12,7,61,0.72),
+        0 0 26px rgba(91,81,255,0.38),
+        0 5px 14px rgba(0,0,0,0.62);
+}
+
+/* AI neural symbol */
+
+.ny-ai-symbol {
+    position: relative;
+
+    width: 30px;
+    height: 30px;
+}
+
+.ny-ai-symbol::before,
+.ny-ai-symbol::after {
+    content: "";
+
+    position: absolute;
+
+    inset: 4px;
+
+    border: 2px solid rgba(255,255,255,0.92);
+
+    border-radius: 50%;
+}
+
+.ny-ai-symbol::after {
+    inset: 9px;
+
+    border-radius: 6px;
+
+    transform: rotate(45deg);
+
+    border-color:
+        rgba(255,255,255,0.84);
+}
+
+.ny-ai-node {
+    position: absolute;
+
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+
+    background: #fff;
+
+    box-shadow:
+        0 0 7px rgba(255,255,255,0.95);
+}
+
+.ny-ai-node.n1 {
+    top: 0;
+    left: 12px;
+}
+
+.ny-ai-node.n2 {
+    top: 12px;
+    left: 0;
+}
+
+.ny-ai-node.n3 {
+    top: 12px;
+    right: 0;
+}
+
+.ny-ai-node.n4 {
+    bottom: 0;
+    left: 12px;
+}
+
+/* ============================================================
+   18 — TAKE YOUR POWER BACK ICON
+   EMERALD
+   ============================================================ */
+
+.ny-secondary:nth-child(4) .ny-icon {
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle at 30% 20%,
+            #dffff2 0%,
+            #63efb4 19%,
+            #19bd79 42%,
+            #08744a 68%,
+            #023624 100%
+        );
+
+    box-shadow:
+        inset 0 2px 4px rgba(255,255,255,0.88),
+        inset 0 -8px 15px rgba(0,48,29,0.70),
+        0 0 26px rgba(27,221,137,0.32),
+        0 5px 14px rgba(0,0,0,0.62);
+}
+
+/* Power crown / MAX symbol */
+
+.ny-power-symbol {
+    position: relative;
+
+    width: 29px;
+    height: 28px;
+
+    transform: rotate(45deg);
+}
+
+.ny-power-symbol::before {
+    content: "";
+
+    position: absolute;
+
+    inset: 3px;
+
+    border:
+        3px solid rgba(255,255,255,0.94);
+
+    border-radius: 7px;
+
+    box-shadow:
+        inset 0 0 5px rgba(255,255,255,0.32);
+}
+
+.ny-power-symbol::after {
+    content: "";
+
+    position: absolute;
+
+    width: 11px;
+    height: 11px;
+
+    left: 9px;
+    top: 9px;
+
+    background: #fff;
+
+    clip-path:
+        polygon(
+            50% 0%,
+            100% 100%,
+            0% 100%
+        );
+
+    transform: rotate(-45deg);
+}
+
+/* ============================================================
+   19 — INDIVIDUAL HOVER GLOW
+   ============================================================ */
+
+.ny-secondary:nth-child(1):hover {
+    box-shadow:
+        0 0 0 1px rgba(255,255,255,0.58),
+        0 12px 30px rgba(0,0,0,0.56),
+        0 0 35px rgba(235,36,185,0.22);
+}
+
+.ny-secondary:nth-child(2):hover {
+    box-shadow:
+        0 0 0 1px rgba(255,255,255,0.58),
+        0 12px 30px rgba(0,0,0,0.56),
+        0 0 35px rgba(30,160,255,0.22);
+}
+
+.ny-secondary:nth-child(3):hover {
+    box-shadow:
+        0 0 0 1px rgba(255,255,255,0.58),
+        0 12px 30px rgba(0,0,0,0.56),
+        0 0 35px rgba(88,76,255,0.24);
+}
+
+.ny-secondary:nth-child(4):hover {
+    box-shadow:
+        0 0 0 1px rgba(255,255,255,0.58),
+        0 12px 30px rgba(0,0,0,0.56),
+        0 0 35px rgba(25,220,130,0.22);
+}
+
+/* ============================================================
+   20 — MEMBERSHIP SECTION
+   ============================================================ */
+
+.ny-membership {
+    position: relative;
+    z-index: 5;
+
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding:
+        clamp(14px, 2.4vw, 38px)
+        clamp(12px, 3vw, 45px)
+        clamp(24px, 3.2vw, 48px);
+}
+
+/* ============================================================
+   21 — MEMBERSHIP PLAQUE
+   ============================================================ */
+
+.ny-membership-inner {
+    position: relative;
+
+    width: min(1120px, 100%);
+
+    padding:
+        clamp(28px, 3vw, 48px)
+        clamp(20px, 4vw, 62px);
+
+    text-align: center;
+
+    border-radius:
+        clamp(20px, 1.6vw, 27px);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,0.115),
+            rgba(255,255,255,0.045) 40%,
+            rgba(0,0,0,0.22) 100%
+        );
+
+    border:
+        1px solid rgba(255,255,255,0.18);
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.17),
+        inset 0 -25px 50px rgba(0,0,0,0.18),
+        0 18px 50px rgba(0,0,0,0.44),
+        0 0 50px rgba(112,45,220,0.13);
+
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+
+.ny-membership-inner::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 12%;
+
+    width: 76%;
+    height: 1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,0.56),
+            transparent
+        );
+}
+
+/* ============================================================
+   22 — MEMBERSHIP KICKER
+   ============================================================ */
+
+.ny-membership-kicker {
+    margin-bottom: 10px;
+
+    color:
+        rgba(255,255,255,0.72) !important;
+
+    font-size:
+        clamp(10px, 0.95vw, 15px);
+
+    line-height: 1.1;
+
+    font-weight: 800;
+
+    letter-spacing:
+        0.25em;
+
+    text-shadow:
+        0 0 16px rgba(165,82,255,0.34);
+}
+
+/* ============================================================
+   23 — MEMBERSHIP TITLE
+   ============================================================ */
+
+.ny-membership-title {
+    color: #fff !important;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size:
+        clamp(30px, 4vw, 55px);
+
+    line-height: 1.05;
+
+    font-weight: 700;
+
+    letter-spacing: -0.025em;
+
+    text-shadow:
+        0 3px 18px rgba(0,0,0,0.62);
+}
+
+/* ============================================================
+   24 — MEMBERSHIP DIVIDER
+   ============================================================ */
+
+.ny-membership-divider {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 13px;
+
+    width:
+        min(430px, 82%);
+
+    margin:
+        clamp(15px, 1.8vw, 23px)
+        auto;
+}
+
+.ny-membership-divider span {
+    flex: 1;
+
+    height: 1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(220,198,255,0.58),
+            transparent
+        );
+}
+
+.ny-membership-divider i {
+    color:
+        #ffffff;
+
+    font-size: 16px;
+
+    font-style: normal;
+
+    text-shadow:
+        0 0 15px rgba(160,82,255,0.90);
+}
+
+/* ============================================================
+   25 — MEMBERSHIP SUBTITLE
+   ============================================================ */
+
+.ny-membership-sub {
+    color:
+        rgba(255,255,255,0.91) !important;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size:
+        clamp(18px, 2vw, 28px);
+
+    line-height: 1.2;
+
+    font-style: italic;
+
+    text-shadow:
+        0 2px 10px rgba(0,0,0,0.50);
+}
+
+/* ============================================================
+   26 — MAX STATEMENT
+   ============================================================ */
+
+.ny-membership-max {
+    margin-top:
+        clamp(17px, 2vw, 28px);
+
+    color:
+        #fff !important;
+
+    font-size:
+        clamp(15px, 1.5vw, 23px);
+
+    line-height: 1.3;
+
+    font-weight: 800;
+
+    letter-spacing:
+        clamp(0.08em, 0.15vw, 0.16em);
+
+    text-shadow:
+        0 2px 10px rgba(0,0,0,0.82);
+}
+
+.ny-membership-max span {
+    color:
+        #ffffff !important;
+
+    text-shadow:
+        0 0 18px rgba(145,72,255,0.38);
+}
+
+/* ============================================================
+   27 — TABLET
+   ============================================================ */
+
+@media (max-width: 900px) {
+
+    .ny-secondary-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .ny-theater {
+        padding-left: 14px;
+        padding-right: 14px;
+    }
+
+}
+
+/* ============================================================
+   28 — MOBILE
+   ============================================================ */
+
+@media (max-width: 600px) {
+
+    .ny-theater {
+        padding:
+            9px
+            9px
+            7px;
+    }
+
+    .ny-screen-frame {
+        border-radius: 14px;
+    }
+
+    .ny-screen {
+        border-radius: 12px;
+    }
+
+    .ny-primary-zone {
+        padding:
+            7px
+            10px;
+    }
+
+    .ny-primary {
+        width: 100%;
+        min-height: 84px;
+        border-radius: 19px;
+    }
+
+    .ny-primary .ny-button-content {
+        gap: 10px;
+
+        padding:
+            10px
+            14px;
+    }
+
+    .ny-primary .ny-icon {
+        width: 45px;
+        height: 45px;
+
+        font-size: 18px;
+    }
+
+    .ny-primary .ny-title {
+        font-size: 17px;
+    }
+
+    .ny-primary .ny-sub {
+        font-size: 10px;
+    }
+
+    .ny-secondary-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 9px;
+
+        padding:
+            6px
+            10px
+            8px;
+    }
+
+    .ny-secondary {
+        min-height: 91px;
+        border-radius: 17px;
+    }
+
+    .ny-secondary .ny-button-content {
+        flex-direction: column;
+
+        gap: 5px;
+
+        padding:
+            8px
+            5px;
+    }
+
+    .ny-secondary .ny-icon {
+        width: 40px;
+        height: 40px;
+
+        font-size: 16px;
+    }
+
+    .ny-title {
+        font-size: 13px;
+    }
+
+    .ny-sub {
+        margin-top: 2px;
+        font-size: 9px;
+    }
+
+    .ny-membership {
+        padding:
+            10px
+            10px
+            22px;
+    }
+
+    .ny-membership-inner {
+        padding:
+            29px
+            18px
+            32px;
+
+        border-radius: 20px;
+    }
+
+    .ny-membership-kicker {
+        font-size: 10px;
+        letter-spacing: 0.18em;
+    }
+
+    .ny-membership-title {
+        font-size: 30px;
+    }
+
+    .ny-membership-sub {
+        font-size: 19px;
+    }
+
+    .ny-membership-max {
+        font-size: 14px;
+        line-height: 1.4;
+    }
+}
+
+/* ============================================================
+   29 — SMALL MOBILE
+   ============================================================ */
+
+@media (max-width: 380px) {
+
+    .ny-theater {
+        padding-left: 7px;
+        padding-right: 7px;
+    }
+
+    .ny-secondary-grid {
+        gap: 7px;
+
+        padding-left: 7px;
+        padding-right: 7px;
+    }
+
+    .ny-secondary {
+        min-height: 84px;
+    }
+
+    .ny-secondary .ny-icon {
+        width: 36px;
+        height: 36px;
+    }
+
+    .ny-secondary .ny-title {
+        font-size: 12px;
+    }
+
+    .ny-secondary .ny-sub {
+        display: none;
+    }
+
+    .ny-membership-inner {
+        padding:
+            25px
+            15px
+            29px;
+    }
+}
+
+/* ============================================================
+   30 — LANDSCAPE MOBILE
+   ============================================================ */
+
+@media (max-width: 900px) and (orientation: landscape) {
+
+    .ny-theater {
+        padding-top: 7px;
+        padding-bottom: 5px;
+    }
+
+    .ny-screen {
+        max-height: 58vh;
+    }
+
+    .ny-primary {
+        min-height: 68px;
+    }
+
+    .ny-secondary {
+        min-height: 70px;
+    }
+
+    .ny-secondary .ny-button-content {
+        flex-direction: row;
+    }
+
+    .ny-secondary .ny-icon {
+        width: 36px;
+        height: 36px;
+    }
+
+    .ny-membership {
+        padding-top: 8px;
+    }
+}
+
+/* ============================================================
+   31 — LARGE DESKTOP
+   ============================================================ */
+
+@media (min-width: 1600px) {
+
+    .ny-theater {
+        padding-left: 3vw;
+        padding-right: 3vw;
+    }
+
+    .ny-secondary-grid {
+        padding-left: 3vw;
+        padding-right: 3vw;
+    }
+}
+
+/* ============================================================
+   32 — REDUCED MOTION
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .ny-button {
+        transition: none !important;
+    }
+
+    .ny-button:hover,
+    .ny-button:active {
+        transform: none !important;
+    }
+}
+
+/* ============================================================
+   33 — EMBED / GROOVE SAFETY
+   ============================================================ */
+
+.ny-theater,
+.ny-primary-zone,
+.ny-secondary-grid,
+.ny-membership {
+    float: none !important;
+    clear: both !important;
+}
+
+</style>
+
+
+<div class="ny-page-inner">
+
+
+    <!-- ========================================================
+         CINEMATIC VIDEO
+         ======================================================== -->
+
+    <section
+        class="ny-theater"
+        aria-label="NayaNET cinematic introduction"
+    >
+
+        <div class="ny-screen-frame">
+
+            <div class="ny-screen">
+
+                <iframe
+                    id="ny-youtube-player"
+                    src="https://www.youtube-nocookie.com/embed/8tApdV0UpRs?rel=0&modestbranding=1&playsinline=1&enablejsapi=1&vq=hd1080"
+                    title="NayaNET — The Network of Human Potential and AI Mastery"
+                    allow="
+                        accelerometer;
+                        autoplay;
+                        clipboard-write;
+                        encrypted-media;
+                        gyroscope;
+                        picture-in-picture;
+                        web-share;
+                        fullscreen
+                    "
+                    allowfullscreen
+                    loading="eager"
+                    referrerpolicy="strict-origin-when-cross-origin"
+                ></iframe>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ========================================================
+         PRIMARY CTA
+         ======================================================== -->
+
+    <section
+        class="ny-primary-zone"
+        aria-label="Primary action"
+    >
+
+        <a
+            class="ny-button ny-primary"
+            href="https://takeyourpowerback.xyz/services"
+            aria-label="Start your free trial"
+        >
+
+            <span
+                class="ny-button-face"
+                aria-hidden="true"
+            ></span>
+
+            <span class="ny-button-content">
+
+                <span
+                    class="ny-icon"
+                    aria-hidden="true"
+                >
+                    ★
+                </span>
+
+                <span class="ny-copy">
+
+                    <span class="ny-title">
+                        Start Your Free Trial
+                    </span>
+
+                    <span class="ny-sub">
+                        Step Into AI Mastery + Human Empowerment
+                    </span>
+
+                </span>
+
+            </span>
+
+        </a>
+
+    </section>
+
+
+    <!-- ========================================================
+         DESTINATION PORTALS
+         ======================================================== -->
+
+    <nav
+        class="ny-secondary-grid"
+        aria-label="NayaNET destinations"
+    >
+
+
+        <!-- ====================================================
+             FREE GIFTS
+             ==================================================== -->
+
+        <a
+            class="ny-button ny-secondary"
+            href="https://d4caeb1f.sibforms.com/serve/MUIFAHZEqs40zTV64qB6TJ3trIfgjO-7ifv_cwA8Ua9BM_ZWkkGMHIqLouO50nmRIpU7PfCmTRRO4O0s0nGQfi7t6ToHyQzbMT7iUzmDHZtsD5tx6jc73HxU-foqyiPhBEP8x3cPoVDmowa6zho13-C2BMEL97y1KYyYPYlNelzoBgNwtrgGW5ieJ_v_i_eKEGWIvxw1NNUVnKpa"
+            aria-label="Free Gifts"
+        >
+
+            <span
+                class="ny-button-face"
+                aria-hidden="true"
+            ></span>
+
+            <span class="ny-button-content">
+
+                <span
+                    class="ny-icon"
+                    aria-hidden="true"
+                >
+                    <span class="ny-gift-symbol"></span>
+                </span>
+
+                <span class="ny-copy">
+
+                    <span class="ny-title">
+                        Free Gifts
+                    </span>
+
+                    <span class="ny-sub">
+                        Begin Here
+                    </span>
+
+                </span>
+
+            </span>
+
+        </a>
+
+
+        <!-- ====================================================
+             PROMAX PLAYER
+             ==================================================== -->
+
+        <a
+            class="ny-button ny-secondary"
+            href="https://promaxplayer.takeyourpowerback.xyz/"
+            aria-label="ProMax Player"
+        >
+
+            <span
+                class="ny-button-face"
+                aria-hidden="true"
+            ></span>
+
+            <span class="ny-button-content">
+
+                <span
+                    class="ny-icon"
+                    aria-hidden="true"
+                >
+                    <span class="ny-play-symbol"></span>
+                </span>
+
+                <span class="ny-copy">
+
+                    <span class="ny-title">
+                        ProMax Player
+                    </span>
+
+                    <span class="ny-sub">
+                        Experience
+                    </span>
+
+                </span>
+
+            </span>
+
+        </a>
+
+
+        <!-- ====================================================
+             AI MASTERCLASS
+             ==================================================== -->
+
+        <a
+            class="ny-button ny-secondary"
+            href="https://aimasterclass.takeyourpowerback.xyz/"
+            aria-label="AI Masterclass"
+        >
+
+            <span
+                class="ny-button-face"
+                aria-hidden="true"
+            ></span>
+
+            <span class="ny-button-content">
+
+                <span
+                    class="ny-icon"
+                    aria-hidden="true"
+                >
+
+                    <span class="ny-ai-symbol">
+
+                        <span class="ny-ai-node n1"></span>
+                        <span class="ny-ai-node n2"></span>
+                        <span class="ny-ai-node n3"></span>
+                        <span class="ny-ai-node n4"></span>
+
+                    </span>
+
+                </span>
+
+                <span class="ny-copy">
+
+                    <span class="ny-title">
+                        AI Masterclass
+                    </span>
+
+                    <span class="ny-sub">
+                        Master The Engine
+                    </span>
+
+                </span>
+
+            </span>
+
+        </a>
+
+
+        <!-- ====================================================
+             TAKE YOUR POWER BACK
+             ==================================================== -->
+
+        <a
+            class="ny-button ny-secondary"
+            href="https://takeyourpowerback.xyz/"
+            aria-label="Take Your Power Back"
+        >
+
+            <span
+                class="ny-button-face"
+                aria-hidden="true"
+            ></span>
+
+            <span class="ny-button-content">
+
+                <span
+                    class="ny-icon"
+                    aria-hidden="true"
+                >
+
+                    <span class="ny-power-symbol"></span>
+
+                </span>
+
+                <span class="ny-copy">
+
+                    <span class="ny-title">
+                        Take Your Power Back
+                    </span>
+
+                    <span class="ny-sub">
+                        Become Your Max
+                    </span>
+
+                </span>
+
+            </span>
+
+        </a>
+
+    </nav>
+
+
+    <!-- ========================================================
+         MEMBERSHIP / BRAND SEAL
+         ======================================================== -->
+
+    <section
+        class="ny-membership"
+        aria-label="NayaNET membership statement"
+    >
+
+        <div class="ny-membership-inner">
+
+            <div class="ny-membership-kicker">
+                ONE MEMBERSHIP
+            </div>
+
+            <div class="ny-membership-title">
+                Everything Included.
+            </div>
+
+            <div class="ny-membership-divider">
+
+                <span></span>
+
+                <i aria-hidden="true">
+                    ✦
+                </i>
+
+                <span></span>
+
+            </div>
+
+            <div class="ny-membership-sub">
+                Your next level starts here.
+            </div>
+
+            <div class="ny-membership-max">
+
+                <span>
+                    LEARN AI.
+                </span>
+
+                <span>
+                    BECOME YOUR MAX.
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+</div>
+<style>
+
+/* ============================================================
+   NAYANET — FINAL MEMBERSHIP SIGNATURE POLISH
+   Add at the END of the existing code
+   ============================================================ */
+
+.ny-membership {
+    position: relative;
+    z-index: 4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100% !important;
+    max-width: none !important;
+    padding:
+        clamp(18px, 2.8vw, 42px)
+        clamp(12px, 3vw, 46px)
+        clamp(28px, 4vw, 58px);
+    overflow: hidden;
+}
+
+.ny-membership::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: min(900px, 90vw);
+    height: 420px;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    background:
+        radial-gradient(
+            ellipse at 50% 42%,
+            rgba(184, 72, 255, 0.16) 0%,
+            rgba(105, 52, 220, 0.10) 28%,
+            rgba(38, 103, 255, 0.055) 46%,
+            transparent 72%
+        );
+    filter: blur(10px);
+}
+
+.ny-membership-inner {
+    position: relative;
+    width: min(1120px, 100%);
+    padding:
+        clamp(34px, 4.2vw, 64px)
+        clamp(22px, 5vw, 76px)
+        clamp(38px, 4.8vw, 70px);
+    text-align: center;
+    border-radius:
+        clamp(20px, 1.8vw, 30px);
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,0.105) 0%,
+            rgba(255,255,255,0.045) 24%,
+            rgba(80,38,122,0.065) 55%,
+            rgba(0,0,0,0.34) 100%
+        );
+    border: 1px solid rgba(255,255,255,0.20);
+    box-shadow:
+        0 0 0 1px rgba(153,78,255,0.10),
+        inset 0 1px 0 rgba(255,255,255,0.18),
+        inset 0 -30px 60px rgba(0,0,0,0.20),
+        0 18px 55px rgba(0,0,0,0.48),
+        0 0 70px rgba(117,46,224,0.12);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    overflow: hidden;
+    isolation: isolate;
+}
+
+.ny-membership-inner::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 8%;
+    width: 84%;
+    height: 1px;
+    background:
+        linear-gradient(
+            90deg,
+            transparent 0%,
+            rgba(255,255,255,0.18) 18%,
+            rgba(215,154,255,0.78) 38%,
+            rgba(255,255,255,0.92) 50%,
+            rgba(215,154,255,0.78) 62%,
+            rgba(255,255,255,0.18) 82%,
+            transparent 100%
+        );
+    box-shadow: 0 0 12px rgba(181,91,255,0.45);
+    pointer-events: none;
+}
+
+.ny-membership-inner::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: 65%;
+    height: 100%;
+    transform: translateX(-50%);
+    pointer-events: none;
+    background:
+        radial-gradient(
+            ellipse at 50% 0%,
+            rgba(218,76,255,0.12),
+            transparent 62%
+        );
+    z-index: -1;
+}
+
+
+/* ONE MEMBERSHIP */
+
+.ny-membership-kicker {
+    position: relative;
+    display: inline-block;
+    margin-bottom: clamp(12px, 1.4vw, 18px);
+    padding: 7px clamp(15px, 1.8vw, 23px);
+    color: #f0d9ff !important;
+    font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Helvetica,
+        Arial,
+        sans-serif;
+    font-size: clamp(13px, 1.05vw, 17px);
+    line-height: 1;
+    font-weight: 800;
+    letter-spacing: clamp(0.14em, 0.22vw, 0.24em);
+    text-shadow: 0 0 18px rgba(193,83,255,0.42);
+}
+
+.ny-membership-kicker::before,
+.ny-membership-kicker::after {
+    content: "◆";
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 5px;
+    color: #b66cff;
+    text-shadow: 0 0 9px rgba(182,108,255,0.9);
+}
+
+.ny-membership-kicker::before {
+    left: 0;
+}
+
+.ny-membership-kicker::after {
+    right: 0;
+}
+
+
+/* EVERYTHING INCLUDED */
+
+.ny-membership-title {
+    position: relative;
+    color: #ffffff !important;
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+    font-size: clamp(34px, 4.5vw, 62px);
+    line-height: 1.02;
+    font-weight: 700;
+    letter-spacing: -0.035em;
+    text-shadow:
+        0 3px 22px rgba(0,0,0,0.70),
+        0 0 32px rgba(255,255,255,0.045);
+}
+
+
+/* DIVIDER */
+
+.ny-membership-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    width: min(500px, 88%);
+    margin:
+        clamp(18px, 2.1vw, 27px)
+        auto
+        clamp(17px, 2vw, 25px);
+}
+
+.ny-membership-divider span {
+    flex: 1;
+    height: 1px;
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(205,163,255,0.62),
+            rgba(255,255,255,0.22)
+        );
+    box-shadow:
+        0 0 8px rgba(161,78,255,0.20);
+}
+
+.ny-membership-divider span:last-child {
+    background:
+        linear-gradient(
+            90deg,
+            rgba(255,255,255,0.22),
+            rgba(205,163,255,0.62),
+            transparent
+        );
+}
+
+
+/* CENTRAL PURPLE DIAMOND */
+
+.ny-membership-divider i {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 31px;
+    height: 31px;
+    flex: 0 0 31px;
+    color: #ffffff;
+    font-size: 11px;
+    font-style: normal;
+    transform: rotate(45deg);
+    border-radius: 7px;
+    background:
+        linear-gradient(
+            145deg,
+            #ffdfff 0%,
+            #ef9cff 18%,
+            #c346ff 38%,
+            #7d2be0 62%,
+            #3c117e 100%
+        );
+    border: 1px solid rgba(255,255,255,0.82);
+    box-shadow:
+        inset 1px 1px 3px rgba(255,255,255,0.75),
+        inset -3px -4px 8px rgba(42,5,78,0.50),
+        0 0 15px rgba(201,76,255,0.70),
+        0 0 32px rgba(128,47,226,0.30);
+}
+
+
+/* YOUR NEXT LEVEL STARTS HERE */
+
+.ny-membership-sub {
+    position: relative;
+    color: rgba(255,255,255,0.97) !important;
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+    font-size: clamp(20px, 2.35vw, 31px);
+    line-height: 1.2;
+    font-style: italic;
+    letter-spacing: 0.005em;
+    text-shadow:
+        0 2px 12px rgba(0,0,0,0.60);
+}
+
+.ny-membership-sub::before {
+    content: "“";
+    color: #b96aff;
+    font-size: 1.35em;
+    margin-right: 3px;
+    text-shadow:
+        0 0 14px rgba(188,92,255,0.50);
+}
+
+.ny-membership-sub::after {
+    content: "”";
+    color: #6c9dff;
+    font-size: 1.35em;
+    margin-left: 3px;
+    text-shadow:
+        0 0 14px rgba(84,132,255,0.42);
+}
+
+
+/* LEARN AI / BECOME YOUR MAX */
+
+.ny-membership-max {
+    position: relative;
+    margin-top: clamp(20px, 2.3vw, 31px);
+    color: #ffffff !important;
+    font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Helvetica,
+        Arial,
+        sans-serif;
+    font-size: clamp(16px, 1.65vw, 24px);
+    line-height: 1.35;
+    font-weight: 850;
+    letter-spacing: clamp(0.08em, 0.14vw, 0.15em);
+    text-shadow:
+        0 2px 12px rgba(0,0,0,0.80);
+}
+
+.ny-membership-max span {
+    display: inline-block;
+    margin-left: 7px;
+    color: #dca4ff !important;
+    text-shadow:
+        0 0 18px rgba(181,73,255,0.46),
+        0 2px 12px rgba(0,0,0,0.75);
+}
+
+
+/* FOUR-COLOR SIGNATURE */
+
+.ny-membership-max::after {
+    content: "";
+    display: block;
+    width: min(180px, 35vw);
+    height: 2px;
+    margin:
+        clamp(14px, 1.6vw, 20px)
+        auto
+        0;
+    border-radius: 999px;
+    background:
+        linear-gradient(
+            90deg,
+            #e14cff 0%,
+            #674cff 34%,
+            #48a8ff 66%,
+            #45d99a 100%
+        );
+    box-shadow:
+        0 0 12px rgba(150,82,255,0.32);
+    opacity: 0.72;
+}
+
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media (max-width: 600px) {
+
+    .ny-membership {
+        padding:
+            12px
+            10px
+            25px;
+    }
+
+    .ny-membership-inner {
+        padding:
+            31px
+            17px
+            34px;
+        border-radius: 21px;
+    }
+
+    .ny-membership-kicker {
+        margin-bottom: 14px;
+        font-size: 13px;
+        letter-spacing: 0.16em;
+        padding: 7px 14px;
+    }
+
+    .ny-membership-title {
+        font-size: clamp(31px, 9vw, 39px);
+        line-height: 1.02;
+    }
+
+    .ny-membership-divider {
+        width: 90%;
+        gap: 10px;
+        margin: 18px auto;
+    }
+
+    .ny-membership-divider i {
+        width: 28px;
+        height: 28px;
+        flex-basis: 28px;
+        border-radius: 6px;
+        font-size: 10px;
+    }
+
+    .ny-membership-sub {
+        font-size: clamp(19px, 5.5vw, 23px);
+        line-height: 1.25;
+    }
+
+    .ny-membership-max {
+        margin-top: 21px;
+        font-size: clamp(14px, 4vw, 17px);
+        line-height: 1.5;
+        letter-spacing: 0.08em;
+    }
+
+    .ny-membership-max span {
+        display: block;
+        margin: 3px 0 0;
+    }
+
+    .ny-membership-max::after {
+        width: 145px;
+        margin-top: 15px;
+    }
+}
+
+
+/* ============================================================
+   SMALL MOBILE
+   ============================================================ */
+
+@media (max-width: 380px) {
+
+    .ny-membership-inner {
+        padding:
+            27px
+            14px
+            30px;
+    }
+
+    .ny-membership-kicker {
+        font-size: 12px;
+        letter-spacing: 0.13em;
+    }
+
+    .ny-membership-title {
+        font-size: 29px;
+    }
+
+    .ny-membership-sub {
+        font-size: 18px;
+    }
+
+    .ny-membership-max {
+        font-size: 13px;
+    }
+}
+
+</style>
+
+</main>
+<script>
+(function(){
+const DIMENSIONS=[{name:'Writing & Communication',icon:'✎'},{name:'Research & Information',icon:'⌕'},{name:'Brainstorming & Ideas',icon:'✦'},{name:'Content Creation',icon:'◈'},{name:'Business & Strategy',icon:'◆'}];
+const $=id=>document.getElementById(id); const clamp=v=>Math.max(0,Math.min(100,Number(v)||0));
+function points(values){const cx=300,cy=300,r=230,n=values.length;return values.map((v,i)=>{const a=-Math.PI/2+i*2*Math.PI/n,rr=r*clamp(v)/100;return[cx+Math.cos(a)*rr,cy+Math.sin(a)*rr]})}
+function renderRadar(values){const grid=$('mx-radar-grid'),dots=$('mx-radar-dots');if(!grid||!dots)return;const cx=300,cy=300,r=230,n=5;let g='';[1,.75,.5,.25].forEach(scale=>{const pts=[];for(let i=0;i<n;i++){const a=-Math.PI/2+i*2*Math.PI/n;pts.push(`${cx+Math.cos(a)*r*scale},${cy+Math.sin(a)*r*scale}`)}g+=`<polygon class="mx-radar-ring" points="${pts.join(' ')}"/>`});for(let i=0;i<n;i++){const a=-Math.PI/2+i*2*Math.PI/n;g+=`<line class="mx-radar-axis" x1="${cx}" y1="${cy}" x2="${cx+Math.cos(a)*r}" y2="${cy+Math.sin(a)*r}"/>`}grid.innerHTML=g;const p=points(values);$('mx-radar-shape').setAttribute('points',p.map(x=>x.join(',')).join(' '));dots.innerHTML=p.map(x=>`<circle class="mx-radar-dot" cx="${x[0]}" cy="${x[1]}" r="7"/>`).join('')}
+function render(result){const score=clamp(result.overallScore??result.score??result.overall??0);$('mx-score').textContent=Math.round(score);$('mx-band').textContent=result.masteryBand||result.band||'MAXESS mastery profile';$('mx-error').style.display='none';const dims=Array.isArray(result.dimensions)?result.dimensions:[];const vals=dims.slice(0,5).map(d=>clamp(d.score));while(vals.length<5)vals.push(score);renderRadar(vals);const names=dims.slice(0,5).map((d,i)=>({name:d.name||DIMENSIONS[i].name,icon:d.icon||DIMENSIONS[i].icon,score:clamp(d.score),note:d.insight||d.description||'Capability signal'}));while(names.length<5){const i=names.length;names.push({name:DIMENSIONS[i].name,icon:DIMENSIONS[i].icon,score:score,note:'Awaiting detailed dimension data'})}$('mx-dimensions').innerHTML=names.map(d=>`<div class="mx-dimension"><div class="mx-dimension-icon">${d.icon}</div><div><div class="mx-dimension-name">${d.name}</div><div class="mx-dimension-note">${d.note}</div></div><div class="mx-dimension-score">${Math.round(d.score)}</div></div>`).join('');const sorted=[...names].sort((a,b)=>b.score-a.score),adv=sorted[0]||{score},lev=sorted[sorted.length-1]||{score},att=sorted.length>1?sorted[1]:lev;[['mx-advantage-score','mx-advantage-fill',adv.score],['mx-leverage-score','mx-leverage-fill',lev.score],['mx-attention-score','mx-attention-fill',att.score]].forEach(([a,b,v])=>{$(a).textContent=Math.round(v);$(b).style.width=v+'%'});$('mx-gauge-value').textContent=Math.round(100-lev.score);$('mx-leverage-heading').innerHTML=`Your leverage point is<br><span>${lev.name}</span>`;$('mx-leverage-description').textContent=lev.note||`Improving ${lev.name} is the clearest current opportunity to increase the value you get from AI.`;$('mx-advantage-copy').textContent=`${adv.name} is currently your strongest visible capability. Protect it and amplify it.`;$('mx-leverage-copy').textContent=`${lev.name} is the current growth opportunity. Improvement here may create the greatest downstream value.`;$('mx-attention-copy').textContent=`${att.name} is worth attention—not judgment. Use the signal to choose the right next practice.`}
+if(window.MAXESS_RESULT)render(window.MAXESS_RESULT);else $('mx-error').style.display='block';window.MAXESS_RENDER_RESULTS=render;
+
+})();
+</script>
+
+<!-- MAXESS AAA enhancement runtime -->
+<script>/* MAXESS AAA Results Enhancement Runtime
+   Emotional reveal + one clear next move per canonical AI dimension + Naya handoff.
+*/
+(function(){
+  'use strict';
+  const getResult=()=>window.MAXESS_RESULT||window.maxessResult||window.__MAXESS_RESULT||null;
+  const clamp=(n,min,max)=>Math.max(min,Math.min(max,n));
+  const scoreOf=(d)=>typeof d==='number'?d:typeof d?.score==='number'?d.score:0;
+  const canonical=['Direction','Communication','Evaluation','Iteration','Systems Thinking'];
+  const nameOf=(d,i)=>d?.name||d?.label||canonical[i]||`Dimension ${i+1}`;
+  const iconOf=(i)=>['◎','✦','◉','↻','◇'][i]||'•';
+  const nextStep=(name,score)=>{
+    const n=name.toLowerCase();
+    if(n.includes('direction')) return score>=75?'Turn your strongest goals into repeatable AI briefs with a clear outcome and decision standard.':'Before prompting, define the outcome, constraints, audience, and what a successful answer must accomplish.';
+    if(n.includes('communication')) return score>=75?'Turn your communication strength into reusable AI templates for writing, teaching, selling, and explaining.':'Practice giving AI audience, purpose, tone, examples, and a clear definition of “good” before asking it to create.';
+    if(n.includes('evaluation')) return score>=75?'Make scorecards part of every important AI workflow so quality improves before you ship.':'Before accepting an AI answer, define the criteria, inspect the evidence, and ask what is missing or weak.';
+    if(n.includes('iteration')) return score>=75?'Turn Create → Score → Improve → Repeat into your default AI working rhythm.':'Take one real AI output through at least two deliberate improvement passes instead of accepting version one.';
+    if(n.includes('systems')) return score>=75?'Package your best AI workflows into reusable systems that compound over time.':'Stop solving the same task twice: document one successful workflow and turn it into a reusable system.';
+    return score>=75?'Turn this strength into one repeatable system you can use every week.':'Choose one real task this week and deliberately practice this capability from start to finish.';
+  };
+  function mount(){
+    const tower=document.querySelector('.mx-tower');
+    if(!tower||tower.dataset.aaaEnhancements==='1') return;
+    tower.dataset.aaaEnhancements='1';
+    const result=getResult()||{};
+    const score=clamp(Number(result.score??result.overallScore??result.totalScore??0)||0,0,100);
+    const dims=Array.isArray(result.dimensions)?result.dimensions:(Array.isArray(result.scores)?result.scores:[]);
+    const dimensionData=dims.slice(0,5);
+    const reveal=document.createElement('section');
+    reveal.className='mx-reveal-enhancement mx-cinematic-reveal';
+    reveal.setAttribute('aria-labelledby','mx-reveal-title');
+    reveal.innerHTML=`<div class="mx-reveal-enhancement__inner"><div class="mx-reveal-enhancement__eyebrow">Your MAXESS revelation</div><h1 id="mx-reveal-title">This is how<br><span>you work with AI.</span></h1><div class="mx-reveal-enhancement__sub">Your assessment is more than a score. It is a picture of how you naturally think, create, judge, improve, and build with AI — and where one smart move can change your trajectory.</div><div class="mx-reveal-enhancement__score">Overall AI Mastery · <strong data-reveal-score>0</strong> / 100</div><div class="mx-reveal-enhancement__scroll">Your unique pattern is waiting below<span></span></div></div>`;
+    const firstSection=tower.querySelector('.mx-section');
+    if(firstSection) firstSection.before(reveal); else tower.prepend(reveal);
+    const scoreNode=reveal.querySelector('[data-reveal-score]');
+    const start=performance.now(),duration=1900;
+    const tick=(now)=>{const p=Math.min(1,(now-start)/duration);const eased=1-Math.pow(1-p,4);scoreNode.textContent=Math.round(score*eased);if(p<1)requestAnimationFrame(tick)};
+    requestAnimationFrame(tick);
+
+    const mountPoint=tower.querySelector('#nayanet-source-mount');
+    const next=document.createElement('section');
+    next.className='mx-next-move';
+    next.setAttribute('aria-labelledby','mx-next-move-title');
+    const cards=dimensionData.map((d,i)=>{const s=scoreOf(d);return `<article class="mx-next-move__card"><div class="mx-next-move__number">MOVE 0${i+1}</div><div class="mx-next-move__icon" aria-hidden="true">${iconOf(i)}</div><div class="mx-next-move__name">${nameOf(d,i)}</div><div class="mx-next-move__step">${nextStep(nameOf(d,i),s)}</div><div class="mx-next-move__tag">One clear next move</div></article>`}).join('');
+    next.innerHTML=`<div class="mx-next-move__inner"><div class="mx-kicker"><i></i> Your growth path</div><h2 id="mx-next-move-title" class="mx-next-move__heading">Don't wonder what to do next.<br><span>Here's your move.</span></h2><p class="mx-next-move__lead">You do not need to improve everything at once. Each dimension gives you one practical move. Start with the highest-leverage one, practice it on something real, and let the results teach you what comes next.</p><div class="mx-next-move__grid">${cards||'<article class="mx-next-move__card"><div class="mx-next-move__number">NEXT MOVE</div><div class="mx-next-move__icon">→</div><div class="mx-next-move__name">Start with one real task</div><div class="mx-next-move__step">Bring one meaningful task to Naya and use it as your first practice arena.</div><div class="mx-next-move__tag">One clear next move</div></article>'}</div><div class="mx-naya-bridge"><div class="mx-naya-bridge__copy"><strong>Your results don't end here.</strong><span>Naya can start with this profile instead of making you explain yourself all over again.</span></div><button class="mx-button" type="button" data-continue-naya><span class="mx-button-icon">→</span><span class="mx-button-copy"><span class="mx-button-title">Continue with Naya</span><span class="mx-button-sub">Carry my MAXESS profile forward</span></span></button></div></div>`;
+    if(mountPoint) mountPoint.before(next); else tower.appendChild(next);
+
+    const handoff=next.querySelector('[data-continue-naya]');
+    handoff.addEventListener('click',()=>{
+      const payload={source:'MAXESS',version:1,result,timestamp:new Date().toISOString()};
+      try{localStorage.setItem('MAXESS_NAYA_CONTEXT',JSON.stringify(payload));sessionStorage.setItem('MAXESS_NAYA_CONTEXT',JSON.stringify(payload));}catch(e){}
+      window.MAXESS_NAYA_CONTEXT=payload;
+      window.dispatchEvent(new CustomEvent('maxess:naya-context',{detail:payload}));
+      const target=document.querySelector('[data-naya-chat],#naya-chat,#naya')||mountPoint;
+      if(target) target.scrollIntoView({behavior:'smooth',block:'start'});
+      try{if(typeof window.openNaya==='function') window.openNaya(payload); else if(typeof window.startNayaChat==='function') window.startNayaChat(payload); else if(typeof window.Naya?.open==='function') window.Naya.open(payload);}catch(e){}
+      handoff.setAttribute('aria-label','MAXESS profile saved. Continue with Naya below.');
+      handoff.dataset.contextReady='1';
+    });
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',mount,{once:true}); else mount();
+})();
+</script>
+</body>
+</html>
