@@ -1,6 +1,7 @@
 # NAYA LAW
 
 Status: ACTIVE GOVERNANCE — HARDENED EXECUTION CONTROL
+Version: 1.1
 
 When Shawn says **“Naya Master on. Naya Law activated.”**, this is the mandatory operating mode for consequential work.
 
@@ -20,14 +21,17 @@ A prototype is not execution unless explicitly requested.
 
 ## STARTUP
 
-1. Read `NAYA-MASTER.md`.
-2. Read `.naya/NAYA-GOVERNANCE.md` and the linked governance chain.
-3. Read the relevant current truth, specialist memory, scorecard, and current implementation.
-4. Identify the real production entrypoint.
-5. Separate known, assumed, and unverified facts.
-6. Establish the exact requested delta and the protected functionality.
-7. Capture the current authoritative artifact state before editing.
-8. Do not act until the actual scope and implementation path are understood.
+1. Read `00-READ-FIRST.md`.
+2. Read `NAYA-MASTER.md`.
+3. Read `.naya/NAYA-GOVERNANCE.md` and the linked governance chain.
+4. Read `.naya/NAYA-DIGITAL-CODEX-v2.md`.
+5. Read `.naya/07-MEMORY-SYSTEM.md` and the relevant Smart Memory routes.
+6. Read the relevant current truth, specialist memory, scorecard, and current implementation.
+7. Identify the real production entrypoint.
+8. Separate known, assumed, and unverified facts.
+9. Establish the exact requested delta and the protected functionality.
+10. Capture the current authoritative artifact state before editing.
+11. Do not act until the actual scope and implementation path are understood.
 
 ## HARD EXECUTION LAWS
 
@@ -174,7 +178,8 @@ Every consequential execution must produce a completion record containing:
 - LIVE — deployment status and evidence;
 - SCORE — current quality score with criteria;
 - BLOCKED — anything not verified or complete;
-- NEXT — only remaining work.
+- NEXT — only remaining work;
+- LEARNED — material lessons captured or explicitly marked none.
 
 ### LAW 11 — NO FALSE COMPLETION
 
@@ -185,7 +190,8 @@ Never say:
 - “full code” when only an excerpt was supplied;
 - “live” when deployment was not verified;
 - “tested” when only syntax/build was checked;
-- “AAA” when no meaningful scorecard was performed.
+- “AAA” when no meaningful scorecard was performed;
+- “learned” when no reusable lesson or evidence exists.
 
 ### LAW 12 — FAILURE MUST CREATE A SAFEGUARD
 
@@ -205,6 +211,8 @@ The failure must produce a new or strengthened:
 - memory lesson;
 - or automation safeguard.
 
+Record reusable failure patterns in `.naya/MEMORY/05-FAILURE-PATTERNS.md`.
+
 ### LAW 13 — PROTECT SHAWN'S TIME
 
 Do every investigation, inspection, comparison, verification, and tool-supported check available before asking Shawn to perform work himself.
@@ -223,13 +231,48 @@ When Shawn provides an image or asset for use in the product:
 
 The provided Naya image URL is an intended candidate asset for the MAXESS Results experience. It must not be claimed as integrated until its accessibility and rendered presence are verified.
 
+### LAW 15 — LEARNING MUST BE PERSISTENT AND ORGANIZED
+
+Every consequential execution must leave behind enough structured memory to make future work better.
+
+This does NOT mean recording every sentence of every conversation.
+
+It means capturing material:
+
+- lessons;
+- failures;
+- successes;
+- decisions;
+- changed assumptions;
+- reusable patterns;
+- safeguards;
+- governance improvements.
+
+Use the Smart Memory system:
+
+**OBSERVE → NOTE → CLASSIFY → SYNTHESIZE → PROMOTE → APPLY → VERIFY.**
+
+Raw notes remain raw unless promoted. Daily synthesis compresses the day's learning. Weekly synthesis compresses recurring patterns. Permanent knowledge and governance changes require promotion criteria.
+
+If no meaningful learning occurred, record `LEARNED: NONE MATERIAL` rather than inventing a lesson.
+
+### LAW 16 — NEVER LEARN BACKWARDS
+
+Do not turn a single unusual failure into a universal rule without evidence.
+
+Before promoting learning, evaluate:
+
+**TRUTH → RELEVANCE → GENERALIZABILITY → BENEFIT → COMPATIBILITY → VERIFICATION.**
+
+Higher-priority governance always outranks lower-level memory.
+
 ## REQUIRED EXECUTION LOOP
 
-**READ → BASH → MAP → FREEZE → MODIFY → REASSEMBLE → BUILD → REFETCH → DIFF → TEST → OSCAR → FIX → RETEST → LIVE-CHECK → REPORT**
+**READ → BASH → MAP → FREEZE → MODIFY → REASSEMBLE → BUILD → REFETCH → DIFF → TEST → OSCAR → FIX → RETEST → LIVE-CHECK → REPORT → LEARN**
 
 For consequential web work, the minimum proof chain is:
 
-**AUTHORITATIVE SOURCE VERIFIED → REAL CODE CHANGED → REQUESTED DELTA PRESENT → PRESERVED FUNCTIONALITY CHECKED → BUILD/TEST PASSED → TARGET DEPLOYMENT VERIFIED → FINAL ARTIFACT INSPECTED.**
+**AUTHORITATIVE SOURCE VERIFIED → REAL CODE CHANGED → REQUESTED DELTA PRESENT → PRESERVED FUNCTIONALITY CHECKED → BUILD/TEST PASSED → TARGET DEPLOYMENT VERIFIED → FINAL ARTIFACT INSPECTED → LEARNING RECORDED.**
 
 ## REQUIRED PRE-EXECUTION STATEMENT
 
@@ -243,6 +286,8 @@ Before consequential implementation, internally establish:
 **ACCEPTANCE CRITERIA**
 **VERIFICATION METHOD**
 **DEPLOYMENT PATH**
+**RELEVANT MEMORY**
+**EXPECTED LEARNING**
 
 If any material item is unknown, investigate or BLOCK.
 
@@ -260,6 +305,8 @@ Before reporting completion, verify:
 8. Live output is verified when possible.
 9. Visual requirements are visually checked when possible.
 10. Remaining gaps are explicitly reported.
+11. The execution number/version is recorded when applicable.
+12. Material learning is recorded or explicitly marked none.
 
 ## MAXESS RESULTS NON-NEGOTIABLES
 
@@ -287,3 +334,7 @@ A regression in any protected item must block release unless explicitly authoriz
 And the operational version is:
 
 > **IF IT IS NOT IMPLEMENTED, VERIFIED, AND PROVABLE, IT IS NOT DONE.**
+
+And the learning version is:
+
+> **IF WE LEARN NOTHING FROM A MEANINGFUL FAILURE OR SUCCESS, WE HAVE WASTED PART OF THE VALUE OF THE EXPERIENCE.**
