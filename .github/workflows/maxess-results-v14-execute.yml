@@ -1,0 +1,64 @@
+name: MAXESS Results V14 — Master Naya Execution
+
+on:
+  push:
+    branches: [maxess-results-v14-master-execution]
+    paths:
+      - 'tools/execute_maxess_results_v14.py'
+      - 'MAXESS-RESULTS-10-GROOVE.html'
+      - '.github/workflows/maxess-results-v14-execute.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  execute:
+    if: "!contains(github.event.head_commit.message, '[v14-executed]')"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact V14 branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Naya Law source lock and baseline gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'window.MAXESS_RESULT' MAXESS-RESULTS-10-GROOVE.html
+          test "$(wc -c < MAXESS-RESULTS-10-GROOVE.html)" -gt 250000
+          grep -q 'Version: 2.0' .naya/NAYA-LAW.md
+          grep -q 'MAXESS-RESULTS-10-GROOVE.html' .naya/MAXESS-RESULTS-MASTER-INSTRUCTION-SET.md
+      - name: Execute V14
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m py_compile tools/execute_maxess_results_v14.py
+          python3 tools/execute_maxess_results_v14.py
+      - name: Structural proof and zero-regression gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q 'MAXESS_RESULTS_V14_EXECUTED' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'maxess-results-v14-css' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'maxess-results-v14-js' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'YOUR AI SCORE' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'v14-naya' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'v14-dim-grid' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'v14-pattern-map' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'v14-next-grid' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'v14-masters-grid' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'Print / Save PDF' MAXESS-RESULTS-10-GROOVE.html
+          if grep -q 'resonance: 10.10' MAXESS-RESULTS-10-GROOVE.html; then echo 'BLOCKED — FORBIDDEN FALLBACK DATA'; exit 1; fi
+          if grep -q 'signature: "LIVING"' MAXESS-RESULTS-10-GROOVE.html; then echo 'BLOCKED — FORBIDDEN FALLBACK DATA'; exit 1; fi
+          test "$(wc -c < MAXESS-RESULTS-10-GROOVE.html)" -gt 300000
+      - name: Commit V14 executed artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'Naya Master'
+          git config user.email 'naya-master@users.noreply.github.com'
+          git add MAXESS-RESULTS-10-GROOVE.html
+          if git diff --cached --quiet; then echo 'BLOCKED — ZERO-CHANGE EXECUTION'; exit 1; fi
+          git commit -m 'feat(results): execute V14 Master Naya upgrade [v14-executed]'
+          git push origin HEAD:maxess-results-v14-master-execution
