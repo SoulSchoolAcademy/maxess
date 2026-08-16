@@ -1,0 +1,36 @@
+name: MAXESS Results — Verify Naya Interaction Wiring
+
+on:
+  push:
+    branches: [maxess-results-interaction-fix]
+    paths:
+      - 'results-interaction-fix.trigger'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Wire Results actions to existing Naya system
+        shell: bash
+        run: |
+          set -euo pipefail
+          sed -i "s/document.getElementById('mx-naya-listen')/document.getElementById('maxessNayaPlay')/g" MAXESS-RESULTS-EXPERIENCE.js
+          sed -i 's#https://takeyourpowerback.xyz/services#https://nayanet.xyz/#g' MAXESS-RESULTS-EXPERIENCE.js
+          node --check MAXESS-RESULTS-EXPERIENCE.js
+          grep -q "maxessNayaPlay" MAXESS-RESULTS-EXPERIENCE.js
+          grep -q "https://nayanet.xyz/" MAXESS-RESULTS-EXPERIENCE.js
+      - name: Commit and remove temporary fix workflow
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'Naya'
+          git config user.email 'naya@users.noreply.github.com'
+          rm -f .github/workflows/fix-results-interactions.yml results-interaction-fix.trigger
+          git add -- MAXESS-RESULTS-EXPERIENCE.js .github/workflows/fix-results-interactions.yml results-interaction-fix.trigger
+          git commit -m 'Wire Results Naya action to existing audio experience'
+          git push origin HEAD:maxess-results-interaction-fix
