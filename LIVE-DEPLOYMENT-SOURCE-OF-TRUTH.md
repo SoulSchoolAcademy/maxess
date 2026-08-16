@@ -1,45 +1,54 @@
 # LIVE RESULTS DEPLOYMENT — SOURCE OF TRUTH
 
-## Naya Law finding — 2026-08-16
+## MAXESS V13 execution — 2026-08-16
 
-The authoritative MAXESS Results artifacts in this repository are now built and verified on `main` with the Naya Law AAA pass.
+The authoritative MAXESS Results artifact on `main` contains the V13 Results implementation and the V13 execution patch.
 
-However, `https://results.nayanet.xyz/` is currently serving a materially different Results page than `MAXESS-RESULTS-10-GROOVE.html` on `main`.
+### V13 execution scope
 
-### Evidence
+- Score-first hero hierarchy.
+- `YOUR AI SCORE` as the primary hero message.
+- Score-reactive Orb/color system.
+- Naya introduced as the user's report guide rather than an advertisement.
+- Naya profile imagery integrated into report moments.
+- Personal-report chapter hierarchy.
+- Five-dimension visual treatment and score-driven presentation.
+- Pattern/relationship storytelling.
+- Strengths, Biggest Lever, and Next Move progression.
+- Naya Masters presented as specialist pathways.
+- Commercial/conversion material deferred until after the personal report.
+- Print / Save PDF control and print-safe black-on-white report treatment.
+- Responsive and reduced-motion safeguards.
+- `window.MAXESS_RESULT` remains authoritative.
 
-The public URL currently renders a page beginning with:
+### Execution artifact
 
-- `MAXESS AI MASTERY RESULTS`
-- `Your MAXESS Result`
-- `Understand your AI. Then master it.`
-- `01 / THE MEANING`
-- `02 / YOUR CAPABILITY SIGNATURE`
-- `03 / THE TWO THINGS THAT MATTER MOST`
-- `06 / NAYA SEES YOUR PATTERN`
+`MAXESS-LIVING-SIGNATURE-10-PATCH.js` is now the V13 execution patch and was committed to `main`.
 
-The current GitHub master artifact contains the Naya Law AAA pass marker and the newer Results implementation.
+`FINAL_RELEASE_TRIGGER.txt` is now marked `MAXESS_V13_RESULTS_RELEASE`.
 
-### Consequence
+### Live verification boundary
 
-GitHub execution is succeeding, but the public URL is not consuming the same artifact. Therefore:
+The public URL `https://results.nayanet.xyz/` has historically served a materially different Groove-hosted Results artifact from the GitHub master artifact. Therefore GitHub changes must not be described as live until the public URL is opened and visibly matches the authoritative artifact.
 
-**LIVE-VERIFIED is NOT TRUE until the Groove/public deployment source is connected to the authoritative GitHub artifact or otherwise updated with the same artifact.**
+### Required live gate
 
-### Permanent law
+After Groove consumes the V13 artifact, verify the public URL for:
 
-Never declare a MAXESS Results visual change complete based on GitHub/CI alone. The public URL must be opened and compared against the authoritative artifact.
+1. `YOUR AI SCORE` at the top.
+2. Score Orb immediately visible and dominant.
+3. Score-reactive Orb colors.
+4. Naya introduction immediately after the score.
+5. Personal report sequence.
+6. Five dimensions.
+7. Pattern / interpretation.
+8. Strengths.
+9. Biggest Lever.
+10. Next Move.
+11. 18 Naya Masters.
+12. Existing video / solution architecture preserved.
+13. Commercial material appears after the report story.
+14. Print / Save PDF produces readable black-on-white output.
+15. `MAXESS_RESULT` remains authoritative.
 
-### Required next action
-
-Identify the actual deployment owner/source for `results.nayanet.xyz` (currently appears to be Groove-hosted), connect that source to the authoritative Results artifact, publish it, then re-open the public URL and verify:
-
-1. Full-width widescreen layout.
-2. Centered score Orb.
-3. Score-reactive color system.
-4. Five circular dimension gauges.
-5. Naya report hero.
-6. Print / Save PDF control.
-7. Existing video/conversion architecture preserved.
-8. `MAXESS_RESULT` remains authoritative.
-9. No regression to the old public page.
+**LIVE-VERIFIED is true only after the public URL visibly passes this gate.**
