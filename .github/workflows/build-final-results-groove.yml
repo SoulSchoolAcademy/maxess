@@ -57,11 +57,15 @@ jobs:
           test "$(grep -c 'MAXESS-LIVING-SIGNATURE-10.10' MAXESS-RESULTS-10-GROOVE.html)" -eq 1
           test "$(grep -c 'MAXESS_RESULT_BOOTSTRAP_10_10' MAXESS-RESULTS-10-GROOVE.html)" -eq 1
           grep -q 'maxess-result-contract-10-10' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'maxess-result-query-bridge-10-10' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'maxess-live-result-renderer' MAXESS-RESULTS-10-GROOVE.html
           grep -q 'maxess-live-naya-audio' MAXESS-RESULTS-10-GROOVE.html
           grep -q 'maxess-modern-browser-gate' MAXESS-RESULTS-10-GROOVE.html
           grep -q 'data-result-source' MAXESS-LIVING-SIGNATURE-10-10.js
           test "$(grep -c '<\\/body>' MAXESS-RESULTS-10-GROOVE.html)" -eq 1
           test "$(grep -c '<\\/html>' MAXESS-RESULTS-10-GROOVE.html)" -eq 1
+          ! grep -q 'window.MAXESS_RESULT.*querySelector' MAXESS-RESULTS-10-GROOVE.html
+          echo 'MAXESS 10.10 integration contract PASS'
 
       - name: Commit authoritative artifacts
         run: |
@@ -75,6 +79,8 @@ jobs:
             MAXESS-RESULTS-GROOVE-EMBED.html \
             MAXESS-RESULTS-GROOVE-EMBED-9.95.html \
             MAXESS-LIVING-SIGNATURE-10-10.js \
+            MAXESS-RESULTS-DYNAMIC-10-10.js \
+            MAXESS-RESULT-QUERY-BRIDGE-10-10.js \
             tools/build_maxess_results_10_self_optimized.py \
             tools/enhance_results_10_experience.py \
             tools/results_experience_10_self_optimization_pass.py \
