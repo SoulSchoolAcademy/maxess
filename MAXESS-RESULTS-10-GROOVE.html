@@ -5675,6 +5675,25 @@ if(human&&!human.querySelector('.naya-brand-mark')){const mark=document.createEl
 })();
 </script>
 
+
+<!-- NAYA RESULTS EXPERIENCE FIX V3 -->
+<!-- MAXESS Results Naya Experience Fix V3 — hero purity -->
+<style id="naya-results-experience-v3">
+#maxess-results-10 .mx-hero .hero-score-whisper{display:none!important}
+#maxess-results-10 .mx-hero .mx-band{display:none!important}
+#maxess-results-10 .mx-hero .mx-title{margin-bottom:0!important}
+</style>
+<script>
+(function(){
+'use strict';
+const root=document.getElementById('maxess-results-10');
+if(!root||root.dataset.nayaExperienceV3Applied==='1')return;
+root.dataset.nayaExperienceV3Applied='1';
+root.querySelector('.hero-score-whisper')?.remove();
+root.querySelector('.mx-hero .mx-band')?.remove();
+})();
+</script>
+
 </body>
 </html>
 
