@@ -49,21 +49,22 @@ jobs:
           p=Path('MAXESS-RESULTS-10-GROOVE.html')
           s=p.read_text(encoding='utf-8')
           foundation=Path('nayanetpagecode').read_text(encoding='utf-8')
+          tower=s[:-len(foundation)]
           assert s.startswith('<!-- MAXESS RESULTS V16 TOWER'), 'V16 tower is not the first layer'
           assert s.endswith(foundation), 'foundation was not preserved exactly as the lower layer'
-          assert s.count('id="maxess-results-v16"') == 1
-          assert s.count('id="maxess-results-v16-css"') == 1
-          assert s.count('id="maxess-results-v16-js"') == 1
-          ids=re.findall(r'\bid="([^"]+)"', s)
+          assert tower.count('id="maxess-results-v16"') == 1
+          assert tower.count('id="maxess-results-v16-css"') == 1
+          assert tower.count('id="maxess-results-v16-js"') == 1
+          ids=re.findall(r'\bid="([^"]+)"', tower)
           dup=sorted({x for x in ids if ids.count(x)>1})
-          assert not dup, f'duplicate ids: {dup}'
-          assert 'get(\'fixture\')' in s and 'demo' in s
-          assert 'window.MAXESS_RESULT' in s
-          assert 'https://raw.githubusercontent.com' not in s
-          assert 'fetch(' not in s
-          assert 'iframe' not in s.lower()
-          assert 'document.write' not in s
-          print('STATIC STRUCTURE PASS', p.stat().st_size, 'bytes')
+          assert not dup, f'duplicate Results ids: {dup}'
+          assert 'get(\'fixture\')' in tower and 'demo' in tower
+          assert 'window.MAXESS_RESULT' in tower
+          assert 'https://raw.githubusercontent.com' not in tower
+          assert 'fetch(' not in tower
+          assert 'iframe' not in tower.lower()
+          assert 'document.write' not in tower
+          print('STATIC STRUCTURE PASS', p.stat().st_size, 'bytes; foundation bytes=', len(foundation.encode('utf-8')))
           PY
           python3 - <<'PY'
           from pathlib import Path
