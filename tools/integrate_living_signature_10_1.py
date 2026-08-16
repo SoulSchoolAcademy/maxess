@@ -1,11 +1,16 @@
 from pathlib import Path
 
-TARGET = Path('MAXESS-RESULTS-10-GROOVE.html')
+TARGETS = [
+    Path('MAXESS-RESULTS-FINAL-GROOVE.html'),
+    Path('MAXESS-RESULTS-FINAL-GROOVE-EMBED.html'),
+    Path('MAXESS-RESULTS-10-GROOVE.html'),
+    Path('MAXESS-RESULTS-GROOVE-EMBED.html'),
+    Path('MAXESS-RESULTS-GROOVE-EMBED-9.95.html'),
+]
 PATCH = Path('MAXESS-LIVING-SIGNATURE-10-PATCH.js')
 AUDIO = Path('MAXESS-NAYA-RESULT-AUDIO-9.js')
 MARKER = '<!-- MAXESS-LIVING-SIGNATURE-10.1 -->'
 
-html = TARGET.read_text(encoding='utf-8')
 patch = PATCH.read_text(encoding='utf-8')
 audio = AUDIO.read_text(encoding='utf-8')
 
@@ -34,13 +39,23 @@ anchor = r'''<script id="maxess-live-anchor">\
 
 no_external_loader = '<script id="maxessLivingSignatureScript"></script>'
 
-if MARKER not in html:
-    block = ('\n' + MARKER + '\n' + bridge + '\n' + no_external_loader + '\n'
-             + '<script id="maxess-live-living-signature-engine">\n' + patch + '\n</script>\n'
-             + anchor + '\n' + '<script id="maxess-live-naya-audio">\n' + audio + '\n</script>\n')
-    if '</body>' not in html:
-        raise SystemExit('Missing </body> anchor')
-    html = html.replace('</body>', block + '</body>', 1)
-    TARGET.write_text(html, encoding='utf-8')
+block = ('\n' + MARKER + '\n' + bridge + '\n' + no_external_loader + '\n'
+         + '<script id="maxess-live-living-signature-engine">\n' + patch + '\n</script>\n'
+         + anchor + '\n' + '<script id="maxess-live-naya-audio">\n' + audio + '\n</script>\n')
 
-print('MAXESS Living Signature 10.1 integration applied.')
+changed = 0
+for target in TARGETS:
+    if not target.exists():
+        continue
+    html = target.read_text(encoding='utf-8')
+    if MARKER in html:
+        continue
+    if '</body>' not in html:
+        raise SystemExit(f'Missing </body> anchor in {target}')
+    target.write_text(html.replace('</body>', block + '</body>', 1), encoding='utf-8')
+    changed += 1
+
+if changed == 0:
+    raise SystemExit('No Results artifacts were changed; integration marker may already exist or artifacts are missing.')
+
+print(f'MAXESS Living Signature 10.1 integration applied to {changed} artifact(s).')
