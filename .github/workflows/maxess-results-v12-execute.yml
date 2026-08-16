@@ -1,0 +1,58 @@
+name: MAXESS Results V12 — Section-by-Section Execution
+
+on:
+  push:
+    branches: [naya/maxess-results-v12-execution]
+    paths:
+      - 'tools/execute_maxess_results_v12.py'
+      - 'MAXESS-RESULTS-10-GROOVE.html'
+      - '.github/workflows/maxess-results-v12-execute.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  execute:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact execution branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Baseline proof
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'window.MAXESS_RESULT' MAXESS-RESULTS-10-GROOVE.html
+          test "$(wc -c < MAXESS-RESULTS-10-GROOVE.html)" -gt 250000
+      - name: Execute V12
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m py_compile tools/execute_maxess_results_v12.py
+          python3 tools/execute_maxess_results_v12.py
+      - name: Structural proof
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q 'MAXESS_RESULTS_V12_SECTION_EXECUTION' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'v12-results' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'v12-naya-intro' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'YOUR AI SCORE' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'v12-pattern' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'v12-masters-grid' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'Print / Save PDF' MAXESS-RESULTS-10-GROOVE.html
+          if grep -q 'resonance: 10.10' MAXESS-RESULTS-10-GROOVE.html; then exit 1; fi
+          if grep -q 'signature: "LIVING"' MAXESS-RESULTS-10-GROOVE.html; then exit 1; fi
+          test "$(wc -c < MAXESS-RESULTS-10-GROOVE.html)" -gt 300000
+      - name: Commit executed artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'Naya Master'
+          git config user.email 'naya-master@users.noreply.github.com'
+          git add MAXESS-RESULTS-10-GROOVE.html
+          if git diff --cached --quiet; then echo 'BLOCKED — ZERO-CHANGE EXECUTION'; exit 1; fi
+          git commit -m 'feat(results): execute V12 section-by-section visual upgrade'
+          git push origin HEAD:naya/maxess-results-v12-execution
