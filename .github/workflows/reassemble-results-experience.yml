@@ -15,11 +15,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Reassemble corrected presentation layer
+      - name: Reassemble and correct presentation layer
         shell: bash
         run: |
           set -euo pipefail
           cat results-experience-parts/part-00 results-experience-parts/part-01 results-experience-parts/part-02 results-experience-parts/part-03 > MAXESS-RESULTS-EXPERIENCE.js
+          sed -i 's/height:auto}rows/height:auto}.rows/' MAXESS-RESULTS-EXPERIENCE.js
+          sed -i 's/document.getElementByIdElementById(I)/document.getElementById(I)/' MAXESS-RESULTS-EXPERIENCE.js
           node --check MAXESS-RESULTS-EXPERIENCE.js
           grep -q '.rows{' MAXESS-RESULTS-EXPERIENCE.js
           grep -q 'document.getElementById(I)' MAXESS-RESULTS-EXPERIENCE.js
