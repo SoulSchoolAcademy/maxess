@@ -1,7 +1,7 @@
 # MAXESS AAA DELIVERY MANIFEST
 
 - Preserved source master: `MAXESS-RESULTS-10-GROOVE.html`
-- Source commit: `0938839fa7c8d7a02d11f8817d7342bc12bf9b9a`
+- Source commit: `892b6fea143f4cc12d27dfe0dfafad3686d95c76`
 - Complete delivery: `MAXESS-RESULTS-AAA-GROOVE-EMBED.html`
 - Upgrade layer: `MAXESS-AAA-10.4-UPGRADE`
 - Architecture: additive; source master preserved
