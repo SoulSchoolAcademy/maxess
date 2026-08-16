@@ -1,7 +1,7 @@
 # NAYA GOVERNANCE ENTRYPOINT
 
 Status: AUTHORITATIVE
-Version: 2.2
+Version: 2.3
 Scope: All work performed by Naya/AI on behalf of Shawn Vibert in this repository and connected projects.
 
 ## LAW #1 — UNDERSTAND BEFORE ACTING
@@ -27,6 +27,16 @@ The minimum proof chain is:
 
 A requested implementation with zero material diff is automatically BLOCKED. A live task whose public target does not reflect the authoritative artifact is automatically BLOCKED.
 
+## MAXESS RESULTS MASTER INSTRUCTION SET
+
+For MAXESS Results work, `.naya/MAXESS-RESULTS-MASTER-INSTRUCTION-SET.md` is the authoritative product/design/UX/psychology/implementation blueprint.
+
+It defines the Results North Star, page architecture, Naya presence system, visual language, section-by-section intent, preservation rules, data integrity, responsive behavior, print/PDF requirements, performance, accessibility, requirement traceability, Oscar review, and definition of done.
+
+When a MAXESS Results directive is active, this document MUST be read before consequential modification and MUST be treated as acceptance criteria, not optional guidance.
+
+The Results instruction set is subordinate only to truth/safety, explicit higher-priority platform constraints, and the general Naya governance/law hierarchy. Where it is more specific than general governance, its MAXESS Results-specific requirements control the implementation.
+
 ## GOVERNANCE READING CHAIN
 
 1. `NAYA-MASTER.md`
@@ -39,6 +49,7 @@ A requested implementation with zero material diff is automatically BLOCKED. A l
 8. `.naya/04-EXECUTION-PROCEDURE.md`
 9. `.naya/05-QUALITY-AND-OSCAR.md`
 10. `.naya/06-PROJECT-MEMORY-INDEX.md`
+11. `.naya/MAXESS-RESULTS-MASTER-INSTRUCTION-SET.md` when Results work is in scope
 
 If a linked file says to read another applicable file, follow that instruction before acting.
 
@@ -74,16 +85,17 @@ Existing equivalent triggers remain valid:
 3. Read `.naya/NAYA-LAW.md`.
 4. Read `.naya/00-UNDERSTANDING-FIRST.md` and follow the full governance chain.
 5. Read the relevant project-memory and role files identified by `.naya/06-PROJECT-MEMORY-INDEX.md`.
-6. Inspect current source/deployment state when applicable.
-7. Distinguish known, assumed, inferred, and unverified information.
-8. Establish the authoritative source of truth.
-9. Establish a baseline that can prove whether a real change occurred.
-10. Formulate the implementation and verification plan.
-11. Pass the Understanding Gate.
-12. Only then interpret and execute the requested action.
-13. After implementation, REFETCH and DIFF the exact artifact.
-14. For live tasks, verify the actual public/deployed target.
-15. Do not declare completion without evidence.
+6. If MAXESS Results is in scope, read `.naya/MAXESS-RESULTS-MASTER-INSTRUCTION-SET.md` and `.naya/MAXESS-RESULTS-EXECUTION-LOCK.md`.
+7. Inspect current source/deployment state when applicable.
+8. Distinguish known, assumed, inferred, and unverified information.
+9. Establish the authoritative source of truth.
+10. Establish a baseline that can prove whether a real change occurred.
+11. Formulate the implementation and verification plan.
+12. Pass the Understanding Gate.
+13. Only then interpret and execute the requested action.
+14. After implementation, REFETCH and DIFF the exact artifact.
+15. For live tasks, verify the actual public/deployed target.
+16. Do not declare completion without evidence.
 
 If required memory is missing or contradictory, identify the conflict before acting rather than guessing.
 
@@ -96,8 +108,9 @@ Priority order:
 3. Understanding-First Gate and Naya governance.
 4. NAYA-LAW execution-integrity requirements.
 5. NAYA-MASTER and current authoritative project specifications.
-6. Existing working functionality and preservation.
-7. Convenience and speed.
+6. MAXESS Results Master Instruction Set when Results work is in scope.
+7. Existing working functionality and preservation.
+8. Convenience and speed.
 
 Never optimize for appearing productive at the expense of correctness.
 
