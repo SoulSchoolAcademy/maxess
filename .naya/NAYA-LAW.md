@@ -1,7 +1,7 @@
 # NAYA LAW — EXECUTION INTEGRITY STANDARD
 
 Status: AUTHORITATIVE PROJECT LAW
-Version: 1.0
+Version: 1.1
 Created: 2026-08-16
 Scope: Every consequential AI execution in this repository, especially changes requested by Shawn Vibert.
 
@@ -11,7 +11,7 @@ Naya Law exists to eliminate the recurring failure mode in which an AI understan
 
 The objective is simple:
 
-> **NO MORE ZERO-CHANGE EXECUTIONS. NO MORE WRONG-SOURCE EXECUTIONS. NO MORE UNVERIFIED COMPLETION.**
+> **NO MORE ZERO-CHANGE EXECUTIONS. NO MORE WRONG-SOURCE EXECUTIONS. NO MORE UNVERIFIED COMPLETION. NO MORE PARTIAL DEPLOYMENT ARTIFACTS.**
 
 Naya Law converts execution from a conversational promise into an evidence-backed engineering process.
 
@@ -140,7 +140,8 @@ The known failure classes include:
 - claiming success from a write response;
 - zero-diff execution;
 - old public deployment remaining unchanged;
-- duplicate/competing source files causing ambiguity.
+- duplicate/competing source files causing ambiguity;
+- delivering a snippet, loader, excerpt, patch, or partial embed when the requested deliverable is the complete Groove code.
 
 ### LAW 15 — INDEPENDENT OSCAR
 The builder cannot be the sole judge of its own success.
@@ -156,7 +157,8 @@ Oscar must challenge:
 - broken data flow;
 - dead UI;
 - accessibility/performance issues;
-- user-visible mismatch.
+- user-visible mismatch;
+- incomplete deployment artifacts.
 
 ### LAW 16 — FAILURE MUST CHANGE THE SYSTEM
 When a material failure occurs:
@@ -188,6 +190,48 @@ For consequential implementation, the minimum proof chain is:
 
 If any mandatory stage is skipped, the execution is not VERIFIED.
 
+### LAW 19 — COMPLETE ARTIFACT DELIVERY
+When the requested deliverable is Groove embed code, the delivered artifact MUST be the **complete, self-contained Groove code required to render the finished experience**.
+
+A snippet is not an artifact.
+A loader is not an artifact.
+A pointer to another JavaScript file is not an artifact.
+A partial section is not an artifact.
+A patch is not an artifact.
+A 40-line bootstrap that imports the real experience is not an artifact.
+
+The Groove artifact must contain the complete implementation needed by Groove, including the markup, styles, behavior, and required client-side logic for the requested experience, unless a specific external dependency is an intentional and documented part of the production contract.
+
+For MAXESS Results, the default delivery standard is:
+
+**ONE COMPLETE GROOVE EMBED FILE → COPY/PASTE INTO GROOVE → RENDER THE EXPERIENCE.**
+
+The artifact must not require GitHub, raw GitHub, another repository file, an iframe, or a second manually pasted Results script merely to become the requested page.
+
+### LAW 19A — COMPLETENESS GATE
+Before delivering a Groove embed, Naya MUST verify all of the following:
+
+- The file contains the complete Results markup.
+- The file contains the complete Results styling.
+- The file contains the complete Results behavior.
+- The file does not merely load the renderer from another repository file.
+- The file does not depend on a second Results file being pasted manually.
+- The file is materially larger than a bootstrap/snippet when the requested experience is materially larger.
+- The file contains the requested sections and interactions.
+- The file can be identified as the exact artifact intended for Groove.
+
+If any condition fails:
+
+**BLOCKED — INCOMPLETE GROOVE ARTIFACT.**
+
+### LAW 19B — NO-SHORTCUT DELIVERY
+Never reduce a working complete artifact to a tiny replacement merely because the tiny replacement is easier to write, transport, or verify.
+
+If the requested change is an upgrade, preserve the complete working artifact and modify it. Do not substitute a loader for the artifact.
+
+### LAW 19C — DELIVERY LINK RULE
+When Shawn asks for the Groove embed link, the response must point to the GitHub file containing the **complete Groove embed**, not to the source JavaScript, a specification, a bootstrap, or a partial implementation.
+
 ## MAXESS RESULTS ZERO-FAILURE CHECK
 
 For a Results-page visual/functional request, Naya must prove all of the following before claiming success:
@@ -199,6 +243,7 @@ For a Results-page visual/functional request, Naya must prove all of the followi
 - The real MAXESS_RESULT contract remains intact.
 - Protected working components remain present.
 - The actual Groove/deployment artifact was updated when required.
+- The Groove artifact is complete and self-contained under Law 19.
 - The public Results target reflects the new artifact when live verification is applicable.
 - Oscar found no critical regression.
 - The final evidence is reported honestly.
@@ -213,7 +258,8 @@ Use a hard BLOCKED state when:
 - the final artifact has zero material change for an implementation request;
 - the live target remains stale;
 - a critical regression exists;
-- verification evidence is unavailable.
+- verification evidence is unavailable;
+- the requested Groove artifact is incomplete.
 
 Do not substitute an explanation for the missing work.
 
@@ -223,11 +269,11 @@ Naya Law is not a prompt trick. It is an engineering control system.
 
 The goal is to make the correct behavior the easiest behavior:
 
-> **Understand the task. Find the real source. Make the real change. Prove the change. Publish the real artifact. Verify what the human actually sees. Only then say it is done.**
+> **Understand the task. Find the real source. Make the real change. Build the complete real artifact. Prove the change. Publish the real artifact. Verify what the human actually sees. Only then say it is done.**
 
 ## FINAL TEST
 
-> **If Shawn spends hours giving Naya a precise directive, can Naya prove that the requested work materially changed the correct artifact and that the intended user-facing experience now contains those changes?**
+> **If Shawn spends hours giving Naya a precise directive, can Naya prove that the requested work materially changed the correct artifact and that the intended user-facing experience now exists as a complete Groove-ready artifact?**
 
 If the answer is not demonstrably YES, Naya Law says:
 

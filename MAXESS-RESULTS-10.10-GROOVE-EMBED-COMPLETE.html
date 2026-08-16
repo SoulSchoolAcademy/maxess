@@ -1,0 +1,305 @@
+<!--
+MAXESS RESULTS 10.10 — COMPLETE GROOVE EMBED
+AUTHORITATIVE DEPLOYMENT ARTIFACT
+
+IMPORTANT:
+- Paste this ENTIRE file into the Groove custom HTML/embed area.
+- This is a complete self-contained Results experience.
+- It does NOT load the Results renderer from GitHub.
+- It does NOT use an iframe.
+- It does NOT depend on a second Results JavaScript file.
+- It consumes window.MAXESS_RESULT when the assessment provides it.
+- The development fallback exists only so the artifact can be previewed safely.
+-->
+<div id="maxess-results-10" class="mx-results" aria-label="MAXESS Personal AI Mastery Results">
+  <style>
+    #maxess-results-10{--bg:#050507;--panel:#0e0c13;--panel2:#15111d;--ink:#101014;--muted:#6c6874;--white:#fff;--purple:#8c5be8;--purple2:#c7b0ff;--cyan:#55e8ff;--gold:#d7b56d;--line:rgba(255,255,255,.12);width:100vw;position:relative;left:50%;margin-left:-50vw;overflow:hidden;background:var(--bg);color:#fff;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.45}
+    #maxess-results-10 *{box-sizing:border-box}
+    #maxess-results-10 a,#maxess-results-10 button{font:inherit}
+    #maxess-results-10 button{cursor:pointer}
+    #maxess-results-10 .mx-wrap{width:min(1440px,100%);margin:auto;padding:0 clamp(20px,4vw,64px)}
+    #maxess-results-10 .mx-section{padding:clamp(70px,8vw,125px) 0}
+    #maxess-results-10 .mx-dark{background:#050507;color:#fff}
+    #maxess-results-10 .mx-light{background:#fff;color:var(--ink)}
+    #maxess-results-10 .mx-eyebrow{font-size:10px;font-weight:900;letter-spacing:.2em;text-transform:uppercase;color:var(--purple2)}
+    #maxess-results-10 h1,#maxess-results-10 h2,#maxess-results-10 h3,#maxess-results-10 p{margin-top:0}
+    #maxess-results-10 h2{font-size:clamp(40px,5.4vw,78px);line-height:.94;letter-spacing:-.055em;margin:10px 0 18px}
+    #maxess-results-10 .mx-sub{max-width:720px;color:#777;font-size:clamp(16px,1.4vw,19px);line-height:1.65}
+    #maxess-results-10 .mx-center{text-align:center}
+    #maxess-results-10 .mx-center .mx-sub{margin-left:auto;margin-right:auto}
+    #maxess-results-10 .mx-hero{min-height:min(920px,100vh);display:flex;align-items:center;text-align:center;background:radial-gradient(circle at 50% 38%,rgba(126,62,220,.28),transparent 34%),radial-gradient(circle at 50% 75%,rgba(85,232,255,.07),transparent 30%),linear-gradient(180deg,#020204,#09050e 70%,#050507)}
+    #maxess-results-10 .mx-hero-inner{width:100%;padding:65px 0 55px}
+    #maxess-results-10 .mx-kicker{font-size:12px;font-weight:900;letter-spacing:.2em;text-transform:uppercase;color:#b9adca}
+    #maxess-results-10 .mx-orb{position:relative;width:min(455px,78vw);aspect-ratio:1;margin:28px auto 30px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 32% 22%,rgba(255,255,255,.35),transparent 8%),radial-gradient(circle at 50% 48%,rgba(132,73,222,.68),rgba(25,13,45,.97) 49%,#020207 79%);border:1px solid rgba(218,196,255,.58);box-shadow:inset 0 0 110px rgba(126,62,220,.3),0 30px 100px rgba(0,0,0,.55),0 0 120px rgba(126,62,220,.22);animation:mx-breathe 5.5s ease-in-out infinite}
+    #maxess-results-10 .mx-orb:before,#maxess-results-10 .mx-orb:after{content:"";position:absolute;border-radius:50%;inset:-5%;border:1px solid rgba(196,181,253,.34);animation:mx-spin 18s linear infinite}
+    #maxess-results-10 .mx-orb:after{inset:8%;border-color:rgba(85,232,255,.18);animation-direction:reverse;animation-duration:25s}
+    #maxess-results-10 .mx-score{position:relative;z-index:2}
+    #maxess-results-10 .mx-score strong{display:block;font-size:clamp(108px,15vw,190px);line-height:.78;letter-spacing:-.09em;font-weight:900;background:linear-gradient(110deg,#d8c4ff,#9a62ff,#55e8ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+    #maxess-results-10 .mx-score span{display:block;margin-top:27px;font-size:11px;font-weight:900;letter-spacing:.2em;color:#c3bacf}
+    #maxess-results-10 .mx-band{display:inline-flex;margin-top:14px;padding:8px 13px;border:1px solid rgba(255,255,255,.16);border-radius:999px;background:rgba(255,255,255,.06);font-size:11px;font-weight:800}
+    #maxess-results-10 .mx-hero-title{font-size:clamp(19px,2vw,27px);font-weight:750;margin:0 0 8px}
+    #maxess-results-10 .mx-hero-note{max-width:620px;color:#aaa;font-size:14px;margin:0 auto 23px}
+    #maxess-results-10 .mx-btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:56px;padding:0 25px;border-radius:16px;border:1px solid rgba(255,255,255,.18);background:linear-gradient(145deg,#24163a,#07070b);color:#fff;text-decoration:none;font-weight:850;transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
+    #maxess-results-10 .mx-btn:hover,#maxess-results-10 .mx-btn:focus-visible{transform:translateY(-2px);border-color:rgba(255,255,255,.48);box-shadow:0 12px 35px rgba(0,0,0,.25);outline:none}
+    #maxess-results-10 .mx-primary{background:linear-gradient(145deg,#c6adff,#6636b5 55%,#241033);border-color:rgba(225,208,255,.7)}
+    #maxess-results-10 .mx-hero-pattern{margin:43px auto 0;display:grid;grid-template-columns:repeat(5,1fr);gap:9px;max-width:900px}
+    #maxess-results-10 .mx-mini{padding:15px 10px;border:1px solid rgba(255,255,255,.12);border-radius:16px;background:rgba(255,255,255,.045)}
+    #maxess-results-10 .mx-mini b{display:block;font-size:28px;line-height:1}
+    #maxess-results-10 .mx-mini span{display:block;margin-top:7px;color:#aaa;font-size:10px;text-transform:uppercase;letter-spacing:.08em}
+    #maxess-results-10 .mx-fingerprint{display:grid;grid-template-columns:1fr 1fr;gap:clamp(35px,7vw,110px);align-items:center}
+    #maxess-results-10 .mx-radar{position:relative;display:grid;place-items:center;min-height:520px}
+    #maxess-results-10 .mx-radar svg{width:min(540px,100%);height:auto;overflow:visible}
+    #maxess-results-10 .mx-rows{display:grid;gap:10px}
+    #maxess-results-10 .mx-row{padding:18px;border-radius:18px;background:#f4f2f8;border:1px solid rgba(0,0,0,.07)}
+    #maxess-results-10 .mx-row-top{display:flex;justify-content:space-between;gap:15px;align-items:baseline}
+    #maxess-results-10 .mx-row-top strong{font-size:19px;color:#6034a5}
+    #maxess-results-10 .mx-row-score{font-size:22px;font-weight:900;color:#111}
+    #maxess-results-10 .mx-row-bar{height:5px;margin-top:10px;border-radius:99px;background:#ddd9e5;overflow:hidden}
+    #maxess-results-10 .mx-row-bar i{display:block;height:100%;width:var(--w);background:linear-gradient(90deg,#6637a8,#55cfe7)}
+    #maxess-results-10 .mx-row p{margin:9px 0 0;color:#666;font-size:12px}
+    #maxess-results-10 .mx-grid5{display:grid;grid-template-columns:repeat(5,1fr);gap:13px;margin-top:30px}
+    #maxess-results-10 .mx-dim{min-height:355px;padding:20px;border-radius:25px;background:linear-gradient(160deg,#0c0b11,#17111f);border:1px solid rgba(255,255,255,.11);text-align:center;box-shadow:inset 0 1px rgba(255,255,255,.1),0 25px 60px rgba(0,0,0,.22)}
+    #maxess-results-10 .mx-ring{position:relative;width:132px;height:132px;margin:4px auto 18px;border-radius:50%;background:conic-gradient(var(--c) calc(var(--v)*1%),rgba(255,255,255,.08) 0)}
+    #maxess-results-10 .mx-ring:after{content:"";position:absolute;inset:11px;border-radius:50%;background:#0c0b11}
+    #maxess-results-10 .mx-ring b{position:absolute;inset:0;display:grid;place-items:center;z-index:1;font-size:38px;color:var(--c)}
+    #maxess-results-10 .mx-dim h3{font-size:18px;margin:0 0 8px}
+    #maxess-results-10 .mx-dim p{color:#aaa;font-size:12px;line-height:1.5;min-height:55px}
+    #maxess-results-10 .mx-lever{padding-top:12px;border-top:1px solid rgba(255,255,255,.09);text-align:left}
+    #maxess-results-10 .mx-lever span{font-size:9px;font-weight:900;letter-spacing:.14em;color:var(--c)}
+    #maxess-results-10 .mx-lever b{display:block;margin-top:5px;font-size:11px;line-height:1.4}
+    #maxess-results-10 .mx-two{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:28px}
+    #maxess-results-10 .mx-panel{padding:30px;border-radius:27px;border:1px solid rgba(255,255,255,.12);background:linear-gradient(145deg,rgba(255,255,255,.065),rgba(255,255,255,.018))}
+    #maxess-results-10 .mx-panel.accent{border-color:rgba(166,108,255,.35);box-shadow:0 0 70px rgba(126,62,220,.08)}
+    #maxess-results-10 .mx-panel h3{font-size:clamp(28px,3vw,46px);letter-spacing:-.04em;margin:9px 0}
+    #maxess-results-10 .mx-panel p{color:#aaa;line-height:1.6}
+    #maxess-results-10 .mx-label{font-size:9px;font-weight:900;letter-spacing:.15em;color:#a98be8;text-transform:uppercase}
+    #maxess-results-10 .mx-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:30px}
+    #maxess-results-10 .mx-step{position:relative;padding:25px;border-radius:22px;border:1px solid rgba(255,255,255,.11);background:rgba(255,255,255,.045)}
+    #maxess-results-10 .mx-step:not(:last-child):after{content:"→";position:absolute;right:-18px;top:50%;transform:translateY(-50%);color:#8f72c5;font-size:22px;z-index:2}
+    #maxess-results-10 .mx-step b{font-size:10px;color:#cdb8ff;letter-spacing:.14em}
+    #maxess-results-10 .mx-step h3{margin:9px 0 6px;font-size:21px}
+    #maxess-results-10 .mx-step p{margin:0;color:#aaa;font-size:12px;line-height:1.5}
+    #maxess-results-10 .mx-pathways{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin-top:30px}
+    #maxess-results-10 .mx-path{position:relative;padding:21px;border-radius:19px;border:1px solid rgba(0,0,0,.09);background:#faf9fc;min-height:150px;text-decoration:none;color:#111;transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
+    #maxess-results-10 .mx-path:hover,#maxess-results-10 .mx-path:focus-visible{transform:translateY(-3px);border-color:rgba(102,55,168,.35);box-shadow:0 15px 40px rgba(0,0,0,.08);outline:none}
+    #maxess-results-10 .mx-path.recommended{border-color:rgba(102,55,168,.55);box-shadow:0 0 0 1px rgba(102,55,168,.08)}
+    #maxess-results-10 .mx-path.recommended:before{content:"RECOMMENDED FOR YOU";position:absolute;top:11px;right:11px;font-size:7px;font-weight:900;color:#6637a8}
+    #maxess-results-10 .mx-path small{color:#8667bd;font-weight:900}
+    #maxess-results-10 .mx-path h3{font-size:15px;margin:12px 0 6px}
+    #maxess-results-10 .mx-path p{margin:0;color:#666;font-size:11px;line-height:1.45}
+    #maxess-results-10 .mx-play{background:radial-gradient(circle at 50% 0,rgba(126,62,220,.18),transparent 45%),#050507}
+    #maxess-results-10 .mx-tools{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;margin-top:30px}
+    #maxess-results-10 .mx-tool{min-height:285px;padding:27px;border-radius:27px;border:1px solid rgba(255,255,255,.12);background:linear-gradient(145deg,rgba(255,255,255,.065),rgba(255,255,255,.018));transition:transform .25s ease,border-color .25s ease}
+    #maxess-results-10 .mx-tool:hover{transform:translateY(-5px);border-color:rgba(255,255,255,.3)}
+    #maxess-results-10 .mx-icon{width:60px;height:60px;display:grid;place-items:center;border-radius:18px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);font-size:27px}
+    #maxess-results-10 .mx-tool h3{font-size:25px;margin:28px 0 7px}
+    #maxess-results-10 .mx-tool p{color:#aaa;font-size:13px;line-height:1.55}
+    #maxess-results-10 .mx-report{background:#fff;color:#101014}
+    #maxess-results-10 .mx-report-card{padding:clamp(34px,6vw,70px);border:1px solid rgba(0,0,0,.1);border-radius:30px;text-align:center;box-shadow:0 25px 80px rgba(0,0,0,.09)}
+    #maxess-results-10 .mx-report-card h2{max-width:850px;margin:10px auto;font-size:clamp(40px,5vw,74px)}
+    #maxess-results-10 .mx-report-card p{max-width:680px;margin:18px auto 25px;color:#555;line-height:1.6}
+    #maxess-results-10 .mx-final{text-align:center;background:radial-gradient(circle at 50% 0,rgba(126,62,220,.25),transparent 50%),#050507}
+    #maxess-results-10 .mx-final p{color:#aaa}
+    #maxess-results-10 .mx-actions{display:flex;justify-content:center;flex-wrap:wrap;gap:11px;margin-top:23px}
+    #maxess-results-10 .mx-fallback{margin:15px auto 0;max-width:680px;padding:10px 13px;border:1px solid rgba(255,255,255,.14);border-radius:12px;color:#aaa;font-size:11px;display:none}
+    #maxess-results-10 .mx-live-status{position:absolute;left:-9999px}
+    @keyframes mx-breathe{50%{transform:scale(1.018);filter:saturate(1.12)}}
+    @keyframes mx-spin{to{transform:rotate(360deg)}}
+    @media(max-width:1100px){#maxess-results-10 .mx-grid5{grid-template-columns:repeat(3,1fr)}#maxess-results-10 .mx-pathways{grid-template-columns:repeat(3,1fr)}#maxess-results-10 .mx-fingerprint{grid-template-columns:1fr;max-width:900px;margin:auto}}
+    @media(max-width:760px){#maxess-results-10 .mx-hero{min-height:auto;padding:0}#maxess-results-10 .mx-hero-inner{padding:70px 0 55px}#maxess-results-10 .mx-hero-pattern{grid-template-columns:repeat(2,1fr)}#maxess-results-10 .mx-grid5,#maxess-results-10 .mx-two,#maxess-results-10 .mx-steps,#maxess-results-10 .mx-pathways,#maxess-results-10 .mx-tools{grid-template-columns:1fr}#maxess-results-10 .mx-dim{min-height:auto;text-align:left}#maxess-results-10 .mx-ring{margin-left:0}#maxess-results-10 .mx-actions{flex-direction:column}#maxess-results-10 .mx-btn{width:100%}#maxess-results-10 .mx-step:not(:last-child):after{display:none}#maxess-results-10 .mx-radar{min-height:390px}}
+    @media(prefers-reduced-motion:reduce){#maxess-results-10 .mx-orb,#maxess-results-10 .mx-orb:before,#maxess-results-10 .mx-orb:after,#maxess-results-10 .mx-btn,#maxess-results-10 .mx-tool,#maxess-results-10 .mx-path{animation:none!important;transition:none!important}}
+    @media print{#maxess-results-10{width:100%!important;left:auto;margin:0;background:#fff!important;color:#111!important}#maxess-results-10 .mx-dark,#maxess-results-10 .mx-play,#maxess-results-10 .mx-final{background:#fff!important;color:#111!important}#maxess-results-10 .mx-orb{animation:none;box-shadow:none;border:2px solid #6737a8}#maxess-results-10 .mx-score strong{background:none;color:#111;-webkit-text-fill-color:#111}#maxess-results-10 .mx-btn{display:none!important}#maxess-results-10 .mx-path,#maxess-results-10 .mx-dim,#maxess-results-10 .mx-panel,#maxess-results-10 .mx-tool{break-inside:avoid}}
+  </style>
+
+  <section class="mx-section mx-dark mx-hero" aria-labelledby="mx-title">
+    <div class="mx-wrap mx-hero-inner mx-center">
+      <div class="mx-kicker">MAXESS · PERSONAL AI MASTERY</div>
+      <div class="mx-orb" aria-label="Your overall AI score">
+        <div class="mx-score"><strong id="mx-score">—</strong><span>YOUR AI SCORE</span><div id="mx-band" class="mx-band">Loading your result</div></div>
+      </div>
+      <h1 id="mx-title" class="mx-hero-title">See the pattern, not just the score.</h1>
+      <p class="mx-hero-note">Your score is the headline. Your five-dimensional pattern is the story.</p>
+      <button id="mx-naya-hero" class="mx-btn mx-primary" type="button" aria-describedby="mx-naya-status">◉ Listen to Naya</button>
+      <div id="mx-naya-status" class="mx-live-status" aria-live="polite"></div>
+      <div id="mx-hero-pattern" class="mx-hero-pattern" aria-label="Five dimension scores"></div>
+    </div>
+  </section>
+
+  <section class="mx-section mx-light" aria-labelledby="mx-you-title">
+    <div class="mx-wrap">
+      <div class="mx-fingerprint">
+        <div class="mx-radar" id="mx-radar"></div>
+        <div>
+          <div class="mx-eyebrow">YOUR FINGERPRINT</div>
+          <h2 id="mx-you-title">This Is You.</h2>
+          <p class="mx-sub">Your AI capability is not one number. It is the relationship between five dimensions that work together to create your personal pattern.</p>
+          <div id="mx-rows" class="mx-rows" style="margin-top:28px"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-section mx-dark" aria-labelledby="mx-pattern-title">
+    <div class="mx-wrap">
+      <div class="mx-eyebrow">INTERPRETATION</div>
+      <h2 id="mx-pattern-title">What Your Pattern Reveals.</h2>
+      <p id="mx-pattern-copy" class="mx-sub">Reading your result…</p>
+      <div id="mx-dims" class="mx-grid5"></div>
+      <div class="mx-two">
+        <article id="mx-strength" class="mx-panel accent"></article>
+        <article id="mx-opportunity" class="mx-panel"></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-section mx-dark" aria-labelledby="mx-next-title">
+    <div class="mx-wrap">
+      <div class="mx-eyebrow">THE METHOD</div>
+      <h2 id="mx-next-title">Your Next Chapter.</h2>
+      <p class="mx-sub">A simple progression for turning AI from a novelty into a capability that compounds.</p>
+      <div class="mx-steps">
+        <article class="mx-step"><b>01</b><h3>DIRECT</h3><p>Tell AI what you actually want and define what success looks like.</p></article>
+        <article class="mx-step"><b>02</b><h3>CREATE</h3><p>Use AI to produce something useful instead of stopping at an answer.</p></article>
+        <article class="mx-step"><b>03</b><h3>SCORE</h3><p>Judge the result instead of automatically accepting the first version.</p></article>
+        <article class="mx-step"><b>04</b><h3>COMPOUND</h3><p>Turn what works into repeatable systems, workflows and better outcomes.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-section mx-light" aria-labelledby="mx-path-title">
+    <div class="mx-wrap">
+      <div class="mx-eyebrow">YOUR POSSIBILITY MAP</div>
+      <h2 id="mx-path-title">Your 18 AI Pathways.</h2>
+      <p class="mx-sub">Think of these as doors. You do not need to open all of them. Start where your result creates the most useful next move.</p>
+      <div id="mx-pathways" class="mx-pathways"></div>
+    </div>
+  </section>
+
+  <section class="mx-section mx-dark mx-play" aria-labelledby="mx-play-title">
+    <div class="mx-wrap">
+      <div class="mx-eyebrow">USE WHAT YOU JUST DISCOVERED</div>
+      <h2 id="mx-play-title">Your AI Playground.</h2>
+      <p class="mx-sub">Now that you can see your pattern, put it to work.</p>
+      <div class="mx-tools">
+        <article class="mx-tool"><div class="mx-icon" aria-hidden="true">✎</div><h3>Naya Writer</h3><p>Turn ideas, notes and rough thinking into clear communication without losing your voice.</p><a class="mx-btn" href="https://nayanet.xyz/" target="_blank" rel="noopener">Open Naya Writer</a></article>
+        <article class="mx-tool"><div class="mx-icon" aria-hidden="true">✦</div><h3>Naya Brainstormer</h3><p>Expand possibilities, challenge assumptions and find better options before you commit.</p><a class="mx-btn" href="https://nayanet.xyz/" target="_blank" rel="noopener">Open Brainstormer</a></article>
+        <article class="mx-tool"><div class="mx-icon" aria-hidden="true">◉</div><h3>Talk to Naya</h3><p>Continue the conversation with an AI partner who can help interpret, challenge and improve your next move.</p><button class="mx-btn mx-primary mx-naya" type="button">Listen to Naya</button></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-section mx-report" aria-labelledby="mx-report-title">
+    <div class="mx-wrap">
+      <div class="mx-report-card">
+        <div class="mx-eyebrow">PERSONALIZED REPORT</div>
+        <h2 id="mx-report-title">You've seen the pattern. Now hear what it means.</h2>
+        <p>Naya can take the visual result and turn it into a more personal explanation of your strengths, opportunity and next move.</p>
+        <button class="mx-btn mx-primary mx-naya" type="button">◉ Listen to Naya</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-section mx-final" aria-labelledby="mx-final-title">
+    <div class="mx-wrap mx-center">
+      <div class="mx-eyebrow">THE NEXT MOVE</div>
+      <h2 id="mx-final-title">You know where you are.<br>Now build from here.</h2>
+      <p class="mx-sub">Your result is not a label. It is a starting point.</p>
+      <div class="mx-actions">
+        <a class="mx-btn mx-primary" href="https://nayanet.xyz/" target="_blank" rel="noopener">Continue with Naya</a>
+        <a class="mx-btn" href="#mx-path-title">Explore Your Pathways</a>
+      </div>
+    </div>
+  </section>
+
+  <div id="mx-fallback" class="mx-fallback" role="status">Your personalized result data was not found. The page is showing a development preview so the experience remains testable.</div>
+
+  <script>
+  (function(){
+    'use strict';
+    var root=document.getElementById('maxess-results-10');
+    if(!root)return;
+    var DIM=['Direction','Communication','Evaluation','Iteration','Systems Thinking'];
+    var PATH=[
+      ['Writing & Communication','Turn ideas into clear words, instructions and decisions.'],['Research & Information','Find, compare and synthesize useful information.'],['Brainstorming & Ideas','Expand possibilities without losing the goal.'],['Content Creation','Create useful, human content faster and better.'],['Business & Strategy','Turn insight into positioning, offers and plans.'],['Marketing & Sales','Make value understandable and action easier.'],['Learning & Education','Use AI as tutor, teacher and thinking partner.'],['Coding & Software','Build, debug and improve software with AI.'],['Images & Visual Creation','Turn concepts into visual communication.'],['Video & Media','Plan, script and package media.'],['Documents & Presentations','Transform raw thinking into polished deliverables.'],['Data & Analysis','Use evidence and models to make better decisions.'],['Productivity & Planning','Turn intention into organized execution.'],['Career & Professional Development','Build skills, positioning and opportunity.'],['Personal Decision-Making','Think through choices with more clarity.'],['Creative Work','Explore, shape and finish original work.'],['Automation & Systems','Connect repeated work into reliable systems.'],['Advanced AI Work','Orchestrate models, agents, tools and evaluation.']
+    ];
+    var COLORS=['#9a62ff','#55e8ff','#d7b56d','#8f72c5','#c77dff'];
+    function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]})}
+    function clamp(v){v=Number(v);return Math.max(0,Math.min(100,isFinite(v)?v:0))}
+    function decode(){
+      var r=window.MAXESS_RESULT;
+      if(r&&Array.isArray(r.dimensions))return r;
+      try{
+        var encoded=new URLSearchParams(window.location.search).get('result');
+        if(encoded){
+          var n=encoded.replace(/-/g,'+').replace(/_/g,'/');
+          while(n.length%4)n+='=';
+          var b=atob(n),bytes=new Uint8Array(b.length);
+          for(var i=0;i<b.length;i++)bytes[i]=b.charCodeAt(i);
+          r=JSON.parse(new TextDecoder().decode(bytes));
+          if(r&&Array.isArray(r.dimensions))return r;
+        }
+      }catch(e){}
+      return null;
+    }
+    var result=decode();
+    var fallback=false;
+    if(!result){
+      fallback=true;
+      result={overallScore:82,dimensions:[{name:'Direction',score:86},{name:'Communication',score:91},{name:'Evaluation',score:79},{name:'Iteration',score:74},{name:'Systems Thinking',score:68}]};
+      document.getElementById('mx-fallback').style.display='block';
+    }
+    var map={};
+    (result.dimensions||[]).forEach(function(d){map[String(d.name||'').toLowerCase()] = d});
+    var dims=DIM.map(function(name){var d=map[name.toLowerCase()]||{};return{name:name,score:clamp(d.score!=null?d.score:d.value),description:d.description||''}});
+    var overall=clamp(result.overallScore!=null?result.overallScore:result.score);
+    var sorted=dims.slice().sort(function(a,b){return b.score-a.score});
+    var strongest=sorted[0],opportunity=sorted[sorted.length-1];
+    function band(v){return v<=50?'Foundation':v<=75?'Developing':v<=90?'Advancing':'Mastering'}
+    function meaning(name){
+      var n=name.toLowerCase();
+      if(n.indexOf('direction')>=0)return['You usually know what you want AI to accomplish.','Define the outcome and success test before asking AI to work.'];
+      if(n.indexOf('communication')>=0)return['You can translate intent, context and human outcome clearly.','Turn that strength into reusable briefs, instructions and decision frameworks.'];
+      if(n.indexOf('evaluation')>=0)return['You can judge whether AI work is actually good enough.','Use a visible scorecard before accepting important output.'];
+      if(n.indexOf('iteration')>=0)return['You can improve a first result instead of settling for it.','Create a deliberate create → score → improve loop.'];
+      return['You are beginning to see how separate AI interactions can become a larger system.','Turn repeated work into reusable workflows, rules and structures.'];
+    }
+    document.getElementById('mx-score').textContent=Math.round(overall);
+    document.getElementById('mx-band').textContent=band(overall);
+    document.getElementById('mx-hero-pattern').innerHTML=dims.map(function(d,i){return'<div class="mx-mini"><b>'+Math.round(d.score)+'</b><span>'+esc(d.name)+'</span></div>'}).join('');
+    document.getElementById('mx-rows').innerHTML=dims.map(function(d,i){var m=meaning(d.name);return'<div class="mx-row"><div class="mx-row-top"><strong>'+esc(d.name)+'</strong><span class="mx-row-score">'+Math.round(d.score)+'</span></div><div class="mx-row-bar"><i style="--w:'+d.score+'%"></i></div><p>'+esc(m[0])+'</p></div>'}).join('');
+    var points=dims.map(function(d,i){var a=(-Math.PI/2)+(i*Math.PI*2/5),r=170*(d.score/100);return [270+Math.cos(a)*r,270+Math.sin(a)*r]});
+    var outer=dims.map(function(d,i){var a=(-Math.PI/2)+(i*Math.PI*2/5);return [270+Math.cos(a)*170,270+Math.sin(a)*170]});
+    var poly=outer.map(function(p){return p.join(',')}).join(' '),dataPoly=points.map(function(p){return p.join(',')}).join(' ');
+    var rings=[.35,.6,.82,1].map(function(k){return dims.map(function(d,i){var a=(-Math.PI/2)+(i*Math.PI*2/5);return(270+Math.cos(a)*170*k)+','+(270+Math.sin(a)*170*k)}).join(' ')}).join('</polygon><polygon points="');
+    document.getElementById('mx-radar').innerHTML='<svg viewBox="0 0 540 540" role="img" aria-label="Five dimension fingerprint. '+dims.map(function(d){return d.name+' '+Math.round(d.score)}).join(', ')+'"><g fill="none" stroke="#d7d0df" stroke-width="1"><polygon points="'+rings+'"/><polygon points="'+poly+'"/></g><polygon points="'+dataPoly+'" fill="rgba(140,91,232,.25)" stroke="#8c5be8" stroke-width="3"></polygon>'+outer.map(function(p,i){return'<circle cx="'+p[0]+'" cy="'+p[1]+'" r="6" fill="'+COLORS[i]+'"/><text x="'+(p[0]+(p[0]<270?-18:18))+'" y="'+(p[1]+(p[1]<270?-10:18))+'" text-anchor="'+(p[0]<270?'end':'start')+'" fill="#5d5666" font-size="11" font-weight="800">'+esc(dims[i].name)+'</text>'}).join('')+'<circle cx="270" cy="270" r="7" fill="#8c5be8"/></svg>';
+    document.getElementById('mx-pattern-copy').textContent='Your strongest dimension is '+strongest.name+'. Your highest-leverage opportunity is '+opportunity.name+'. The interesting part is not either number by itself — it is what happens when these capabilities work together.';
+    document.getElementById('mx-dims').innerHTML=dims.map(function(d,i){var m=meaning(d.name);return'<article class="mx-dim" style="--c:'+COLORS[i]+';--v:'+d.score+'"><div class="mx-ring"><b>'+Math.round(d.score)+'</b></div><h3>'+esc(d.name)+'</h3><p>'+esc(m[0])+'</p><div class="mx-lever"><span>YOUR LEVER</span><b>'+esc(m[1])+'</b></div></article>'}).join('');
+    var sm=meaning(strongest.name),om=meaning(opportunity.name);
+    document.getElementById('mx-strength').innerHTML='<div class="mx-label">NATURAL ADVANTAGE</div><h3>'+esc(strongest.name)+'</h3><p>'+esc(sm[0])+'</p><p><strong>This is something you can build from.</strong> Your result suggests this capability is already giving you useful momentum.</p>';
+    document.getElementById('mx-opportunity').innerHTML='<div class="mx-label">HIGHEST-LEVERAGE OPPORTUNITY</div><h3>'+esc(opportunity.name)+'</h3><p>'+esc(om[0])+'</p><p><strong>The goal is not to fix a flaw.</strong> It is to strengthen the area most likely to multiply what you already do well.</p>';
+    var recNames={};
+    if(opportunity.name==='Systems Thinking')['Automation & Systems','Advanced AI Work','Business & Strategy'].forEach(function(x){recNames[x]=true});
+    if(opportunity.name==='Iteration')['Creative Work','Content Creation','Advanced AI Work'].forEach(function(x){recNames[x]=true});
+    if(opportunity.name==='Evaluation')['Data & Analysis','Research & Information','Personal Decision-Making'].forEach(function(x){recNames[x]=true});
+    if(opportunity.name==='Direction')['Business & Strategy','Productivity & Planning','Personal Decision-Making'].forEach(function(x){recNames[x]=true});
+    if(opportunity.name==='Communication')['Writing & Communication','Content Creation','Marketing & Sales'].forEach(function(x){recNames[x]=true});
+    document.getElementById('mx-pathways').innerHTML=PATH.map(function(p,i){var rec=!!recNames[p[0]];return'<a class="mx-path '+(rec?'recommended':'')+'" href="https://nayanet.xyz/" target="_blank" rel="noopener"><small>'+String(i+1).padStart(2,'0')+'</small><h3>'+esc(p[0])+'</h3><p>'+esc(p[1])+'</p></a>'}).join('');
+    function naya(){
+      var status=document.getElementById('mx-naya-status');
+      var existing=document.getElementById('maxessNayaPlay');
+      if(existing){existing.click();status.textContent='Naya is opening your personalized audio report.';return}
+      var audio=result.nayaAudio||result.audioUrl||'';
+      if(audio){
+        var a=document.getElementById('mx-maxess-audio');
+        if(!a){a=document.createElement('audio');a.id='mx-maxess-audio';a.controls=true;a.style.width='min(640px,100%)';a.style.margin='20px auto 0';root.querySelector('.mx-report-card').appendChild(a)}
+        a.src=audio;a.play().catch(function(){status.textContent='Audio is ready. Press play to listen to Naya.'});return
+      }
+      status.textContent='Naya is ready to continue with you.';
+      window.open('https://nayanet.xyz/','_blank','noopener');
+    }
+    root.querySelectorAll('.mx-naya').forEach(function(b){b.addEventListener('click',naya)});
+    document.getElementById('mx-naya-hero').addEventListener('click',naya);
+    if(fallback) document.getElementById('mx-fallback').textContent='Preview data is being shown because no MAXESS_RESULT was supplied. Production results will render from the assessment result contract.';
+  })();
+  </script>
+</div>
