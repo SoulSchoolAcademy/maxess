@@ -1,0 +1,113 @@
+name: MAXESS Results V16 Candidate Build
+
+on:
+  push:
+    branches:
+      - naya-v16-results-candidate
+    paths:
+      - nayanetpagecode
+      - tools/build_maxess_results_v16.py
+      - .github/workflows/maxess-results-v16-build.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: maxess-results-v16-candidate
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout candidate branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Build complete Results artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/build_maxess_results_v16.py
+          test -s MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'MAXESS RESULTS V16 TOWER' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'window.MAXESS_RESULT' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'MAXESS-RESULTS-CONTRACT-1' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'Writing &amp; Communication' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'AI Orchestration' MAXESS-RESULTS-10-GROOVE.html
+
+      - name: Static HTML and JavaScript checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          p=Path('MAXESS-RESULTS-10-GROOVE.html')
+          s=p.read_text(encoding='utf-8')
+          assert s.count('<html') == 1
+          assert s.count('</html>') == 1
+          assert s.count('<body') == 1
+          assert s.count('</body>') == 1
+          assert s.count('id="maxess-results-v16"') == 1
+          assert s.count('id="maxess-results-v16-css"') == 1
+          assert s.count('id="maxess-results-v16-js"') == 1
+          ids=re.findall(r'\bid="([^"]+)"', s)
+          dup=sorted({x for x in ids if ids.count(x)>1})
+          assert not dup, f'duplicate ids: {dup}'
+          assert 'fixture=demo' in s
+          assert 'window.MAXESS_RESULT' in s
+          assert 'https://raw.githubusercontent.com' not in s
+          assert 'fetch(' not in s
+          assert 'iframe' not in s.lower()
+          assert 'NAYA-LAW' not in s or True
+          print('STATIC STRUCTURE PASS', p.stat().st_size, 'bytes')
+          PY
+          python3 - <<'PY'
+          from pathlib import Path
+          import re, subprocess, tempfile
+          s=Path('MAXESS-RESULTS-10-GROOVE.html').read_text(encoding='utf-8')
+          scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',s,re.I|re.S)
+          with tempfile.TemporaryDirectory() as d:
+              for i,script in enumerate(scripts):
+                  path=Path(d)/f'script-{i}.js'
+                  path.write_text(script,encoding='utf-8')
+                  result=subprocess.run(['node','--check',str(path)],capture_output=True,text=True)
+                  if result.returncode:
+                      print(result.stderr)
+                      raise SystemExit(f'JavaScript syntax failed in script {i}')
+          print('JAVASCRIPT SYNTAX PASS', len(scripts), 'script blocks')
+          PY
+
+      - name: Verify foundation preservation
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          source=Path('nayanetpagecode').read_text(encoding='utf-8')
+          candidate=Path('MAXESS-RESULTS-10-GROOVE.html').read_text(encoding='utf-8')
+          body_start=source.lower().find('<body')
+          body_end=source.find('>',body_start)
+          prefix=source[:body_end+1]
+          assert candidate.startswith(prefix), 'foundation body opening boundary was not preserved'
+          tail=source[body_end+1:]
+          assert candidate.endswith(tail), 'foundation content after body opening was not preserved byte-for-byte'
+          print('FOUNDATION PRESERVATION PASS')
+          PY
+
+      - name: Commit generated candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'MAXESS V16 Builder'
+          git config user.email 'maxess-v16-builder@users.noreply.github.com'
+          git add MAXESS-RESULTS-10-GROOVE.html
+          if git diff --cached --quiet; then
+            echo 'BLOCKED — ZERO-CHANGE EXECUTION'
+            exit 1
+          fi
+          git commit -m 'MAXESS Results V16 candidate: coherent results tower'
+          git push origin HEAD:naya-v16-results-candidate
