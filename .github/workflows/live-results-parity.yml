@@ -1,0 +1,49 @@
+name: MAXESS Results — Live Parity Gate
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  live-parity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: State the release boundary
+        run: |
+          echo 'This workflow is intentionally manual.'
+          echo 'Authenticated Groove publication must occur before this gate is meaningful.'
+          echo 'The public target is https://results.nayanet.xyz/'
+
+      - name: Verify release markers in authoritative source
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q 'MAXESS-RESULTS-CONTRACT-1' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'MAXESS-RESULTS-EXPERIENCE-MANIFEST-1' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'NAYA-LAW-AAA-RESULTS-PASS-2' MAXESS-RESULTS-10-GROOVE.html
+          echo 'Authoritative release markers: PASS'
+
+      - name: Attempt public fetch with browser-like headers
+        shell: bash
+        run: |
+          set -euo pipefail
+          set +e
+          curl -L --fail-with-body --max-time 30 \
+            -A 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/151 Safari/537.36' \
+            -H 'Accept: text/html,application/xhtml+xml' \
+            'https://results.nayanet.xyz/' \
+            -o /tmp/results-live.html
+          code=$?
+          set -e
+          if [ "$code" -ne 0 ]; then
+            echo 'BLOCKED — public fetch unavailable from this runner.'
+            echo 'Do not infer live parity. Verify the public page in a real browser after Groove publication.'
+            exit 1
+          fi
+          grep -q 'MAXESS-RESULTS-EXPERIENCE-MANIFEST-1' /tmp/results-live.html
+          grep -q 'MAXESS-RESULTS-CONTRACT-1' /tmp/results-live.html
+          echo 'LIVE PARITY: PASS'

@@ -1,4 +1,4 @@
-name: MAXESS Results — Canonical Verification
+name: MAXESS Results — Canonical Source Verification
 
 on:
   pull_request:
@@ -21,11 +21,11 @@ permissions:
   contents: read
 
 concurrency:
-  group: maxess-results-verification-${{ github.ref }}
+  group: maxess-results-source-verification-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  verify:
+  verify-source:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout authoritative repository
@@ -39,6 +39,7 @@ jobs:
           test -f .naya/NAYA-GOVERNANCE.md
           test -f .naya/RESULTS-SOURCE-REGISTRY.md
           test -f .naya/REPOSITORY-OPERATING-MAP.md
+          test -f .naya/GROOVE-DEPLOYMENT-CONTRACT.md
           test -f MAXESS-RESULTS-10-GROOVE.html
           grep -q 'MAXESS-RESULTS-10-GROOVE.html' .naya/RESULTS-SOURCE-REGISTRY.md
           grep -q 'results.nayanet.xyz' .naya/RESULTS-SOURCE-REGISTRY.md
@@ -56,7 +57,7 @@ jobs:
           grep -q 'width:100vw' MAXESS-RESULTS-10-GROOVE.html
           grep -q 'prefers-reduced-motion' MAXESS-RESULTS-10-GROOVE.html
 
-      - name: Run existing deterministic Results verifier
+      - name: Run deterministic Results verifier
         shell: bash
         run: |
           set -euo pipefail
@@ -81,36 +82,10 @@ jobs:
           fi
           echo 'No known silent fake-result fallback detected.'
 
-      - name: Live parity gate
+      - name: Report external live-parity boundary
         shell: bash
         run: |
-          set -euo pipefail
-          python3 - <<'PY'
-          import hashlib
-          import re
-          import urllib.request
-
-          source = open('MAXESS-RESULTS-10-GROOVE.html', 'rb').read()
-          source_text = source.decode('utf-8', errors='replace')
-          source_markers = [
-              'MAXESS-RESULTS-CONTRACT-1',
-              'MAXESS-RESULTS-EXPERIENCE-MANIFEST-1',
-              'NAYA-LAW-AAA-RESULTS-PASS-2',
-          ]
-
-          try:
-              with urllib.request.urlopen('https://results.nayanet.xyz/', timeout=20) as response:
-                  live = response.read().decode('utf-8', errors='replace')
-          except Exception as exc:
-              raise SystemExit(f'BLOCKED — could not fetch public Results target: {exc}')
-
-          missing = [m for m in source_markers if m in source_text and m not in live]
-          if missing:
-              raise SystemExit('BLOCKED — DEPLOYMENT PARITY FAILURE. Missing live markers: ' + ', '.join(missing))
-
-          if 'MAXESS-RESULTS-EXPERIENCE-MANIFEST-1' not in live:
-              raise SystemExit('BLOCKED — public target does not expose the authoritative Results experience manifest.')
-
-          print('LIVE PARITY GATE: PASS')
-          print('Authoritative source SHA256:', hashlib.sha256(source).hexdigest())
-          PY
+          echo 'SOURCE VERIFICATION: PASS'
+          echo 'LIVE PARITY: EXTERNAL GATE'
+          echo 'The public Groove target must be verified independently after authenticated Groove publication.'
+          echo 'GitHub Actions is not authorized to infer live parity from a source write.'

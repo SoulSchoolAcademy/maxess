@@ -1,8 +1,0 @@
-name: Legacy MAXESS Results 10 v3 (disabled)
-on:
-  workflow_dispatch:
-jobs:
-  disabled:
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo 'Disabled. The authoritative Results publisher is build-final-results-groove.yml.'
