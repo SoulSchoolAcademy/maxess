@@ -1,0 +1,94 @@
+name: MAXESS Results V11 — Full Artifact Execution
+
+on:
+  push:
+    branches:
+      - naya/maxess-results-v11-full-upgrade
+    paths:
+      - 'tools/execute_maxess_results_v11_full_upgrade.py'
+      - 'MAXESS-RESULTS-10-GROOVE.html'
+      - '.github/workflows/maxess-results-v11-execute.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'tools/execute_maxess_results_v11_full_upgrade.py'
+      - 'MAXESS-RESULTS-10-GROOVE.html'
+      - '.github/workflows/maxess-results-v11-execute.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: maxess-results-v11-full-upgrade-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  execute:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify authoritative artifact baseline
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f MAXESS-RESULTS-10-GROOVE.html
+          test "$(grep -c 'id=\"maxess-results-10\"' MAXESS-RESULTS-10-GROOVE.html)" -eq 1
+          grep -q 'window.MAXESS_RESULT' MAXESS-RESULTS-10-GROOVE.html
+          wc -c MAXESS-RESULTS-10-GROOVE.html
+
+      - name: Execute preservation-first V11 upgrade
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m py_compile tools/execute_maxess_results_v11_full_upgrade.py
+          python3 tools/execute_maxess_results_v11_full_upgrade.py
+
+      - name: Structural proof
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q 'MAXESS_RESULTS_V11_FULL_UPGRADE_EXECUTED' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'YOUR AI SCORE' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'v11-naya-welcome' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'v11-masters-grid' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'v11-pattern' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'Print / Save PDF' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'prefers-reduced-motion' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'window.MAXESS_RESULT' MAXESS-RESULTS-10-GROOVE.html
+          if grep -q 'resonance: 10.10' MAXESS-RESULTS-10-GROOVE.html; then
+            echo 'BLOCKED — known fake-result fallback detected.'
+            exit 1
+          fi
+          if grep -q 'signature: "LIVING"' MAXESS-RESULTS-10-GROOVE.html; then
+            echo 'BLOCKED — known fake signature fallback detected.'
+            exit 1
+          fi
+          wc -c MAXESS-RESULTS-10-GROOVE.html
+
+      - name: Commit executed artifact
+        if: github.event_name == 'push'
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- MAXESS-RESULTS-10-GROOVE.html; then
+            echo 'No artifact mutation to commit.'
+            exit 0
+          fi
+          git config user.name 'Naya Master'
+          git config user.email 'naya-master@users.noreply.github.com'
+          git add -- MAXESS-RESULTS-10-GROOVE.html
+          git commit -m 'feat(results): execute MAXESS Results V11 full artifact upgrade'
+          git push origin HEAD:naya/maxess-results-v11-full-upgrade
+
+      - name: Final evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo 'NAYA LAW V11: EXECUTION PROOF'
+          echo 'Authoritative artifact: MAXESS-RESULTS-10-GROOVE.html'
+          echo 'Mode: preservation-first full-artifact upgrade'
+          echo 'Live parity: external Groove/public verification still required.'
