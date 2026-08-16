@@ -1,13 +1,14 @@
 # NAYA LAW — EXECUTION INTEGRITY STANDARD
 
 Status: AUTHORITATIVE PROJECT LAW
-Version: 2.0
-Created: 2026-08-16
+Version: 2.1
 Scope: Every consequential AI execution in this repository, especially changes requested by Shawn Vibert.
 
 ## PURPOSE
 
-Naya Law exists to eliminate the recurring failure modes in which an AI:
+Naya Law defines the non-negotiable rules. The Naya Digital Codex defines the operational method used to obey those rules.
+
+The law exists to eliminate recurring failures in which an AI:
 
 - understands a request but does not execute it;
 - changes the wrong file;
@@ -63,12 +64,33 @@ If any answer is unknown, the correct state is:
 
 ---
 
+# DIGITAL CODEX RELATIONSHIP
+
+Naya Law is the constitutional layer.
+
+`.naya/NAYA-DIGITAL-CODEX-v2.md` is the canonical operational layer.
+
+The relationship is:
+
+**LAW = WHAT MAY NEVER BE VIOLATED.**
+
+**CODEX = HOW THE LAW IS EXECUTED AND PROVEN.**
+
+Project-specific instruction sets define what the particular product should become.
+Execution locks define the state of the current task.
+Project memory preserves durable knowledge.
+
+The Codex is mandatory for consequential work governed by this law.
+
+---
+
 # LAW 1 — READ BEFORE ACTION
 
 Before consequential work, read:
 
 - applicable repository governance;
 - Naya Law;
+- Digital Codex;
 - project-specific instruction sets;
 - source-of-truth registry or equivalent authority map;
 - relevant project memory/specification;
@@ -123,19 +145,7 @@ PUBLIC/LIVE TARGET
 
 Every consequential surface must have exactly one AUTHORITATIVE SOURCE.
 
-A file is NOT authoritative because its name contains:
-
-- FINAL
-- MASTER
-- 10/10
-- 10.10
-- FULL
-- EXECUTABLE
-- GROOVE
-- AAA
-- CURRENT
-- NEW
-- UPDATED
+A file is NOT authoritative because its name contains FINAL, MASTER, 10/10, 10.10, FULL, EXECUTABLE, GROOVE, AAA, CURRENT, NEW, or UPDATED.
 
 The source must be established from repository governance, actual dependency relationships, deployment configuration, and live evidence.
 
@@ -168,7 +178,7 @@ A repository filename alone is insufficient evidence.
 Record the starting state:
 
 - baseline commit SHA;
-- authoritative file SHA/blob SHA;
+- authoritative file SHA/blob SHA where available;
 - file size/line count where useful;
 - structural markers;
 - key visual/content markers;
@@ -189,6 +199,7 @@ Every material requirement receives:
 
 ```text
 REQUIREMENT
+→ WHY
 → IMPLEMENTATION LOCATION
 → EXPECTED CHANGE
 → VERIFICATION METHOD
@@ -198,7 +209,7 @@ REQUIREMENT
 
 No requirement may remain only in conversational memory.
 
-If the request is large, section-by-section execution is mandatory.
+If the request is large, section-by-section execution is mandatory while preserving the global checklist.
 
 ---
 
@@ -222,7 +233,7 @@ Genuinely fails the requirement or quality standard.
 Required but missing.
 
 ### REMOVE
-Unnecessary, misleading, redundant, or explicitly rejected.
+Unnecessary, misleading, redundant, harmful, or explicitly rejected.
 
 No major element may disappear merely because the executor forgot it.
 
@@ -235,8 +246,6 @@ Implementation must occur in the locked authoritative source.
 Secondary artifacts may be modified ONLY when the dependency map proves they are required outputs of the same execution.
 
 Changing a preview, backup, generated artifact, embed fragment, or alternate implementation does NOT count as completing the task unless that artifact is explicitly the authoritative execution target.
-
-This is the specific failure mode that previously caused repeated false V13 success.
 
 ---
 
@@ -256,9 +265,11 @@ No regenerated download can override this.
 
 No prose claiming improvement can override this.
 
+No successful write/API response can override this without re-fetching and diffing the resulting artifact.
+
 ---
 
-# LAW 10 — MINIMUM DELTA / COMPLETENESS GATE
+# LAW 10 — COMPLETENESS GATE
 
 A tiny diff does not automatically mean failure, but the executor MUST compare the diff against the scope of the request.
 
@@ -324,8 +335,6 @@ FILE I ACTUALLY CHANGED
 If they differ unexpectedly:
 
 # BLOCKED — WRONG-FILE EXECUTION.
-
-This gate exists specifically to prevent changing an embed/preview/legacy file while the authoritative product remains unchanged.
 
 ---
 
@@ -505,8 +514,6 @@ During Root-Cause Lockdown:
 - the test must fail before the fix and pass after the fix;
 - only then may normal implementation resume.
 
-This prevents spending an entire day repeating the same failed execution pattern.
-
 ---
 
 # LAW 22 — ONE EXECUTION, ONE ACCOUNTABLE RESULT
@@ -562,71 +569,10 @@ The system must learn from the failure rather than requiring the human to become
 
 ---
 
-# MAXESS RESULTS — ZERO-FAILURE GATE
+# FINAL LAW
 
-Before calling a MAXESS Results implementation successful, prove:
+> **IF THE REQUESTED WORK DID NOT MATERIALLY CHANGE THE CORRECT SOURCE, SURVIVE REGRESSION CHECKS, AND BECOME VISIBLE IN THE INTENDED USER-FACING EXPERIENCE, IT WAS NOT DONE.**
 
-- [ ] Correct repository.
-- [ ] Correct branch.
-- [ ] Correct iteration number.
-- [ ] Authoritative Results source locked.
-- [ ] Deployment chain mapped.
-- [ ] Public target identified.
-- [ ] Baseline recorded.
-- [ ] Complete directive converted to checklist.
-- [ ] Preservation map completed.
-- [ ] Authoritative source materially changed.
-- [ ] No wrong-file execution.
-- [ ] No zero-diff execution.
-- [ ] No partial execution disguised as complete.
-- [ ] Real `window.MAXESS_RESULT` preserved.
-- [ ] At least two result states tested when applicable.
-- [ ] Hero displays the real score correctly.
-- [ ] Orb responds correctly to score.
-- [ ] All five dimensions populate correctly.
-- [ ] Pattern/strength/lever/next move remain data-driven.
-- [ ] Protected functionality remains.
-- [ ] Responsive behavior tested.
-- [ ] Accessibility checked.
-- [ ] Performance checked.
-- [ ] PDF/print checked.
-- [ ] Oscar challenge completed.
-- [ ] Regressions checked.
-- [ ] Deployment artifact updated where required.
-- [ ] Public URL independently checked.
-- [ ] Requested changes visibly exist on the public target.
-- [ ] Final report contains evidence rather than assertions.
+And:
 
-ONE unchecked mandatory box means:
-
-# NOT VERIFIED.
-
----
-
-# THE MASTER EXECUTION PROTOCOL
-
-The mandatory chain is now:
-
-**READ → IDENTIFY → LOCK → BASELINE → INVENTORY → TRACE → PLAN → MODIFY → REFETCH → DIFF → REASSEMBLE → BUILD → RUNTIME TEST → OSCAR → FIX → RETEST → LIVE-CHECK → PARITY VERIFY → DELIVER**
-
-The shorter human teaching version is:
-
-# UNDERSTAND → ACT → PROVE → VERIFY
-
-But the engineering system must execute the complete chain.
-
----
-
-# THE FINAL NAYA LAW
-
-> **If the requested work did not materially change the correct source, survive regression checks, and become visible in the intended user-facing experience, it was not done.**
-
-And when a failure happens:
-
-> **We do not simply try again. We change the system so the same failure becomes harder to repeat.**
-
-The purpose of Naya Law is not to make AI sound more confident.
-
-It is to make AI execution more accountable.
-
-# NOT DONE UNTIL PROVEN.
+> **WHEN A FAILURE HAPPENS, WE DO NOT SIMPLY TRY AGAIN. WE CHANGE THE SYSTEM SO THE SAME FAILURE BECOMES HARDER TO REPEAT.**
