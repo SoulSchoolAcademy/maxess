@@ -1,0 +1,71 @@
+name: MAXESS Results — Assemble Whole-System AAA Artifact
+
+on:
+  push:
+    branches:
+      - 'naya/maxess-results-aaa-whole-system'
+    paths:
+      - 'MAXESS-RESULTS-10-GROOVE.html'
+      - 'MAXESS-RESULTS-EXPERIENCE.js'
+      - 'tools/assemble_maxess_results_aaa.py'
+      - '.github/workflows/assemble-maxess-results-aaa.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: maxess-results-aaa-assembly
+  cancel-in-progress: true
+
+jobs:
+  assemble:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact implementation branch
+        uses: actions/checkout@v4
+        with:
+          ref: naya/maxess-results-aaa-whole-system
+          fetch-depth: 1
+
+      - name: Assemble the complete Groove artifact
+        run: |
+          set -euo pipefail
+          python3 tools/assemble_maxess_results_aaa.py
+
+      - name: Verify assembled artifact
+        run: |
+          set -euo pipefail
+          grep -q 'MAXESS-WHOLE-SYSTEM-AAA-INLINE-1.0' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'MAXESS RESULTS — WHOLE-SYSTEM AAA PRESENTATION ENGINE' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'data-maxess-build="whole-system-aaa-1.0"' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'window.MAXESS_RESULT' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'Naya Writer' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'Naya Brainstormer' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'ny-youtube-player' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'prefers-reduced-motion' MAXESS-RESULTS-10-GROOVE.html
+          test "$(grep -o '<body' MAXESS-RESULTS-10-GROOVE.html | wc -l)" -eq 1
+          test "$(grep -o '</body>' MAXESS-RESULTS-10-GROOVE.html | wc -l)" -eq 1
+          node --check MAXESS-RESULTS-EXPERIENCE.js
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('MAXESS-RESULTS-10-GROOVE.html').read_text(encoding='utf-8')
+          assert p.count('MAXESS-WHOLE-SYSTEM-AAA-INLINE-1.0') == 1
+          assert len(p.splitlines()) > 5000
+          print('COMPLETE GROOVE ARTIFACT:', len(p.splitlines()), 'lines')
+          print('BYTES:', len(p.encode('utf-8')))
+          PY
+
+      - name: Commit the assembled artifact back to the implementation branch
+        run: |
+          set -euo pipefail
+          git config user.name 'MAXESS Whole-System Assembly'
+          git config user.email 'actions@github.com'
+          git add MAXESS-RESULTS-10-GROOVE.html
+          if git diff --cached --quiet; then
+            echo 'No assembly delta — artifact is already assembled.'
+            exit 0
+          fi
+          git commit -m 'Assemble complete MAXESS Results AAA Groove artifact'
+          git push origin naya/maxess-results-aaa-whole-system
