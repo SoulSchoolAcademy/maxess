@@ -38,3 +38,7 @@ The profile portraits are the primary identity assets because the Results experi
 - Keep image loading performant with explicit dimensions and lazy loading where appropriate.
 - Respect light/dark chapter contrast.
 - Do not allow imagery to compete with the user's score or result data.
+
+## Execution state
+
+V6 profile layer is registered in `.naya/MAXESS-RESULTS-NAYA-EXPERIENCE-FIX-V6.html` and is required to pass the deterministic Results execution pipeline before it can be considered part of the authoritative artifact.
