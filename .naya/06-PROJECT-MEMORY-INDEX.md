@@ -12,6 +12,8 @@ This file is the map of durable project memory. It tells Naya where to look with
 ## GOVERNANCE
 - `.naya/NAYA-GOVERNANCE.md` — master entrypoint, trigger phrases, and reading chain.
 - `.naya/NAYA-LAW.md` — authoritative execution-integrity law: zero-change gate, source-lock, baseline, requirement traceability, write/refetch/diff proof, live parity, regression safeguards, and delivery proof chain.
+- `.naya/REPOSITORY-OPERATING-MAP.md` — fast operational map: authoritative paths, file classifications, workflow rules, hard blocks, and the one-task/one-path/one-proof-chain rule.
+- `.naya/RESULTS-SOURCE-REGISTRY.md` — authoritative MAXESS Results source registry and current deployment status.
 - `.naya/00-UNDERSTANDING-FIRST.md` — understanding gate and preservation/source-of-truth law.
 - `.naya/01-PRIME-DIRECTIVE.md` — purpose, human-first principles, truth, accountability.
 - `.naya/02-LAWS-AND-RULES.md` — non-negotiable operating laws.
@@ -56,9 +58,17 @@ When creating durable product decisions, add or update a clearly named file unde
 
 ## DEPLOYMENT / DELIVERY
 - `LIVE-DEPLOYMENT-SOURCE-OF-TRUTH.md` — current documented mismatch between the authoritative GitHub Results artifact and the public Results URL; live parity is blocked until the actual Groove/public source is connected and verified.
+- `.naya/GROOVE-DEPLOYMENT-CONTRACT.md` — exact external deployment facts, release chain, required parity proof, and the current external-source blocker.
 - `.naya/memory/24-GROOVE-DEPLOYMENT-AND-DELIVERY-LAW.md` — source/deployment separation, Groove-first publishing, raw GitHub delivery link, no alternate hosting by assumption, deployment-state definitions, and handoff diagnostics.
 - `.naya/memory/25-GROOVE-NATIVE-EMBED-TRANSFORM.md` — Groove embeds must be native fragments: extract only the current authoritative CSS, main, and controller; strip document shells, hidden legacy Results DOM, iframes, and stale NayaNET frames; verify the fragment structurally before delivery.
 - `.naya/memory/25-GROOVE-EMBED-ENGINEERING-LAW.md` — comprehensive Groove Embed Engineering Law: documented capabilities vs unknown limits, practical performance budgets, native-fragment architecture, full-bleed/responsive/security/accessibility laws, app-like capabilities, Master/Oscar build loop, 10/10 scorecard, and current MAXESS Groove optimization standard.
+
+## CI / RELEASE GOVERNANCE
+- `.github/workflows/build-final-results-groove.yml` — canonical read-only Results verification gate. It must not mutate or publish source.
+- `.github/workflows/apply-master-preservation-10-10.yml` — legacy manual preservation audit only; no longer edits or pushes source.
+- `.github/workflows/naya-law-results-pass.yml` — legacy manual Naya Law audit only; no longer edits or pushes Results artifacts.
+
+Historical workflows may remain in the repository for traceability, but their behavior must be classified before use. A workflow name is never deployment proof.
 
 ## FUTURE ARCHITECTURE
 - `.naya/memory/26-NAYANET-FUTURE-GITHUB-ORCHESTRATION.md` — future-only NayaNET architecture: GitHub as durable engineering/orchestration memory and control-plane support, portable deployment adapters, mobile-first app direction, intelligent Connection Spaces, user-controlled memory, agent/role orchestration, and human-centered network principles. Not current scope.
