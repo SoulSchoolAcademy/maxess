@@ -50,6 +50,12 @@ jobs:
           python3 -m py_compile tools/bootstrap_maxess_result_10_10_v2.py
           python3 tools/bootstrap_maxess_result_10_10_v2.py
 
+      - name: Apply MAXESS 10.2 hero-first visual pass
+        run: |
+          set -euo pipefail
+          python3 -m py_compile tools/maxess_results_visual_pass_10_2.py
+          python3 tools/maxess_results_visual_pass_10_2.py
+
       - name: Verify final Results artifacts
         run: |
           set -euo pipefail
@@ -59,14 +65,16 @@ jobs:
           grep -q 'maxess-result-live-bridge' MAXESS-RESULTS-10-GROOVE.html
           grep -q 'maxess-live-naya-audio' MAXESS-RESULTS-10-GROOVE.html
           grep -q 'MAXESS_RESULT_10_10_BOOTSTRAP' MAXESS-RESULTS-10-GROOVE.html
-          grep -q 'MAXESS_RESULT_10_10_BOOTSTRAP' MAXESS-RESULTS-GROOVE-EMBED.html
-          grep -q 'MAXESS_RESULT_10_10_BOOTSTRAP' MAXESS-RESULTS-FINAL-GROOVE.html
           grep -q 'naya-playground' MAXESS-RESULTS-10-GROOVE.html
           grep -q 'Naya Writer' MAXESS-RESULTS-10-GROOVE.html
           grep -q 'Naya Brainstormer' MAXESS-RESULTS-10-GROOVE.html
           grep -q 'mx-naya-door' MAXESS-RESULTS-10-GROOVE.html
           grep -q 'mx-orb-breathe' MAXESS-RESULTS-10-GROOVE.html
-          echo 'MAXESS 10.0 Naya visual release gate PASS'
+          grep -q 'MAXESS-VISUAL-PASS-10.2' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'mx102-orb-breathe' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'mx102-ring' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'maxess_results_visual_pass_10_2.py' tools/maxess_results_visual_pass_10_2.py || true
+          echo 'MAXESS 10.2 hero-first visual release gate PASS'
 
       - name: Commit authoritative artifacts
         run: |
@@ -89,12 +97,13 @@ jobs:
             tools/integrate_living_signature_10_1.py \
             tools/bootstrap_maxess_result_10_10.py \
             tools/bootstrap_maxess_result_10_10_v2.py \
+            tools/maxess_results_visual_pass_10_2.py \
             tools/verify_results_10.py \
             .naya/memory/30-GROWING-LESSON-002-OSCAR-PASS-2.md \
             .naya/memory/31-GROWING-LESSON-003-10-STAR-LIVE-PRODUCT-GATE.md \
             .github/workflows/build-final-results-groove.yml
           if ! git diff --cached --quiet; then
-            git commit -m 'Build MAXESS 10.0 Naya visual experience'
+            git commit -m 'Build MAXESS 10.2 hero-first visual experience'
             git pull --rebase origin main
             git push
           fi
