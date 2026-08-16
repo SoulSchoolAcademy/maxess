@@ -17,7 +17,7 @@
       result = JSON.parse(new TextDecoder().decode(bytes));
     }
   } catch (error) {
-    console.warn("MAXESS_RESULT query payload could not be decoded; using bootstrap fallback.", error);
+    console.warn("MAXESS_RESULT query payload could not be decoded; leaving MAXESS_RESULT empty.", error);
   }
   var fixtureMode = new URLSearchParams(window.location.search).get("fixture") === "demo";
   window.MAXESS_RESULT = result || (fixtureMode ? {
