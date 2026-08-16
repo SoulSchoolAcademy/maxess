@@ -1,0 +1,135 @@
+name: MAXESS Results — Deterministic Polish
+
+on:
+  push:
+    branches: [naya-results-master-instruction-set]
+
+permissions:
+  contents: write
+
+jobs:
+  polish:
+    if: "!contains(github.event.head_commit.message, '[skip maxess polish]')"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Apply V4 visual polish to authoritative Results artifact
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('MAXESS-RESULTS-10-GROOVE.html')
+          s = p.read_text(encoding='utf-8')
+          marker = '<!-- MAXESS RESULTS V4 POLISH -->'
+          if marker in s:
+              print('V4 already present; no-op')
+              raise SystemExit(0)
+          block = r'''<!-- MAXESS RESULTS V4 POLISH -->
+          <style id="maxess-results-v4-polish">
+          #maxess-results-10{--mx-v4-white:#fff;--mx-v4-ink:#0b0910;--mx-v4-purple:#9b5cff;--mx-v4-magenta:#e95dff;--mx-v4-blue:#54a8ff;--mx-v4-teal:#39d7c6;--mx-v4-green:#55dc9b;--mx-v4-yellow:#ffd85c;--mx-v4-orange:#ff9d4d;--mx-v4-red:#ff5b68}
+          #maxess-results-10 .mx-hero{display:block;min-height:auto;text-align:center;padding:clamp(70px,8vw,120px) clamp(18px,4vw,70px) clamp(56px,7vw,96px)}
+          #maxess-results-10 .mx-hero-grid{display:flex;flex-direction:column;gap:24px;width:min(1180px,96vw);margin:auto}
+          #maxess-results-10 .mx-hero-grid>*{width:100%}
+          #maxess-results-10 .mx-hero-grid .mx-score-orb{order:2;width:min(540px,82vw);margin:4px auto 0}
+          #maxess-results-10 .mx-hero-grid .mx-hero-copy{order:1;display:flex;flex-direction:column;align-items:center}
+          #maxess-results-10 .mx-hero-grid .mx-hero-actions{order:3;justify-content:center;margin-top:4px}
+          #maxess-results-10 .mx-hero-copy .mx-copy,#maxess-results-10 .mx-hero-copy .mx-proof{display:none!important}
+          #maxess-results-10 .mx-hero-copy .mx-title{font-size:clamp(38px,5.4vw,76px);margin-top:10px}
+          #maxess-results-10 .mx-score-orb{box-shadow:0 0 0 1px rgba(255,255,255,.18),inset 0 0 90px rgba(174,92,255,.24),0 42px 120px rgba(0,0,0,.62),0 0 130px rgba(148,74,255,.28);transform:translateZ(0);transition:box-shadow .7s ease,filter .7s ease}
+          #maxess-results-10 .mx-score-orb::before{inset:7%;border-color:rgba(255,255,255,.2);box-shadow:0 0 60px rgba(166,108,255,.2)}
+          #maxess-results-10 .mx-score strong{font-size:clamp(92px,12vw,170px)}
+          #maxess-results-10 .mx-section{padding-block:clamp(72px,8vw,128px)}
+          #maxess-results-10 .mx-section:nth-of-type(even){background:linear-gradient(180deg,rgba(255,255,255,.018),rgba(255,255,255,0))}
+          #maxess-results-10 .mx-section-head{margin-bottom:48px}
+          #maxess-results-10 .mx-section-head h2{font-weight:800}
+          #maxess-results-10 .mx-dim-grid{gap:14px}
+          #maxess-results-10 .mx-dim{position:relative;overflow:hidden;min-height:290px;padding:24px;border-radius:28px;background:linear-gradient(155deg,rgba(255,255,255,.075),rgba(255,255,255,.018));box-shadow:inset 0 1px rgba(255,255,255,.06),0 18px 55px rgba(0,0,0,.18)}
+          #maxess-results-10 .mx-dim::before{content:"";position:absolute;inset:18px;border-radius:50%;background:conic-gradient(from -90deg,rgba(155,92,255,.8),rgba(84,168,255,.65),rgba(57,215,198,.5),rgba(255,255,255,.05) 0);opacity:.12;filter:blur(1px);pointer-events:none}
+          #maxess-results-10 .mx-dim-head{position:relative;z-index:1}
+          #maxess-results-10 .mx-dim-head strong{font-size:30px}
+          #maxess-results-10 .mx-track{position:relative;z-index:1;height:8px;margin:26px 0 20px;background:rgba(255,255,255,.075)}
+          #maxess-results-10 .mx-track span{background:linear-gradient(90deg,#8c4eea,#d7b5ff,#5fe0c4);box-shadow:0 0 20px rgba(166,108,255,.42)}
+          #maxess-results-10 .mx-dim p,#maxess-results-10 .mx-lever{position:relative;z-index:1}
+          #maxess-results-10 .mx-insight-card{border-radius:36px;box-shadow:0 40px 120px rgba(0,0,0,.34),inset 0 1px rgba(255,255,255,.08)}
+          #maxess-results-10 .mx-quote{font-weight:720}
+          #maxess-results-10 .mx-naya-bridge .naya-avatar,#maxess-results-10 .naya-presence .naya-avatar{border-radius:50%!important;object-fit:cover;box-shadow:0 0 0 2px rgba(255,255,255,.18),0 0 34px rgba(166,108,255,.28)}
+          #maxess-results-10 .naya-presence{transition:transform .25s ease,filter .25s ease}
+          #maxess-results-10 .naya-presence:hover{transform:translateY(-2px);filter:brightness(1.04)}
+          @media(max-width:900px){#maxess-results-10 .mx-dim-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+          @media(max-width:620px){#maxess-results-10 .mx-dim-grid{grid-template-columns:1fr}#maxess-results-10 .mx-score-orb{width:min(430px,88vw)}#maxess-results-10 .mx-section{padding-block:56px}}
+          @media print{
+            #maxess-results-10{background:#fff!important;color:#111!important}
+            #maxess-results-10::before,#maxess-results-10::after{display:none!important}
+            #maxess-results-10 .mx-section,#maxess-results-10 .mx-insight-card,#maxess-results-10 .mx-dim,#maxess-results-10 .mx-list-row{background:#fff!important;color:#111!important;box-shadow:none!important;border-color:#d8d8d8!important}
+            #maxess-results-10 .mx-copy,#maxess-results-10 .mx-section-head p,#maxess-results-10 .mx-dim p,#maxess-results-10 .mx-list-row span,#maxess-results-10 .mx-note{color:#333!important}
+            #maxess-results-10 .mx-title,#maxess-results-10 .mx-section-head h2,#maxess-results-10 .mx-score strong,#maxess-results-10 .mx-quote,#maxess-results-10 .mx-dim h3,#maxess-results-10 .mx-dim strong{color:#111!important;background:none!important;-webkit-text-fill-color:#111!important}
+            #maxess-results-10 .mx-hero-actions,#maxess-results-10 button,#maxess-results-10 .mx-cta{display:none!important}
+            #maxess-results-10 .mx-score-orb{filter:none!important;box-shadow:none!important;background:#f5f5f5!important;color:#111!important}
+          }
+          </style>
+          <script>
+          (function(){
+            'use strict';
+            const root=document.getElementById('maxess-results-10');
+            if(!root)return;
+            const removeText=['You already have a meaningful AI foundation. Your next leap is leverage.','Your AI capability has shape'];
+            root.querySelectorAll('p,h1,h2,h3,h4,span,div').forEach(el=>{
+              const t=(el.textContent||'').replace(/\\s+/g,' ').trim();
+              if(removeText.some(x=>t===x)){const target=el.closest('p,div')||el; if(target!==root)target.remove();}
+            });
+            const result=window.MAXESS_RESULT||{};
+            const score=Number(result.overallScore??result.score);
+            if(Number.isFinite(score))root.style.setProperty('--mx-score',String(Math.max(0,Math.min(100,score))));
+            root.querySelectorAll('.mx-dim').forEach(card=>{
+              const node=card.querySelector('.mx-dim-head strong');
+              if(!node)return;
+              const n=parseFloat((node.textContent||'').replace(/[^0-9.]/g,''));
+              if(Number.isFinite(n))card.style.setProperty('--dim-score',String(Math.max(0,Math.min(100,n))));
+            });
+            const orb=root.querySelector('.mx-score-orb');
+            if(orb&&Number.isFinite(score)){
+              let c1='#ff5b68',c2='#ff9d4d';
+              if(score>=95){c1='#9b5cff';c2='#e95dff'}else if(score>=90){c1='#54a8ff';c2='#9b5cff'}else if(score>=85){c1='#39d7c6';c2='#54a8ff'}else if(score>=75){c1='#55dc9b';c2='#39d7c6'}else if(score>=65){c1='#ffd85c';c2='#55dc9b'}else if(score>=50){c1='#ff9d4d';c2='#ffd85c'}
+              orb.style.background=`radial-gradient(circle at 32% 25%,rgba(255,255,255,.32),transparent 10%),radial-gradient(circle at 50% 48%,${c1}33 0,${c2}1f 32%,#0b0710 72%,#030205 100%)`;
+              orb.style.boxShadow=`0 0 0 1px ${c2}66,inset 0 0 90px ${c1}35,0 42px 120px rgba(0,0,0,.62),0 0 130px ${c1}30`;
+            }
+            root.querySelectorAll('audio').forEach(a=>{
+              ['play','playing','pause','ended'].forEach(ev=>a.addEventListener(ev,()=>root.classList.toggle('naya-speaking',Array.from(root.querySelectorAll('audio')).some(x=>!x.paused&&!x.ended))));
+            });
+          })();
+          </script>
+          '''
+          s = s.replace('</body>', block + '\n</body>')
+          p.write_text(s, encoding='utf-8')
+          print('V4 visual polish injected')
+          PY
+
+      - name: Validate artifact
+        shell: bash
+        run: |
+          test -s MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'MAXESS RESULTS V4 POLISH' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'window.MAXESS_RESULT' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'prefers-reduced-motion' MAXESS-RESULTS-10-GROOVE.html || true
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          s=Path('MAXESS-RESULTS-10-GROOVE.html').read_text(encoding='utf-8')
+          assert s.count('<html')==1 and s.count('</html>')==1
+          assert s.count('<body')==1 and s.count('</body>')==1
+          assert s.count('<script')==s.count('</script>')
+          assert s.count('<style')==s.count('</style>')
+          assert 'MAXESS RESULTS V4 POLISH' in s
+          print('Structural checks passed')
+          PY
+
+      - name: Commit generated artifact
+        shell: bash
+        run: |
+          git config user.name 'Naya Master'
+          git config user.email 'naya-master@users.noreply.github.com'
+          git add MAXESS-RESULTS-10-GROOVE.html
+          if git diff --cached --quiet; then echo 'No artifact changes'; exit 0; fi
+          git commit -m 'feat(maxess): execute V4 Results visual polish [skip maxess polish]'
+          git push

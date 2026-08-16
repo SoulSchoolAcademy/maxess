@@ -1,0 +1,22 @@
+<!-- MAXESS Results Naya Experience Fix V2 — asset mapping correction and brand treatment -->
+<style id="naya-results-experience-v1-fix">
+#maxess-results-10 .naya-human-grid .naya-brand-mark{display:inline-flex;align-items:center;gap:10px;margin-top:18px;padding:8px 12px;border:1px solid rgba(255,255,255,.14);border-radius:999px;background:rgba(255,255,255,.04)}
+#maxess-results-10 .naya-human-grid .naya-brand-mark img{width:34px;height:34px;object-fit:contain;border:0;box-shadow:none;border-radius:50%}
+#maxess-results-10 .naya-human-grid .naya-brand-mark span{font-size:9px;letter-spacing:.15em;color:rgba(255,255,255,.65);font-weight:900}
+</style>
+<script>
+(function(){
+'use strict';
+const root=document.getElementById('maxess-results-10');
+if(!root||root.dataset.nayaExperienceFixApplied==='1')return;
+root.dataset.nayaExperienceFixApplied='1';
+const NAYA_DARK='https://i.postimg.cc/dVXw7sRN/grok-image-f75a6f12-4e3a-4c99-a334-5684ba0f7401.jpg';
+const NAYA_LIGHT='https://i.postimg.cc/RF3XFWJ7/grok-image-c6a924fd-1f75-4ac8-840d-35b224fb3e52.jpg';
+const BRAND='https://i.postimg.cc/Twqw14vv/ICON-LOGO.png';
+root.querySelectorAll('.naya-presence.naya-dark .naya-avatar').forEach(img=>img.src=NAYA_DARK);
+root.querySelectorAll('.naya-presence.naya-light .naya-avatar').forEach(img=>img.src=NAYA_LIGHT);
+root.querySelectorAll('p,div,span').forEach(el=>{const t=(el.textContent||'').replace(/\s+/g,' ').trim();if(t==='You already have a meaningful AI foundation. Your next leap is leverage.')((el.closest('p'))||el).remove()});
+const human=root.querySelector('.naya-human-grid');
+if(human&&!human.querySelector('.naya-brand-mark')){const mark=document.createElement('div');mark.className='naya-brand-mark';mark.innerHTML=`<img src="${BRAND}" alt="MAXESS / Human Maximus mark" loading="lazy"><span>THE HUMAN + AI SYSTEM</span>`;human.lastElementChild.appendChild(mark)}
+})();
+</script>

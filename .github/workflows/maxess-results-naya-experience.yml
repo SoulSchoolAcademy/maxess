@@ -1,0 +1,85 @@
+# NAYA LAW EXECUTION PIPELINE — deterministic Results experience application + proof gates
+name: MAXESS Results — Apply Naya Experience
+
+on:
+  push:
+    branches:
+      - naya-results-master-instruction-set
+    paths:
+      - '.naya/MAXESS-RESULTS-NAYA-EXPERIENCE-FRAGMENT.html'
+      - '.naya/MAXESS-RESULTS-NAYA-EXPERIENCE-FIX-V2.html'
+      - '.naya/MAXESS-RESULTS-NAYA-EXPERIENCE-FIX-V3.html'
+      - '.naya/MAXESS-RESULTS-NAYA-EXPERIENCE-FIX-V4.html'
+      - '.naya/MAXESS-RESULTS-NAYA-EXPERIENCE-FIX-V5.html'
+      - '.naya/MAXESS-RESULTS-NAYA-EXPERIENCE-FIX-V6.html'
+      - '.naya/MAXESS-RESULTS-NAYA-PROFILE-ASSETS.md'
+      - '.naya/apply_maxess_results_experience.py'
+      - '.naya/MAXESS-RESULTS-MASTER-INSTRUCTION-SET.md'
+      - '.naya/NAYA-GOVERNANCE.md'
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: write
+
+jobs:
+  apply-results-experience:
+    if: github.event_name == 'push' || github.event.pull_request.head.ref == 'naya-results-master-instruction-set'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: naya-results-master-instruction-set
+
+      - name: Apply deterministic Results experience patch
+        run: python3 .naya/apply_maxess_results_experience.py
+
+      - name: Structural safety checks
+        run: |
+          python3 - <<'PY2'
+          from pathlib import Path
+          p = Path('MAXESS-RESULTS-10-GROOVE.html')
+          s = p.read_text(encoding='utf-8')
+          checks = {
+              'MAXESS_RESULT data boundary': 'window.MAXESS_RESULT' in s,
+              'Results contract': 'MAXESS-RESULTS-CONTRACT-1' in s,
+              'Complete video system': 'ny-youtube-player' in s,
+              'Original CTA': 'Start Your Free Trial' in s,
+              'New hero': 'YOUR AI SCORE' in s,
+              'Naya presence': 'naya-presence' in s,
+              'Five dimensions': 'your-dimensions' in s,
+              'Biggest lever': 'biggest-lever' in s,
+              '18 Naya Masters': 'naya-masters' in s,
+              'Human + AI bridge': 'naya-human-bridge' in s,
+              'Final solution relocation': 'naya-final-solution' in s,
+              'V2 asset fix': 'naya-results-experience-v1-fix' in s,
+              'V3 hero purity': 'naya-results-experience-v3' in s,
+              'V4 refinement': 'maxess-results-v4-refinement' in s,
+              'V5 data guard': 'maxess-results-v5-guard' in s,
+              'V6 Naya profile layer': 'MAXESS-RESULTS-V6-NAYA-PROFILE' in s,
+              'Naya profile asset source': 'Naya%20Profile%20white.jpg' in s,
+          }
+          failed = [k for k, v in checks.items() if not v]
+          for k, v in checks.items(): print(('PASS' if v else 'FAIL') + ' — ' + k)
+          if failed: raise SystemExit('BLOCKED — structural checks failed: ' + ', '.join(failed))
+          if p.stat().st_size < 100000: raise SystemExit('BLOCKED — authoritative Results artifact unexpectedly small')
+          PY2
+
+      - name: Diff and whitespace check
+        run: |
+          git diff --check
+          git diff --stat
+
+      - name: Commit applied Results artifact
+        run: |
+          if git diff --quiet -- MAXESS-RESULTS-10-GROOVE.html; then
+            echo 'No Results artifact diff; nothing to commit.'
+            exit 0
+          fi
+          git config user.name 'Naya Master'
+          git config user.email 'naya-master@users.noreply.github.com'
+          git add -- MAXESS-RESULTS-10-GROOVE.html
+          git commit -m 'Apply MAXESS Results Naya experience V6 [skip ci]'
+          git push origin HEAD:naya-results-master-instruction-set

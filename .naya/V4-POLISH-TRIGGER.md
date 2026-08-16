@@ -1,0 +1,1 @@
+Trigger for the authoritative MAXESS Results V4 polish workflow. The workflow is responsible for the actual artifact mutation and validation.
