@@ -1,0 +1,986 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#07050b">
+  <meta name="color-scheme" content="dark">
+  <title>MAXESS — Your AI Mastery Results</title>
+  <style>
+    :root {
+      --bg: #07050b;
+      --panel: rgba(255,255,255,.055);
+      --panel-strong: rgba(255,255,255,.085);
+      --line: rgba(255,255,255,.13);
+      --text: #fff;
+      --soft: rgba(255,255,255,.72);
+      --muted: rgba(255,255,255,.48);
+      --purple: #a86cff;
+      --violet: #d8b9ff;
+      --gold: #f4d48b;
+      --green: #59e2b1;
+      --blue: #66b7ff;
+      --max: 1480px;
+      --read: 940px;
+      --ease: cubic-bezier(.2,.8,.2,1);
+    }
+
+    #maxess-results-v17,
+    #maxess-results-v17 * { box-sizing: border-box; }
+
+    #maxess-results-v17 {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      isolation: isolate;
+      color: var(--text);
+      background: var(--bg);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+
+    #maxess-results-v17::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+      background:
+        radial-gradient(ellipse 70% 30% at 50% 0, rgba(168,108,255,.28), transparent 70%),
+        radial-gradient(ellipse 45% 35% at 0 28%, rgba(104,62,255,.10), transparent 72%),
+        radial-gradient(ellipse 45% 35% at 100% 52%, rgba(60,160,255,.07), transparent 72%),
+        linear-gradient(180deg, #14091d 0, #0a0710 24%, #07050b 58%, #040306 100%);
+    }
+
+    #maxess-results-v17::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      opacity: .13;
+      background-image: radial-gradient(rgba(255,255,255,.22) .5px, transparent .7px);
+      background-size: 5px 5px;
+      mask-image: linear-gradient(#000, transparent 75%);
+    }
+
+    #maxess-results-v17 a { color: inherit; }
+    #maxess-results-v17 button { font: inherit; }
+    #maxess-results-v17 img { max-width: 100%; }
+
+    .mxv17-container {
+      width: min(var(--max), calc(100% - 48px));
+      margin-inline: auto;
+    }
+
+    .mxv17-section {
+      position: relative;
+      padding: clamp(72px, 8vw, 128px) 0;
+    }
+
+    .mxv17-reading {
+      width: min(var(--read), 100%);
+      margin-inline: auto;
+    }
+
+    .mxv17-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--violet);
+      font-size: 11px;
+      font-weight: 850;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+    }
+
+    .mxv17-eyebrow::before {
+      content: "";
+      width: 30px;
+      height: 1px;
+      background: linear-gradient(90deg, var(--purple), transparent);
+    }
+
+    .mxv17-title {
+      margin: 14px 0 0;
+      font-size: clamp(42px, 6vw, 88px);
+      line-height: .94;
+      letter-spacing: -.055em;
+      font-weight: 780;
+    }
+
+    .mxv17-title em {
+      color: var(--violet);
+      font-style: normal;
+    }
+
+    .mxv17-copy {
+      max-width: 760px;
+      margin: 20px 0 0;
+      color: var(--soft);
+      font-size: clamp(16px, 1.4vw, 20px);
+      line-height: 1.6;
+    }
+
+    .mxv17-hero {
+      min-height: min(860px, 94vh);
+      display: flex;
+      align-items: center;
+      padding-top: 90px;
+    }
+
+    .mxv17-hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(360px, .75fr);
+      gap: clamp(40px, 7vw, 110px);
+      align-items: center;
+    }
+
+    .mxv17-hero-copy { max-width: 780px; }
+
+    .mxv17-hero-copy h1 { max-width: 760px; }
+
+    .mxv17-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 30px;
+    }
+
+    .mxv17-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 54px;
+      padding: 0 22px;
+      border: 1px solid var(--line);
+      border-radius: 15px;
+      color: #fff;
+      text-decoration: none;
+      font-weight: 800;
+      cursor: pointer;
+      background: rgba(255,255,255,.05);
+      transition: transform .22s var(--ease), filter .22s ease, background .22s ease;
+    }
+
+    .mxv17-button:hover { transform: translateY(-3px); filter: brightness(1.08); }
+    .mxv17-button:focus-visible { outline: 2px solid var(--violet); outline-offset: 4px; }
+
+    .mxv17-button-primary {
+      background: linear-gradient(135deg, #d9bcff, #8448e7 48%, #42157b);
+      box-shadow: 0 16px 36px rgba(105,48,183,.30), inset 0 1px rgba(255,255,255,.65);
+    }
+
+    .mxv17-proof {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 42px;
+    }
+
+    .mxv17-proof-item {
+      padding: 14px 16px;
+      border-left: 1px solid rgba(216,185,255,.28);
+    }
+
+    .mxv17-proof-item strong { display: block; font-size: 13px; }
+    .mxv17-proof-item span { display: block; margin-top: 3px; color: var(--muted); font-size: 11px; }
+
+    .mxv17-orb {
+      position: relative;
+      width: min(440px, 78vw);
+      aspect-ratio: 1;
+      margin-inline: auto;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 32% 24%, rgba(255,255,255,.27), transparent 10%),
+        radial-gradient(circle at 50% 50%, #2b1645 0, #14091f 44%, #08050d 70%, #030205 100%);
+      border: 1px solid rgba(255,255,255,.15);
+      box-shadow: inset 0 0 75px rgba(174,92,255,.18), 0 40px 110px rgba(0,0,0,.65), 0 0 110px rgba(148,74,255,.18);
+    }
+
+    .mxv17-orb::before,
+    .mxv17-orb::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .mxv17-orb::before {
+      inset: 9%;
+      border: 1px solid rgba(216,185,255,.30);
+      box-shadow: 0 0 45px rgba(166,108,255,.15);
+    }
+
+    .mxv17-orb::after {
+      inset: 17%;
+      border: 1px solid rgba(255,255,255,.08);
+    }
+
+    .mxv17-orb.is-speaking { animation: mxv17-pulse 1.9s ease-in-out infinite; }
+
+    @keyframes mxv17-pulse {
+      50% { transform: scale(1.018); box-shadow: inset 0 0 95px rgba(174,92,255,.25), 0 40px 110px rgba(0,0,0,.65), 0 0 150px rgba(148,74,255,.28); }
+    }
+
+    .mxv17-score { position: relative; z-index: 1; text-align: center; }
+    .mxv17-score strong { display: block; font-size: clamp(94px, 12vw, 158px); line-height: .78; letter-spacing: -.09em; }
+    .mxv17-score span { display: block; margin-top: 24px; color: var(--violet); font-size: 11px; font-weight: 900; letter-spacing: .2em; }
+
+    .mxv17-band {
+      display: inline-flex;
+      margin-top: 18px;
+      padding: 8px 13px;
+      border: 1px solid rgba(216,185,255,.28);
+      border-radius: 999px;
+      color: #fff;
+      background: rgba(168,108,255,.08);
+      font-size: 11px;
+      font-weight: 850;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    .mxv17-profile {
+      display: grid;
+      grid-template-columns: 72px 1fr auto;
+      gap: 18px;
+      align-items: center;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: rgba(255,255,255,.04);
+    }
+
+    .mxv17-avatar { width: 72px; height: 72px; border-radius: 20px; object-fit: cover; border: 1px solid rgba(255,255,255,.18); }
+    .mxv17-kicker { color: var(--violet); font-size: 10px; font-weight: 900; letter-spacing: .16em; text-transform: uppercase; }
+    .mxv17-name { margin-top: 4px; font-size: 24px; font-weight: 780; letter-spacing: -.03em; }
+    .mxv17-role { color: var(--muted); font-size: 13px; }
+
+    .mxv17-naya-status {
+      padding: 10px 13px;
+      border: 1px solid rgba(216,185,255,.22);
+      border-radius: 999px;
+      color: var(--violet);
+      background: rgba(168,108,255,.07);
+      font-size: 11px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .mxv17-naya-card {
+      margin-top: 16px;
+      padding: 28px;
+      border: 1px solid rgba(216,185,255,.18);
+      border-radius: 24px;
+      background: linear-gradient(135deg, rgba(168,108,255,.11), rgba(255,255,255,.025));
+    }
+
+    .mxv17-naya-card p { margin: 0; color: var(--soft); font-size: 18px; line-height: 1.55; }
+    .mxv17-naya-card strong { color: #fff; }
+    .mxv17-data-note { margin: 14px 0 0; color: var(--muted); font-size: 11px; }
+
+    .mxv17-section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 30px;
+      margin-bottom: 34px;
+    }
+
+    .mxv17-section-head h2 { margin: 8px 0 0; font-size: clamp(32px, 4vw, 60px); line-height: .98; letter-spacing: -.045em; }
+    .mxv17-section-head > p { max-width: 540px; margin: 0; color: var(--muted); font-size: 14px; line-height: 1.6; }
+
+    .mxv17-insight {
+      padding: clamp(70px, 8vw, 120px) 0;
+    }
+
+    .mxv17-insight-panel {
+      padding: clamp(30px, 5vw, 64px);
+      border: 1px solid rgba(216,185,255,.17);
+      border-radius: 32px;
+      background: linear-gradient(135deg, rgba(168,108,255,.11), rgba(255,255,255,.025) 50%, rgba(0,0,0,.14));
+    }
+
+    .mxv17-quote { max-width: 1100px; margin: 0; font-size: clamp(28px, 4vw, 54px); line-height: 1.07; letter-spacing: -.045em; }
+    .mxv17-quote strong { color: var(--violet); }
+    .mxv17-quote-note { max-width: 760px; margin: 22px 0 0; color: var(--soft); }
+
+    .mxv17-dimensions { display: grid; grid-template-columns: repeat(5, minmax(0,1fr)); gap: 12px; }
+
+    .mxv17-dimension {
+      min-height: 330px;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: linear-gradient(160deg, rgba(255,255,255,.06), rgba(255,255,255,.018));
+      transition: transform .24s var(--ease), border-color .24s ease;
+    }
+
+    .mxv17-dimension:hover { transform: translateY(-5px); border-color: rgba(216,185,255,.30); }
+    .mxv17-dimension-head { display: flex; justify-content: space-between; gap: 10px; }
+    .mxv17-dimension h3 { margin: 0; font-size: 16px; line-height: 1.15; }
+    .mxv17-dimension-score { font-size: 25px; font-weight: 800; line-height: 1; }
+    .mxv17-track { height: 5px; margin: 24px 0 18px; border-radius: 999px; background: rgba(255,255,255,.08); overflow: hidden; }
+    .mxv17-track span { display: block; width: var(--score); height: 100%; border-radius: inherit; background: linear-gradient(90deg, #7540ca, #d7b4ff); }
+    .mxv17-dimension p { margin: 0; color: var(--soft); font-size: 13px; line-height: 1.55; }
+    .mxv17-lever { margin-top: 20px; padding-top: 15px; border-top: 1px solid var(--line); }
+    .mxv17-lever small { color: var(--violet); font-size: 9px; font-weight: 900; letter-spacing: .14em; }
+    .mxv17-lever strong { display: block; margin-top: 5px; font-size: 12px; line-height: 1.4; }
+
+    .mxv17-pattern-grid { display: grid; grid-template-columns: minmax(320px,.85fr) minmax(0,1.15fr); gap: clamp(36px,7vw,100px); align-items: center; }
+
+    .mxv17-radar { position: relative; width: min(540px, 90vw); aspect-ratio: 1; margin-inline: auto; }
+    .mxv17-radar svg { width: 100%; height: 100%; overflow: visible; }
+    .mxv17-radar-center { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; pointer-events: none; }
+    .mxv17-radar-center div { transform: translateY(3px); }
+    .mxv17-radar-center strong { display: block; font-size: 52px; line-height: 1; letter-spacing: -.07em; }
+    .mxv17-radar-center span { color: var(--muted); font-size: 9px; letter-spacing: .16em; text-transform: uppercase; }
+
+    .mxv17-signal {
+      padding: 34px;
+      border: 1px solid rgba(89,226,177,.22);
+      border-radius: 28px;
+      background: linear-gradient(135deg, rgba(89,226,177,.08), rgba(255,255,255,.025));
+    }
+
+    .mxv17-signal-label { color: var(--green); font-size: 10px; font-weight: 900; letter-spacing: .16em; }
+    .mxv17-signal h3 { margin: 12px 0 0; font-size: clamp(34px, 4vw, 58px); line-height: .95; letter-spacing: -.05em; }
+    .mxv17-signal p { margin: 18px 0 0; color: var(--soft); }
+    .mxv17-signal-score { margin-top: 22px; color: var(--muted); font-size: 12px; }
+    .mxv17-signal-score strong { color: #fff; font-size: 28px; }
+
+    .mxv17-lever-panel {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 42px;
+      padding: clamp(28px, 4vw, 50px);
+      border: 1px solid rgba(244,212,139,.22);
+      border-radius: 30px;
+      background: linear-gradient(135deg, rgba(244,212,139,.08), rgba(255,255,255,.025));
+    }
+
+    .mxv17-lever-score strong { display: block; font-size: clamp(76px, 9vw, 120px); line-height: .8; letter-spacing: -.08em; }
+    .mxv17-lever-score span { display: block; margin-top: 20px; color: var(--gold); font-size: 10px; font-weight: 900; letter-spacing: .14em; text-transform: uppercase; }
+    .mxv17-lever-panel h2 { margin: 0; font-size: clamp(30px, 4vw, 54px); line-height: 1; letter-spacing: -.045em; }
+    .mxv17-lever-panel p { color: var(--soft); }
+    .mxv17-from-to { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 24px; }
+    .mxv17-from-to div { padding: 18px; border: 1px solid var(--line); border-radius: 17px; background: rgba(255,255,255,.035); }
+    .mxv17-from-to small { display: block; color: var(--gold); font-size: 9px; font-weight: 900; letter-spacing: .14em; }
+    .mxv17-from-to strong { display: block; margin-top: 6px; }
+    .mxv17-from-to span { display: block; margin-top: 5px; color: var(--muted); font-size: 12px; }
+
+    .mxv17-steps { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
+    .mxv17-step { padding: 24px; border: 1px solid var(--line); border-radius: 22px; background: var(--panel); }
+    .mxv17-step small { color: var(--violet); font-size: 9px; font-weight: 900; letter-spacing: .15em; }
+    .mxv17-step h3 { margin: 11px 0 0; font-size: 21px; }
+    .mxv17-step p { margin: 8px 0 0; color: var(--muted); font-size: 13px; }
+
+    .mxv17-masters { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; }
+    .mxv17-master { padding: 20px; border: 1px solid var(--line); border-radius: 20px; background: var(--panel); }
+    .mxv17-master.is-recommended { border-color: rgba(216,185,255,.48); background: linear-gradient(135deg, rgba(168,108,255,.11), rgba(255,255,255,.025)); box-shadow: inset 0 0 0 1px rgba(216,185,255,.06); }
+    .mxv17-master-top { display: flex; justify-content: space-between; gap: 15px; }
+    .mxv17-master-number { color: var(--violet); font-size: 10px; font-weight: 900; letter-spacing: .12em; }
+    .mxv17-master-tag { color: var(--gold); font-size: 9px; font-weight: 900; letter-spacing: .12em; }
+    .mxv17-master h3 { margin: 10px 0 0; font-size: 18px; }
+    .mxv17-master p { margin: 7px 0 0; color: var(--muted); font-size: 12px; }
+
+    .mxv17-naya-panel {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 28px;
+      align-items: center;
+      padding: 28px;
+      border: 1px solid rgba(216,185,255,.20);
+      border-radius: 28px;
+      background: linear-gradient(135deg, rgba(168,108,255,.10), rgba(255,255,255,.025));
+    }
+
+    .mxv17-naya-mini-orb { width: 110px; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle at 34% 27%, #fff, transparent 8%), radial-gradient(circle, #6d3fa2, #160a22 65%, #060409); box-shadow: 0 0 55px rgba(168,108,255,.25); }
+    .mxv17-naya-panel h2 { margin: 0; font-size: clamp(28px, 3.5vw, 48px); line-height: 1; letter-spacing: -.045em; }
+    .mxv17-naya-panel p { margin: 14px 0 0; color: var(--soft); }
+
+    .mxv17-system { text-align: center; }
+    .mxv17-system .mxv17-copy { margin-inline: auto; }
+    .mxv17-system-chain { display: flex; flex-wrap: wrap; justify-content: center; gap: 9px; margin-top: 34px; }
+    .mxv17-system-chain span { padding: 11px 14px; border: 1px solid var(--line); border-radius: 999px; color: var(--soft); background: var(--panel); font-size: 11px; font-weight: 800; }
+
+    .mxv17-final { padding-bottom: 100px; text-align: center; }
+    .mxv17-final .mxv17-title { max-width: 850px; margin-inline: auto; }
+    .mxv17-final .mxv17-copy { margin-inline: auto; }
+
+    .mxv17-video { margin-top: 42px; overflow: hidden; border: 1px solid var(--line); border-radius: 24px; background: #000; aspect-ratio: 16/9; }
+    .mxv17-video iframe { width: 100%; height: 100%; border: 0; display: block; }
+
+    .mxv17-empty { padding: 100px 24px; text-align: center; }
+    .mxv17-empty h1 { font-size: clamp(36px, 5vw, 70px); line-height: .95; letter-spacing: -.05em; }
+    .mxv17-empty p { max-width: 650px; margin: 18px auto 0; color: var(--soft); }
+
+    @media (max-width: 1080px) {
+      .mxv17-hero-grid, .mxv17-pattern-grid { grid-template-columns: 1fr; }
+      .mxv17-hero-copy { max-width: 900px; }
+      .mxv17-orb { width: min(420px, 68vw); }
+      .mxv17-dimensions { grid-template-columns: repeat(2,1fr); }
+      .mxv17-dimension:last-child { grid-column: 1 / -1; }
+      .mxv17-steps { grid-template-columns: repeat(2,1fr); }
+      .mxv17-masters { grid-template-columns: repeat(2,1fr); }
+    }
+
+    @media (max-width: 700px) {
+      .mxv17-container { width: min(var(--max), calc(100% - 32px)); }
+      .mxv17-section { padding: 64px 0; }
+      .mxv17-hero { padding-top: 70px; }
+      .mxv17-proof { grid-template-columns: 1fr; }
+      .mxv17-profile { grid-template-columns: 58px 1fr; }
+      .mxv17-avatar { width: 58px; height: 58px; border-radius: 16px; }
+      .mxv17-naya-status { grid-column: 1 / -1; width: fit-content; }
+      .mxv17-section-head { display: block; }
+      .mxv17-section-head > p { margin-top: 16px; }
+      .mxv17-dimensions, .mxv17-steps, .mxv17-masters { grid-template-columns: 1fr; }
+      .mxv17-dimension:last-child { grid-column: auto; }
+      .mxv17-lever-panel { grid-template-columns: 1fr; gap: 30px; }
+      .mxv17-from-to { grid-template-columns: 1fr; }
+      .mxv17-naya-panel { grid-template-columns: 1fr; }
+      .mxv17-naya-mini-orb { width: 90px; }
+      .mxv17-actions .mxv17-button { width: 100%; }
+    }
+
+    @media (max-width: 390px) {
+      .mxv17-title { font-size: 40px; }
+      .mxv17-orb { width: 82vw; }
+      .mxv17-score strong { font-size: 88px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #maxess-results-v17 *, #maxess-results-v17 *::before, #maxess-results-v17 *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
+    }
+
+    @media print {
+      #maxess-results-v17 { color: #111; background: #fff; }
+      #maxess-results-v17::before, #maxess-results-v17::after { display: none; }
+      #maxess-results-v17 .mxv17-section { padding: 36px 0; break-inside: avoid; }
+      #maxess-results-v17 .mxv17-button, #maxess-results-v17 .mxv17-actions { display: none; }
+      #maxess-results-v17 .mxv17-dimension, #maxess-results-v17 .mxv17-step, #maxess-results-v17 .mxv17-master, #maxess-results-v17 .mxv17-profile, #maxess-results-v17 .mxv17-naya-card, #maxess-results-v17 .mxv17-insight-panel, #maxess-results-v17 .mxv17-signal, #maxess-results-v17 .mxv17-lever-panel, #maxess-results-v17 .mxv17-naya-panel { color: #111; background: #fff; border-color: #bbb; box-shadow: none; }
+      #maxess-results-v17 .mxv17-copy, #maxess-results-v17 .mxv17-section-head > p, #maxess-results-v17 .mxv17-dimension p, #maxess-results-v17 .mxv17-master p, #maxess-results-v17 .mxv17-step p, #maxess-results-v17 .mxv17-naya-card p, #maxess-results-v17 .mxv17-naya-panel p { color: #333; }
+      #maxess-results-v17 .mxv17-orb { box-shadow: none; border-color: #bbb; }
+      #maxess-results-v17 .mxv17-score strong { color: #111; }
+    }
+  </style>
+</head>
+<body>
+  <main id="maxess-results-v17" data-contract="MAXESS-RESULTS-CONTRACT-1" data-version="V17"></main>
+
+  <script>
+    (function () {
+      'use strict';
+
+      /* ================================================================
+         MAXESS RESULTS V17
+         Source architecture:
+         1. Contract bootstrap
+         2. Normalization
+         3. Derived insights
+         4. Component renderers
+         5. Page assembly
+         6. Interaction binding
+         7. Ready event
+         ================================================================ */
+
+      var APP = {
+        root: document.getElementById('maxess-results-v17'),
+        result: null,
+        state: null,
+        config: {
+          avatarFallback: 'https://i.postimg.cc/d1nncN9F/Naya-and-shawn-ok-44-a.png',
+          video: 'https://www.youtube-nocookie.com/embed/8tApdV0UpRs?rel=0&modestbranding=1&playsinline=1&vq=hd1080',
+          masters: [
+            ['Writing & Communication', 'Write clearly and make meaning easy to understand.'],
+            ['Research & Information', 'Find evidence, context and signal.'],
+            ['Brainstorming & Ideas', 'Generate possibilities and useful angles.'],
+            ['Content Creation', 'Turn ideas into valuable content.'],
+            ['Business & Strategy', 'Connect decisions to outcomes.'],
+            ['Marketing & Sales', 'Translate value into action.'],
+            ['Learning & Education', 'Accelerate understanding and teaching.'],
+            ['Coding & Software', 'Build, test and improve software.'],
+            ['Images & Visual Creation', 'Make ideas visible and memorable.'],
+            ['Video & Media', 'Create compelling media experiences.'],
+            ['Audio & Music', 'Shape sound, voice and atmosphere.'],
+            ['Data & Analysis', 'Work with evidence and patterns.'],
+            ['Productivity & Organization', 'Turn intention into reliable execution.'],
+            ['Career & Professional Growth', 'Build capability and opportunity.'],
+            ['Decision Making', 'Make clearer, better-informed choices.'],
+            ['Creative Development', 'Develop original concepts and work.'],
+            ['Systems & Automation', 'Turn repeated work into systems.'],
+            ['AI Orchestration', 'Coordinate AI capabilities into a larger system.']
+          ],
+          dimensionDefaults: [
+            ['Direction', 'Define the outcome before asking AI to produce it.', 'Create a visible success test.'],
+            ['Communication', 'Give AI enough context, intent and constraints to understand the real job.', 'Turn strong context into reusable briefs.'],
+            ['Evaluation', 'Judge output against an explicit standard instead of accepting the first answer.', 'Use a scorecard before accepting important work.'],
+            ['Iteration', 'Improve useful work through deliberate cycles rather than stopping at version one.', 'Make create → score → improve → repeat explicit.'],
+            ['Systems Thinking', 'Connect individual AI tasks to repeatable workflows and larger outcomes.', 'Convert repeated work into reusable systems.']
+          ],
+          leverageWeights: { Direction: 1.00, Communication: .95, Evaluation: 1.20, Iteration: 1.15, 'Systems Thinking': 1.30 }
+        }
+      };
+
+      function clampScore(value) {
+        var number = Number(value);
+        if (!isFinite(number)) return 0;
+        return Math.max(0, Math.min(100, number));
+      }
+
+      function escapeHtml(value) {
+        return String(value == null ? '' : value)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+
+      function decodeQueryResult() {
+        var encoded = new URLSearchParams(window.location.search).get('result');
+        if (!encoded) return null;
+        try {
+          var normalized = encoded.replace(/-/g, '+').replace(/_/g, '/');
+          while (normalized.length % 4) normalized += '=';
+          var binary = atob(normalized);
+          var bytes = new Uint8Array(binary.length);
+          for (var i = 0; i < binary.length; i += 1) bytes[i] = binary.charCodeAt(i);
+          return JSON.parse(new TextDecoder().decode(bytes));
+        } catch (error) {
+          console.warn('MAXESS result payload could not be decoded.', error);
+          return null;
+        }
+      }
+
+      function demoResult() {
+        return {
+          overallScore: 82,
+          band: 'Advancing',
+          profile: { name: 'Alex Morgan', title: 'AI Builder' },
+          dimensions: [
+            { id: '1', name: 'Direction', score: 86 },
+            { id: '2', name: 'Communication', score: 91 },
+            { id: '3', name: 'Evaluation', score: 79 },
+            { id: '4', name: 'Iteration', score: 74 },
+            { id: '5', name: 'Systems Thinking', score: 68 }
+          ]
+        };
+      }
+
+      function bootstrapResult() {
+        var productionResult = window.MAXESS_RESULT || null;
+        var queryResult = decodeQueryResult();
+        var fixtureEnabled = new URLSearchParams(window.location.search).get('fixture') === 'demo';
+        APP.result = productionResult || queryResult || (fixtureEnabled ? demoResult() : null);
+        return APP.result;
+      }
+
+      function normalizeDimensions(result) {
+        var source = Array.isArray(result.dimensions) ? result.dimensions : [];
+        var normalized = source.slice(0, 5).map(function (dimension, index) {
+          var fallback = APP.config.dimensionDefaults[index];
+          return {
+            id: dimension.id || String(index + 1),
+            name: dimension.name || fallback[0],
+            score: clampScore(dimension.score != null ? dimension.score : dimension.value),
+            insight: dimension.insight || dimension.description || fallback[1],
+            lever: dimension.lever || fallback[2]
+          };
+        });
+
+        while (normalized.length < 5) {
+          var fallback = APP.config.dimensionDefaults[normalized.length];
+          normalized.push({ id: String(normalized.length + 1), name: fallback[0], score: 0, insight: fallback[1], lever: fallback[2] });
+        }
+        return normalized;
+      }
+
+      function bandFor(score) {
+        if (score >= 91) return 'Mastering';
+        if (score >= 76) return 'Advancing';
+        if (score >= 51) return 'Developing';
+        return 'Foundation';
+      }
+
+      function deriveState(result) {
+        var dimensions = normalizeDimensions(result);
+        var overall = clampScore(result.overallScore != null ? result.overallScore : result.score);
+        if (!overall) {
+          overall = dimensions.reduce(function (sum, item) { return sum + item.score; }, 0) / dimensions.length;
+        }
+
+        var strongest = dimensions.reduce(function (best, item) { return item.score > best.score ? item : best; }, dimensions[0]);
+        var biggestLever = dimensions.reduce(function (best, item) {
+          var currentWeight = APP.config.leverageWeights[item.name] || 1;
+          var bestWeight = APP.config.leverageWeights[best.name] || 1;
+          var currentOpportunity = (100 - item.score) * currentWeight;
+          var bestOpportunity = (100 - best.score) * bestWeight;
+          return currentOpportunity > bestOpportunity ? item : best;
+        }, dimensions[0]);
+
+        var profile = result.profile || result.personalProfile || {};
+        var firstName = String(profile.name || result.name || 'there').trim().split(/\s+/)[0];
+
+        APP.state = {
+          overall: Math.round(overall),
+          band: result.band || bandFor(overall),
+          dimensions: dimensions,
+          strongest: strongest,
+          biggestLever: biggestLever,
+          profile: {
+            name: profile.name || result.name || 'Your MAXESS Profile',
+            title: profile.title || profile.role || 'MAXESS Participant',
+            company: profile.company || '',
+            avatar: profile.avatar || profile.avatarUrl || APP.config.avatarFallback,
+            firstName: firstName
+          }
+        };
+        return APP.state;
+      }
+
+      function renderHero(state) {
+        return `
+          <section class="mxv17-section mxv17-hero" aria-labelledby="mxv17-hero-title">
+            <div class="mxv17-container mxv17-hero-grid">
+              <div class="mxv17-hero-copy">
+                <div class="mxv17-eyebrow">MAXESS AI MASTERY ASSESSMENT</div>
+                <h1 class="mxv17-title" id="mxv17-hero-title">Your AI capability has a <em>pattern.</em></h1>
+                <p class="mxv17-copy">Your score tells you where you are. Your MAXESS report shows what is working, what has the greatest leverage, and what to do next.</p>
+                <div class="mxv17-actions">
+                  <a class="mxv17-button mxv17-button-primary" href="#mxv17-profile">Read My Report ↓</a>
+                  <button class="mxv17-button" type="button" data-action="print">Print / Save PDF</button>
+                </div>
+                <div class="mxv17-proof" aria-label="Report highlights">
+                  <div class="mxv17-proof-item"><strong>5 dimensions</strong><span>See the shape behind the score.</span></div>
+                  <div class="mxv17-proof-item"><strong>1 strongest signal</strong><span>Know what to build from.</span></div>
+                  <div class="mxv17-proof-item"><strong>1 biggest lever</strong><span>Know where improvement pays off.</span></div>
+                </div>
+              </div>
+              <div>
+                <div class="mxv17-orb" id="mxv17-score-orb" role="img" aria-label="Your MAXESS AI score is ${state.overall} out of 100">
+                  <div class="mxv17-score"><strong>${state.overall}</strong><span>YOUR AI SCORE · OUT OF 100</span><div class="mxv17-band">${escapeHtml(state.band)}</div></div>
+                </div>
+              </div>
+            </div>
+          </section>`;
+      }
+
+      function renderProfile(state) {
+        var role = state.profile.title + (state.profile.company ? ' · ' + state.profile.company : '');
+        return `
+          <section class="mxv17-section" id="mxv17-profile" aria-labelledby="mxv17-profile-title">
+            <div class="mxv17-container">
+              <div class="mxv17-profile">
+                <img class="mxv17-avatar" src="${escapeHtml(state.profile.avatar)}" alt="${escapeHtml(state.profile.name)} profile">
+                <div>
+                  <div class="mxv17-kicker" id="mxv17-profile-title">Personal Profile</div>
+                  <div class="mxv17-name">${escapeHtml(state.profile.name)}</div>
+                  <div class="mxv17-role">${escapeHtml(role)}</div>
+                </div>
+                <div class="mxv17-naya-status" id="mxv17-naya-status">Naya is reading your result</div>
+              </div>
+              <div class="mxv17-naya-card" aria-labelledby="mxv17-naya-intro">
+                <p id="mxv17-naya-intro">Hi ${escapeHtml(state.profile.firstName)}. <strong>I can see a real pattern here.</strong> Your strongest signal is <strong>${escapeHtml(state.strongest.name)}</strong>, while your highest-leverage opportunity is <strong>${escapeHtml(state.biggestLever.name)}</strong>. Let's look at why — and what I'd do next.</p>
+                <div class="mxv17-data-note">This interpretation consumes MAXESS_RESULT. The Results layer does not recalculate the assessment.</div>
+              </div>
+            </div>
+          </section>`;
+      }
+
+      function renderInterpretation() {
+        return `
+          <section class="mxv17-section mxv17-insight" aria-labelledby="mxv17-meaning-title">
+            <div class="mxv17-container mxv17-reading">
+              <div class="mxv17-insight-panel">
+                <div class="mxv17-eyebrow">YOUR REPORT</div>
+                <h2 class="mxv17-quote" id="mxv17-meaning-title">The number tells you <strong>where.</strong> The report tells you <strong>why.</strong></h2>
+                <p class="mxv17-quote-note">A useful result is more than a score. It is a map of the capabilities you already have, the pattern they create together, and the next improvement that can create the most leverage.</p>
+              </div>
+            </div>
+          </section>`;
+      }
+
+      function renderDimensions(state) {
+        var cards = state.dimensions.map(function (dimension) {
+          return `
+            <article class="mxv17-dimension">
+              <div class="mxv17-dimension-head">
+                <h3>${escapeHtml(dimension.name)}</h3>
+                <div class="mxv17-dimension-score">${Math.round(dimension.score)}</div>
+              </div>
+              <div class="mxv17-track" aria-label="${escapeHtml(dimension.name)} score ${Math.round(dimension.score)} out of 100"><span style="--score:${dimension.score}%"></span></div>
+              <p>${escapeHtml(dimension.insight)}</p>
+              <div class="mxv17-lever"><small>LEVER</small><strong>${escapeHtml(dimension.lever)}</strong></div>
+            </article>`;
+        }).join('');
+
+        return `
+          <section class="mxv17-section" aria-labelledby="mxv17-dimensions-title">
+            <div class="mxv17-container">
+              <div class="mxv17-section-head">
+                <div><div class="mxv17-eyebrow">FIVE DIMENSIONS</div><h2 id="mxv17-dimensions-title">Your capability has shape.</h2></div>
+                <p>Five dimensions give your score evidence. Read the instruments first. Then read the pattern, signal and lever they create together.</p>
+              </div>
+              <div class="mxv17-dimensions">${cards}</div>
+            </div>
+          </section>`;
+      }
+
+      function polarPoint(index, value, radius, center) {
+        var angle = (-Math.PI / 2) + (index * Math.PI * 2 / 5);
+        var distance = radius * (value / 100);
+        return { x: center + Math.cos(angle) * distance, y: center + Math.sin(angle) * distance };
+      }
+
+      function polygonPoints(value, radius, center) {
+        return [0,1,2,3,4].map(function (index) {
+          var point = polarPoint(index, value, radius, center);
+          return point.x.toFixed(1) + ',' + point.y.toFixed(1);
+        }).join(' ');
+      }
+
+      function renderRadar(state) {
+        var size = 560;
+        var center = 280;
+        var radius = 210;
+        var rings = [20,40,60,80,100].map(function (value) { return `<polygon points="${polygonPoints(value, radius, center)}" fill="none" stroke="rgba(255,255,255,.10)" stroke-width="1"/>`; }).join('');
+        var spokes = [0,1,2,3,4].map(function (index) { var point = polarPoint(index, 100, radius, center); return `<line x1="${center}" y1="${center}" x2="${point.x.toFixed(1)}" y2="${point.y.toFixed(1)}" stroke="rgba(255,255,255,.10)"/>`; }).join('');
+        var values = state.dimensions.map(function (dimension) { return dimension.score; });
+        var dataPoints = polygonPoints(values[0], radius, center);
+        var data = [0,1,2,3,4].map(function (index) { var point = polarPoint(index, values[index], radius, center); return point.x.toFixed(1) + ',' + point.y.toFixed(1); }).join(' ');
+        var labels = state.dimensions.map(function (dimension, index) { var point = polarPoint(index, 119, radius, center); return `<text x="${point.x.toFixed(1)}" y="${point.y.toFixed(1)}" fill="rgba(255,255,255,.70)" font-size="12" text-anchor="middle" dominant-baseline="middle">${escapeHtml(dimension.name)}</text>`; }).join('');
+        var dots = state.dimensions.map(function (dimension, index) { var point = polarPoint(index, dimension.score, radius, center); return `<circle cx="${point.x.toFixed(1)}" cy="${point.y.toFixed(1)}" r="5" fill="#fff" stroke="#a86cff" stroke-width="3"/>`; }).join('');
+        var average = Math.round(state.dimensions.reduce(function (sum, item) { return sum + item.score; }, 0) / 5);
+
+        return `
+          <section class="mxv17-section" aria-labelledby="mxv17-pattern-title">
+            <div class="mxv17-container mxv17-pattern-grid">
+              <div class="mxv17-radar" role="img" aria-label="Five-dimension MAXESS pattern. ${state.dimensions.map(function(d){return d.name + ' ' + Math.round(d.score)}).join(', ')}.">
+                <svg viewBox="0 0 ${size} ${size}" aria-hidden="true">${rings}${spokes}<polygon points="${data}" fill="rgba(168,108,255,.20)" stroke="#c79bff" stroke-width="3"/>${dots}${labels}</svg>
+                <div class="mxv17-radar-center"><div><strong>${average}</strong><span>dimension average</span></div></div>
+              </div>
+              <div>
+                <div class="mxv17-eyebrow">YOUR PATTERN</div>
+                <h2 class="mxv17-title" id="mxv17-pattern-title">See the pattern, not just the score.</h2>
+                <p class="mxv17-copy">Together, your dimensions describe how you direct, express, judge, improve and connect your AI work. The shape matters because improvement in one capability can change what the others make possible.</p>
+                <div class="mxv17-list" style="margin-top:26px">${state.dimensions.map(function(d){ return `<div class="mxv17-list-row"><b>${escapeHtml(d.name)}</b><span>${escapeHtml(d.insight)}</span><strong>${Math.round(d.score)}</strong><div class="mxv17-bar"><i style="--w:${d.score}%"></i></div></div>`; }).join('')}</div>
+              </div>
+            </div>
+          </section>`;
+      }
+
+      function renderSignal(state) {
+        return `
+          <section class="mxv17-section" aria-labelledby="mxv17-signal-title">
+            <div class="mxv17-container mxv17-reading">
+              <div class="mxv17-eyebrow">STRONGEST SIGNAL</div>
+              <div class="mxv17-signal">
+                <div class="mxv17-signal-label">PERSONALIZED STRENGTH</div>
+                <h2 id="mxv17-signal-title">${escapeHtml(state.strongest.name)}</h2>
+                <p>At ${Math.round(state.strongest.score)}, ${escapeHtml(state.strongest.name)} is the clearest strength in your current profile. Do not treat strength as a finish line. Use it as a force multiplier for the capabilities around it.</p>
+                <div class="mxv17-signal-score"><strong>${Math.round(state.strongest.score)}</strong> / 100 · strongest current signal</div>
+              </div>
+            </div>
+          </section>`;
+      }
+
+      function renderBiggestLever(state) {
+        return `
+          <section class="mxv17-section" aria-labelledby="mxv17-lever-title">
+            <div class="mxv17-container">
+              <div class="mxv17-eyebrow">BIGGEST LEVER</div>
+              <div class="mxv17-lever-panel">
+                <div class="mxv17-lever-score"><strong>${Math.round(state.biggestLever.score)}</strong><span>${escapeHtml(state.biggestLever.name)} · opportunity</span></div>
+                <div>
+                  <h2 id="mxv17-lever-title">Improve the thing that can improve the system.</h2>
+                  <p>${escapeHtml(state.biggestLever.name)} is not a deficit label. It is the highest-leverage opportunity in this profile because the remaining headroom is weighted against the wider capability impact of the dimension.</p>
+                  <div class="mxv17-from-to">
+                    <div><small>FROM</small><strong>More effort than necessary</strong><span>Repeated work, inconsistent quality or unclear handoffs.</span></div>
+                    <div><small>TO</small><strong>Reusable advantage</strong><span>A deliberate process that makes better results easier to repeat.</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>`;
+      }
+
+      function renderNextMove() {
+        var steps = [
+          ['01 · KNOW', 'Know the outcome', 'Decide what success means before AI begins.'],
+          ['02 · TELL', 'Give the context', 'Share the information, constraints and standards that matter.'],
+          ['03 · CREATE', 'Build the first version', 'Make something real enough to judge and improve.'],
+          ['04 · SCORE', 'Verify the outcome', 'Score the work. Improve it. Repeat until it earns the result.']
+        ];
+        return `
+          <section class="mxv17-section" aria-labelledby="mxv17-next-title">
+            <div class="mxv17-container">
+              <div class="mxv17-section-head"><div><div class="mxv17-eyebrow">NEXT MOVE</div><h2 id="mxv17-next-title">One clear path forward.</h2></div><p>Insight becomes valuable when it changes what you do next. Keep the next action simple enough to execute.</p></div>
+              <div class="mxv17-steps">${steps.map(function(step){return `<article class="mxv17-step"><small>${step[0]}</small><h3>${step[1]}</h3><p>${step[2]}</p></article>`;}).join('')}</div>
+            </div>
+          </section>`;
+      }
+
+      function recommendedMasterNames(state) {
+        var byDimension = {
+          'Direction': ['Business & Strategy', 'Decision Making'],
+          'Communication': ['Writing & Communication', 'Content Creation'],
+          'Evaluation': ['Research & Information', 'Data & Analysis'],
+          'Iteration': ['Creative Development', 'Productivity & Organization'],
+          'Systems Thinking': ['Systems & Automation', 'AI Orchestration']
+        };
+        return byDimension[state.strongest.name] ? byDimension[state.strongest.name].concat(byDimension[state.biggestLever.name] || []) : ['AI Orchestration'];
+      }
+
+      function renderMasters(state) {
+        var recommendations = recommendedMasterNames(state);
+        var cards = APP.config.masters.map(function (master, index) {
+          var recommended = recommendations.indexOf(master[0]) !== -1;
+          return `
+            <article class="mxv17-master${recommended ? ' is-recommended' : ''}">
+              <div class="mxv17-master-top"><span class="mxv17-master-number">NAYA ${String(index + 1).padStart(2, '0')}</span>${recommended ? '<span class="mxv17-master-tag">RECOMMENDED</span>' : ''}</div>
+              <h3>${escapeHtml(master[0])}</h3>
+              <p>${escapeHtml(master[1])}</p>
+            </article>`;
+        }).join('');
+
+        return `
+          <section class="mxv17-section" aria-labelledby="mxv17-masters-title">
+            <div class="mxv17-container">
+              <div class="mxv17-section-head"><div><div class="mxv17-eyebrow">18 NAYA MASTERS</div><h2 id="mxv17-masters-title">18 specialist paths.<br>One personalized direction.</h2></div><p>These are capability paths, not a wall of tools. Your current strongest signal and biggest lever determine which paths Naya highlights first.</p></div>
+              <div class="mxv17-masters">${cards}</div>
+            </div>
+          </section>`;
+      }
+
+      function renderNaya(state) {
+        return `
+          <section class="mxv17-section" aria-labelledby="mxv17-naya-title">
+            <div class="mxv17-container">
+              <div class="mxv17-naya-panel">
+                <div class="mxv17-naya-mini-orb" aria-hidden="true"></div>
+                <div><div class="mxv17-eyebrow">NAYA'S INTERPRETATION</div><h2 id="mxv17-naya-title">You do not need to master everything next.</h2><p>Your strongest signal is <strong>${escapeHtml(state.strongest.name)}</strong>. Your biggest lever is <strong>${escapeHtml(state.biggestLever.name)}</strong>. That combination gives us a much better starting point than chasing every AI capability at once.</p></div>
+              </div>
+            </div>
+          </section>`;
+      }
+
+      function renderSystem() {
+        return `
+          <section class="mxv17-section mxv17-system" aria-labelledby="mxv17-system-title">
+            <div class="mxv17-container mxv17-reading">
+              <div class="mxv17-eyebrow">THE SYSTEM</div>
+              <h2 class="mxv17-title" id="mxv17-system-title">Your report is the <em>beginning.</em></h2>
+              <p class="mxv17-copy">Naya interprets. The report explains. Dimensions provide evidence. Your strongest signal gives confidence. Your biggest lever gives focus. Your next move gives action.</p>
+              <div class="mxv17-system-chain" aria-label="MAXESS improvement loop"><span>KNOW</span><span>TELL</span><span>ASK</span><span>CREATE</span><span>SCORE</span><span>IMPROVE</span><span>REPEAT</span></div>
+              <div class="mxv17-video"><iframe src="${APP.config.video}" title="NayaNET — The Network of Human Potential and AI Mastery" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
+            </div>
+          </section>`;
+      }
+
+      function renderFinal() {
+        return `
+          <section class="mxv17-section mxv17-final" aria-labelledby="mxv17-final-title">
+            <div class="mxv17-container mxv17-reading">
+              <div class="mxv17-eyebrow">YOUR NEXT CHAPTER</div>
+              <h2 class="mxv17-title" id="mxv17-final-title">Understand your result. Then master it.</h2>
+              <p class="mxv17-copy">Your score is not the destination. It is your starting point. Turn the strongest signal into leverage and the biggest lever into capability.</p>
+              <div class="mxv17-actions" style="justify-content:center"><a class="mxv17-button mxv17-button-primary" href="https://takeyourpowerback.xyz/services">Continue Your MAXESS Journey →</a></div>
+            </div>
+          </section>`;
+      }
+
+      function renderEmptyState() {
+        return `
+          <section class="mxv17-empty">
+            <div class="mxv17-eyebrow">MAXESS RESULTS</div>
+            <h1>Your MAXESS result is not available yet.</h1>
+            <p>Complete the assessment or provide the production Result Contract. No score is manufactured in production. For local visual testing only, use <code>?fixture=demo</code>.</p>
+          </section>`;
+      }
+
+      function bindInteractions() {
+        var printButton = APP.root.querySelector('[data-action="print"]');
+        if (printButton) {
+          printButton.addEventListener('click', function () { window.print(); });
+        }
+
+        var orb = document.getElementById('mxv17-score-orb');
+        var nayaStatus = document.getElementById('mxv17-naya-status');
+        if (orb && nayaStatus) {
+          nayaStatus.addEventListener('click', function () {
+            orb.classList.add('is-speaking');
+            nayaStatus.textContent = 'Naya is interpreting your pattern';
+            window.setTimeout(function () {
+              orb.classList.remove('is-speaking');
+              nayaStatus.textContent = 'Naya is reading your result';
+            }, 1800);
+          });
+          nayaStatus.setAttribute('role', 'button');
+          nayaStatus.setAttribute('tabindex', '0');
+          nayaStatus.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter' || event.key === ' ') {
+              event.preventDefault();
+              nayaStatus.click();
+            }
+          });
+        }
+      }
+
+      function renderPage(state) {
+        APP.root.innerHTML = [
+          renderHero(state),
+          renderProfile(state),
+          renderInterpretation(),
+          renderDimensions(state),
+          renderRadar(state),
+          renderSignal(state),
+          renderBiggestLever(state),
+          renderNextMove(),
+          renderMasters(state),
+          renderNaya(state),
+          renderSystem(),
+          renderFinal()
+        ].join('');
+      }
+
+      function initialize() {
+        var result = bootstrapResult();
+        if (!result) {
+          APP.root.innerHTML = renderEmptyState();
+          window.dispatchEvent(new CustomEvent('maxess:results-ready', { detail: { status: 'waiting-for-result-contract', version: 'V17' } }));
+          return;
+        }
+
+        var state = deriveState(result);
+        renderPage(state);
+        bindInteractions();
+
+        window.dispatchEvent(new CustomEvent('maxess:results-ready', {
+          detail: {
+            status: 'ready',
+            version: 'V17',
+            overallScore: state.overall,
+            strongestSignal: state.strongest.name,
+            biggestLever: state.biggestLever.name,
+            dimensionCount: state.dimensions.length,
+            masterCount: APP.config.masters.length
+          }
+        }));
+      }
+
+      window.MAXESS_RESULTS_V17 = {
+        version: 'V17',
+        initialize: initialize,
+        getState: function () { return APP.state; }
+      };
+
+      initialize();
+    }());
+  </script>
+</body>
+</html>
