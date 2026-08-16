@@ -2,7 +2,7 @@ name: Build Definitive MAXESS Results
 
 on:
   push:
-    branches: [main, 'feat/maxess-final-results-99']
+    branches: [main, 'feat/maxess-final-results-99', 'feat/maxess-results-10-self-optimized']
   workflow_dispatch:
 
 permissions:
@@ -15,11 +15,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Build definitive MAXESS Results
+      - name: Build self-optimized MAXESS Results
         run: |
           set -euo pipefail
-          python3 -m py_compile tools/build_maxess_results_final.py
-          python3 tools/build_maxess_results_final.py
+          python3 -m py_compile tools/build_maxess_results_10_self_optimized.py
+          python3 tools/build_maxess_results_10_self_optimized.py
 
       - name: Verify final Results artifacts
         run: |
@@ -76,9 +76,7 @@ jobs:
             MAXESS-RESULTS-10-GROOVE.html \
             MAXESS-RESULTS-GROOVE-EMBED.html \
             MAXESS-RESULTS-GROOVE-EMBED-9.95.html \
-            tools/build_maxess_results_final.py \
-            .naya/memory/28-MAXESS-FINAL-RESULTS-BUILD-DIRECTIVE.md \
-            .naya/06-PROJECT-MEMORY-INDEX.md \
+            tools/build_maxess_results_10_self_optimized.py \
             .github/workflows/build-final-results-groove.yml
-          git diff --cached --quiet || git commit -m 'Publish definitive MAXESS Results experience'
+          git diff --cached --quiet || git commit -m 'Publish self-optimized MAXESS Results experience'
           git push
