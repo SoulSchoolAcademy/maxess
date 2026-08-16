@@ -1,7 +1,7 @@
 # MAXESS RESULTS — SOURCE REGISTRY
 
 Status: AUTHORITATIVE CONTROL DOCUMENT
-Version: 2.0
+Version: 2.1
 Updated: 2026-08-16
 
 ## PURPOSE
@@ -27,7 +27,7 @@ The Updated Edited File is NOT authoritative merely because it is:
 - committed;
 - pushed to GitHub;
 - statically verified;
-- called FINAL, MASTER, 10/10, 10.10, AAA, CURRENT, NEW, UPDATED, V15, or similar;
+- called FINAL, MASTER, 10/10, 10.10, AAA, CURRENT, NEW, UPDATED, V15, V16, or similar;
 - or successfully deployed.
 
 Authority is a human approval state, not a filename or timestamp.
@@ -45,6 +45,16 @@ Only after Shawn explicitly approves the candidate may it be promoted:
 > **AUTHORITATIVE / APPROVED — V<N>**
 
 The exact approved commit/hash is then recorded here as the new baseline.
+
+## MANDATORY EXECUTION DIRECTIVE
+
+All future consequential MAXESS Results implementations MUST execute against:
+
+`.naya/MAXESS-RESULTS-EXECUTION-DIRECTIVE-V16.md`
+
+That directive is the complete requirement checklist, architecture map, implementation contract, QA protocol, Oscar protocol, artifact-state protocol, and handoff protocol for the next Results build.
+
+It MUST be read before implementation and MUST be treated as a checklist, not as optional guidance.
 
 ## CURRENT APPROVED BASELINE
 
@@ -66,35 +76,25 @@ Current approved Results source SHA recorded before the V15 execution cycle:
 
 IMPORTANT: This registry entry identifies the approved baseline state. It must not be silently replaced merely because a later edit exists.
 
-Public verification target:
-
-`https://results.nayanet.xyz/`
-
 ## CURRENT EDIT STATE
 
-As of this registry revision, no newly edited Results artifact is promoted to approved status by this governance change alone.
+No V16 candidate is authoritative or approved merely because the V16 directive exists.
 
-The previous V15 execution must NOT be treated as human-approved authority merely because it produced a commit or passed static gates.
+The next implementation must create:
 
-Any next Results implementation must create an explicit:
+`UPDATED EDITED FILE — V16 — NOT YET AUTHORITATIVE`
 
-`UPDATED EDITED FILE — V<N> — NOT YET AUTHORITATIVE`
-
-state and hand off that exact artifact for human review.
+and hand off that exact candidate for human review.
 
 ## DEPLOYMENT STATUS
 
-As of 2026-08-16, the public target is NOT in parity with the approved engineering artifact.
+As of 2026-08-16, the public target is NOT independently verified in parity with the engineering artifact.
 
 Therefore:
 
 **LIVE-VERIFIED = FALSE**
 
-**DELIVERY STATUS = BLOCKED — DEPLOYMENT PARITY FAILURE**
-
-GitHub acceptance is not deployment proof.
-
-The actual deployment owner/source for `results.nayanet.xyz` still needs to be identified and connected to the approved Results artifact. Repository inspection indicates the target is Groove-hosted, but GitHub alone does not provide sufficient evidence of the external Groove publishing source or credentials.
+Do not claim LIVE VERIFIED until the public target has actually been tested.
 
 ## AUTHORITATIVE ARCHITECTURE
 
@@ -105,13 +105,19 @@ Result Contract
       ↓
 APPROVED / AUTHORITATIVE RESULTS BASELINE
       ↓
-CURRENT UPDATED EDITED FILE
+V16 WORKING COPY
+      ↓
+UPDATED EDITED FILE — V16
       ↓
 Groove deployment artifact / publisher
       ↓
 https://results.nayanet.xyz/
       ↓
 Independent live verification
+      ↓
+Human approval
+      ↓
+V16 promoted to APPROVED / AUTHORITATIVE
 ```
 
 `nayanetpagecode` is the preserved NayaNET foundation appended to the Results experience. It is not a competing Results source.
@@ -126,6 +132,10 @@ The presentation layer is not a second scoring engine. It consumes `window.MAXES
 - `MAXESS-RESULTS-EXPERIENCE.js` — approved Results presentation layer associated with that source.
 
 These labels describe the approved baseline state. During an active execution, the newly modified candidate must be labeled UPDATED EDITED FILE until human approval.
+
+### EXECUTION DIRECTIVE
+
+- `.naya/MAXESS-RESULTS-EXECUTION-DIRECTIVE-V16.md` — mandatory V16 build contract. It is governance/specification, not the Results artifact itself.
 
 ### DEPLOYMENT ARTIFACTS / MIRRORS
 
@@ -175,28 +185,29 @@ The Results renderer must not become a second scoring engine.
 
 For every consequential Results implementation:
 
-1. Read `NAYA-MASTER.md`.
-2. Read `.naya/NAYA-GOVERNANCE.md`.
+1. Read `NAYA-MASTER.md` if present.
+2. Read `.naya/NAYA-GOVERNANCE.md` if present.
 3. Read `.naya/NAYA-LAW.md`.
-4. Read `.naya/00-UNDERSTANDING-FIRST.md`.
-5. Read this registry and `.naya/REPOSITORY-OPERATING-MAP.md`.
-6. Identify the APPROVED / AUTHORITATIVE BASELINE.
-7. Freeze/record baseline SHA, hash, and relevant structural markers.
-8. Create a uniquely identified UPDATED EDITED FILE state for the current execution.
-9. Map every material user requirement to an implementation location and proof method.
-10. Modify the working/edit path, preserving the approved baseline as a recovery point.
-11. Re-fetch the exact UPDATED EDITED FILE.
-12. Diff against the approved baseline.
-13. Reject zero-change or materially insufficient changes.
-14. Run deterministic QA and regression checks.
-15. Reassemble the Groove/deployment artifact when required.
-16. Verify the actual public target when release verification is requested.
-17. Run Oscar against the candidate final experience.
-18. Fix material findings.
-19. Retest.
-20. Hand off ONLY the UPDATED EDITED FILE for Shawn's review.
-21. Promote to APPROVED / AUTHORITATIVE only after explicit human approval.
-22. Record the exact approved commit/hash as the new baseline.
+4. Read `.naya/00-UNDERSTANDING-FIRST.md` if present.
+5. Read `.naya/RESULTS-SOURCE-REGISTRY.md`.
+6. Read `.naya/MAXESS-RESULTS-EXECUTION-DIRECTIVE-V16.md`.
+7. Identify the APPROVED / AUTHORITATIVE BASELINE.
+8. Freeze/record baseline SHA, hash, and relevant structural markers.
+9. Create a uniquely identified UPDATED EDITED FILE state for the current execution.
+10. Map every material user requirement to an implementation location and proof method.
+11. Modify the working/edit path, preserving the approved baseline as a recovery point.
+12. Re-fetch the exact UPDATED EDITED FILE.
+13. Diff against the approved baseline.
+14. Reject zero-change or materially insufficient changes.
+15. Run deterministic QA and regression checks.
+16. Reassemble the Groove/deployment artifact when required.
+17. Verify the actual public target when release verification is requested.
+18. Run Oscar against the candidate final experience.
+19. Fix material findings.
+20. Retest.
+21. Hand off ONLY the UPDATED EDITED FILE for Shawn's review.
+22. Promote to APPROVED / AUTHORITATIVE only after explicit human approval.
+23. Record the exact approved commit/hash as the new baseline.
 
 ## ZERO-CHANGE RULE
 
