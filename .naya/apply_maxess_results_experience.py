@@ -42,9 +42,6 @@ for marker, fragment_text in [
         updated = updated.replace('</body>', f'\n<!-- {marker.upper()} -->\n{fragment_text}\n</body>', 1)
         changed = True
 
-# Canonicalize the document safely. Historical passes placed valid style/script
-# blocks after </html>. Move that tail into the existing body and then emit one
-# authoritative closing pair. This preserves the bytes instead of deleting work.
 body_open = updated.find('<body')
 body_close = updated.find('</body>', body_open)
 html_close = updated.find('</html>', body_close)
@@ -75,7 +72,7 @@ if not changed:
     raise SystemExit(0)
 if len(updated) <= len(html): raise SystemExit('BLOCKED — zero-change execution.')
 
-for required_fragment in ['YOUR AI SCORE','naya-report','your-dimensions','biggest-lever','naya-masters','naya-human-bridge','naya-final-solution','THE HUMAN + AI SYSTEM',MARKER_V2,MARKER_V3,MARKER_V4,MARKER_V5,MARKER_V6,'maxess-naya-profile-v6','Naya%20Profile%20white.jpg']:
+for required_fragment in ['YOUR AI SCORE','naya-report','your-dimensions','biggest-lever','naya-masters','naya-human-bridge','naya-final-solution','THE HUMAN + AI SYSTEM',MARKER_V2,MARKER_V3,MARKER_V4,MARKER_V5,MARKER_V6.upper(),'maxess-naya-profile-v6','Naya%20Profile%20white.jpg']:
     if required_fragment not in updated: raise SystemExit('BLOCKED — distinctive change proof missing: ' + required_fragment)
 if 'fixtureMode = new URLSearchParams(window.location.search).get("fixture") === "demo"' not in updated: raise SystemExit('BLOCKED — explicit fixture boundary missing.')
 if 'data-result-state' not in updated: raise SystemExit('BLOCKED — result-state guard missing.')
@@ -89,4 +86,4 @@ print('Canonical document ordering:', positions)
 print('Distinctive hero:', 'YOUR AI SCORE' in updated)
 print('Naya presence:', 'naya-presence' in updated)
 print('V5 data guard:', MARKER_V5 in updated)
-print('V6 Naya profile:', MARKER_V6 in updated and 'maxess-naya-profile-v6' in updated)
+print('V6 Naya profile:', MARKER_V6.upper() in updated and 'maxess-naya-profile-v6' in updated)
