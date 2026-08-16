@@ -6,6 +6,7 @@ on:
       - 'naya/maxess-results-v15-execution'
     paths:
       - '.naya/maxess-results-v15-reconstruction.py'
+      - '.naya/maxess-results-v15-polish.py'
       - '.github/workflows/maxess-results-v15-execute.yml'
       - 'MAXESS-RESULTS-10-GROOVE.html'
 
@@ -30,12 +31,16 @@ jobs:
           grep -q 'MAXESS_RESULTS_V13_EXECUTED' MAXESS-RESULTS-10-GROOVE.html
           test "$(wc -c < MAXESS-RESULTS-10-GROOVE.html)" -gt 350000
 
-      - name: Execute V15 reconstruction
+      - name: Execute V15 reconstruction when not already present
         shell: bash
         run: |
           set -euo pipefail
-          python3 -m py_compile .naya/maxess-results-v15-reconstruction.py
-          python3 .naya/maxess-results-v15-reconstruction.py
+          if grep -q '<!-- MAXESS-RESULTS-V15-RECONSTRUCTION -->' MAXESS-RESULTS-10-GROOVE.html; then
+            echo 'V15 reconstruction already present; preserving verified artifact.'
+          else
+            python3 -m py_compile .naya/maxess-results-v15-reconstruction.py
+            python3 .naya/maxess-results-v15-reconstruction.py
+          fi
 
       - name: Repair generated V15 JavaScript before proof
         shell: bash
@@ -48,11 +53,23 @@ jobs:
           s = p.read_text(encoding='utf-8')
           pattern = r"(card\.setAttribute\('aria-label',`[^`]*`\))\}const h=sec\.querySelector"
           repaired, count = re.subn(pattern, r"\1});const h=sec.querySelector", s, count=1)
-          if count != 1:
-              raise SystemExit(f'V15 JS repair gate expected 1 repair, found {count}')
-          p.write_text(repaired, encoding='utf-8')
-          print('V15 generated-JS repair applied:', count)
+          if count == 1:
+              p.write_text(repaired, encoding='utf-8')
+              print('V15 generated-JS repair applied:', count)
+          else:
+              print('V15 generated-JS repair not required.')
           PY
+
+      - name: Execute final V15 visual polish
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m py_compile .naya/maxess-results-v15-polish.py
+          if grep -q '<!-- MAXESS-RESULTS-V15-POLISH -->' MAXESS-RESULTS-10-GROOVE.html; then
+            echo 'V15 polish already present; preserving verified artifact.'
+          else
+            python3 .naya/maxess-results-v15-polish.py
+          fi
 
       - name: Static inventory and acceptance gates
         shell: bash
@@ -63,10 +80,11 @@ jobs:
           p = Path('MAXESS-RESULTS-10-GROOVE.html')
           s = p.read_text(encoding='utf-8')
           required = [
-              '<!-- MAXESS-RESULTS-V15-RECONSTRUCTION -->','v15-results','v15-personal-profile',
-              'MAXESS_PROFILE','maxess:profile-ready','window.MAXESS_RESULT','YOUR AI SCORE','YOUR REPORT',
-              'YOUR FIVE DIMENSIONS','SEE THE PATTERN','YOUR STRENGTHS','YOUR BIGGEST LEVER','YOUR NEXT MOVE',
-              '18 NAYA MASTERS','YOUR NEXT CHAPTER','Print / Save PDF','maxess-results-v15-js'
+              '<!-- MAXESS-RESULTS-V15-RECONSTRUCTION -->','<!-- MAXESS-RESULTS-V15-POLISH -->',
+              'v15-results','v15-personal-profile','MAXESS_PROFILE','maxess:profile-ready','window.MAXESS_RESULT',
+              'YOUR AI SCORE','YOUR REPORT','YOUR FIVE DIMENSIONS','SEE THE PATTERN','YOUR STRENGTHS',
+              'YOUR BIGGEST LEVER','YOUR NEXT MOVE','18 NAYA MASTERS','YOUR NEXT CHAPTER','Print / Save PDF',
+              'maxess-results-v15-js','maxess-results-v15-polish-js','v15-master-icon'
           ]
           masters = [
               'Writing & Communication','Research & Information','Brainstorming & Ideas','Content Creation',
@@ -84,13 +102,14 @@ jobs:
           ]
           present = [x for x in forbidden if x in s]
           if present: raise SystemExit('V15 self-contained gate failed: ' + ', '.join(present))
-          if s.count('<!-- MAXESS-RESULTS-V15-RECONSTRUCTION -->') != 1: raise SystemExit('V15 duplicate marker detected')
+          if s.count('<!-- MAXESS-RESULTS-V15-RECONSTRUCTION -->') != 1: raise SystemExit('V15 duplicate reconstruction marker detected')
+          if s.count('<!-- MAXESS-RESULTS-V15-POLISH -->') != 1: raise SystemExit('V15 duplicate polish marker detected')
           print('V15 static inventory passed:', len(s), 'bytes')
           print('18/18 Naya Masters present')
           print('Self-contained renderer gate passed')
           PY
 
-      - name: JavaScript syntax proof for V15 layer
+      - name: JavaScript syntax proof for V15 layers
         shell: bash
         run: |
           set -euo pipefail
@@ -98,11 +117,45 @@ jobs:
           from pathlib import Path
           import re
           s = Path('MAXESS-RESULTS-10-GROOVE.html').read_text(encoding='utf-8')
-          m = re.search(r'<script id="maxess-results-v15-js">(.*?)</script>', s, re.S)
-          if not m: raise SystemExit('V15 JS block not found')
-          Path('/tmp/v15.js').write_text(m.group(1), encoding='utf-8')
+          for ident in ('maxess-results-v15-js','maxess-results-v15-polish-js'):
+              m = re.search(rf'<script id="{ident}">(.*?)</script>', s, re.S)
+              if not m: raise SystemExit(f'{ident} block not found')
+              Path(f'/tmp/{ident}.js').write_text(m.group(1), encoding='utf-8')
           PY
-          node --check /tmp/v15.js
+          node --check /tmp/maxess-results-v15-js.js
+          node --check /tmp/maxess-results-v15-polish-js.js
+
+      - name: OSCAR — adversarial static review
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          s = Path('MAXESS-RESULTS-10-GROOVE.html').read_text(encoding='utf-8')
+          failures = []
+          checks = {
+              'complete html closing': s.strip().endswith('</html>'),
+              'authoritative result boundary': 'window.MAXESS_RESULT' in s,
+              'personal profile contract': 'window.MAXESS_PROFILE' in s,
+              'strongest signal': 'strongestSignal' in s,
+              'biggest lever': 'biggestLever' in s,
+              '18 masters': all(x in s for x in ['Writing & Communication','AI Orchestration']),
+              'no runtime renderer loader': 'MAXESS-RESULTS-EXPERIENCE.js' not in s,
+              'no living signature runtime fetch': 'script.src=LIVING_SIGNATURE_URL;script.async=true;' not in s,
+              'reduced motion': 'prefers-reduced-motion:reduce' in s,
+              'print layer': '@media print' in s and 'Print / Save PDF' in s,
+              'responsive layer': '@media(max-width:720px)' in s,
+              'naya/orb relationship': 'is-naya-speaking' in s and 'maxess:naya-speaking' in s,
+              'visual master treatment': 'v15-master-icon' in s,
+              'material v15 diff': s.count('MAXESS-RESULTS-V15-RECONSTRUCTION') == 2,
+          }
+          for name, ok in checks.items():
+              print(('PASS ' if ok else 'FAIL ') + name)
+              if not ok: failures.append(name)
+          if failures: raise SystemExit('OSCAR FOUND MATERIAL STATIC DEFICIENCIES: ' + ', '.join(failures))
+          print('OSCAR STATIC REVIEW: PASS — no material static deficiency detected.')
+          PY
 
       - name: Diff proof
         shell: bash
@@ -121,5 +174,5 @@ jobs:
           git config user.email 'naya-master@users.noreply.github.com'
           git add -- MAXESS-RESULTS-10-GROOVE.html
           if git diff --cached --quiet; then echo 'BLOCKED — ZERO-CHANGE EXECUTION'; exit 1; fi
-          git commit -m 'MAXESS Results V15: reconstruct complete personal report layer'
+          git commit -m 'MAXESS Results V15: complete reconstruction and Oscar polish'
           git push origin HEAD:naya/maxess-results-v15-execution
