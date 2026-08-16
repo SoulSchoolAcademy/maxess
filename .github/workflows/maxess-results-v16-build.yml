@@ -7,6 +7,7 @@ on:
     paths:
       - nayanetpagecode
       - tools/build_maxess_results_v16.py
+      - tools/build_maxess_results_v16_fragment.py
       - .github/workflows/maxess-results-v16-build.yml
   workflow_dispatch:
 
@@ -30,7 +31,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          python3 tools/build_maxess_results_v16.py
+          python3 tools/build_maxess_results_v16_fragment.py
           test -s MAXESS-RESULTS-10-GROOVE.html
           grep -q 'MAXESS RESULTS V16 TOWER' MAXESS-RESULTS-10-GROOVE.html
           grep -q 'window.MAXESS_RESULT' MAXESS-RESULTS-10-GROOVE.html
@@ -38,7 +39,7 @@ jobs:
           grep -q 'Writing &amp; Communication' MAXESS-RESULTS-10-GROOVE.html
           grep -q 'AI Orchestration' MAXESS-RESULTS-10-GROOVE.html
 
-      - name: Static HTML and JavaScript checks
+      - name: Static HTML fragment and JavaScript checks
         shell: bash
         run: |
           set -euo pipefail
@@ -47,10 +48,9 @@ jobs:
           import re
           p=Path('MAXESS-RESULTS-10-GROOVE.html')
           s=p.read_text(encoding='utf-8')
-          assert s.count('<html') == 1
-          assert s.count('</html>') == 1
-          assert s.count('<body') == 1
-          assert s.count('</body>') == 1
+          foundation=Path('nayanetpagecode').read_text(encoding='utf-8')
+          assert s.startswith('<!-- MAXESS RESULTS V16 TOWER'), 'V16 tower is not the first layer'
+          assert s.endswith(foundation), 'foundation was not preserved exactly as the lower layer'
           assert s.count('id="maxess-results-v16"') == 1
           assert s.count('id="maxess-results-v16-css"') == 1
           assert s.count('id="maxess-results-v16-js"') == 1
@@ -62,7 +62,7 @@ jobs:
           assert 'https://raw.githubusercontent.com' not in s
           assert 'fetch(' not in s
           assert 'iframe' not in s.lower()
-          assert 'NAYA-LAW' not in s or True
+          assert 'document.write' not in s
           print('STATIC STRUCTURE PASS', p.stat().st_size, 'bytes')
           PY
           python3 - <<'PY'
@@ -81,22 +81,32 @@ jobs:
           print('JAVASCRIPT SYNTAX PASS', len(scripts), 'script blocks')
           PY
 
-      - name: Verify foundation preservation
+      - name: Verify required product markers
         shell: bash
         run: |
           set -euo pipefail
-          python3 - <<'PY'
-          from pathlib import Path
-          source=Path('nayanetpagecode').read_text(encoding='utf-8')
-          candidate=Path('MAXESS-RESULTS-10-GROOVE.html').read_text(encoding='utf-8')
-          body_start=source.lower().find('<body')
-          body_end=source.find('>',body_start)
-          prefix=source[:body_end+1]
-          assert candidate.startswith(prefix), 'foundation body opening boundary was not preserved'
-          tail=source[body_end+1:]
-          assert candidate.endswith(tail), 'foundation content after body opening was not preserved byte-for-byte'
-          print('FOUNDATION PRESERVATION PASS')
-          PY
+          for marker in \
+            'YOUR AI SCORE' \
+            'THE PATTERN' \
+            'YOUR FIVE DIMENSIONS' \
+            'WHAT IT MEANS' \
+            'YOUR STRONGEST SIGNAL' \
+            'YOUR BIGGEST LEVER' \
+            'YOUR NEXT MOVE' \
+            '18 NAYA MASTERS' \
+            'THE SYSTEM' \
+            'YOUR NEXT CHAPTER' \
+            'KNOW' \
+            'TELL' \
+            'ASK' \
+            'CREATE' \
+            'SCORE' \
+            'IMPROVE' \
+            'REPEAT'; do
+            grep -q "$marker" MAXESS-RESULTS-10-GROOVE.html
+          done
+          test "$(grep -o 'name>[^<]*' MAXESS-RESULTS-10-GROOVE.html | grep -E 'Writing &amp; Communication|Research &amp; Information|Brainstorming &amp; Ideas|Content Creation|Business &amp; Strategy|Marketing &amp; Sales|Learning &amp; Education|Coding &amp; Software|Images &amp; Visual Creation|Video &amp; Media|Audio &amp; Music|Data &amp; Analysis|Productivity &amp; Organization|Career &amp; Professional Growth|Decision Making|Creative Development|Systems &amp; Automation|AI Orchestration' | wc -l)" -ge 18
+          echo 'PRODUCT MARKERS PASS'
 
       - name: Commit generated candidate
         shell: bash
