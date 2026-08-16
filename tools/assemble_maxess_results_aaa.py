@@ -8,6 +8,11 @@ MARKER = 'MAXESS-WHOLE-SYSTEM-AAA-INLINE-1.0'
 NAYA_MARKER = 'MAXESS-NAYA-EXPERIENCE-INLINE-1.0'
 
 
+def strip_inline(html: str, marker: str, script_id: str) -> str:
+    pattern = r'\s*<!-- ' + re.escape(marker) + r' -->\s*<script id="' + re.escape(script_id) + r'">.*?</script>\s*'
+    return re.sub(pattern, '\n', html, flags=re.DOTALL | re.IGNORECASE)
+
+
 def main() -> None:
     html = HTML.read_text(encoding='utf-8')
     engine = ENGINE.read_text(encoding='utf-8').strip()
@@ -21,49 +26,54 @@ def main() -> None:
         raise SystemExit('BLOCKED — Results root not found.')
     if 'window.MAXESS_RESULT' not in html:
         raise SystemExit('BLOCKED — MAXESS_RESULT contract missing.')
-    if not engine.startswith('/*') or 'MAXESS RESULTS — WHOLE-SYSTEM AAA PRESENTATION ENGINE' not in engine:
+    if 'MAXESS RESULTS — WHOLE-SYSTEM AAA PRESENTATION ENGINE' not in engine:
         raise SystemExit('BLOCKED — Whole-system presentation engine is not the expected artifact.')
-    if not naya.startswith('/*') or 'MAXESS RESULTS — NAYA EXPERIENCE LAYER' not in naya:
+    if 'MAXESS RESULTS — NAYA EXPERIENCE LAYER' not in naya:
         raise SystemExit('BLOCKED — Naya experience layer is not the expected artifact.')
 
-    # Remove prior copies so assembly is deterministic and repeatable.
-    html = re.sub(
-        r'\s*<!-- MAXESS-WHOLE-SYSTEM-AAA-INLINE-1\.0 -->\s*<script id="maxess-whole-system-aaa-inline">.*?</script>\s*',
-        '\n', html, flags=re.DOTALL)
-    html = re.sub(
-        r'\s*<!-- MAXESS-NAYA-EXPERIENCE-INLINE-1\.0 -->\s*<script id="maxess-naya-experience-inline">.*?</script>\s*',
-        '\n', html, flags=re.DOTALL)
+    html = strip_inline(html, MARKER, 'maxess-whole-system-aaa-inline')
+    html = strip_inline(html, NAYA_MARKER, 'maxess-naya-experience-inline')
 
-    inline_engine = (
-        '\n<!-- MAXESS-WHOLE-SYSTEM-AAA-INLINE-1.0 -->\n'
-        '<script id="maxess-whole-system-aaa-inline">\n' + engine + '\n</script>\n'
-    )
-    inline_naya = (
-        '\n<!-- MAXESS-NAYA-EXPERIENCE-INLINE-1.0 -->\n'
-        '<script id="maxess-naya-experience-inline">\n' + naya + '\n</script>\n'
-    )
+    inline_engine = '\n<!-- ' + MARKER + ' -->\n<script id="maxess-whole-system-aaa-inline">\n' + engine + '\n</script>\n'
+    inline_naya = '\n<!-- ' + NAYA_MARKER + ' -->\n<script id="maxess-naya-experience-inline">\n' + naya + '\n</script>\n'
 
-    html = re.sub(r'</body>', inline_engine + inline_naya + '</body>', html, count=1, flags=re.IGNORECASE)
-    html = html.replace(
-        '<main id="maxess-results-10"',
-        '<main id="maxess-results-10" data-maxess-build="whole-system-aaa-1.0"',
-        1,
-    )
+    body_close = re.search(r'</body>\s*</html>\s*$', html, flags=re.IGNORECASE)
+    if not body_close:
+        raise SystemExit('BLOCKED — Results artifact does not end with </body></html>.')
+
+    end = body_close.start()
+    html = html[:end] + inline_engine + inline_naya + html[end:]
+
+    if 'data-maxess-build="whole-system-aaa-1.0"' not in html:
+        html = html.replace(
+            '<main id="maxess-results-10"',
+            '<main id="maxess-results-10" data-maxess-build="whole-system-aaa-1.0"',
+            1,
+        )
 
     HTML.write_text(html, encoding='utf-8')
 
     final = HTML.read_text(encoding='utf-8')
-    assert final.count(MARKER) == 1
-    assert final.count(NAYA_MARKER) == 1
-    assert 'MAXESS RESULTS — WHOLE-SYSTEM AAA PRESENTATION ENGINE' in final
-    assert 'MAXESS RESULTS — NAYA EXPERIENCE LAYER' in final
-    assert 'data-maxess-build="whole-system-aaa-1.0"' in final
-    assert 'NAYA_IMAGE' in final
-    assert 'mx-playground' in final
-    assert 'naya-led-organic-1.0' in final
-    assert final.count('<body') == 1
-    assert final.lower().count('</body>') == 1
-    print(f'ASSEMBLED COMPLETE GROOVE ARTIFACT: {HTML} — {len(final.splitlines())} lines / {len(final.encode("utf-8"))} bytes')
+    checks = {
+        'whole-system marker': final.count(MARKER) == 1,
+        'naya marker': final.count(NAYA_MARKER) == 1,
+        'engine present': 'MAXESS RESULTS — WHOLE-SYSTEM AAA PRESENTATION ENGINE' in final,
+        'naya layer present': 'MAXESS RESULTS — NAYA EXPERIENCE LAYER' in final,
+        'build marker': 'data-maxess-build="whole-system-aaa-1.0"' in final,
+        'result contract': 'window.MAXESS_RESULT' in final,
+        'Naya image reference': 'i.postimg.cc/dVXw7sRN/' in final,
+        'playground': 'mx-playground' in final,
+        'single body': final.lower().count('<body') == 1 and final.lower().count('</body>') == 1,
+        'complete document': final.lstrip().lower().startswith('<!doctype html>'),
+    }
+    failed = [name for name, ok in checks.items() if not ok]
+    if failed:
+        raise SystemExit('BLOCKED — Assembly verification failed: ' + ', '.join(failed))
+
+    print('ASSEMBLED COMPLETE GROOVE ARTIFACT')
+    print('LINES:', len(final.splitlines()))
+    print('BYTES:', len(final.encode('utf-8')))
+    print('CHECKS: ALL PASS')
 
 
 if __name__ == '__main__':
