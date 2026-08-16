@@ -1,8 +1,0 @@
-name: Legacy MAXESS Results Now Publisher (disabled)
-on:
-  workflow_dispatch:
-jobs:
-  legacy-disabled:
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo 'Disabled. MAXESS 9.9 authoritative Results builder is build-final-results-groove.yml.'
