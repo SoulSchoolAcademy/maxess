@@ -47,13 +47,22 @@ changed = 0
 for target in TARGETS:
     if not target.exists():
         continue
+
     html = target.read_text(encoding='utf-8')
     if MARKER in html:
         continue
-    if '</body>' not in html:
-        raise SystemExit(f'Missing </body> anchor in {target}')
-    target.write_text(html.replace('</body>', block + '</body>', 1), encoding='utf-8')
-    changed += 1
+
+    if '</body>' in html:
+        target.write_text(html.replace('</body>', block + '</body>', 1), encoding='utf-8')
+        changed += 1
+        continue
+
+    if '</html>' in html:
+        target.write_text(html.replace('</html>', block + '</html>', 1), encoding='utf-8')
+        changed += 1
+        continue
+
+    raise SystemExit(f'Missing </body> and </html> anchors in {target}')
 
 if changed == 0:
     raise SystemExit('No Results artifacts were changed; integration marker may already exist or artifacts are missing.')
