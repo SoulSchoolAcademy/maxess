@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MAXESS — Your AI Result</title>
+<style>
+:root{--bg:#07050d;--ink:#fff;--muted:#aaa1b5;--paper:#fff;--paperInk:#151019;--line:rgba(255,255,255,.12);--purple:#a66cff;--cyan:#55dfff;--gold:#ffd76a;--max:1180px;--radius:28px}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);line-height:1.5}
+button,a{font:inherit}
+button{cursor:pointer}
+a{color:inherit}
+.mx{overflow:hidden}
+.mx-shell{width:min(var(--max),calc(100% - 32px));margin:auto}
+.mx-section{padding:clamp(72px,9vw,140px) 0}
+.mx-dark{background:#09070f}
+.mx-light{background:#fff;color:var(--paperInk)}
+.mx-kicker{font-size:12px;font-weight:900;letter-spacing:.18em;text-transform:uppercase;color:var(--purple)}
+.mx-h1{font-size:clamp(46px,8vw,96px);line-height:.9;letter-spacing:-.065em;margin:0;font-weight:950}
+.mx-h2{font-size:clamp(36px,5vw,68px);line-height:.94;letter-spacing:-.055em;margin:0;font-weight:950}
+.mx-lead{font-size:clamp(17px,2vw,21px);line-height:1.6;color:var(--muted);max-width:720px}
+.mx-button{display:inline-flex;align-items:center;justify-content:center;gap:10px;border:0;border-radius:999px;padding:15px 22px;text-decoration:none;font-weight:900;transition:transform .2s,filter .2s}
+.mx-button:hover{transform:translateY(-2px);filter:brightness(1.08)}
+.mx-button:focus-visible{outline:3px solid #fff;outline-offset:4px}
+.mx-primary{background:linear-gradient(135deg,#fff,#d8b7ff,#8c4cff);color:#160b22}
+.mx-secondary{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.2)}
+.mx-top{position:sticky;top:0;z-index:50;background:rgba(7,5,13,.8);backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}
+.mx-top-inner{height:58px;display:flex;align-items:center;justify-content:space-between}
+.mx-brand{font-size:13px;font-weight:950;letter-spacing:.18em}
+.mx-progress{height:2px;background:linear-gradient(90deg,var(--purple) var(--progress,0%),transparent var(--progress,0%))}
+.mx-hero{min-height:calc(100svh - 58px);display:grid;place-items:center;text-align:center;position:relative;background:radial-gradient(circle at 50% 35%,rgba(166,108,255,.24),transparent 34%),radial-gradient(circle at 20% 70%,rgba(85,223,255,.1),transparent 28%),#07050d}
+.mx-hero:before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.2) 1px,transparent 1px);background-size:42px 42px;opacity:.22;mask-image:linear-gradient(#000,transparent 80%)}
+.mx-hero-content{position:relative;z-index:1;padding:70px 0 90px}
+.mx-orb-wrap{width:min(78vw,570px);aspect-ratio:1;margin:34px auto;position:relative;display:grid;place-items:center}
+.mx-orb{position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 205deg,#ff4545,#ff9e4a,#ffe56b,#58e18b,#50ddff,#6472ff,#a75bff,#ff4fb7,#ff4545);box-shadow:0 0 80px rgba(166,108,255,.32),0 0 180px rgba(80,220,255,.12);animation:spin 22s linear infinite}
+.mx-orb:before{content:"";position:absolute;inset:3.5%;border-radius:50%;background:radial-gradient(circle at 32% 23%,rgba(255,255,255,.95),transparent 6%,rgba(255,255,255,.12) 15%,transparent 30%),radial-gradient(circle at 50% 55%,#201438,#08060f 58%,#020207);box-shadow:inset 0 -50px 80px rgba(0,0,0,.7),inset 0 0 70px rgba(255,255,255,.08)}
+.mx-orb:after{content:"";position:absolute;inset:10%;border-radius:50%;border:1px solid rgba(255,255,255,.3);box-shadow:0 0 28px rgba(255,255,255,.12),inset 0 0 30px rgba(255,255,255,.1)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.mx-score{position:relative;z-index:2}
+.mx-score-number{font-size:clamp(100px,18vw,190px);font-weight:950;line-height:.8;letter-spacing:-.09em;text-shadow:0 10px 55px rgba(0,0,0,.8)}
+.mx-score-label{margin-top:18px;font-size:12px;font-weight:900;letter-spacing:.22em;text-transform:uppercase;color:#d8cfdf}
+.mx-band{font-size:20px;font-weight:900;margin-top:10px}
+.mx-sub{max-width:650px;margin:auto;color:#bbb1c5;font-size:17px}
+.mx-naya{display:grid;grid-template-columns:180px 1fr;gap:42px;align-items:center}
+.mx-avatar{width:150px;height:150px;border-radius:50%;display:grid;place-items:center;font-size:48px;font-weight:950;background:radial-gradient(circle at 30% 25%,#fff,#d8b9ff 12%,#9d5cff 36%,#30105c 70%,#0a0711);box-shadow:0 0 70px rgba(166,108,255,.35);border:1px solid rgba(255,255,255,.3)}
+.mx-naya h2{font-size:clamp(32px,5vw,60px);line-height:1;margin:8px 0 16px;letter-spacing:-.05em}
+.mx-naya p{font-size:18px;line-height:1.7;color:#c0b7c9;max-width:760px}
+.mx-report-head{display:flex;justify-content:space-between;align-items:end;gap:25px;margin-bottom:50px}
+.mx-actions{display:flex;gap:10px;flex-wrap:wrap}
+.mx-light .mx-secondary{color:#151019;border-color:#d8d1dc}
+.mx-chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+.mx-chip{padding:8px 12px;border:1px solid #ddd6e2;border-radius:999px;background:#faf9fb;font-size:12px;font-weight:800;color:#665e6d}
+.mx-dims{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+.mx-dim{padding:23px;border:1px solid #e4dfe7;border-radius:24px;background:linear-gradient(180deg,#fff,#f6f3f8);min-height:250px;position:relative;overflow:hidden}
+.mx-dim:after{content:"";position:absolute;width:130px;height:130px;border-radius:50%;right:-45px;bottom:-55px;background:var(--c);opacity:.13}
+.mx-dim-index{font-size:11px;font-weight:900;letter-spacing:.15em;color:#8b8292}
+.mx-dim h3{font-size:20px;line-height:1.05;margin:18px 0 24px;position:relative}
+.mx-gauge{height:9px;border-radius:99px;background:#e7e2ea;overflow:hidden}
+.mx-gauge span{display:block;height:100%;width:0;border-radius:99px;background:var(--c);transition:width 1s cubic-bezier(.2,.8,.2,1)}
+.mx-dim-score{font-size:48px;font-weight:950;line-height:1;letter-spacing:-.07em;margin-top:20px}
+.mx-dim-copy{font-size:12px;color:#6c6472;margin-top:10px}
+.mx-pattern{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:60px;align-items:center}
+.mx-pattern-visual{width:min(100%,620px);aspect-ratio:1;margin:auto;position:relative}
+.mx-rings{position:absolute;inset:7%;border-radius:50%;background:repeating-radial-gradient(circle,transparent 0,transparent 16%,rgba(255,255,255,.08) 16.3%,transparent 16.8%);border:1px solid rgba(255,255,255,.14)}
+.mx-rings:before,.mx-rings:after{content:"";position:absolute;inset:50% 0 auto;height:1px;background:rgba(255,255,255,.1)}
+.mx-rings:before{transform:rotate(36deg)}
+.mx-rings:after{transform:rotate(-36deg)}
+.mx-svg{position:absolute;inset:12%;width:76%;height:76%;left:12%;top:12%;overflow:visible}
+.mx-pattern-copy h2{margin:10px 0 15px}
+.mx-pattern-copy p{color:#b9b0c1;font-size:17px;line-height:1.7}
+.mx-pattern-list{display:grid;gap:0;margin-top:24px}
+.mx-pattern-row{display:flex;justify-content:space-between;padding:13px 0;border-bottom:1px solid rgba(255,255,255,.08);font-size:14px}
+.mx-insights{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.mx-insight{padding:40px;border-radius:30px;background:linear-gradient(145deg,rgba(255,255,255,.08),rgba(255,255,255,.025));border:1px solid var(--line);position:relative;overflow:hidden}
+.mx-insight:before{content:"";position:absolute;width:260px;height:260px;border-radius:50%;right:-100px;top:-120px;background:var(--a);opacity:.14;filter:blur(8px)}
+.mx-insight h3{font-size:clamp(30px,4vw,48px);line-height:1;margin:10px 0;letter-spacing:-.05em}
+.mx-big{font-size:76px;font-weight:950;letter-spacing:-.08em;line-height:1;margin:25px 0}
+.mx-insight p{color:#c0b7c8;line-height:1.7}
+.mx-action{margin-top:25px;padding:18px;border-radius:18px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1)}
+.mx-next{display:grid;grid-template-columns:1.1fr .9fr;gap:55px;align-items:center}
+.mx-steps{display:grid;grid-template-columns:repeat(7,1fr);gap:7px;margin-top:30px}
+.mx-step{padding:14px 6px;text-align:center;border-radius:15px;background:#15111c;border:1px solid rgba(255,255,255,.08);font-size:11px;font-weight:900}
+.mx-step.active{background:linear-gradient(135deg,#fff,#d0a7ff);color:#160b20;border-color:#fff}
+.mx-next-card{padding:35px;border-radius:28px;background:linear-gradient(145deg,#181023,#0c0910);border:1px solid var(--line)}
+.mx-next-card h3{font-size:34px;line-height:1;margin:8px 0 14px;letter-spacing:-.04em}
+.mx-next-card p{color:#bdb4c7;line-height:1.7}
+.mx-masters-head{display:flex;justify-content:space-between;align-items:end;gap:30px;margin-bottom:42px}
+.mx-masters{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.mx-master{padding:25px;border:1px solid #e5dfe8;border-radius:24px;background:#fff;color:#151019;position:relative;transition:transform .2s,box-shadow .2s}
+.mx-master:hover{transform:translateY(-4px);box-shadow:0 20px 50px rgba(20,10,30,.12)}
+.mx-master.priority{border-color:#9b5cff;box-shadow:0 0 0 2px rgba(155,92,255,.1)}
+.mx-master h3{font-size:21px;line-height:1.05;margin:16px 0 9px;letter-spacing:-.025em}
+.mx-master p{font-size:14px;color:#675f6c;line-height:1.55;min-height:66px}
+.mx-start{position:absolute;right:17px;top:17px;padding:6px 9px;border-radius:99px;background:#f0e5ff;color:#5b22b9;font-size:10px;font-weight:900;text-transform:uppercase}
+.mx-play{background:radial-gradient(circle at 50% 0,rgba(166,108,255,.25),transparent 35%),#0a0710}
+.mx-play-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:45px}
+.mx-play-card{padding:34px;border-radius:28px;background:rgba(255,255,255,.045);border:1px solid var(--line)}
+.mx-play-card h3{font-size:29px;line-height:1;margin:0 0 12px}
+.mx-play-card p{color:#b9b0c0;line-height:1.65}
+.mx-prompt{margin-top:20px;padding:18px;border-radius:18px;background:#05040a;border:1px solid var(--line);font:13px/1.65 ui-monospace,SFMono-Regular,Menlo,monospace;color:#ddd6e6}
+.mx-human{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.mx-quote{font-size:clamp(32px,5vw,62px);font-weight:950;line-height:1;letter-spacing:-.055em}
+.mx-quote em{font-style:normal;color:#a86cff}
+.mx-final{text-align:center;background:radial-gradient(circle at 50% 20%,rgba(166,108,255,.3),transparent 35%),#07050d}
+.mx-final p{margin:22px auto 30px;max-width:650px}
+.mx-final-actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+.mx-status{display:none;min-height:70vh;place-items:center;text-align:center;padding:60px}
+.mx-status.active{display:grid}
+.mx-status-box{max-width:650px;padding:40px;border:1px solid var(--line);border-radius:30px;background:rgba(255,255,255,.04)}
+.mx-status h1{font-size:48px;line-height:1;letter-spacing:-.05em}
+.mx-status p{color:#bdb4c7;line-height:1.7}
+.mx-live{display:block}
+@media(max-width:1050px){.mx-dims{grid-template-columns:repeat(3,1fr)}.mx-masters{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:760px){.mx-shell{width:min(var(--max),calc(100% - 24px))}.mx-section{padding:72px 0}.mx-naya,.mx-pattern,.mx-next,.mx-human{grid-template-columns:1fr;gap:28px}.mx-avatar{width:110px;height:110px;font-size:34px}.mx-report-head,.mx-masters-head{display:block}.mx-actions{margin-top:24px}.mx-dims{grid-template-columns:1fr 1fr}.mx-insights,.mx-play-grid{grid-template-columns:1fr}.mx-masters{grid-template-columns:1fr}.mx-steps{grid-template-columns:repeat(4,1fr)}.mx-orb-wrap{width:min(88vw,480px)}}
+@media(max-width:430px){.mx-dims{grid-template-columns:1fr}.mx-steps{grid-template-columns:repeat(2,1fr)}.mx-h1{font-size:52px}.mx-big{font-size:60px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.mx-orb{animation:none}.mx-gauge span{transition:none}.mx-button,.mx-master{transition:none}}
+@media print{body{background:#fff!important;color:#111!important}.mx-top,.mx-button,.mx-final-actions,.mx-scroll{display:none!important}.mx-section{padding:45px 0;break-inside:auto}.mx-dark,.mx-play,.mx-final{background:#fff!important;color:#111!important}.mx-lead,.mx-naya p,.mx-pattern-copy p,.mx-insight p,.mx-next-card p{color:#333!important}.mx-orb{print-color-adjust:exact;-webkit-print-color-adjust:exact}.mx-hero{min-height:auto;background:#fff!important;color:#111!important}.mx-score-number{text-shadow:none;color:#111}.mx-dims{grid-template-columns:repeat(2,1fr)}.mx-masters{grid-template-columns:repeat(2,1fr)}.mx-play-card,.mx-insight,.mx-next-card{background:#fff;border:1px solid #ccc}.mx-section{page-break-inside:avoid}}
+</style>
+</head>
+<body>
+<main id="maxess-results" class="mx" data-maxess-results="true">
+<header class="mx-top" aria-label="Results navigation"><div class="mx-shell mx-top-inner"><div class="mx-brand">MAXESS</div><div id="mx-progress-label" class="mx-kicker">YOUR RESULT</div></div><div id="mx-progress" class="mx-progress" aria-hidden="true"></div></header>
+<div id="mx-status" class="mx-status active"><div class="mx-status-box"><div class="mx-kicker">MAXESS RESULTS</div><h1 id="mx-status-title">Preparing your result…</h1><p id="mx-status-copy">Naya is checking your assessment result and preparing your personal report.</p></div></div>
+<div id="mx-live" class="mx-live" hidden>
+<section class="mx-hero" id="maxess-results-hero"><div class="mx-shell mx-hero-content"><div class="mx-kicker">YOUR AI SCORE</div><h1 id="mx-participant-heading" class="mx-h1">Your result</h1><div class="mx-orb-wrap" aria-label="Your AI score visualization"><div id="mx-orb" class="mx-orb" aria-hidden="true"></div><div class="mx-score"><div id="mx-score" class="mx-score-number">—</div><div class="mx-score-label">AI MASTERY SCORE</div><div id="mx-band" class="mx-band">Calculating</div></div></div><p id="mx-hero-sub" class="mx-sub">Your answers describe a unique pattern in the way you work with AI.</p><div class="mx-scroll" aria-hidden="true">Explore your report<span></span></div></div></section>
+<section class="mx-section mx-dark" id="maxess-results-naya"><div class="mx-shell mx-naya"><div class="mx-avatar" aria-hidden="true">N</div><div><div class="mx-kicker">MEET NAYA</div><h2>I've got you. Let's make sense of this.</h2><p id="mx-naya-copy">I helped turn your answers into this report. Your score is only the beginning. I'll show you what your pattern means, where your natural strength is, where your next opportunity lives, and what you can do with it.</p><div class="mx-actions"><button id="mx-listen" class="mx-button mx-primary" type="button">▶ Listen to your results</button><a class="mx-button mx-secondary" href="#maxess-results-report">Explore the report</a></div></div></div></section>
+<section class="mx-section mx-light" id="maxess-results-report"><div class="mx-shell"><div class="mx-report-head"><div><div class="mx-kicker">YOUR PERSONAL REPORT</div><h2 class="mx-h2">This is your AI profile.</h2><div id="mx-meta" class="mx-chips"></div></div><div class="mx-actions"><button id="mx-print" class="mx-button mx-secondary" type="button">Print / PDF</button></div></div><div><div class="mx-kicker">YOUR FIVE DIMENSIONS</div><p class="mx-lead">These five capabilities work together. The shape matters more than any single number.</p><div id="mx-dimensions" class="mx-dims" aria-label="Your five AI dimensions"></div></div></div></section>
+<section class="mx-section mx-dark" id="maxess-results-pattern"><div class="mx-shell mx-pattern"><div class="mx-pattern-visual" role="img" aria-label="Your AI capability pattern"><div class="mx-rings"></div><svg id="mx-pattern-svg" class="mx-svg" viewBox="0 0 100 100" aria-hidden="true"><polygon id="mx-pattern-grid" points="50,5 92.8,36 76.5,86 23.5,86 7.2,36" fill="none" stroke="rgba(255,255,255,.08)" stroke-width=".5"></polygon><polygon id="mx-pattern-fill" points="50,5 92.8,36 76.5,86 23.5,86 7.2,36" fill="rgba(166,108,255,.25)" stroke="#b978ff" stroke-width="1"></polygon><g id="mx-pattern-labels"></g></svg></div><div class="mx-pattern-copy"><div class="mx-kicker">YOUR AI PATTERN</div><h2 class="mx-h2">That's your shape.</h2><p id="mx-pattern-copy">These numbers aren't random. Together they describe the particular shape of how you currently work with AI.</p><div id="mx-pattern-list" class="mx-pattern-list"></div></div></div></section>
+<section class="mx-section mx-dark" id="maxess-results-insights"><div class="mx-shell"><div class="mx-kicker">WHAT STANDS OUT</div><h2 class="mx-h2">Two things matter most right now.</h2><div class="mx-insights" style="margin-top:45px"><article id="mx-strength" class="mx-insight" style="--a:#58e18b"><div class="mx-kicker">YOUR STRONGEST SIGNAL</div><h3 id="mx-strength-name">—</h3><div id="mx-strength-score" class="mx-big">—</div><p id="mx-strength-copy">—</p><div class="mx-action"><strong>Leverage it.</strong><br><span id="mx-strength-action">—</span></div></article><article id="mx-lever" class="mx-insight" style="--a:#55dfff"><div class="mx-kicker">YOUR BIGGEST LEVER</div><h3 id="mx-lever-name">—</h3><div id="mx-lever-score" class="mx-big">—</div><p id="mx-lever-copy">—</p><div class="mx-action"><strong>Start here.</strong><br><span id="mx-lever-action">—</span></div></article></div></div></section>
+<section class="mx-section mx-dark" id="maxess-results-next"><div class="mx-shell mx-next"><div><div class="mx-kicker">YOUR NEXT MOVE</div><h2 class="mx-h2">Don't just know your score. Use it.</h2><p id="mx-next-copy" class="mx-lead">Your next move is simple: use your strongest capability to improve the capability with the greatest opportunity.</p><div class="mx-steps" aria-label="The MAXESS learning loop"><div class="mx-step">KNOW</div><div class="mx-step">TELL</div><div class="mx-step">ASK</div><div class="mx-step active">CREATE</div><div class="mx-step">SCORE</div><div class="mx-step">IMPROVE</div><div class="mx-step">REPEAT</div></div></div><article class="mx-next-card"><div class="mx-kicker">START HERE</div><h3 id="mx-next-title">Your personalized first action</h3><p id="mx-next-action">—</p><a id="mx-next-cta" class="mx-button mx-primary" href="#maxess-results-masters">Show me where to go</a></article></div></section>
+<section class="mx-section mx-light" id="maxess-results-masters"><div class="mx-shell"><div class="mx-masters-head"><div><div class="mx-kicker">NAYA MASTERS</div><h2 class="mx-h2">Your next best pathways.</h2></div><p class="mx-lead">All 18 remain yours. The order changes because your result changes the recommendation.</p></div><div id="mx-masters" class="mx-masters"></div></div></section>
+<section class="mx-section mx-play" id="maxess-results-playground"><div class="mx-shell"><div class="mx-kicker">THE AI PLAYGROUND</div><h2 class="mx-h2">Now put your result to work.</h2><p class="mx-lead">The point of a result is not to admire it. It's to give you a better way to act.</p><div class="mx-play-grid"><article class="mx-play-card"><h3>Turn insight into a prompt.</h3><p>Use your strongest signal as the engine and your biggest lever as the target.</p><div id="mx-prompt" class="mx-prompt">Build me a practical exercise that uses my strength to improve my biggest opportunity.</div><button id="mx-copy-prompt" class="mx-button mx-primary" type="button" style="margin-top:18px">Copy prompt</button></article><article class="mx-play-card"><h3>Keep improving.</h3><p id="mx-play-copy">Your result is a starting point, not a label. Practice, score the output, improve it, and repeat.</p><a class="mx-button mx-secondary" href="#maxess-results-next">Return to my next move</a></article></div></div></section>
+<section class="mx-section mx-dark" id="maxess-results-human"><div class="mx-shell mx-human"><div><div class="mx-kicker">HUMAN + AI</div><div class="mx-quote">AI is the engine.<br><em>You are the director.</em></div></div><div><p class="mx-lead">Your score doesn't define your potential. It gives you a clearer starting point. The advantage comes from knowing what you can already do, knowing what to strengthen, and learning how to direct AI deliberately.</p></div></div></section>
+<section class="mx-section mx-final" id="maxess-results-action"><div class="mx-shell"><div class="mx-kicker">YOUR NEXT CHAPTER</div><h2 class="mx-h2">You know where you are.<br>Now let's move.</h2><p class="mx-lead">Naya can help you turn this result into practice, projects, better prompts, better decisions, and real-world capability.</p><div class="mx-final-actions"><a id="mx-final-primary" class="mx-button mx-primary" href="#maxess-results-playground">Start with Naya</a><button id="mx-final-print" class="mx-button mx-secondary" type="button">Save my report</button></div></div></section>
+</div>
+</main>
+<script>
+(function(){
+'use strict';
+var API=window.MAXESSResults=window.MAXESSResults||{};
+var state=null;
+var masters=[
+['Writing & Communication','Turn ideas into clear words, messages, briefs and conversations.'],
+['Research & Information','Find, compare, verify and synthesize useful information.'],
+['Brainstorming & Ideas','Generate possibilities, angles and original directions faster.'],
+['Content Creation','Turn knowledge and ideas into useful content people want.'],
+['Business & Strategy','Use AI to think through markets, offers, priorities and growth.'],
+['Marketing & Sales','Create sharper positioning, campaigns, messaging and sales support.'],
+['Learning & Education','Use AI as a tutor, explainer, coach and learning partner.'],
+['Coding & Software','Build, debug, explain and improve software with AI.'],
+['Images & Visual Creation','Direct AI toward stronger visual concepts and creative assets.'],
+['Video & Media','Plan, script, edit and develop video and media workflows.'],
+['Audio & Music','Explore voice, audio, music, sound design and production workflows.'],
+['Data & Analysis','Turn data into patterns, decisions, models and explanations.'],
+['Productivity & Organization','Reduce friction and build systems for getting important work done.'],
+['Career & Professional Growth','Use AI to clarify goals, develop skills and communicate value.'],
+['Decision Making','Structure choices, surface trade-offs and improve judgment.'],
+['Creative Development','Develop concepts, stories, experiments and original creative work.'],
+['Systems & Automation','Connect repeatable tasks into smarter, more reliable workflows.'],
+['AI Orchestration','Direct multiple AI capabilities toward one coherent outcome.']
+];
+function q(s){return document.querySelector(s)}
+function clamp(n,a,b){return Math.max(a,Math.min(b,n))}
+function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function score(v){var n=Number(v);return Number.isFinite(n)?clamp(Math.round(n),0,100):null}
+function fail(title,copy){q('#mx-live').hidden=true;q('#mx-status').classList.add('active');q('#mx-status-title').textContent=title;q('#mx-status-copy').textContent=copy}
+function getResult(){var r=window.MAXESS_RESULT;if(!r||typeof r!=='object')return null;var dims=r.dimensions||r.scores||[];if(!Array.isArray(dims))return null;var normalized=dims.map(function(d,i){return {id:String(d.id||d.key||('dimension-'+i)),name:String(d.name||d.title||('Dimension '+(i+1))),score:score(d.score!=null?d.score:d.value),description:String(d.description||d.meaning||'This capability is part of your current AI profile.')};}).filter(function(d){return d.score!==null});if(!normalized.length)return null;var overall=score(r.overallScore!=null?r.overallScore:r.overall!=null?r.overall:r.score);if(overall===null){overall=Math.round(normalized.reduce(function(a,d){return a+d.score},0)/normalized.length)}return {participant:String(r.participantName||r.name||'You'),assessment:String(r.assessmentName||r.assessment||'AI Mastery Assessment'),version:String(r.resultVersion||r.version||'1.0'),overall:overall,dimensions:normalized,metadata:r.metadata||{}}}
+function band(n){if(n>=95)return'Extraordinary';if(n>=90)return'Exceptional';if(n>=80)return'Strong';if(n>=70)return'Developing';if(n>=60)return'Building';return'Beginning'}
+function color(n){var stops=[[0,[255,69,69]],[20,[255,158,74]],[40,[255,229,107]],[60,[88,225,139]],[75,[80,221,255]],[90,[100,114,255]],[100,[255,79,183]]];for(var i=1;i<stops.length;i++){if(n<=stops[i][0]){var a=stops[i-1],b=stops[i],t=(n-a[0])/(b[0]-a[0]);var c=a[1].map(function(x,j){return Math.round(x+(b[1][j]-x)*t)});return'rgb('+c.join(',')+')'}}return'rgb(255,79,183)'}
+function normalize(r){var dims=r.dimensions.slice().sort(function(a,b){return b.score-a.score});var strongest=dims[0];var lever=dims[dims.length-1];return {participant:r.participant,assessment:r.assessment,version:r.version,overall:r.overall,dimensions:r.dimensions,pattern:dims,strongestSignal:strongest,biggestLever:lever,pathways:masters,metadata:r.metadata,naya:{name:'Naya'}}}
+function render(){
+state=normalize(getResult());
+q('#mx-status').classList.remove('active');q('#mx-live').hidden=false;
+q('#mx-participant-heading').textContent=state.participant+"'s result";
+q('#mx-score').textContent=state.overall;
+q('#mx-band').textContent=band(state.overall);
+q('#mx-hero-sub').textContent='Your answers describe a '+band(state.overall).toLowerCase()+' starting point and a unique pattern in the way you work with AI.';
+q('#mx-orb').style.filter='saturate('+(0.85+state.overall/100*0.5)+') brightness('+(0.88+state.overall/100*0.22)+')';
+q('#mx-meta').innerHTML='<span class="mx-chip">'+esc(state.participant)+'</span><span class="mx-chip">'+esc(state.assessment)+'</span><span class="mx-chip">Result '+esc(state.version)+'</span>';
+var dg=q('#mx-dimensions');dg.innerHTML='';state.dimensions.forEach(function(d,i){var el=document.createElement('article');el.className='mx-dim';el.style.setProperty('--c',color(d.score));el.setAttribute('data-maxess-dimension',esc(d.id));el.innerHTML='<div class="mx-dim-index">0'+(i+1)+'</div><h3>'+esc(d.name)+'</h3><div class="mx-gauge" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+d.score+'" aria-label="'+esc(d.name)+' score"><span></span></div><div class="mx-dim-score">'+d.score+'</div><div class="mx-dim-copy">'+esc(d.description)+'</div>';dg.appendChild(el);setTimeout(function(){el.querySelector('span').style.width=d.score+'%'},60)});
+var pts=state.dimensions.map(function(d,i){var a=(Math.PI*2*i/state.dimensions.length)-Math.PI/2,r=42*d.score/100;return [50+Math.cos(a)*r,50+Math.sin(a)*r]});q('#mx-pattern-fill').setAttribute('points',pts.map(function(p){return p[0]+','+p[1]}).join(' '));
+q('#mx-pattern-list').innerHTML=state.pattern.map(function(d,i){return'<div class="mx-pattern-row"><span>'+esc(d.name)+'</span><strong>'+d.score+'</strong></div>'}).join('');
+var s=state.strongestSignal,l=state.biggestLever;q('#mx-strength-name').textContent=s.name;q('#mx-strength-score').textContent=s.score;q('#mx-strength-copy').textContent='You already have a meaningful advantage here. Use '+s.name.toLowerCase()+' as an engine for creating better work, communicating more clearly and helping other capabilities rise.';q('#mx-strength-action').textContent='Build one real project this week that deliberately uses this strength.';
+q('#mx-lever-name').textContent=l.name;q('#mx-lever-score').textContent=l.score;q('#mx-lever-copy').textContent='This is the clearest current opportunity in your profile. It is not a weakness or a label; it is a place where deliberate practice can unlock more leverage.';q('#mx-lever-action').textContent='Use your strongest signal to complete one small '+l.name.toLowerCase()+' exercise.';
+q('#mx-next-action').textContent='Start with '+l.name+'. Take one real task you already need to accomplish and use AI deliberately: KNOW what you want, TELL AI the context, ASK clearly, CREATE the result, SCORE it, IMPROVE it, then REPEAT.';q('#mx-next-title').textContent='Practice '+l.name;
+var mg=q('#mx-masters');mg.innerHTML='';var ranked=masters.map(function(m,i){return {i:i,name:m[0],copy:m[1],priority:(m[0]===s.name||m[0]===l.name)}}).sort(function(a,b){return Number(b.priority)-Number(a.priority)||a.i-b.i});ranked.forEach(function(m){var el=document.createElement('article');el.className='mx-master'+(m.priority?' priority':'');el.innerHTML=(m.priority?'<span class="mx-start">Recommended</span>':'')+'<div class="mx-kicker">MASTER '+String(m.i+1).padStart(2,'0')+'</div><h3>'+esc(m.name)+'</h3><p>'+esc(m.copy)+'</p><a href="#maxess-results-playground" aria-label="Explore '+esc(m.name)+'">Explore pathway →</a>';mg.appendChild(el)});
+q('#mx-prompt').textContent='Naya, help me use my strength in '+s.name+' to improve my '+l.name+'. Give me one practical exercise, a strong starting prompt, and a simple scorecard I can use to improve the result.';
+q('#mx-progress').style.setProperty('--progress','100%');
+}
+function init(){var r=getResult();if(!r){fail('Your result is not available yet.','MAXESS could not find a valid production result. Nothing has been invented or substituted. Please return to the assessment and complete it again.');return}try{render()}catch(e){console.error(e);fail('We could not render your report.','Your result exists, but the report encountered an unexpected rendering problem. No fake score was displayed. Please refresh or return to the assessment.')}}
+API.init=init;API.getState=function(){return state};
+q('#mx-print').addEventListener('click',function(){window.print()});q('#mx-final-print').addEventListener('click',function(){window.print()});q('#mx-copy-prompt').addEventListener('click',function(){navigator.clipboard&&navigator.clipboard.writeText(q('#mx-prompt').textContent).then(function(){q('#mx-copy-prompt').textContent='Copied ✓'}).catch(function(){q('#mx-copy-prompt').textContent='Select prompt manually'})});q('#mx-listen').addEventListener('click',function(){var t=new SpeechSynthesisUtterance('Hi '+(state?state.participant:'there')+'. I am Naya. Your AI score is '+(state?state.overall:'')+'. Your strongest signal is '+(state?state.strongestSignal.name:'')+', and your biggest opportunity is '+(state?state.biggestLever.name:'')+'. Your next move is to practice deliberately and use your strength to unlock your next capability.');t.rate=.95;t.pitch=1.02;window.speechSynthesis&&window.speechSynthesis.speak(t)});
+window.addEventListener('scroll',function(){var h=document.documentElement.scrollHeight-window.innerHeight;q('#mx-progress').style.setProperty('--progress',h>0?(window.scrollY/h*100)+'%':'0%')},{passive:true});
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
+</script>
+</body>
+</html>
