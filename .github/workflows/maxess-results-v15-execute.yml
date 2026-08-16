@@ -1,0 +1,134 @@
+name: MAXESS Results V15 — Reconstruct and Verify
+
+on:
+  push:
+    branches:
+      - 'naya/maxess-results-v15-execution'
+    paths:
+      - '.naya/maxess-results-v15-reconstruction.py'
+      - '.github/workflows/maxess-results-v15-execute.yml'
+      - 'MAXESS-RESULTS-10-GROOVE.html'
+
+permissions:
+  contents: write
+
+jobs:
+  reconstruct:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact execution branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Baseline proof
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'window.MAXESS_RESULT' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'MAXESS_RESULTS_V13_EXECUTED' MAXESS-RESULTS-10-GROOVE.html
+          test "$(wc -c < MAXESS-RESULTS-10-GROOVE.html)" -gt 350000
+
+      - name: Execute V15 reconstruction
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m py_compile .naya/maxess-results-v15-reconstruction.py
+          python3 .naya/maxess-results-v15-reconstruction.py
+
+      - name: Static inventory and acceptance gates
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          p = Path('MAXESS-RESULTS-10-GROOVE.html')
+          s = p.read_text(encoding='utf-8')
+          required = [
+              '<!-- MAXESS-RESULTS-V15-RECONSTRUCTION -->',
+              'v15-results',
+              'v15-personal-profile',
+              'MAXESS_PROFILE',
+              'maxess:profile-ready',
+              'window.MAXESS_RESULT',
+              'YOUR AI SCORE',
+              'YOUR REPORT',
+              'YOUR FIVE DIMENSIONS',
+              'SEE THE PATTERN',
+              'YOUR STRENGTHS',
+              'YOUR BIGGEST LEVER',
+              'YOUR NEXT MOVE',
+              '18 NAYA MASTERS',
+              'YOUR NEXT CHAPTER',
+              'Print / Save PDF',
+              'maxess-results-v15-js',
+          ]
+          masters = [
+              'Writing & Communication','Research & Information','Brainstorming & Ideas','Content Creation',
+              'Business & Strategy','Marketing & Sales','Learning & Education','Coding & Software',
+              'Images & Visual Creation','Video & Media','Audio & Music','Data & Analysis',
+              'Productivity & Organization','Career & Professional Growth','Decision Making',
+              'Creative Development','Systems & Automation','AI Orchestration'
+          ]
+          missing = [x for x in required if x not in s]
+          missing += [x for x in masters if x not in s]
+          if missing:
+              raise SystemExit('V15 validation failed; missing: ' + ', '.join(missing))
+          if len(s) <= 350000:
+              raise SystemExit(f'V15 validation failed; complete artifact unexpectedly small: {len(s)} bytes')
+          forbidden = [
+              'https://raw.githubusercontent.com/SoulSchoolAcademy/maxess/main/MAXESS-RESULTS-EXPERIENCE.js',
+              'script.src=LIVING_SIGNATURE_URL;script.async=true;'
+          ]
+          present = [x for x in forbidden if x in s]
+          if present:
+              raise SystemExit('V15 self-contained gate failed; forbidden runtime renderer reference(s): ' + ', '.join(present))
+          if s.count('<!-- MAXESS-RESULTS-V15-RECONSTRUCTION -->') != 1:
+              raise SystemExit('V15 duplicate marker detected')
+          print('V15 static inventory passed:', len(s), 'bytes')
+          print('18/18 Naya Masters present')
+          print('Self-contained renderer gate passed')
+          PY
+
+      - name: JavaScript syntax proof for V15 layer
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          s = Path('MAXESS-RESULTS-10-GROOVE.html').read_text(encoding='utf-8')
+          m = re.search(r'<script id="maxess-results-v15-js">(.*?)</script>', s, re.S)
+          if not m:
+              raise SystemExit('V15 JS block not found')
+          Path('/tmp/v15.js').write_text(m.group(1), encoding='utf-8')
+          PY
+          node --check /tmp/v15.js
+
+      - name: Diff proof
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --check
+          git diff --stat
+          if git diff --quiet -- MAXESS-RESULTS-10-GROOVE.html; then
+            echo 'BLOCKED — ZERO-CHANGE EXECUTION'
+            exit 1
+          fi
+          git diff -- MAXESS-RESULTS-10-GROOVE.html | grep -q 'MAXESS-RESULTS-V15-RECONSTRUCTION'
+
+      - name: Commit complete authoritative artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'Naya Master'
+          git config user.email 'naya-master@users.noreply.github.com'
+          git add -- MAXESS-RESULTS-10-GROOVE.html
+          if git diff --cached --quiet; then
+            echo 'BLOCKED — ZERO-CHANGE EXECUTION'
+            exit 1
+          fi
+          git commit -m 'MAXESS Results V15: reconstruct complete personal report layer'
+          git push origin HEAD:naya/maxess-results-v15-execution
