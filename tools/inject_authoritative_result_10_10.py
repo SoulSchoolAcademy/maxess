@@ -25,7 +25,7 @@ MARKER = 'MAXESS_RESULT_BOOTSTRAP_10_10'
 
 def payload():
     dimensions = []
-    for i, (name, score, meaning, action) in enumerate(FIXTURE['dimensions']):
+    for name, score, meaning, action in FIXTURE['dimensions']:
         dimensions.append({
             'id': name.lower().replace(' ', '-'),
             'name': name,
@@ -44,7 +44,7 @@ def payload():
     return json.dumps(result, ensure_ascii=False, separators=(',', ':'))
 
 
-BOOTSTRAP = '<script id="maxess-result-contract-10-10">window.MAXESS_RESULT=window.MAXESS_RESULT||JSON.parse(document.getElementById(\'MAXESS_RESULT_BOOTSTRAP_10_10\').textContent);</script><script type="application/json" id="MAXESS_RESULT_BOOTSTRAP_10_10">' + payload() + '</script>'
+BOOTSTRAP = '<script type="application/json" id="MAXESS_RESULT_BOOTSTRAP_10_10">' + payload() + '</script><script id="maxess-result-contract-10-10">window.MAXESS_RESULT=window.MAXESS_RESULT||JSON.parse(document.getElementById(\'MAXESS_RESULT_BOOTSTRAP_10_10\').textContent);</script>'
 
 changed = 0
 for path in FILES:
