@@ -1,0 +1,720 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#030305">
+  <meta name="description" content="MAXESS — your personalized AI mastery pattern and next move.">
+  <title>MAXESS — Your AI Mastery</title>
+
+  <style>
+    /* ==========================================================
+       01. DESIGN TOKENS
+       Shared visual language: black / purple / metallic / glow.
+       ========================================================== */
+    :root {
+      --bg: #030305;
+      --panel: #0b0810;
+      --panel-2: #120b19;
+      --purple: #a84cff;
+      --purple-2: #6b22d4;
+      --lavender: #e6c5ff;
+      --cyan: #67d8ff;
+      --green: #59e6a2;
+      --amber: #ffc85a;
+      --red: #ff6f86;
+      --white: #ffffff;
+      --text: #f7f2fb;
+      --muted: #afa5b8;
+      --line: rgba(255,255,255,.11);
+      --shadow: 0 30px 90px rgba(0,0,0,.55);
+      --radius: 28px;
+      --max: 1180px;
+    }
+
+    /* ==========================================================
+       02. RESET / ACCESSIBILITY
+       ========================================================== */
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; background: var(--bg); }
+    body {
+      margin: 0;
+      min-width: 320px;
+      background:
+        radial-gradient(900px 520px at 50% -8%, rgba(168,76,255,.28), transparent 70%),
+        linear-gradient(180deg, #10051a 0%, #050308 38%, #020203 100%);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    button, a { font: inherit; }
+    a { color: inherit; text-decoration: none; }
+    button { border: 0; }
+    :focus-visible { outline: 3px solid #fff; outline-offset: 4px; }
+    .skip-link {
+      position: fixed; left: 12px; top: 12px; z-index: 100;
+      transform: translateY(-150%); padding: 12px 16px; border-radius: 12px;
+      background: #fff; color: #000;
+    }
+    .skip-link:focus { transform: none; }
+
+    /* ==========================================================
+       03. ATMOSPHERE / LAYOUT
+       ========================================================== */
+    .ambient {
+      position: fixed; inset: 0; pointer-events: none; z-index: -1; overflow: hidden;
+    }
+    .ambient::before {
+      content: ""; position: absolute; inset: -20%;
+      background:
+        radial-gradient(circle at 15% 30%, rgba(105,42,210,.12), transparent 25%),
+        radial-gradient(circle at 85% 42%, rgba(40,142,255,.07), transparent 25%),
+        radial-gradient(circle at 50% 100%, rgba(43,207,137,.05), transparent 30%);
+    }
+    .container { width: min(var(--max), calc(100% - 32px)); margin-inline: auto; }
+    .section { padding: 92px 0; }
+    .glass {
+      background: linear-gradient(145deg, rgba(255,255,255,.075), rgba(255,255,255,.025));
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+    }
+    .eyebrow {
+      color: #ceb8e2; font-size: 11px; font-weight: 850;
+      letter-spacing: .2em; text-transform: uppercase;
+    }
+    .section-title {
+      margin: 12px 0 16px; font-size: clamp(38px, 6vw, 72px);
+      line-height: .96; letter-spacing: -.055em; font-weight: 950;
+    }
+    .section-copy { color: var(--muted); line-height: 1.65; max-width: 700px; }
+    .reveal { opacity: 0; transform: translateY(22px); transition: opacity .7s ease, transform .7s ease; }
+    .reveal.is-visible { opacity: 1; transform: none; }
+
+    /* ==========================================================
+       04. BUTTON SYSTEM
+       ========================================================== */
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+      min-height: 54px; padding: 0 23px; border-radius: 17px;
+      cursor: pointer; font-weight: 850; transition: transform .2s ease, filter .2s ease;
+    }
+    .btn:hover { transform: translateY(-3px); filter: brightness(1.08); }
+    .btn-primary {
+      color: #fff; background: linear-gradient(135deg, #f0d8ff, #a84cff 38%, #5715ad);
+      box-shadow: 0 12px 38px rgba(135,49,220,.35);
+    }
+    .btn-secondary { color: #fff; background: #0b090d; border: 1px solid var(--line); }
+
+    /* ==========================================================
+       05. HERO — CURIOSITY → RECOGNITION
+       ========================================================== */
+    .hero { min-height: 88svh; display: grid; place-items: center; text-align: center; padding: 70px 0 45px; }
+    .hero-kicker {
+      display: inline-flex; padding: 9px 14px; border-radius: 999px;
+      border: 1px solid var(--line); background: rgba(255,255,255,.035);
+      color: #ddd0e9; font-size: 11px; font-weight: 850; letter-spacing: .14em; text-transform: uppercase;
+    }
+    .hero-orb {
+      width: min(170px, 42vw); aspect-ratio: 1; margin: 32px auto 24px; border-radius: 50%;
+      background: radial-gradient(circle at 33% 27%, #fff 0 4%, #e8c3ff 12%, #a84cff 33%, #4d139b 59%, #0d0318 78%, transparent 79%);
+      box-shadow: 0 0 0 1px rgba(255,255,255,.25), 0 0 80px rgba(168,76,255,.45), inset 0 -25px 45px rgba(0,0,0,.45);
+      position: relative;
+      animation: float 5s ease-in-out infinite;
+    }
+    .hero-orb::before, .hero-orb::after {
+      content: ""; position: absolute; inset: -16%; border: 1px solid rgba(205,157,255,.25); border-radius: 50%;
+      transform: rotateX(68deg) rotateZ(18deg); animation: orbit 10s linear infinite;
+    }
+    .hero-orb::after { inset: -7%; transform: rotateY(68deg) rotateZ(-22deg); animation-duration: 14s; }
+    @keyframes float { 50% { transform: translateY(-8px); } }
+    @keyframes orbit { to { transform: rotateX(68deg) rotateZ(378deg); } }
+    .score {
+      margin: 0; font-size: clamp(88px, 16vw, 170px); line-height: .78; letter-spacing: -.09em; font-weight: 950;
+      background: linear-gradient(180deg, #fff, #efcaff 46%, #a84cff);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+      text-shadow: 0 0 55px rgba(168,76,255,.25);
+    }
+    .score-label { margin-top: 25px; color: #d4c8dd; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; font-weight: 850; }
+    .pattern {
+      max-width: 850px; margin: 26px auto 0; font-size: clamp(25px, 4vw, 48px);
+      line-height: 1.02; letter-spacing: -.045em; font-weight: 920;
+    }
+    .pattern em { color: var(--lavender); font-style: normal; }
+    .hero-note { max-width: 650px; margin: 18px auto 0; color: var(--muted); line-height: 1.6; }
+    .hero .actions { margin-top: 32px; }
+
+    /* ==========================================================
+       06. PATTERN / DNA — SIGNATURE VISUAL
+       ========================================================== */
+    .pattern-section { padding-top: 65px; }
+    .dna-card { padding: clamp(18px, 4vw, 42px); border-radius: 34px; overflow: hidden; }
+    .dna-layout { display: grid; grid-template-columns: 1.05fr .95fr; gap: 34px; align-items: center; }
+    .dna-stage { position: relative; width: min(600px, 100%); aspect-ratio: 1; margin: auto; }
+    .dna-stage canvas { width: 100%; height: 100%; display: block; }
+    .dna-center { position: absolute; inset: 50% auto auto 50%; transform: translate(-50%, -50%); text-align: center; pointer-events: none; }
+    .dna-center strong { display: block; font-size: clamp(24px, 4vw, 44px); letter-spacing: -.05em; }
+    .dna-center span { display: block; margin-top: 6px; color: #aaa0b6; font-size: 10px; letter-spacing: .15em; text-transform: uppercase; }
+    .dimension-list { display: grid; gap: 11px; }
+    .dimension-row {
+      display: grid; grid-template-columns: 12px 1fr auto; gap: 12px; align-items: center;
+      padding: 14px 16px; border-radius: 16px; background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.075);
+    }
+    .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--purple); box-shadow: 0 0 15px var(--purple); }
+    .dimension-row b { font-size: 14px; }
+    .dimension-row strong { font-size: 15px; }
+    .mini-meter { height: 4px; margin-top: 7px; border-radius: 99px; overflow: hidden; background: #241a2c; }
+    .mini-meter i { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #6b22d4, #dfb0ff); }
+
+    /* ==========================================================
+       07. THREE RECOGNITION MOMENTS
+       ========================================================== */
+    .recognition-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 34px; }
+    .recognition-card { padding: 26px; border-radius: 23px; min-height: 205px; }
+    .recognition-icon {
+      width: 42px; height: 42px; display: grid; place-items: center; border-radius: 13px;
+      background: linear-gradient(145deg, #fff, #c995ff 45%, #6320bd); color: #180827; font-weight: 950;
+    }
+    .recognition-card h3 { margin: 20px 0 9px; font-size: 20px; letter-spacing: -.025em; }
+    .recognition-card p { margin: 0; color: var(--muted); line-height: 1.6; font-size: 14px; }
+
+    /* ==========================================================
+       08. FIVE DIMENSIONS — CONNECTED SYSTEM
+       ========================================================== */
+    .dimension-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-top: 34px; }
+    .dimension-card { padding: 20px; border-radius: 20px; position: relative; overflow: hidden; }
+    .dimension-card::after { content: ""; position: absolute; inset: auto -30% -70%; height: 100%; background: radial-gradient(circle, rgba(168,76,255,.18), transparent 65%); }
+    .dimension-card > * { position: relative; z-index: 1; }
+    .dimension-number { font-size: 38px; font-weight: 950; letter-spacing: -.06em; }
+    .dimension-name { margin-top: 7px; font-weight: 850; }
+    .dimension-meaning { margin-top: 10px; color: #a9a0b0; font-size: 12px; line-height: 1.5; }
+    .meter { height: 5px; margin-top: 16px; border-radius: 99px; background: #23182c; overflow: hidden; }
+    .meter i { display: block; height: 100%; background: linear-gradient(90deg, #6b22d4, #dba7ff); }
+
+    /* ==========================================================
+       09. PERSONAL SYNTHESIS — WHY THE PATTERN MATTERS
+       ========================================================== */
+    .synthesis-grid { display: grid; grid-template-columns: .9fr 1.1fr; gap: 18px; margin-top: 35px; }
+    .story-card { padding: 32px; border-radius: 26px; }
+    .story-card h3 { margin: 10px 0 14px; font-size: clamp(28px, 4vw, 48px); line-height: 1; letter-spacing: -.045em; }
+    .story-card p { margin: 0; color: var(--muted); line-height: 1.75; }
+    .callout { margin-top: 22px; padding: 17px 18px; border-radius: 16px; background: rgba(89,230,162,.08); border: 1px solid rgba(89,230,162,.18); }
+    .callout b { color: #c4ffe3; }
+    .path-list { display: grid; gap: 10px; }
+    .path-item { display: grid; grid-template-columns: 42px 1fr auto; gap: 13px; align-items: center; padding: 16px; border-radius: 17px; }
+    .path-index { width: 42px; height: 42px; display: grid; place-items: center; border-radius: 13px; background: linear-gradient(145deg,#fff,#b967ff 45%,#4b0c9d); color: #170525; font-weight: 950; }
+    .path-item h4 { margin: 0; font-size: 15px; }
+    .path-item p { margin: 4px 0 0; color: #968b9f; font-size: 12px; line-height: 1.45; }
+    .tag { color: #e5c9ff; border: 1px solid rgba(168,76,255,.3); border-radius: 999px; padding: 6px 9px; font-size: 10px; white-space: nowrap; }
+
+    /* ==========================================================
+       10. ACTION — ONE NEXT MOVE
+       ========================================================== */
+    .action-card {
+      padding: clamp(30px, 6vw, 68px); border-radius: 34px; text-align: center;
+      background: radial-gradient(circle at 50% 0, rgba(168,76,255,.23), transparent 50%), linear-gradient(145deg, rgba(255,255,255,.075), rgba(255,255,255,.025));
+      border: 1px solid var(--line); box-shadow: var(--shadow);
+    }
+    .action-card h2 { max-width: 820px; margin: 12px auto 16px; font-size: clamp(38px, 5.5vw, 68px); line-height: .97; letter-spacing: -.055em; }
+    .action-card p { max-width: 680px; margin: auto; color: var(--muted); line-height: 1.65; }
+    .action-card .actions { margin-top: 28px; }
+    .btn-large { min-height: 64px; padding-inline: 30px; border-radius: 19px; }
+
+    /* ==========================================================
+       11. NAYA HANDOFF
+       ========================================================== */
+    .naya-card { padding: clamp(28px, 5vw, 58px); border-radius: 34px; text-align: center; position: relative; overflow: hidden; }
+    .naya-card::before { content: ""; position: absolute; width: 620px; height: 620px; left: 50%; top: -25%; transform: translateX(-50%); background: radial-gradient(circle, rgba(168,76,255,.2), transparent 67%); pointer-events: none; }
+    .naya-orb { position: relative; width: 82px; height: 82px; margin: 0 auto 20px; border-radius: 50%; background: radial-gradient(circle at 32% 28%,#fff,#d9a6ff 18%,#9e40ff 45%,#3d0b77 78%,#0b0410); box-shadow: 0 0 45px rgba(168,76,255,.45), inset 0 -15px 24px rgba(0,0,0,.4); }
+    .naya-card h2 { position: relative; margin: 0 0 14px; font-size: clamp(34px, 5vw, 60px); line-height: 1; letter-spacing: -.05em; }
+    .naya-card p { position: relative; max-width: 700px; margin: auto; color: #b9aebe; line-height: 1.7; }
+    .chips { position: relative; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 22px auto 0; }
+    .chip { padding: 8px 11px; border-radius: 999px; border: 1px solid rgba(255,255,255,.09); background: rgba(255,255,255,.04); color: #d7cbe0; font-size: 11px; }
+
+    /* ==========================================================
+       12. NAYANET GROUND FLOOR — SAME VISUAL DNA, NO DEPENDENCY
+       ========================================================== */
+    .ground-floor { padding-top: 30px; }
+    .ground-shell {
+      padding: clamp(18px, 3vw, 36px); border-radius: 34px 34px 0 0;
+      background: radial-gradient(800px 350px at 50% 0, rgba(168,76,255,.2), transparent 70%), linear-gradient(180deg,#12081d,#050308);
+      border: 1px solid var(--line); border-bottom: 0;
+    }
+    .ground-head { text-align: center; padding: 20px 10px 30px; }
+    .ground-head h2 { margin: 10px 0; font-size: clamp(34px, 5vw, 66px); line-height: .98; letter-spacing: -.05em; }
+    .ground-head p { max-width: 680px; margin: auto; color: var(--muted); line-height: 1.6; }
+    .video-stage {
+      position: relative; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 24px; background: #000;
+      border: 1px solid rgba(255,255,255,.14); box-shadow: 0 24px 70px rgba(0,0,0,.6);
+      display: grid; place-items: center;
+    }
+    .video-stage::before { content: ""; position: absolute; inset: -20%; background: radial-gradient(circle at 50% 42%, rgba(168,76,255,.34), transparent 34%), radial-gradient(circle at 30% 70%, rgba(72,119,255,.1), transparent 28%); }
+    .video-placeholder { position: relative; z-index: 1; text-align: center; }
+    .play-button { width: 86px; height: 86px; display: grid; place-items: center; margin: 0 auto 18px; border-radius: 50%; background: linear-gradient(145deg,#f4dcff,#a84cff 45%,#4c119c); color: #fff; font-size: 28px; box-shadow: 0 0 45px rgba(168,76,255,.5); cursor: pointer; }
+    .ground-actions { display: grid; grid-template-columns: 1.3fr repeat(3, 1fr); gap: 12px; margin-top: 14px; }
+    .ground-button { min-height: 72px; border-radius: 18px; display: flex; align-items: center; justify-content: center; padding: 14px; text-align: center; font-weight: 850; background: linear-gradient(145deg,#25272d,#08090b); border: 1px solid rgba(255,255,255,.12); box-shadow: 0 12px 28px rgba(0,0,0,.45); }
+    .ground-button.primary { background: linear-gradient(135deg,#eacbff,#a84cff 42%,#4f139d); }
+
+    /* ==========================================================
+       13. RESPONSIVE
+       ========================================================== */
+    @media (max-width: 900px) {
+      .dna-layout, .synthesis-grid { grid-template-columns: 1fr; }
+      .dimension-grid { grid-template-columns: repeat(2, 1fr); }
+      .recognition-grid { grid-template-columns: 1fr; }
+      .ground-actions { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 600px) {
+      .container { width: min(var(--max), calc(100% - 22px)); }
+      .section { padding: 66px 0; }
+      .hero { min-height: 84svh; padding-top: 50px; }
+      .hero .actions { display: grid; grid-template-columns: 1fr; }
+      .btn { width: 100%; }
+      .dimension-grid { grid-template-columns: 1fr; }
+      .dimension-row { grid-template-columns: 10px 1fr auto; }
+      .path-item { grid-template-columns: 38px 1fr; }
+      .path-item .tag { grid-column: 2; justify-self: start; }
+      .ground-actions { grid-template-columns: 1fr; }
+      .video-stage { border-radius: 17px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
+    }
+  </style>
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to results</a>
+  <div class="ambient" aria-hidden="true"></div>
+
+  <main id="main">
+    <!-- ========================================================
+         RESULT MODEL — SINGLE SOURCE OF TRUTH
+         In production, this object is injected by the assessment.
+         The renderer never calculates assessment scores.
+         ======================================================== -->
+    <script id="maxess-result" type="application/json">
+      {
+        "overall": 9.2,
+        "pattern": "A strategic builder who turns ideas into systems.",
+        "dimensions": {
+          "direction": 94,
+          "communication": 87,
+          "evaluation": 82,
+          "iteration": 91,
+          "systems": 96
+        },
+        "strength": "Systems Thinking",
+        "opportunity": "Evaluation",
+        "opportunityImpact": "Sharper evaluation will help you separate good AI output from exceptional output faster.",
+        "interests": ["Business & Strategy", "Content Creation", "Coding & Software"],
+        "masteryPath": [
+          {"name":"Evaluation", "reason":"Build a stronger eye for quality and accuracy.", "tag":"START HERE"},
+          {"name":"Systems Thinking", "reason":"Turn repeatable AI wins into workflows.", "tag":"ADVANTAGE"},
+          {"name":"Business & Strategy", "reason":"Connect AI capability to measurable outcomes.", "tag":"NEXT"},
+          {"name":"Content Creation", "reason":"Multiply your ideas without losing your voice.", "tag":"EXPAND"}
+        ],
+        "nayaContext": {
+          "name": "Shawn",
+          "summary": "Strategic builder pattern with strong systems thinking and an opportunity to sharpen evaluation.",
+          "interests": ["Business & Strategy", "Content Creation", "Coding & Software"]
+        }
+      }
+    </script>
+
+    <!-- ========================================================
+         01 — HERO
+         ======================================================== -->
+    <section class="hero section">
+      <div class="container reveal">
+        <div class="hero-kicker">MAXESS • AI MASTERY REVEALED</div>
+        <div class="hero-orb" aria-hidden="true"></div>
+        <p class="score" id="overall-score">—</p>
+        <div class="score-label">Your AI Mastery Score</div>
+        <h1 class="pattern" id="pattern-line">Your pattern is being revealed.</h1>
+        <p class="hero-note">The number is only the beginning. Your real advantage is the pattern underneath it.</p>
+        <div class="actions">
+          <a class="btn btn-primary" href="#pattern">See My Pattern ↓</a>
+          <a class="btn btn-secondary" href="#next">Show Me My Next Move</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================
+         02 — PERSONAL DNA
+         ======================================================== -->
+    <section class="section pattern-section" id="pattern">
+      <div class="container">
+        <div class="reveal">
+          <div class="eyebrow">Recognition</div>
+          <h2 class="section-title">This is your pattern.</h2>
+          <p class="section-copy">Five dimensions work together to create the way you naturally think, direct, evaluate, improve and systemize with AI.</p>
+        </div>
+
+        <div class="dna-card glass reveal">
+          <div class="dna-layout">
+            <div class="dna-stage" aria-label="Your five-dimensional MAXESS fingerprint">
+              <canvas id="dna-canvas" width="700" height="700"></canvas>
+              <div class="dna-center"><strong id="dna-score">—</strong><span>MAXESS fingerprint</span></div>
+            </div>
+            <div class="dimension-list" id="dimension-list" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================
+         03 — THREE RECOGNITION MOMENTS
+         ======================================================== -->
+    <section class="section">
+      <div class="container">
+        <div class="recognition-grid">
+          <article class="recognition-card glass reveal">
+            <div class="recognition-icon">01</div>
+            <h3>Your natural advantage</h3>
+            <p id="strength-copy">Your strongest dimension is loading.</p>
+          </article>
+          <article class="recognition-card glass reveal">
+            <div class="recognition-icon">02</div>
+            <h3>What is holding you back</h3>
+            <p id="opportunity-copy">Your highest-leverage opportunity is loading.</p>
+          </article>
+          <article class="recognition-card glass reveal">
+            <div class="recognition-icon">03</div>
+            <h3>Why it matters</h3>
+            <p id="impact-copy">Your opportunity is being translated into a practical outcome.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================
+         04 — CONNECTED FIVE DIMENSIONS
+         ======================================================== -->
+    <section class="section">
+      <div class="container">
+        <div class="reveal">
+          <div class="eyebrow">Understanding</div>
+          <h2 class="section-title">Five dimensions. One mind.</h2>
+          <p class="section-copy">The goal is not to chase the highest number. It is to understand the shape—and know which improvement creates the biggest downstream gain.</p>
+        </div>
+        <div class="dimension-grid" id="dimension-cards"></div>
+      </div>
+    </section>
+
+    <!-- ========================================================
+         05 — PERSONAL SYNTHESIS + PATH
+         ======================================================== -->
+    <section class="section">
+      <div class="container">
+        <div class="synthesis-grid">
+          <article class="story-card glass reveal">
+            <div class="eyebrow">Your synthesis</div>
+            <h3 id="synthesis-title">Your pattern tells a story.</h3>
+            <p id="synthesis-copy">Your dimensions are being connected into one practical interpretation.</p>
+            <div class="callout"><b>Your leverage point:</b> <span id="leverage-copy">—</span></div>
+          </article>
+          <div class="path-list" id="path-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================
+         06 — ONE NEXT MOVE
+         ======================================================== -->
+    <section class="section" id="next">
+      <div class="container">
+        <div class="action-card reveal">
+          <div class="eyebrow">Possibility → Action</div>
+          <h2>Don't try to master everything. Master your next move.</h2>
+          <p id="next-action-copy">Your personalized opportunity becomes the starting point for your Mastery Path.</p>
+          <div class="actions">
+            <button class="btn btn-primary btn-large" id="naya-button" type="button">Continue with Naya →</button>
+            <a class="btn btn-secondary btn-large" href="#naya">See how Naya can help</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================
+         07 — NAYA HANDOFF
+         The exact result context is serialized before navigation.
+         ======================================================== -->
+    <section class="section" id="naya">
+      <div class="container">
+        <article class="naya-card glass reveal">
+          <div class="naya-orb" aria-hidden="true"></div>
+          <div class="eyebrow">Your next chapter</div>
+          <h2>Naya already knows your pattern.</h2>
+          <p id="naya-copy">Your result will travel with you so the conversation can begin with context—not another questionnaire.</p>
+          <div class="chips" id="interest-chips"></div>
+          <div class="actions" style="margin-top:26px">
+            <button class="btn btn-primary btn-large" id="naya-button-2" type="button">Talk to Naya About My Results →</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ========================================================
+         08 — NAYANET GROUND FLOOR
+         Visual language is intentionally continuous with nayanetpagecode.
+         No iframe. No DOM scraping. No dependency on its state.
+         ======================================================== -->
+    <section class="ground-floor" aria-label="NayaNET continuation">
+      <div class="container">
+        <div class="ground-shell">
+          <div class="ground-head reveal">
+            <div class="eyebrow">NayaNET • Ground Floor</div>
+            <h2>The experience continues.</h2>
+            <p>MAXESS brings you here with your understanding intact. The foundation remains cinematic, premium, dark, metallic and purple.</p>
+          </div>
+
+          <div class="video-stage reveal">
+            <div class="video-placeholder">
+              <button class="play-button" id="play-button" type="button" aria-label="Play video">▶</button>
+              <div style="font-weight:850;font-size:18px">Your NayaNET experience</div>
+              <div style="color:#a99eaf;margin-top:7px;font-size:13px">Connect the production video source here.</div>
+            </div>
+          </div>
+
+          <div class="ground-actions reveal">
+            <a class="ground-button primary" href="#next">Unlock My Mastery Path</a>
+            <button class="ground-button" id="copy-result" type="button">Copy My Result</button>
+            <a class="ground-button" href="#naya">Continue with Naya</a>
+            <a class="ground-button" href="#pattern">Review My Pattern</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    /* ==========================================================
+       14. MAXESS RESULT ENGINE
+       Renderer-only architecture: scores are never recalculated.
+       ========================================================== */
+    (() => {
+      "use strict";
+
+      const resultElement = document.getElementById("maxess-result");
+      const result = JSON.parse(resultElement.textContent);
+
+      const DIMENSIONS = [
+        { key: "direction", name: "Direction", description: "Knowing what you want before asking AI to produce it." },
+        { key: "communication", name: "Communication", description: "Turning your intent into clear instructions and context." },
+        { key: "evaluation", name: "Evaluation", description: "Judging quality, truth, usefulness and fit." },
+        { key: "iteration", name: "Iteration", description: "Improving outputs deliberately instead of accepting version one." },
+        { key: "systems", name: "Systems Thinking", description: "Turning individual wins into repeatable leverage." }
+      ];
+
+      const $ = (selector) => document.querySelector(selector);
+      const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+
+      function average(values) {
+        return values.reduce((sum, value) => sum + value, 0) / values.length;
+      }
+
+      function renderScore() {
+        $("#overall-score").textContent = Number(result.overall).toFixed(1);
+        $("#dna-score").textContent = Number(result.overall).toFixed(1);
+        $("#pattern-line").innerHTML = `${escapeHtml(result.pattern.split(" ").slice(0, -1).join(" "))} <em>${escapeHtml(result.pattern.split(" ").slice(-1)[0])}</em>`;
+      }
+
+      function renderDimensions() {
+        const list = $("#dimension-list");
+        const cards = $("#dimension-cards");
+
+        DIMENSIONS.forEach((dimension) => {
+          const score = clamp(Number(result.dimensions[dimension.key]) || 0, 0, 100);
+
+          list.insertAdjacentHTML("beforeend", `
+            <div class="dimension-row">
+              <span class="dot" aria-hidden="true"></span>
+              <div>
+                <b>${dimension.name}</b>
+                <div class="mini-meter"><i style="width:${score}%"></i></div>
+              </div>
+              <strong>${score}</strong>
+            </div>
+          `);
+
+          cards.insertAdjacentHTML("beforeend", `
+            <article class="dimension-card glass reveal">
+              <div class="dimension-number">${score}</div>
+              <div class="dimension-name">${dimension.name}</div>
+              <div class="dimension-meaning">${dimension.description}</div>
+              <div class="meter"><i style="width:${score}%"></i></div>
+            </article>
+          `);
+        });
+      }
+
+      function renderSynthesis() {
+        const strongest = DIMENSIONS.reduce((best, current) => result.dimensions[current.key] > result.dimensions[best.key] ? current : best, DIMENSIONS[0]);
+        const weakest = DIMENSIONS.reduce((best, current) => result.dimensions[current.key] < result.dimensions[best.key] ? current : best, DIMENSIONS[0]);
+
+        $("#strength-copy").textContent = `${strongest.name} is your strongest dimension at ${result.dimensions[strongest.key]}/100. This is where you already have natural leverage.`;
+        $("#opportunity-copy").textContent = `${weakest.name} is your highest-leverage opportunity at ${result.dimensions[weakest.key]}/100. Strengthening it can improve the quality of everything around it.`;
+        $("#impact-copy").textContent = result.opportunityImpact;
+        $("#synthesis-title").textContent = `You are strongest when ${strongest.name.toLowerCase()} leads.`;
+        $("#synthesis-copy").textContent = `Your profile combines ${strongest.name.toLowerCase()} strength with an opportunity in ${weakest.name.toLowerCase()}. The fastest path is not to become better at everything—it is to strengthen the constraint that limits your existing strengths.`;
+        $("#leverage-copy").textContent = `${weakest.name}: practice one deliberate evaluation loop on your next AI task.`;
+        $("#next-action-copy").textContent = `For the next five minutes, take one AI answer you already have and score it against accuracy, usefulness, specificity and fit. Then improve it once. That single loop trains ${weakest.name.toLowerCase()}.`;
+      }
+
+      function renderPath() {
+        const path = $("#path-list");
+        result.masteryPath.forEach((item, index) => {
+          path.insertAdjacentHTML("beforeend", `
+            <article class="path-item glass reveal">
+              <div class="path-index">${String(index + 1).padStart(2, "0")}</div>
+              <div>
+                <h4>${escapeHtml(item.name)}</h4>
+                <p>${escapeHtml(item.reason)}</p>
+              </div>
+              <span class="tag">${escapeHtml(item.tag)}</span>
+            </article>
+          `);
+        });
+      }
+
+      function renderNaya() {
+        $("#naya-copy").textContent = `Naya will receive your ${Number(result.overall).toFixed(1)} score, five dimensions, strongest area, opportunity, and selected interests. You do not have to start over.`;
+        const chips = $("#interest-chips");
+        result.interests.forEach((interest) => chips.insertAdjacentHTML("beforeend", `<span class="chip">${escapeHtml(interest)}</span>`));
+      }
+
+      function drawFingerprint() {
+        const canvas = $("#dna-canvas");
+        const ctx = canvas.getContext("2d");
+        const width = canvas.width;
+        const height = canvas.height;
+        const cx = width / 2;
+        const cy = height / 2;
+        const radius = Math.min(width, height) * .34;
+        const values = DIMENSIONS.map((dimension) => clamp(Number(result.dimensions[dimension.key]) || 0, 0, 100) / 100);
+
+        function frame(time) {
+          ctx.clearRect(0, 0, width, height);
+          const pulse = 1 + Math.sin(time * .0012) * .018;
+          const points = values.map((value, index) => {
+            const angle = -Math.PI / 2 + index * ((Math.PI * 2) / values.length);
+            const r = radius * (.72 + value * .28) * pulse;
+            return { x: cx + Math.cos(angle) * r, y: cy + Math.sin(angle) * r };
+          });
+
+          ctx.save();
+          ctx.translate(cx, cy);
+          ctx.globalAlpha = .22;
+          ctx.strokeStyle = "#b66bff";
+          ctx.lineWidth = 2;
+          for (let ring = 1; ring <= 4; ring++) {
+            ctx.beginPath();
+            points.forEach((_, i) => {
+              const angle = -Math.PI / 2 + i * ((Math.PI * 2) / values.length);
+              const r = radius * (ring / 4);
+              const x = Math.cos(angle) * r;
+              const y = Math.sin(angle) * r;
+              if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+            });
+            ctx.closePath(); ctx.stroke();
+          }
+          ctx.globalAlpha = .16;
+          DIMENSIONS.forEach((_, i) => {
+            const angle = -Math.PI / 2 + i * ((Math.PI * 2) / values.length);
+            ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(Math.cos(angle) * radius, Math.sin(angle) * radius); ctx.stroke();
+          });
+          ctx.restore();
+
+          ctx.save();
+          ctx.beginPath();
+          points.forEach((point, i) => i === 0 ? ctx.moveTo(point.x, point.y) : ctx.lineTo(point.x, point.y));
+          ctx.closePath();
+          const fill = ctx.createRadialGradient(cx, cy, 20, cx, cy, radius);
+          fill.addColorStop(0, "rgba(229,194,255,.28)");
+          fill.addColorStop(1, "rgba(120,35,220,.12)");
+          ctx.fillStyle = fill; ctx.fill();
+          ctx.shadowColor = "rgba(168,76,255,.75)"; ctx.shadowBlur = 30;
+          ctx.strokeStyle = "rgba(229,194,255,.95)"; ctx.lineWidth = 5; ctx.stroke();
+          ctx.restore();
+
+          points.forEach((point) => {
+            ctx.beginPath(); ctx.arc(point.x, point.y, 9, 0, Math.PI * 2);
+            ctx.fillStyle = "#f2d7ff"; ctx.shadowColor = "#a84cff"; ctx.shadowBlur = 22; ctx.fill();
+          });
+
+          requestAnimationFrame(frame);
+        }
+        requestAnimationFrame(frame);
+      }
+
+      function setupReveal() {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-visible");
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { threshold: .12 });
+        document.querySelectorAll(".reveal").forEach((element) => observer.observe(element));
+      }
+
+      function persistForNaya() {
+        const payload = {
+          source: "MAXESS",
+          version: 1,
+          timestamp: new Date().toISOString(),
+          result
+        };
+        sessionStorage.setItem("MAXESS_NAYA_CONTEXT", JSON.stringify(payload));
+        localStorage.setItem("MAXESS_LAST_RESULT", JSON.stringify(payload));
+      }
+
+      function openNaya() {
+        persistForNaya();
+        const target = "https://nayanet.xyz/";
+        window.location.href = target;
+      }
+
+      function copyResult() {
+        const text = [
+          `MAXESS AI Mastery Score: ${Number(result.overall).toFixed(1)}`,
+          result.pattern,
+          ...DIMENSIONS.map((d) => `${d.name}: ${result.dimensions[d.key]}/100`),
+          `Strength: ${result.strength}`,
+          `Opportunity: ${result.opportunity}`
+        ].join("\n");
+        navigator.clipboard?.writeText(text).then(() => {
+          $("#copy-result").textContent = "Copied ✓";
+          setTimeout(() => { $("#copy-result").textContent = "Copy My Result"; }, 1800);
+        });
+      }
+
+      function escapeHtml(value) {
+        return String(value).replace(/[&<>\"]/g, (character) => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[character]));
+      }
+
+      function init() {
+        renderScore();
+        renderDimensions();
+        renderSynthesis();
+        renderPath();
+        renderNaya();
+        drawFingerprint();
+        setupReveal();
+        persistForNaya();
+        $("#naya-button").addEventListener("click", openNaya);
+        $("#naya-button-2").addEventListener("click", openNaya);
+        $("#copy-result").addEventListener("click", copyResult);
+        $("#play-button").addEventListener("click", () => alert("Connect the approved production video source here."));
+      }
+
+      init();
+    })();
+  </script>
+</body>
+</html>
