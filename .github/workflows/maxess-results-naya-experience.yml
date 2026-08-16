@@ -8,6 +8,7 @@ on:
     paths:
       - '.naya/MAXESS-RESULTS-NAYA-EXPERIENCE-FRAGMENT.html'
       - '.naya/MAXESS-RESULTS-NAYA-EXPERIENCE-FIX-V2.html'
+      - '.naya/MAXESS-RESULTS-NAYA-EXPERIENCE-FIX-V3.html'
       - '.naya/apply_maxess_results_experience.py'
       - '.naya/MAXESS-RESULTS-MASTER-INSTRUCTION-SET.md'
       - '.naya/NAYA-GOVERNANCE.md'
@@ -50,6 +51,7 @@ jobs:
               'Human + AI bridge': 'naya-human-bridge' in s,
               'Final solution relocation': 'naya-final-solution' in s,
               'V2 asset fix': 'naya-results-experience-v1-fix' in s,
+              'V3 hero purity': 'naya-results-experience-v3' in s,
               'Supplied Naya dark asset': 'grok-image-f75a6f12-4e3a-4c99-a334-5684ba0f7401.jpg' in s,
               'Supplied Naya light asset': 'grok-image-c6a924fd-1f75-4ac8-840d-35b224fb3e52.jpg' in s,
               'Supplied brand asset': 'ICON-LOGO.png' in s,
@@ -74,5 +76,5 @@ jobs:
           git config user.name 'Naya Master'
           git config user.email 'naya-master@users.noreply.github.com'
           git add -- MAXESS-RESULTS-10-GROOVE.html
-          git commit -m 'Apply MAXESS Results Naya experience fix V2 [skip ci]'
+          git commit -m 'Apply MAXESS Results Naya experience fix V3 [skip ci]'
           git push origin HEAD:naya-results-master-instruction-set
