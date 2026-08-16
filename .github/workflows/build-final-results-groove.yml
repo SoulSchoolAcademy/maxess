@@ -20,6 +20,8 @@ jobs:
           set -euo pipefail
           python3 -m py_compile tools/build_maxess_results_10_self_optimized.py
           python3 tools/build_maxess_results_10_self_optimized.py
+          python3 -m py_compile tools/format_results_10_artifacts.py
+          python3 tools/format_results_10_artifacts.py
 
       - name: Verify final Results artifacts
         run: |
@@ -77,6 +79,7 @@ jobs:
             MAXESS-RESULTS-GROOVE-EMBED.html \
             MAXESS-RESULTS-GROOVE-EMBED-9.95.html \
             tools/build_maxess_results_10_self_optimized.py \
+            tools/format_results_10_artifacts.py \
             .github/workflows/build-final-results-groove.yml
           git diff --cached --quiet || git commit -m 'Publish self-optimized MAXESS Results experience'
           git push
