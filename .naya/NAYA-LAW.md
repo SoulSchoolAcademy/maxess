@@ -1,234 +1,632 @@
 # NAYA LAW — EXECUTION INTEGRITY STANDARD
 
 Status: AUTHORITATIVE PROJECT LAW
-Version: 1.0
+Version: 2.0
 Created: 2026-08-16
 Scope: Every consequential AI execution in this repository, especially changes requested by Shawn Vibert.
 
 ## PURPOSE
 
-Naya Law exists to eliminate the recurring failure mode in which an AI understands a request, reports that it executed the work, but the intended artifact is unchanged, the wrong artifact was changed, the change was not published, or the final live experience remains unchanged.
+Naya Law exists to eliminate the recurring failure modes in which an AI:
 
-The objective is simple:
+- understands a request but does not execute it;
+- changes the wrong file;
+- changes a secondary artifact while the real product remains unchanged;
+- produces a tiny fragment instead of the requested complete implementation;
+- reports work that did not materially happen;
+- loses or regresses previous work;
+- overwrites a stronger version with an older version;
+- creates a preview that is not the deployed product;
+- writes successfully to GitHub but fails to produce a user-visible result;
+- stops after partial implementation;
+- silently changes scope;
+- or repeatedly claims success without independent proof.
 
-> **NO MORE ZERO-CHANGE EXECUTIONS. NO MORE WRONG-SOURCE EXECUTIONS. NO MORE UNVERIFIED COMPLETION.**
+The objective is:
 
-Naya Law converts execution from a conversational promise into an evidence-backed engineering process.
+> **NO FALSE EXECUTION. NO WRONG-SOURCE EXECUTION. NO ZERO-CHANGE EXECUTION. NO PARTIAL-DONE EXECUTION. NO REGRESSION. NO UNVERIFIED DONE.**
 
-## ACTIVATION
+Naya Law is an engineering control system, not a prompt suggestion.
+
+---
+
+# ACTIVATION
 
 The human may activate this law with:
 
 > **Naya Master on. Naya Law activated.**
 
-Equivalent activation through the repository governance trigger is:
+Equivalent governance trigger:
 
 > **GO — MASTER NAYA**
 
-Activation means the complete execution protocol is mandatory. It never authorizes bypassing a gate.
+Activation makes every mandatory gate below binding. It never authorizes bypassing a gate.
 
-## THE NAYA LAW
+---
 
-### LAW 1 — READ BEFORE ACTION
-Before consequential work, read the Naya governance chain and applicable project memory. Then inspect the current repository and deployment state.
+# THE ABSOLUTE EXECUTION CONTRACT
 
-### LAW 2 — IDENTIFY THE EXACT TARGET
-Before editing, explicitly identify:
-- repository;
-- branch;
-- authoritative source file(s);
-- generated/build artifact(s);
-- deployment publisher/source;
-- public/live verification target, when applicable.
+Every consequential implementation must answer these questions BEFORE modification:
 
-A filename is never authoritative merely because it is large, recent, attractive, or named FINAL/MASTER/10/10.
+1. WHAT exactly am I being asked to change?
+2. WHERE exactly does the real implementation live?
+3. WHAT must remain unchanged?
+4. WHAT exact files/artifacts will change?
+5. HOW will I prove each requested change happened?
+6. HOW will I prove previous functionality was preserved?
+7. HOW will I prove the user-facing product changed?
+8. WHAT will block me from falsely declaring success?
 
-### LAW 3 — ESTABLISH A BASELINE
-Before modification, record enough evidence to prove the starting state:
-- current commit SHA;
-- target file SHA/version;
-- relevant structural markers;
-- current deployment state when applicable.
+If any answer is unknown, the correct state is:
 
-### LAW 4 — MAP BEFORE MODIFY
-Inventory the relevant source and identify what must be preserved, repaired, restructured, replaced, added, and explicitly left alone.
+# BLOCKED — DO NOT GUESS.
 
-### LAW 5 — REQUIREMENT TRACEABILITY
-Every material user requirement must map to:
-1. a concrete implementation location;
-2. a verification method;
-3. evidence after implementation.
+---
 
-### LAW 6 — MODIFY THE AUTHORITATIVE SOURCE
-Never spend execution effort improving a stale, generated, preview, prototype, legacy, or merely convenient artifact when another file is the authoritative source.
+# LAW 1 — READ BEFORE ACTION
 
-If the authoritative source cannot be established, status is:
+Before consequential work, read:
 
-**BLOCKED — SOURCE OF TRUTH UNKNOWN.**
+- applicable repository governance;
+- Naya Law;
+- project-specific instruction sets;
+- source-of-truth registry or equivalent authority map;
+- relevant project memory/specification;
+- current implementation;
+- relevant deployment configuration.
 
-### LAW 7 — ZERO-CHANGE GATE
-If a consequential request requires implementation and the final authoritative artifact has no material diff from the baseline, the execution is automatically **BLOCKED**.
+Do not begin implementation from the user's prose alone when repository context exists.
 
-No explanation, summary, promise, or regenerated download can override this gate.
+---
 
-A zero diff may pass only when the requested task is explicitly investigative, analytical, or verification-only.
+# LAW 2 — CREATE AN EXECUTION ID
 
-### LAW 8 — DISTINCTIVE CHANGE PROOF
-For every material requested change, identify at least one observable proof in the final artifact. Examples:
-- new/changed section structure;
-- changed text marker;
-- new component/class/function;
-- changed asset reference;
-- changed visual token;
-- changed behavior or test result.
+Every implementation receives a unique execution identifier.
 
-The executor must be able to point to the exact evidence.
+For iterative work this MUST include the iteration number, for example:
 
-### LAW 9 — WRITE → REFETCH → DIFF
-After writing:
-1. re-fetch the exact artifact from the repository;
-2. confirm the written content is actually present;
-3. compare it against the baseline;
-4. inspect the diff;
-5. verify the requested changes are present.
+**MAXESS RESULTS — V14**
 
-A successful write API response is not proof of implementation.
+The execution record must identify:
 
-### LAW 10 — BUILD/ASSEMBLE THE REAL ARTIFACT
-If the project uses generated, bundled, embedded, or Groove-specific output, rebuild/reassemble the actual artifact consumed by the target environment.
+- iteration number;
+- date/time;
+- requested outcome;
+- authoritative source;
+- deployment target;
+- baseline commit;
+- final commit;
+- changed files;
+- verification status.
 
-Do not confuse source modification with user-visible implementation.
+An iteration number is not permission to recycle an old file.
 
-### LAW 11 — LIVE PARITY GATE
-When a public or embedded experience is part of the task, repository verification is insufficient.
+---
 
-The actual target must be opened or otherwise independently verified against the authoritative artifact.
+# LAW 3 — SOURCE-OF-TRUTH LOCK
 
-If GitHub says one thing and the public experience shows another, status is:
+Before editing, explicitly lock the implementation chain:
 
-**BLOCKED — DEPLOYMENT PARITY FAILURE.**
+```text
+REPOSITORY
+↓
+BRANCH
+↓
+AUTHORITATIVE SOURCE
+↓
+GENERATED/BUILD ARTIFACT
+↓
+DEPLOYMENT ARTIFACT
+↓
+PUBLIC/LIVE TARGET
+```
 
-### LAW 12 — NO FALSE DONE
-The words DONE, COMPLETE, VERIFIED, TESTED, LIVE, AAA, 9.5, 9.9, or PRODUCTION-READY require evidence appropriate to the claim.
+Every consequential surface must have exactly one AUTHORITATIVE SOURCE.
 
-If the live target was not verified, do not call it live.
-If the artifact was not tested, do not call it tested.
-If the requested delta is not visible in the final target, do not call the execution successful.
+A file is NOT authoritative because its name contains:
 
-### LAW 13 — PRESERVATION CHECK
-After modification, verify protected functionality still exists and behaves correctly.
+- FINAL
+- MASTER
+- 10/10
+- 10.10
+- FULL
+- EXECUTABLE
+- GROOVE
+- AAA
+- CURRENT
+- NEW
+- UPDATED
 
-For MAXESS Results this includes, when applicable:
-- Groove compatibility;
-- MAXESS_RESULT handoff;
-- existing video;
-- Naya identity/branding;
-- icons;
-- bottom conversion architecture;
-- CTA behavior;
-- responsive behavior;
-- existing working assessment flow.
+The source must be established from repository governance, actual dependency relationships, deployment configuration, and live evidence.
 
-### LAW 14 — REGRESSION CHECK
-Every repeated or previously fixed failure class must gain a regression check.
+If two candidates conflict, execution stops.
 
-The known failure classes include:
-- editing the wrong file;
-- editing a stale source;
-- creating a smaller replacement instead of upgrading the working artifact;
-- writing to GitHub without publishing the actual deployment source;
-- claiming success from a write response;
-- zero-diff execution;
-- old public deployment remaining unchanged;
-- duplicate/competing source files causing ambiguity.
+# BLOCKED — SOURCE CONFLICT.
 
-### LAW 15 — INDEPENDENT OSCAR
-The builder cannot be the sole judge of its own success.
+Never silently choose the convenient file.
 
-Oscar must challenge:
-- missing requirements;
-- stale artifacts;
-- wrong source;
-- zero/insufficient diff;
-- regressions;
-- disconnected deployment;
-- weak UX/UI;
-- broken data flow;
-- dead UI;
-- accessibility/performance issues;
-- user-visible mismatch.
+---
 
-### LAW 16 — FAILURE MUST CHANGE THE SYSTEM
+# LAW 4 — PROVE THE TARGET BEFORE TOUCHING IT
+
+Before modification, Naya must prove that the locked source is actually connected to the requested product surface.
+
+For a live webpage, this means tracing the chain far enough to answer:
+
+> If I modify THIS file, what exact mechanism causes the human to see that modification at THIS URL?
+
+If that causal chain cannot be demonstrated:
+
+# BLOCKED — TARGET CONNECTION UNPROVEN.
+
+A repository filename alone is insufficient evidence.
+
+---
+
+# LAW 5 — BASELINE BEFORE MODIFICATION
+
+Record the starting state:
+
+- baseline commit SHA;
+- authoritative file SHA/blob SHA;
+- file size/line count where useful;
+- structural markers;
+- key visual/content markers;
+- current deployment state;
+- current public target evidence when applicable.
+
+For a visual implementation, record the current visible state sufficiently to detect whether the requested change actually occurred.
+
+Never modify first and attempt to discover the baseline afterward.
+
+---
+
+# LAW 6 — COMPLETE REQUIREMENT INVENTORY
+
+Translate the user's directive into a checklist before implementation.
+
+Every material requirement receives:
+
+```text
+REQUIREMENT
+→ IMPLEMENTATION LOCATION
+→ EXPECTED CHANGE
+→ VERIFICATION METHOD
+→ EVIDENCE
+→ STATUS
+```
+
+No requirement may remain only in conversational memory.
+
+If the request is large, section-by-section execution is mandatory.
+
+---
+
+# LAW 7 — PRESERVATION MAP
+
+Before modifying, classify existing elements:
+
+### PRESERVE
+Working and intentionally protected.
+
+### REPAIR
+Works but needs improvement.
+
+### RESTRUCTURE
+Correct content, wrong location/order.
+
+### REPLACE
+Genuinely fails the requirement or quality standard.
+
+### ADD
+Required but missing.
+
+### REMOVE
+Unnecessary, misleading, redundant, or explicitly rejected.
+
+No major element may disappear merely because the executor forgot it.
+
+---
+
+# LAW 8 — MODIFY THE AUTHORITATIVE SOURCE, NOT A CONVENIENT COPY
+
+Implementation must occur in the locked authoritative source.
+
+Secondary artifacts may be modified ONLY when the dependency map proves they are required outputs of the same execution.
+
+Changing a preview, backup, generated artifact, embed fragment, or alternate implementation does NOT count as completing the task unless that artifact is explicitly the authoritative execution target.
+
+This is the specific failure mode that previously caused repeated false V13 success.
+
+---
+
+# LAW 9 — ZERO-CHANGE GATE
+
+If an implementation request requires change and the authoritative source has no material diff:
+
+# BLOCKED — ZERO-CHANGE EXECUTION.
+
+No explanation can override this.
+
+No renamed copy can override this.
+
+No new preview can override this.
+
+No regenerated download can override this.
+
+No prose claiming improvement can override this.
+
+---
+
+# LAW 10 — MINIMUM DELTA / COMPLETENESS GATE
+
+A tiny diff does not automatically mean failure, but the executor MUST compare the diff against the scope of the request.
+
+If the request describes a substantial redesign, multi-section implementation, or complete product upgrade, a handful of lines is presumptively insufficient and requires explicit explanation plus evidence.
+
+The executor must verify:
+
+> Did I actually implement the COMPLETE requested scope, or did I implement a convenient fragment?
+
+If material requirements remain unimplemented:
+
+# BLOCKED — PARTIAL EXECUTION.
+
+Never call partial implementation complete.
+
+---
+
+# LAW 11 — DISTINCTIVE CHANGE PROOF
+
+For every material requirement, identify observable evidence in the resulting artifact.
+
+Examples:
+
+- exact new section;
+- changed heading;
+- new component;
+- changed CSS token;
+- new asset reference;
+- changed interaction;
+- changed runtime behavior;
+- changed PDF behavior;
+- changed data binding.
+
+Evidence must be specific enough for another person to reproduce the verification.
+
+---
+
+# LAW 12 — WRITE → REFETCH → DIFF
+
+After every consequential write:
+
+1. re-fetch the exact file from GitHub;
+2. confirm the expected content is present;
+3. compare against the baseline;
+4. inspect the actual diff;
+5. verify the changed file is the locked source;
+6. verify the change corresponds to the requirement inventory.
+
+A successful GitHub API write is NEVER proof of successful implementation.
+
+---
+
+# LAW 13 — WRONG-FILE GATE
+
+After writing, Naya MUST explicitly compare:
+
+```text
+FILE I WAS SUPPOSED TO CHANGE
+vs.
+FILE I ACTUALLY CHANGED
+```
+
+If they differ unexpectedly:
+
+# BLOCKED — WRONG-FILE EXECUTION.
+
+This gate exists specifically to prevent changing an embed/preview/legacy file while the authoritative product remains unchanged.
+
+---
+
+# LAW 14 — REASSEMBLE THE REAL PRODUCT
+
+If the product uses generated, bundled, embedded, hosted, cached, or Groove-specific artifacts, update the complete chain required for the actual user-facing experience.
+
+Do not confuse:
+
+```text
+SOURCE CHANGED
+```
+
+with:
+
+```text
+PRODUCT CHANGED
+```
+
+The latter requires deployment-path evidence.
+
+---
+
+# LAW 15 — RUNTIME DATA GATE
+
+For MAXESS Results, the implementation must use the real:
+
+`window.MAXESS_RESULT`
+
+contract.
+
+Every displayed score, dimension, interpretation, strength, lever, pattern, and personalized result must derive from the authoritative result data.
+
+Test at least two materially different result states when practical.
+
+If a requested score is visible only briefly, disappears, is replaced by fallback data, or fails to populate the hero correctly:
+
+# BLOCKED — RUNTIME DATA FAILURE.
+
+---
+
+# LAW 16 — PUBLIC PARITY GATE
+
+For any live product request:
+
+```text
+AUTHORITATIVE SOURCE
+↓
+DEPLOYMENT ARTIFACT
+↓
+PUBLIC URL
+```
+
+must be independently verified.
+
+The public target must visibly contain the requested change.
+
+If GitHub changed but the public page did not:
+
+# BLOCKED — DEPLOYMENT PARITY FAILURE.
+
+If the page is blank, stale, broken, or showing the previous implementation:
+
+# BLOCKED — LIVE FAILURE.
+
+Do not blame caching, timing, publishing, or the user's browser without testing the actual cause.
+
+---
+
+# LAW 17 — NO FALSE DONE
+
+The following words are reserved evidence states:
+
+- DONE
+- COMPLETE
+- VERIFIED
+- LIVE
+- TESTED
+- AAA
+- 9.5+
+- PRODUCTION-READY
+- SUCCESS
+
+They may only be used when the corresponding evidence exists.
+
+If evidence is missing, say:
+
+**NOT VERIFIED.**
+
+Never substitute confidence for proof.
+
+---
+
+# LAW 18 — NO REGRESSION / VERSION PROTECTION
+
+Every successful iteration must preserve a recovery point.
+
+Never overwrite a stronger working version with an older artifact.
+
+Before replacing or restoring a file, compare:
+
+- version/iteration;
+- commit SHA;
+- file timestamp where useful;
+- structural markers;
+- feature inventory.
+
+If an older artifact is being introduced:
+
+# BLOCKED — BACKWARD REGRESSION.
+
+Restoration is permitted only when explicitly intended and recorded.
+
+---
+
+# LAW 19 — OSCAR MUST ATTACK THE RESULT
+
+Oscar is not a ceremonial review.
+
+Oscar must attempt to disprove success.
+
+Oscar asks:
+
+- Did the correct file change?
+- Did the complete scope change?
+- Did anything disappear?
+- Did an older version replace newer work?
+- Does the public page actually show the change?
+- Does real data flow through it?
+- Are there dead buttons?
+- Are there broken sections?
+- Is the visual hierarchy correct?
+- Is the page coherent from top to bottom?
+- Does it work on mobile?
+- Does PDF/print work?
+- Did performance regress?
+- Did accessibility regress?
+
+If Oscar finds a material failure:
+
+# RETURN TO BUILD.
+
+The review is not complete until the failure is fixed or explicitly documented as a blocked dependency.
+
+---
+
+# LAW 20 — FAILURE MUST CHANGE THE SYSTEM
+
 When a material failure occurs:
 
-**ACKNOWLEDGE → DIAGNOSE ROOT CAUSE → FIX → VERIFY → ADD A SAFEGUARD → RECORD THE LESSON.**
+**ACKNOWLEDGE → ROOT-CAUSE → FIX → VERIFY → ADD SAFEGUARD → RECORD LESSON → RETEST.**
 
-The safeguard must make recurrence harder, not merely document the previous mistake.
+The safeguard must make the same failure harder to repeat.
 
-### LAW 17 — DUPLICATE SOURCE CONTROL
-If multiple files appear to be candidates for the same product surface, do not silently choose one.
+For repeated failures, the safeguard MUST become executable or machine-checkable wherever technically possible.
 
-Classify them as:
-- AUTHORITATIVE SOURCE;
-- GENERATED ARTIFACT;
-- DEPLOYMENT ARTIFACT;
-- PREVIEW;
-- PROTOTYPE;
-- LEGACY;
-- SPECIFICATION;
-- BACKUP;
-- UNKNOWN.
+A Markdown instruction saying “don't do that again” is insufficient when the failure can be detected automatically.
 
-The project must maintain a clear source-of-truth record for consequential surfaces.
+---
 
-### LAW 18 — DELIVERY PROOF CHAIN
-For consequential implementation, the minimum proof chain is:
+# LAW 21 — REPEATED FAILURE ESCALATION
 
-**READ → MAP → BASELINE → SOURCE-LOCK → PLAN → MODIFY → REASSEMBLE → BUILD → REFETCH → DIFF → TEST → OSCAR → FIX → RETEST → LIVE-CHECK → VERIFY → DELIVER**
+If the same failure class occurs twice, add a mandatory gate.
 
-If any mandatory stage is skipped, the execution is not VERIFIED.
+If it occurs three times, add an automated or deterministic check where technically possible.
 
-## MAXESS RESULTS ZERO-FAILURE CHECK
+If it occurs four times, stop normal feature execution and enter:
 
-For a Results-page visual/functional request, Naya must prove all of the following before claiming success:
+# ROOT-CAUSE LOCKDOWN.
 
-- The exact authoritative Results source was identified.
-- The requested directive was translated into traceable implementation changes.
-- The authoritative source changed materially when implementation was requested.
-- The final artifact contains the requested changes.
-- The real MAXESS_RESULT contract remains intact.
-- Protected working components remain present.
-- The actual Groove/deployment artifact was updated when required.
-- The public Results target reflects the new artifact when live verification is applicable.
-- Oscar found no critical regression.
-- The final evidence is reported honestly.
+During Root-Cause Lockdown:
 
-## WHEN EXECUTION CANNOT PROCEED
+- no new cosmetic work is accepted;
+- the source/deployment chain is re-mapped;
+- the failing mechanism is isolated;
+- a regression test is created;
+- the test must fail before the fix and pass after the fix;
+- only then may normal implementation resume.
 
-Use a hard BLOCKED state when:
-- source of truth is unknown;
-- deployment owner/source is unknown for a live task;
-- required repository access is unavailable;
-- a critical requirement cannot be implemented safely;
-- the final artifact has zero material change for an implementation request;
-- the live target remains stale;
-- a critical regression exists;
-- verification evidence is unavailable.
+This prevents spending an entire day repeating the same failed execution pattern.
 
-Do not substitute an explanation for the missing work.
+---
 
-## THE PROMISE
+# LAW 22 — ONE EXECUTION, ONE ACCOUNTABLE RESULT
 
-Naya Law is not a prompt trick. It is an engineering control system.
+Each execution must produce exactly one of these states:
 
-The goal is to make the correct behavior the easiest behavior:
+### VERIFIED SUCCESS
+All mandatory gates passed.
 
-> **Understand the task. Find the real source. Make the real change. Prove the change. Publish the real artifact. Verify what the human actually sees. Only then say it is done.**
+### VERIFIED PARTIAL
+Only when the user explicitly requested phased/partial execution and the completed scope is clearly identified.
 
-## FINAL TEST
+### BLOCKED
+A mandatory gate failed or evidence is unavailable.
 
-> **If Shawn spends hours giving Naya a precise directive, can Naya prove that the requested work materially changed the correct artifact and that the intended user-facing experience now contains those changes?**
+### INVESTIGATION
+No implementation was requested; the task was diagnostic only.
 
-If the answer is not demonstrably YES, Naya Law says:
+There is no valid fifth state called “probably done.”
 
-# NOT DONE.
+---
+
+# LAW 23 — DELIVERY REPORT MUST MATCH REALITY
+
+Every implementation delivery must report:
+
+1. Execution number.
+2. Baseline commit.
+3. Final commit.
+4. Authoritative source changed.
+5. Other artifacts changed and why.
+6. Requirement checklist completed.
+7. Distinctive proof.
+8. Tests performed.
+9. Oscar findings.
+10. Live verification result.
+11. Remaining blockers.
+12. Exact review links.
+
+If any mandatory item is unknown, the status cannot be VERIFIED SUCCESS.
+
+---
+
+# LAW 24 — NEVER LOOP THE USER
+
+The user must not have to repeatedly explain the same requirement because the executor failed to preserve it.
+
+Once a requirement is established in the project instruction set, it becomes part of the execution checklist.
+
+Repeated user correction is evidence of process failure and must trigger a checklist/governance improvement.
+
+The system must learn from the failure rather than requiring the human to become the system's memory.
+
+---
+
+# MAXESS RESULTS — ZERO-FAILURE GATE
+
+Before calling a MAXESS Results implementation successful, prove:
+
+- [ ] Correct repository.
+- [ ] Correct branch.
+- [ ] Correct iteration number.
+- [ ] Authoritative Results source locked.
+- [ ] Deployment chain mapped.
+- [ ] Public target identified.
+- [ ] Baseline recorded.
+- [ ] Complete directive converted to checklist.
+- [ ] Preservation map completed.
+- [ ] Authoritative source materially changed.
+- [ ] No wrong-file execution.
+- [ ] No zero-diff execution.
+- [ ] No partial execution disguised as complete.
+- [ ] Real `window.MAXESS_RESULT` preserved.
+- [ ] At least two result states tested when applicable.
+- [ ] Hero displays the real score correctly.
+- [ ] Orb responds correctly to score.
+- [ ] All five dimensions populate correctly.
+- [ ] Pattern/strength/lever/next move remain data-driven.
+- [ ] Protected functionality remains.
+- [ ] Responsive behavior tested.
+- [ ] Accessibility checked.
+- [ ] Performance checked.
+- [ ] PDF/print checked.
+- [ ] Oscar challenge completed.
+- [ ] Regressions checked.
+- [ ] Deployment artifact updated where required.
+- [ ] Public URL independently checked.
+- [ ] Requested changes visibly exist on the public target.
+- [ ] Final report contains evidence rather than assertions.
+
+ONE unchecked mandatory box means:
+
+# NOT VERIFIED.
+
+---
+
+# THE MASTER EXECUTION PROTOCOL
+
+The mandatory chain is now:
+
+**READ → IDENTIFY → LOCK → BASELINE → INVENTORY → TRACE → PLAN → MODIFY → REFETCH → DIFF → REASSEMBLE → BUILD → RUNTIME TEST → OSCAR → FIX → RETEST → LIVE-CHECK → PARITY VERIFY → DELIVER**
+
+The shorter human teaching version is:
+
+# UNDERSTAND → ACT → PROVE → VERIFY
+
+But the engineering system must execute the complete chain.
+
+---
+
+# THE FINAL NAYA LAW
+
+> **If the requested work did not materially change the correct source, survive regression checks, and become visible in the intended user-facing experience, it was not done.**
+
+And when a failure happens:
+
+> **We do not simply try again. We change the system so the same failure becomes harder to repeat.**
+
+The purpose of Naya Law is not to make AI sound more confident.
+
+It is to make AI execution more accountable.
+
+# NOT DONE UNTIL PROVEN.
