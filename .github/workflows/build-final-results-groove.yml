@@ -43,7 +43,6 @@ jobs:
           python3 -m py_compile tools/integrate_living_signature_10_1.py
           python3 tools/integrate_living_signature_10_1.py
 
-      # Bootstrap must be the first executable layer in every canonical artifact.
       - name: Bootstrap MAXESS_RESULT before every visual script
         run: |
           set -euo pipefail
@@ -55,6 +54,12 @@ jobs:
           set -euo pipefail
           python3 -m py_compile tools/maxess_results_visual_pass_10_2.py
           python3 tools/maxess_results_visual_pass_10_2.py
+
+      - name: Apply MAXESS 10.3 cinematic experience pass
+        run: |
+          set -euo pipefail
+          python3 -m py_compile tools/maxess_results_visual_pass_10_3.py
+          python3 tools/maxess_results_visual_pass_10_3.py
 
       - name: Verify final Results artifacts
         run: |
@@ -69,12 +74,18 @@ jobs:
           grep -q 'Naya Writer' MAXESS-RESULTS-10-GROOVE.html
           grep -q 'Naya Brainstormer' MAXESS-RESULTS-10-GROOVE.html
           grep -q 'mx-naya-door' MAXESS-RESULTS-10-GROOVE.html
-          grep -q 'mx-orb-breathe' MAXESS-RESULTS-10-GROOVE.html
           grep -q 'MAXESS-VISUAL-PASS-10.2' MAXESS-RESULTS-10-GROOVE.html
-          grep -q 'mx102-orb-breathe' MAXESS-RESULTS-10-GROOVE.html
-          grep -q 'mx102-ring' MAXESS-RESULTS-10-GROOVE.html
-          grep -q 'maxess_results_visual_pass_10_2.py' tools/maxess_results_visual_pass_10_2.py || true
-          echo 'MAXESS 10.2 hero-first visual release gate PASS'
+          grep -q 'MAXESS-VISUAL-PASS-10.3' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'm103-breathe' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'm103-ring' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'mx-dim-grid' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'mx-score-orb' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'width:100vw' MAXESS-RESULTS-10-GROOVE.html
+          if grep -Eiq '#ff[0-9a-f]{4}|#f[0-9a-f]{5}|magenta|hotpink' MAXESS-RESULTS-10-GROOVE.html; then
+            echo 'FAIL: prohibited pink utility color token detected'
+            exit 1
+          fi
+          echo 'MAXESS 10.3 cinematic visual release gate PASS'
 
       - name: Commit authoritative artifacts
         run: |
@@ -98,12 +109,13 @@ jobs:
             tools/bootstrap_maxess_result_10_10.py \
             tools/bootstrap_maxess_result_10_10_v2.py \
             tools/maxess_results_visual_pass_10_2.py \
+            tools/maxess_results_visual_pass_10_3.py \
             tools/verify_results_10.py \
             .naya/memory/30-GROWING-LESSON-002-OSCAR-PASS-2.md \
             .naya/memory/31-GROWING-LESSON-003-10-STAR-LIVE-PRODUCT-GATE.md \
             .github/workflows/build-final-results-groove.yml
           if ! git diff --cached --quiet; then
-            git commit -m 'Build MAXESS 10.2 hero-first visual experience'
+            git commit -m 'Build MAXESS 10.3 cinematic experience'
             git pull --rebase origin main
             git push
           fi
