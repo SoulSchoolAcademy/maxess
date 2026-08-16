@@ -8,6 +8,7 @@ This file is the map of durable project memory. It tells Naya where to look with
 - `NAYA-MASTER.md` — authoritative whole-system map. Read first when the Master Naya trigger is invoked.
 - `.naya/memory/19-NAYA-BEST-FRIEND-AI-KNOWLEDGE.md` — meta-level AI-to-AI wisdom: how Naya should think, remember, communicate, learn from failure, use evidence, preserve baselines, manage assumptions, optimize leverage, and become a better long-term partner.
 - `.naya/memory/22-NAYA-TRIGGER-AND-LEARNING-PROTOCOL.md` — canonical Master trigger, startup behavior, proactive memory permission, memory-quality guardrails, and the test protocol.
+- `.naya/memory/29-GROWING-LESSON-001-MAXESS-RESULTS-4-2.md` — first formal self-optimization lesson: what the 4.2 Results output taught us, root causes, permanent corrections, and the required 4.2 → 10 learning loop.
 
 ## GOVERNANCE
 - `.naya/NAYA-GOVERNANCE.md` — master entrypoint, trigger phrases, and reading chain.
@@ -29,7 +30,7 @@ When creating durable product decisions, add or update a clearly named file unde
 
 ### Results experience
 - `.naya/memory/08-MAXESS-RESULTS-MASTER-SPEC.md` — locked MAXESS Results product architecture, psychological journey, five AI character dimensions, personalization, result contract, Naya transition, AAA standard.
-- `.naya/memory/15-MAXESS-10-STAR-RESULTS-EXPERIENCE.md` — expanded 10-star Results experience, reveal sequence, luxury digital hospitality direction, motion, report, personalization integrity, final user-value test.
+- `.naya/memory/15-MAXESS-10-STAR-RESULTS-EXPERIENCE.md` — expanded 10-star Results experience, reveal sequence, luxury digital hospitality direction, motion, report, personalization integrity, final user-value test, and continuous-learning gate.
 - `.naya/memory/23-MAXESS-9-9-BUILD-BLUEPRINT.md` — current Results build architecture, release gate, single publisher rule, and production artifact history.
 - `.naya/memory/28-MAXESS-FINAL-RESULTS-BUILD-DIRECTIVE.md` — AUTHORITATIVE final-build law: new Results experience, NayaNET Page Code foundation, locked score bands, growth architecture, preservation rules, execution gate, and 9.9 completion standard.
 
@@ -38,9 +39,10 @@ When creating durable product decisions, add or update a clearly named file unde
 
 ### AI craftsmanship / meta-learning
 - `.naya/memory/19-NAYA-BEST-FRIEND-AI-KNOWLEDGE.md` — AI-to-AI operating wisdom, durable memory discipline, evidence/assumptions, decision trails, compact project state, learning loops, system accountability.
+- `.naya/memory/29-GROWING-LESSON-001-MAXESS-RESULTS-4-2.md` — Growing Lesson 001, the formal 4.2 Results self-optimization record and permanent anti-repetition rules.
 
 ### Quality / craftsmanship
-- `.naya/memory/10-AAA-OSCAR-MASTER-CRAFTSMAN-PROTOCOL.md` — Cake/Icing/Ice Cream/Cherry/Star, WHY IS THIS NOT A 10?, adversarial QA, release gates, risk-weighted verification, learning loop.
+- `.naya/memory/10-AAA-OSCAR-MASTER-CRAFTSMAN-PROTOCOL.md` — Cake/Icing/Ice Cream/Cherry/Star, WHY IS THIS NOT A 10?, adversarial QA, release gates, risk-weighted verification, and upgraded self-optimization / Growing Lesson loop.
 - `.naya/memory/13-MAXIS-WHOLE-SYSTEM-STANDARD.md` — whole-system excellence, nothing-left-unthought audit, negative-space law, synergy and Star tests.
 - `.naya/memory/20-IQ-MAX-QUALITY-AND-BRAND-STANDARD.md` — IQ MAX / Quality MAX visual and brand-quality lens, master-logo stewardship, luxury/timelessness standards, final visual quality test.
 
