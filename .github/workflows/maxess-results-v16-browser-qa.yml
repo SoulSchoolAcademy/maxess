@@ -89,3 +89,16 @@ jobs:
           name: maxess-v16-browser-evidence
           path: /tmp/maxess-v16-*.png
           if-no-files-found: error
+
+      - name: Verify public deployment parity
+        run: |
+          set -euo pipefail
+          public_url='https://results.nayanet.xyz/?fixture=demo'
+          curl --fail --silent --show-error --location --max-time 30 "$public_url" -o /tmp/maxess-public.html
+          echo 'PUBLIC PARITY DIAGNOSTICS'
+          wc -c /tmp/maxess-public.html
+          grep -q 'MAXESS_RESULTS_V16_AAA_EXECUTION' /tmp/maxess-public.html
+          grep -q 'maxess-results-v16-aaa-css' /tmp/maxess-public.html
+          grep -q 'maxess-results-v16-aaa-js' /tmp/maxess-public.html
+          grep -q 'v16-results' /tmp/maxess-public.html
+          echo 'PUBLIC PARITY PASS — V16 markers present on results.nayanet.xyz'
