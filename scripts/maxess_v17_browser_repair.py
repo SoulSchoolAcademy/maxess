@@ -37,4 +37,4 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 body=s.lower().rfind('</body>')
 if body<0:raise SystemExit('No body close')
 p.write_text(s[:body]+layer+'\n'+s[body:],encoding='utf-8')
-print('V17 browser repair appended — final QA trigger')
+print('V17 browser repair appended — registered final verification trigger')
