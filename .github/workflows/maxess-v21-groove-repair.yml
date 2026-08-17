@@ -23,7 +23,6 @@ jobs:
         run: |
           from pathlib import Path
           import re
-
           p = Path('MAXESS-RESULTS-10-GROOVE.html')
           s = p.read_text(encoding='utf-8')
           s = re.sub(r'^\s*<!doctype[^>]*>', '', s, flags=re.I)
@@ -36,24 +35,18 @@ jobs:
           s = re.sub(r'<meta\b[^>]*>', '', s, flags=re.I)
           s = re.sub(r'<title\b[^>]*>.*?</title>', '', s, flags=re.I | re.S)
 
-          # Remove accidental JavaScript line-continuation corruption.
           def clean_script(m):
               attrs, body = m.group(1), m.group(2)
               body = body.replace('\\\r\n', '\r\n').replace('\\\n', '\n')
               return '<script' + attrs + '>' + body + '</script>'
           s = re.sub(r'<script([^>]*)>(.*?)</script>', clean_script, s, flags=re.I | re.S)
 
-          # Fix the extra closing brace in the MAXESS Result Contract guard.
           scripts = list(re.finditer(r'<script([^>]*)>(.*?)</script>', s, flags=re.I | re.S))
           if len(scripts) >= 2:
               m = scripts[1]
               body = re.sub(r'\n\}\n\}\)\(\);\s*$', '\n})();\n', m.group(2), count=1)
               s = s[:m.start(2)] + body + s[m.end(2):]
 
-          # Restore a missing template-literal delimiter in the legacy
-          # recognition-flow CSS injector (script 12). Without the backtick,
-          # CSS lines beginning with # are parsed as private fields and the
-          # entire script fails before later Results layers can initialize.
           scripts = list(re.finditer(r'<script([^>]*)>(.*?)</script>', s, flags=re.I | re.S))
           if len(scripts) >= 12:
               m = scripts[11]
@@ -105,8 +98,8 @@ jobs:
             const page = await browser.newPage({ viewport:{width:1440,height:1000} });
             const errors=[];
             page.on('pageerror', e=>errors.push(String(e)));
-            await page.goto('http://127.0.0.1:4173/MAXESS-RESULTS-10-GROOVE.html?fixture=demo', {waitUntil:'networkidle'});
-            await page.waitForTimeout(700);
+            await page.goto('http://127.0.0.1:4173/MAXESS-RESULTS-10-GROOVE.html?fixture=demo', {waitUntil:'domcontentloaded', timeout:15000});
+            await page.waitForTimeout(2500);
             const state = await page.evaluate(()=>({
               root:!!document.querySelector('#maxess-results-10'),
               rootText:(document.querySelector('#maxess-results-10')?.innerText||'').trim().slice(0,500),
