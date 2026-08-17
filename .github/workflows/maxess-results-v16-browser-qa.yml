@@ -48,7 +48,7 @@ jobs:
             await page.waitForTimeout(700);
 
             const body=await page.locator('body').innerText();
-            const selectors=['.mx-score-orb','.v13-score-orb','.v15-score-orb','.v16-results .mx-score-orb'];
+            const selectors=['.mx-score-orb','.v13-score-orb','.v16-results .v13-score-orb','.v16-results .mx-score-orb'];
             const counts={};
             for(const selector of selectors) counts[selector]=await page.locator(selector).count();
             const rootState=await page.locator('#maxess-results-10').evaluate(el=>({className:el.className,dataset:{...el.dataset}}));
@@ -56,10 +56,12 @@ jobs:
 
             if(!body.includes('YOUR AI SCORE')) throw new Error('Missing YOUR AI SCORE');
             if(!body.includes('82')) throw new Error('Fixture score 82 not rendered');
-            const orb=page.locator('.mx-score-orb');
-            if(await orb.count()!==1) throw new Error('Score Orb missing: '+JSON.stringify(counts));
+            const orb=page.locator('.v16-results .v13-score-orb, .v16-results .mx-score-orb').first();
+            if(await orb.count()!==1) throw new Error('Rendered V16 Score Orb missing: '+JSON.stringify(counts));
             const aria=await orb.getAttribute('aria-label');
             if(aria!=='Your AI score is 82 out of 100') throw new Error('Orb accessibility label incorrect: '+aria);
+            const renderedScore=await orb.locator('.v13-score-number,.mx-score strong').first().innerText();
+            if(renderedScore.trim()!=='82') throw new Error('Orb score binding incorrect: '+renderedScore);
             const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>document.documentElement.clientWidth);
             if(overflow) throw new Error('Horizontal overflow detected at 390px');
             await page.screenshot({path:'/tmp/maxess-v16-mobile.png',fullPage:true});
@@ -69,6 +71,8 @@ jobs:
             await page.waitForTimeout(700);
             const desktopOverflow=await page.evaluate(()=>document.documentElement.scrollWidth>document.documentElement.clientWidth);
             if(desktopOverflow) throw new Error('Horizontal overflow detected at 1440px');
+            const desktopOrb=page.locator('.v16-results .v13-score-orb, .v16-results .mx-score-orb').first();
+            if(await desktopOrb.count()!==1) throw new Error('Desktop V16 Score Orb missing');
             await page.screenshot({path:'/tmp/maxess-v16-desktop.png',fullPage:true});
 
             const sections=await page.locator('#maxess-results-10 section').count();
