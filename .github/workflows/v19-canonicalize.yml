@@ -1,0 +1,49 @@
+name: MAXESS V19 Canonicalize
+on:
+  push:
+    branches: [maxess-results-v18-preservation-finish]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  canonicalize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - name: Verify source
+        run: |
+          set -euo pipefail
+          test -f MAXESS-RESULTS-10-GROOVE.html
+          test "$(wc -c < MAXESS-RESULTS-10-GROOVE.html)" -gt 100000
+          grep -q 'window.MAXESS_RESULT' MAXESS-RESULTS-10-GROOVE.html
+          python3 -m py_compile scripts/maxess_v19_canonicalize.py
+      - name: Apply V19
+        run: python3 scripts/maxess_v19_canonicalize.py
+      - name: Static QA
+        run: |
+          set -euo pipefail
+          grep -q 'MAXESS_RESULTS_V19_CANONICAL_HIERARCHY' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'maxess-results-v19-js' MAXESS-RESULTS-10-GROOVE.html
+          test "$(grep -o '<html' MAXESS-RESULTS-10-GROOVE.html | wc -l)" -eq 1
+          test "$(grep -o '</html>' MAXESS-RESULTS-10-GROOVE.html | wc -l)" -eq 1
+          test "$(grep -o '<script' MAXESS-RESULTS-10-GROOVE.html | wc -l)" -eq "$(grep -o '</script>' MAXESS-RESULTS-10-GROOVE.html | wc -l)"
+      - name: Browser QA
+        run: |
+          set -euo pipefail
+          npm init -y >/dev/null 2>&1
+          npm install --no-save playwright@1.55.0 >/dev/null 2>&1
+          npx playwright install --with-deps chromium >/dev/null 2>&1
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/maxess.log 2>&1 &
+          PID=$!; trap 'kill $PID || true' EXIT
+          node <<'NODE'
+          const {chromium}=require('playwright');
+          (async()=>{const b=await chromium.launch({headless:true});for(const width of [390,768,1440]){const p=await b.newPage({viewport:{width,height:1200}});await p.goto('http://127.0.0.1:4173/MAXESS-RESULTS-10-GROOVE.html?fixture=demo',{waitUntil:'networkidle'});await p.waitForTimeout(1500);const q=await p.evaluate(()=>{const r=document.querySelector('#maxess-results-10');const vis=e=>e&&getComputedStyle(e).display!=='none'&&e.getBoundingClientRect().height>0;return{root:!!r,naya:!!r?.querySelector('.v19-naya'),nayaText:r?.querySelector('.v19-naya h1,.v19-naya .v19-title')?.textContent.trim(),listen:[...r?.querySelectorAll('.v19-naya button')||[]].filter(vis).length,score:r?.querySelector('.v13-score-number')?.textContent.trim(),scoreSection:!!r?.querySelector('.v19-score'),dims:[...r?.querySelectorAll('.v19-dim-orb')||[]].filter(vis).length,report:!!r?.querySelector('.v13-report'),pattern:!!r?.querySelector('.v13-pattern'),strength:!!r?.querySelector('.v13-strengths,.v18-strength-section'),lever:!!r?.querySelector('.v13-lever'),next:!!r?.querySelector('.v13-next'),masters:!!r?.querySelector('.v13-masters'),playground:!!r?.querySelector('.v13-playground,#naya-playground'),overflow:document.documentElement.scrollWidth>innerWidth+1};});console.log(width,q);if(!q.root||!q.naya||q.nayaText!=='Hi. I’ve looked at your results.')throw Error('Naya failure');if(q.listen!==1)throw Error('Listen failure');if(q.score!=='82')throw Error('Score failure');if(q.dims!==5)throw Error('Dimension failure');if(!q.report||!q.pattern||!q.strength||!q.lever||!q.next||!q.masters||!q.playground)throw Error('Downstream failure');if(q.overflow)throw Error('Overflow');}await b.close()})().catch(e=>{console.error(e);process.exit(1)});
+          NODE
+      - name: Commit verified artifact
+        run: |
+          set -euo pipefail
+          git config user.name 'Naya Master'; git config user.email 'naya-master@users.noreply.github.com'
+          git add MAXESS-RESULTS-10-GROOVE.html scripts/maxess_v19_canonicalize.py .github/workflows/v19-canonicalize.yml
+          git commit -m 'feat(results): canonicalize MAXESS Groove results hierarchy' || exit 0
+          git push origin HEAD:maxess-results-v18-preservation-finish
