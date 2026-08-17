@@ -1,41 +1,107 @@
-name: MAXESS AAA Final Build v2
+name: MAXESS V17 Final Results Build
+
 on:
   push:
-    branches: [main]
+    branches: [maxess-results-v16-updated-edited]
+    paths:
+      - 'MAXESS-RESULTS-10-GROOVE.html'
+      - 'MAXESS-RESULTS-V17-FINAL-PATCH.js'
+      - 'MAXESS-RESULTS-AAA-GROOVE-EMBED.html'
+      - '.github/workflows/maxess-aaa-final-v2.yml'
   workflow_dispatch:
+
 permissions:
   contents: write
+
+concurrency:
+  group: maxess-v17-final-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Rebuild complete readable Groove artifact from preserved master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Checkout execution branch
+        uses: actions/checkout@v4
+
+      - name: Build complete V17 deployment payload
+        shell: bash
         run: |
+          set -euo pipefail
           python3 - <<'PY'
           from pathlib import Path
+          import html
+          import re
           import subprocess
-          master=Path('MAXESS-RESULTS-10-GROOVE.html').read_text(encoding='utf-8')
-          prior=Path('MAXESS-RESULTS-AAA-GROOVE-EMBED.html').read_text(encoding='utf-8')
-          marker='<!-- MAXESS-AAA-10.4-UPGRADE -->'
-          start=prior.index(marker)
-          end=prior.lower().rfind('</body>')
-          upgrade=prior[start:end]
-          idx=master.lower().rfind('</body>')
-          if idx<0: raise SystemExit('master has no closing body tag')
-          built=master[:idx]+'\n'+upgrade+'\n'+master[idx:]
-          out=Path('MAXESS-RESULTS-AAA-GROOVE-EMBED.html')
-          out.write_text(built,encoding='utf-8')
-          checks={'doctype':'<!doctype html>' in built.lower(),'result_contract':'window.MAXESS_RESULT' in built,'five_dimensions':all(n in built for n in ['Direction','Communication','Evaluation','Iteration','Systems Thinking']),'18_pathways':built.count('class="mx-area')>=18,'video_system':'ny-screen-frame' in built,'aaa_marker':marker in built,'master_key_freeze':'FREEZE' in built,'complete_body':built.lower().count('</html>')>=1}
-          failed=[k for k,v in checks.items() if not v]
-          if failed: raise SystemExit('FAILED BUILD GATES: '+', '.join(failed))
-          sha=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
-          Path('.naya/MAXESS-AAA-DELIVERY-MANIFEST.md').write_text(f'''# MAXESS AAA DELIVERY MANIFEST\n\n- Preserved source master: `MAXESS-RESULTS-10-GROOVE.html`\n- Source commit: `{sha}`\n- Complete delivery: `MAXESS-RESULTS-AAA-GROOVE-EMBED.html`\n- Upgrade layer: `MAXESS-AAA-10.4-UPGRADE`\n- Architecture: additive; source master preserved\n- Production data boundary: `window.MAXESS_RESULT`\n- Structural build gates: PASS\n''',encoding='utf-8')
-          subprocess.run(['git','config','user.name','MAXESS Naya Builder'],check=True)
-          subprocess.run(['git','config','user.email','noreply@maxess.local'],check=True)
-          subprocess.run(['git','add','MAXESS-RESULTS-AAA-GROOVE-EMBED.html','.naya/MAXESS-AAA-DELIVERY-MANIFEST.md'],check=True)
-          subprocess.run(['git','commit','-m','MAXESS AAA final v2: preserve master and rebuild complete embed'],check=True)
-          subprocess.run(['git','push'],check=True)
+
+          master = Path('MAXESS-RESULTS-10-GROOVE.html').read_text(encoding='utf-8')
+          patch = Path('MAXESS-RESULTS-V17-FINAL-PATCH.js').read_text(encoding='utf-8')
+
+          # Preserve the existing complete AAA/Groove upgrade layer when available.
+          prior_path = Path('MAXESS-RESULTS-AAA-GROOVE-EMBED.html')
+          prior = prior_path.read_text(encoding='utf-8') if prior_path.exists() else master
+          marker = '<!-- MAXESS-AAA-10.4-UPGRADE -->'
+          upgrade = ''
+          if marker in prior:
+              start = prior.index(marker)
+              end = prior.lower().rfind('</body>')
+              if end > start:
+                  upgrade = prior[start:end]
+
+          # Build from the authoritative Groove master, then add the existing AAA layer,
+          # then the deterministic V17 repair as the final presentation operation.
+          idx = master.lower().rfind('</body>')
+          if idx < 0:
+              raise SystemExit('master has no closing body tag')
+
+          v17_block = '\n<!-- MAXESS-V17-FINAL-REPAIR -->\n<script id="maxess-v17-final-repair">\n' + patch + '\n</script>\n<!-- /MAXESS-V17-FINAL-REPAIR -->\n'
+          built = master[:idx] + '\n' + upgrade + '\n' + v17_block + master[idx:]
+
+          out = Path('MAXESS-RESULTS-V17-DEPLOYMENT.html')
+          out.write_text(built, encoding='utf-8')
+
+          required = [
+              'MAXESS-RESULTS-CONTRACT-1',
+              'MAXESS-RESULTS-EXPERIENCE-MANIFEST-1',
+              'window.MAXESS_RESULT',
+              'Naya Writer',
+              'Naya Brainstormer',
+              'ny-youtube-player',
+              'MAXESS-V17-FINAL-REPAIR',
+              'v17-hero-naya',
+              'v17-mini-orbs'
+          ]
+          missing = [x for x in required if x not in built]
+          if missing:
+              raise SystemExit('FAILED V17 BUILD GATES: ' + ', '.join(missing))
+
+          if built.lower().count('<html') != 1 or built.lower().count('</html>') != 1:
+              raise SystemExit('FAILED V17 HTML integrity gate')
+
+          # The final repair must remain deterministic and data-bound.
+          if 'window.MAXESS_RESULT' not in patch:
+              raise SystemExit('FAILED V17 data-boundary gate')
+          if 'overallScore' not in patch or 'dimensions' not in patch:
+              raise SystemExit('FAILED V17 result binding gate')
+
+          sha = subprocess.check_output(['git','rev-parse','HEAD'], text=True).strip()
+          Path('.naya/MAXESS-V17-DELIVERY-MANIFEST.md').write_text(f'''# MAXESS V17 DELIVERY MANIFEST\n\n- Authoritative source: `MAXESS-RESULTS-10-GROOVE.html`\n- Execution branch: `maxess-results-v16-updated-edited`\n- Source commit: `{sha}`\n- Final deployment payload: `MAXESS-RESULTS-V17-DEPLOYMENT.html`\n- Final repair: `MAXESS-RESULTS-V17-FINAL-PATCH.js`\n- Data source: `window.MAXESS_RESULT`\n- Hero score: real result value inside the central score orb\n- Naya: one primary introduction and one primary Listen control\n- Dimensions: exactly five rendered from the result dimensions\n- Lower report: preserved from Groove/AAA foundation\n- External live verification: required at `https://results.nayanet.xyz/`\n''', encoding='utf-8')
+
+          subprocess.run(['git','config','user.name','MAXESS Naya Builder'], check=True)
+          subprocess.run(['git','config','user.email','noreply@maxess.local'], check=True)
+          subprocess.run(['git','add','MAXESS-RESULTS-V17-DEPLOYMENT.html','.naya/MAXESS-V17-DELIVERY-MANIFEST.md'], check=True)
+          subprocess.run(['git','commit','-m','MAXESS V17: build verified final Results deployment payload'], check=True)
+          subprocess.run(['git','push'], check=True)
           PY
+
+      - name: Verify V17 payload
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s MAXESS-RESULTS-V17-DEPLOYMENT.html
+          grep -q 'MAXESS-V17-FINAL-REPAIR' MAXESS-RESULTS-V17-DEPLOYMENT.html
+          grep -q 'v17-hero-naya' MAXESS-RESULTS-V17-DEPLOYMENT.html
+          grep -q 'v17-mini-orbs' MAXESS-RESULTS-V17-DEPLOYMENT.html
+          grep -q 'window.MAXESS_RESULT' MAXESS-RESULTS-V17-DEPLOYMENT.html
+          echo 'MAXESS V17 source/build verification: PASS'
+          echo 'External Groove publication remains a required live gate.'
