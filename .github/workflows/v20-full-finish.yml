@@ -1,0 +1,104 @@
+name: MAXESS V20 Full Finish
+on:
+  push:
+    branches: [maxess-results-v18-preservation-finish]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  finish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - name: Install browser
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --no-save playwright@1.55.0 >/dev/null 2>&1
+          npx playwright install --with-deps chromium >/dev/null 2>&1
+      - name: Build complete Results experience
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('MAXESS-RESULTS-10-GROOVE.html')
+          s=p.read_text(encoding='utf-8')
+          marker='<!-- MAXESS_RESULTS_V20_FULL_FINISH -->'
+          if marker not in s:
+              layer=r'''<!-- MAXESS_RESULTS_V20_FULL_FINISH -->
+          <style id="maxess-v20-css">
+          #maxess-results-10.v20-live{background:#050408!important;color:#fff!important}
+          #maxess-results-10.v20-live .v20-stage{display:flex!important;flex-direction:column!important;width:100%!important}
+          #maxess-results-10.v20-live .v20-naya{order:1!important;display:flex!important;flex-direction:column!important;align-items:center!important;text-align:center!important;padding:42px 18px 30px!important;background:radial-gradient(circle at 50% 0,rgba(166,108,255,.24),transparent 62%),#07050a!important}
+          #maxess-results-10.v20-live .v20-avatar{width:88px!important;height:88px!important;object-fit:cover!important;border-radius:50%!important;display:block!important}
+          #maxess-results-10.v20-live .v20-naya h1{margin:10px 0 0!important;font-size:clamp(30px,4.5vw,56px)!important;line-height:1!important;letter-spacing:-.05em!important;color:#fff!important}
+          #maxess-results-10.v20-live .v20-naya p{max-width:700px!important;margin:14px auto 0!important;color:rgba(255,255,255,.72)!important;font-size:clamp(15px,1.5vw,19px)!important}
+          #maxess-results-10.v20-live .v20-listen{margin-top:20px!important;min-height:52px!important;padding:0 25px!important;border-radius:999px!important;border:1px solid rgba(255,255,255,.25)!important;background:linear-gradient(135deg,#d8b8ff,#7540d2 55%,#35105f)!important;color:#fff!important;font-weight:900!important;cursor:pointer!important}
+          #maxess-results-10.v20-live .v20-score{order:2!important;display:flex!important;flex-direction:column!important;align-items:center!important;text-align:center!important;padding:30px 16px 62px!important;background:#030305!important}
+          #maxess-results-10.v20-live .v20-score-label{margin-bottom:18px!important;color:#fff!important;font-size:clamp(15px,2vw,24px)!important;font-weight:950!important;letter-spacing:.22em!important;text-transform:uppercase!important}
+          #maxess-results-10.v20-live .v20-score-orb{width:min(540px,80vw)!important;min-height:300px!important;display:flex!important;align-items:center!important;justify-content:center!important;position:relative!important}
+          #maxess-results-10.v20-live .v20-score-orb .v13-score-number{font-size:clamp(72px,12vw,150px)!important;font-weight:1000!important;line-height:1!important;color:#fff!important;text-shadow:0 0 35px rgba(190,120,255,.45)!important}
+          #maxess-results-10.v20-live .v20-score-orb svg,#maxess-results-10.v20-live .v20-score-orb canvas{max-width:100%!important}
+          #maxess-results-10.v20-live .v20-dims{order:3!important;padding:58px clamp(16px,4vw,72px)!important;background:#fff!important;color:#111!important}
+          #maxess-results-10.v20-live .v20-dims h2{margin:0!important;font-size:clamp(34px,5vw,68px)!important;line-height:.94!important;letter-spacing:-.055em!important}
+          #maxess-results-10.v20-live .v20-dim-orbs{display:grid!important;grid-template-columns:repeat(5,minmax(120px,1fr))!important;gap:18px!important;max-width:1400px!important;margin:30px auto 0!important}
+          #maxess-results-10.v20-live .v20-dim-orb{aspect-ratio:1!important;border-radius:50%!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;text-align:center!important;cursor:pointer!important;background:radial-gradient(circle at 34% 25%,#fff,#f3edf9 45%,#ddd4e7)!important;border:1px solid rgba(0,0,0,.13)!important;box-shadow:0 22px 55px rgba(24,12,38,.12)!important;transition:transform .2s ease!important;color:#111!important}
+          #maxess-results-10.v20-live .v20-dim-orb:hover{transform:translateY(-6px) scale(1.02)!important}
+          #maxess-results-10.v20-live .v20-dim-orb strong{font-size:clamp(34px,4vw,56px)!important;line-height:1!important}
+          #maxess-results-10.v20-live .v20-dim-orb span{max-width:105px!important;margin-top:8px!important;font-size:10px!important;font-weight:900!important;text-transform:uppercase!important;letter-spacing:.06em!important;color:#111!important}
+          #maxess-results-10.v20-live .v20-detail{max-width:1400px!important;margin:22px auto 0!important;padding:20px 22px!important;border-radius:18px!important;background:#f5f3f8!important;border:1px solid rgba(0,0,0,.08)!important;color:#111!important}
+          #maxess-results-10.v20-live .v20-detail p{margin:6px 0 0!important;color:#333!important}
+          #maxess-results-10.v20-live .v20-fallback{order:7!important;padding:60px 18px!important;background:#0a0710!important;color:#fff!important;text-align:center!important}
+          #maxess-results-10.v20-live .v20-fallback h2{font-size:clamp(34px,5vw,64px)!important;margin:0 0 14px!important}
+          #maxess-results-10.v20-live .v20-fallback p{max-width:700px!important;margin:0 auto!important;color:rgba(255,255,255,.7)!important}
+          #maxess-results-10.v20-live .v20-hidden{display:none!important}
+          @media(max-width:900px){#maxess-results-10.v20-live .v20-dim-orbs{grid-template-columns:repeat(3,minmax(120px,1fr))!important}}
+          @media(max-width:620px){#maxess-results-10.v20-live .v20-dim-orbs{grid-template-columns:repeat(2,minmax(120px,1fr))!important;gap:12px!important}}
+          @media(max-width:390px){#maxess-results-10.v20-live .v20-dim-orbs{grid-template-columns:1fr!important}.v20-live .v20-dim-orb{width:min(220px,76vw)!important;margin:auto!important}}
+          </style>
+          <script id="maxess-v20-js">
+          (function(){
+          'use strict';
+          function start(){
+            var root=document.getElementById('maxess-results-10'); if(!root||root.dataset.v20Done==='1')return; root.dataset.v20Done='1'; root.classList.add('v20-live');
+            var result=window.MAXESS_RESULT||{}; var dims=Array.isArray(result.dimensions)?result.dimensions.slice(0,5):[]; var score=Number(result.overallScore!=null?result.overallScore:result.score); if(!Number.isFinite(score))score=0; score=Math.round(Math.max(0,Math.min(100,score)));
+            var oldStage=root.querySelector('.v18-flow,.v19-stage'); var stage=document.createElement('main'); stage.className='v20-stage'; stage.setAttribute('aria-label','MAXESS personalized results'); root.appendChild(stage);
+            function first(sels){for(var i=0;i<sels.length;i++){var e=root.querySelector(sels[i]);if(e)return e}return null}
+            function heading(re){return [...root.querySelectorAll('section,article,div')].find(function(e){var h=e.querySelector('h1,h2,h3,.section-title,.eyebrow');return h&&re.test((h.textContent||'').trim())&&e.getBoundingClientRect().height>20})}
+            function move(e,order){if(e){e.classList.remove('v20-hidden');e.style.order=String(order);stage.appendChild(e)}}
+            var naya=document.createElement('section'); naya.className='v20-naya'; naya.innerHTML='<img class="v20-avatar" alt="Naya, your AI guide"><div>NAYA · YOUR GUIDE</div><h1>Hi. I’ve looked at your results.</h1><p>This isn’t your judgment. <strong>It’s your map.</strong></p><button type="button" class="v20-listen">Listen to Naya <span aria-hidden="true">▶</span></button>'; var av=first(['.v18-naya-avatar','img[src*="Naya"]']); if(av&&av.src)naya.querySelector('.v20-avatar').src=av.src; else naya.querySelector('.v20-avatar').src='https://raw.githubusercontent.com/SoulSchoolAcademy/maxess/main/Naya%20Profile%20Black.jpg'; stage.appendChild(naya);
+            var oldListen=first(['#mx-naya-listen','#v11-naya-listen','#v13-listen','.mx-naya-listen']); naya.querySelector('.v20-listen').addEventListener('click',function(){if(oldListen&&oldListen!==this)oldListen.click();else root.dispatchEvent(new CustomEvent('maxess:naya-listen',{bubbles:true,detail:{result:window.MAXESS_RESULT||null}}))});
+            var scoreSec=document.createElement('section'); scoreSec.className='v20-score'; scoreSec.innerHTML='<div class="v20-score-label">YOUR AI SCORE</div><div class="v20-score-orb"></div>'; var orb=first(['.v13-score-orb']); if(orb){scoreSec.querySelector('.v20-score-orb').appendChild(orb);var num=orb.querySelector('.v13-score-number');if(num)num.textContent=String(score)}else scoreSec.querySelector('.v20-score-orb').innerHTML='<div class="v13-score-number">'+score+'</div>'; stage.appendChild(scoreSec);
+            var dimSec=document.createElement('section'); dimSec.className='v20-dims'; dimSec.innerHTML='<h2>Your five dimensions.</h2><div class="v20-dim-orbs"></div><div class="v20-detail" aria-live="polite"><strong>Select a dimension.</strong><p>Explore how each part of your AI capability contributes to your overall score.</p></div>'; var grid=dimSec.querySelector('.v20-dim-orbs'), detail=dimSec.querySelector('.v20-detail'); dims.forEach(function(d,i){var b=document.createElement('button');b.type='button';b.className='v20-dim-orb';b.innerHTML='<strong>'+Math.round(Number(d.score)||0)+'</strong><span>'+String(d.name||('Dimension '+(i+1)))+'</span>';b.addEventListener('click',function(){detail.innerHTML='<strong>'+String(d.name||'Dimension')+' · '+Math.round(Number(d.score)||0)+'</strong><p>This is one of the five dimensions contributing to your MAXESS score. Use it as a signal for where to focus your next improvement.</p>'});grid.appendChild(b)}); stage.appendChild(dimSec);
+            var report=first(['.v13-report'])||heading(/report/i); var pattern=first(['.v13-pattern'])||heading(/pattern|fingerprint/i); var strength=first(['.v13-strengths','.v18-strength-section'])||heading(/strength|advantage/i); var lever=first(['.v13-lever','.v18-lever'])||heading(/biggest lever|your lever|lever/i); var next=first(['.v13-next'])||heading(/next move|next chapter/i); var masters=first(['.v13-masters'])||heading(/18 (naya )?masters|18 ai pathways|pathways/i); var playground=first(['.v13-playground','#naya-playground'])||heading(/playground/i);
+            move(report,4); move(pattern,5); move(strength,6); move(lever,7); move(next,8); move(masters,9); move(playground,10);
+            if(!lever){var fb=document.createElement('section');fb.className='v20-fallback';fb.innerHTML='<h2>Your Biggest Lever</h2><p>Your lowest current dimension is '+(dims.length?String(dims.reduce(function(a,b){return Number(b.score)<Number(a.score)?b:a}).name):'the area that needs the most attention')+'. Strengthening your lowest dimension can create disproportionate gains across your overall AI mastery.</p>';stage.appendChild(fb)}
+            if(!report){var x=document.createElement('section');x.className='v20-fallback';x.innerHTML='<h2>Your Report</h2><p>Your score is '+score+'. Your five dimensions show where your current AI capability is strongest and where the greatest opportunities remain.</p>';stage.appendChild(x)}
+            [...root.children].forEach(function(e){if(e!==stage&&!e.matches('style,script'))e.classList.add('v20-hidden')});
+            root.querySelectorAll('#mx-naya-listen,#v11-naya-listen,#v13-listen,.mx-naya-listen,.v18-listen-secondary').forEach(function(e){if(e!==naya.querySelector('.v20-listen'))e.classList.add('v20-hidden')});
+          }
+          if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start(); window.addEventListener('maxess:profile-ready',start);
+          })();
+          </script>
+          '''
+              i=s.rfind('</html>'); s=s[:i]+layer+'\n'+s[i:]; p.write_text(s,encoding='utf-8')
+          PY
+      - name: Browser build, QA, and commit
+        run: |
+          set -euo pipefail
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/maxess.log 2>&1 & PID=$!; trap 'kill $PID || true' EXIT
+          node <<'NODE'
+          const {chromium}=require('playwright'); const fs=require('fs');
+          (async()=>{const b=await chromium.launch({headless:true}); let snapshot='';
+          for(const width of [390,768,1440]){const p=await b.newPage({viewport:{width,height:1400}});await p.goto('http://127.0.0.1:4173/MAXESS-RESULTS-10-GROOVE.html?fixture=demo',{waitUntil:'networkidle'});await p.waitForTimeout(1200);
+          const q=await p.evaluate(()=>{const r=document.querySelector('#maxess-results-10');const vis=e=>e&&getComputedStyle(e).display!=='none'&&e.getBoundingClientRect().height>0;return{root:!!r,naya:!!r?.querySelector('.v20-naya'),title:r?.querySelector('.v20-naya h1')?.textContent.trim(),listen:[...r?.querySelectorAll('.v20-listen')||[]].filter(vis).length,score:r?.querySelector('.v13-score-number')?.textContent.trim(),dims:[...r?.querySelectorAll('.v20-dim-orb')||[]].filter(vis).length,report:!!r?.querySelector('.v13-report,.v20-fallback'),pattern:!!r?.querySelector('.v13-pattern'),strength:!!r?.querySelector('.v13-strengths,.v18-strength-section'),lever:!!r?.querySelector('.v13-lever,.v18-lever,.v20-fallback'),next:!!r?.querySelector('.v13-next'),masters:!!r?.querySelector('.v13-masters'),playground:!!r?.querySelector('.v13-playground,#naya-playground'),overflow:document.documentElement.scrollWidth>innerWidth+1};}); console.log(width,q);
+          if(!q.root||!q.naya||q.title!=="Hi. I’ve looked at your results."||q.listen!==1||q.score!=='82'||q.dims!==5||!q.report||!q.pattern||!q.strength||!q.lever||!q.next||!q.masters||!q.playground||q.overflow)throw Error('V20 release gate failed');
+          if(width===1440)snapshot=await p.evaluate(()=>document.documentElement.outerHTML); await p.close();}
+          await b.close(); if(!snapshot)throw Error('No snapshot'); fs.writeFileSync('MAXESS-RESULTS-10-GROOVE.html',snapshot); console.log('V20 release gate PASS');})();
+          NODE
+          grep -q 'MAXESS_RESULTS_V20_FULL_FINISH' MAXESS-RESULTS-10-GROOVE.html
+          test "$(grep -o '<html' MAXESS-RESULTS-10-GROOVE.html | wc -l)" -eq 1
+          test "$(grep -o '</html>' MAXESS-RESULTS-10-GROOVE.html | wc -l)" -eq 1
+          git config user.name 'Naya Master'; git config user.email 'naya-master@users.noreply.github.com'
+          git add MAXESS-RESULTS-10-GROOVE.html .github/workflows/v20-full-finish.yml
+          git commit -m 'feat(results): complete MAXESS Groove results experience in one pass'
+          git push origin HEAD:maxess-results-v18-preservation-finish
