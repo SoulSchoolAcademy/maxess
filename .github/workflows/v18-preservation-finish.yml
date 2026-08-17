@@ -6,6 +6,8 @@ on:
       - maxess-results-v18-preservation-finish
     paths:
       - '.github/workflows/v18-preservation-finish.yml'
+  pull_request:
+    types: [opened, synchronize]
   workflow_dispatch:
 
 permissions:
@@ -80,42 +82,20 @@ jobs:
               const page=await browser.newPage({viewport:{width,height:1200},deviceScaleFactor:1});
               await page.goto('http://127.0.0.1:4173/MAXESS-RESULTS-10-GROOVE.html?fixture=demo',{waitUntil:'networkidle'});
               await page.waitForTimeout(800);
-              const qa=await page.evaluate(()=>{
-                const root=document.querySelector('#maxess-results-10');
-                const visible=e=>!!e&&getComputedStyle(e).display!=='none'&&e.getBoundingClientRect().height>0;
-                return {
-                  root:!!root,
-                  naya:!!root?.querySelector('.v17-naya-top'),
-                  hero:!!root?.querySelector('.v17-hero'),
-                  dims:!!root?.querySelector('.v17-dims'),
-                  score:root?.querySelector('.v17-hero .mx-score strong')?.textContent.trim(),
-                  miniOrbs:[...root?.querySelectorAll('.v17-orb')||[]].filter(visible).length,
-                  listen:[...root?.querySelectorAll('.v17-naya-listen')||[]].filter(visible).length,
-                  overflow:document.documentElement.scrollWidth>window.innerWidth+1
-                };
-              });
-              console.log(width,JSON.stringify(qa));
-              if(!qa.root||!qa.naya||!qa.hero||!qa.dims) throw new Error('Required V17 structures missing at '+width);
-              if(qa.score!=='82') throw new Error('Expected demo score 82 at '+width+'; got '+qa.score);
-              if(qa.miniOrbs!==5) throw new Error('Expected 5 dimension orbs at '+width+'; got '+qa.miniOrbs);
-              if(qa.listen!==1) throw new Error('Expected one Listen button at '+width+'; got '+qa.listen);
-              if(qa.overflow) throw new Error('Horizontal overflow at '+width);
-            }
+              const qa=await page.evaluate(()=>{const root=document.querySelector('#maxess-results-10');const visible=e=>!!e&&getComputedStyle(e).display!=='none'&&e.getBoundingClientRect().height>0;return{root:!!root,naya:!!root?.querySelector('.v17-naya-top'),hero:!!root?.querySelector('.v17-hero'),dims:!!root?.querySelector('.v17-dims'),score:root?.querySelector('.v17-hero .mx-score strong')?.textContent.trim(),miniOrbs:[...root?.querySelectorAll('.v17-orb')||[]].filter(visible).length,listen:[...root?.querySelectorAll('.v17-naya-listen')||[]].filter(visible).length,overflow:document.documentElement.scrollWidth>window.innerWidth+1};});console.log(width,JSON.stringify(qa));if(!qa.root||!qa.naya||!qa.hero||!qa.dims)throw new Error('Required V17 structures missing at '+width);if(qa.score!=='82')throw new Error('Expected demo score 82 at '+width+'; got '+qa.score);if(qa.miniOrbs!==5)throw new Error('Expected 5 dimension orbs at '+width+'; got '+qa.miniOrbs);if(qa.listen!==1)throw new Error('Expected one Listen button at '+width+'; got '+qa.listen);if(qa.overflow)throw new Error('Horizontal overflow at '+width);}
             await browser.close();
           })().catch(e=>{console.error(e);process.exit(1)});
           NODE
 
       - name: Commit finished authoritative artifact
+        if: github.event_name == 'push'
         run: |
           set -euo pipefail
           rm -f maxess_v17_execute.py maxess_v17_browser_repair.py
           git config user.name 'Naya Master'
           git config user.email 'naya-master@users.noreply.github.com'
           git add MAXESS-RESULTS-10-GROOVE.html .github/workflows/v18-preservation-finish.yml
-          if git diff --cached --quiet; then
-            echo 'No changes to commit.'
-            exit 0
-          fi
+          if git diff --cached --quiet; then echo 'No changes to commit.'; exit 0; fi
           git commit -m 'feat(results): finish MAXESS Groove preservation pass V18'
           git push origin HEAD:maxess-results-v18-preservation-finish
 
