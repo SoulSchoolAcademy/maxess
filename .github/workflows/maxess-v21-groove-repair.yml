@@ -50,6 +50,18 @@ jobs:
               body = re.sub(r'\n\}\n\}\)\(\);\s*$', '\n})();\n', m.group(2), count=1)
               s = s[:m.start(2)] + body + s[m.end(2):]
 
+          # Restore a missing template-literal delimiter in the legacy
+          # recognition-flow CSS injector (script 12). Without the backtick,
+          # CSS lines beginning with # are parsed as private fields and the
+          # entire script fails before later Results layers can initialize.
+          scripts = list(re.finditer(r'<script([^>]*)>(.*?)</script>', s, flags=re.I | re.S))
+          if len(scripts) >= 12:
+              m = scripts[11]
+              body = m.group(2)
+              body = re.sub(r's\.textContent=\s*\n(?=\s*/\*|\s*#maxess-results-10)', 's.textContent=`\n', body, count=1)
+              body = body.replace('\n;s.textContent=s.textContent.replace', '\n`;s.textContent=s.textContent.replace', 1)
+              s = s[:m.start(2)] + body + s[m.end(2):]
+
           Path('MAXESS-RESULTS-10-GROOVE.html').write_text(s.strip() + '\n', encoding='utf-8')
 
       - name: Static JavaScript syntax gate
@@ -70,7 +82,7 @@ jobs:
               r = subprocess.run(['node','--check',str(path)], text=True, capture_output=True)
               if r.returncode:
                   print(f'JS SYNTAX FAILURE in script {i}')
-                  print('\n'.join(js.splitlines()[:80]))
+                  print('\n'.join(js.splitlines()[:100]))
                   print(r.stderr)
                   sys.exit(1)
           print(f'All {checked} JavaScript blocks passed node --check')
