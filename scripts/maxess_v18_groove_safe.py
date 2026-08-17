@@ -1,10 +1,12 @@
 from pathlib import Path
+import re
+
 path=Path('MAXESS-RESULTS-10-GROOVE.html')
 text=path.read_text(encoding='utf-8')
-marker='MAXESS_RESULTS_V18_1_GROOVE_SAFE'
+marker='MAXESS_RESULTS_V18_2_GROOVE_SAFE'
 if marker in text:
     raise SystemExit(0)
-block=r'''<style id="maxess-results-v18-1-groove-safe">
+block=r'''<style id="maxess-results-v18-2-groove-safe">
 html,body{width:100%!important;margin:0!important;padding:0!important;overflow-x:hidden!important}
 #maxess-results-10{display:flex!important;flex-direction:column!important;width:100%!important}
 #maxess-results-10>#naya-report{order:1!important}
@@ -46,9 +48,11 @@ html,body{width:100%!important;margin:0!important;padding:0!important;overflow-x
 <section id="v18-listen-static" aria-label="Listen to Naya" style="order:4!important;padding:28px 20px;text-align:center;background:linear-gradient(180deg,#050507,#09040f);">
 <div style="max-width:760px;margin:auto"><div style="font-size:clamp(28px,4vw,48px);font-weight:950;letter-spacing:-.045em;color:#fff">LISTEN TO NAYA</div><p style="margin:8px auto 16px;color:rgba(255,255,255,.58)">Let Naya walk you through your results.</p><button type="button" data-maxess-listen="1" style="min-width:min(360px,100%);padding:15px 22px;border-radius:999px;border:0;cursor:pointer;font-weight:900">Listen to Naya</button></div>
 </section>'''
-needle='<section id="v13-final"'
-if needle not in text:
-    raise SystemExit('V18.1 BLOCKED: v13-final anchor not found')
-text=text.replace(needle,block+'\n'+needle,1)
+
+matches=list(re.finditer(r'<[^>]+\bid=["\']v13-final["\'][^>]*>',text,re.I))
+if not matches:
+    raise SystemExit('V18.2 BLOCKED: could not locate the actual v13-final element')
+anchor=matches[0]
+text=text[:anchor.start()]+block+'\n'+text[anchor.start():]
 path.write_text(text,encoding='utf-8')
-print('V18.1 inserted inside actual results root before v13-final')
+print('V18.2 inserted inside the actual results root before the real v13-final element')
