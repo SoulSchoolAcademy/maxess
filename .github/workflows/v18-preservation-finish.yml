@@ -1,0 +1,128 @@
+name: MAXESS V18 Preservation Finish
+
+on:
+  push:
+    branches:
+      - maxess-results-v18-preservation-finish
+    paths:
+      - '.github/workflows/v18-preservation-finish.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  finish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout working branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify canonical Groove source
+        run: |
+          set -euo pipefail
+          test -f MAXESS-RESULTS-10-GROOVE.html
+          test "$(wc -c < MAXESS-RESULTS-10-GROOVE.html)" -gt 100000
+          test "$(grep -c 'id=\"maxess-results-10\"' MAXESS-RESULTS-10-GROOVE.html)" -eq 1
+          grep -q 'window.MAXESS_RESULT' MAXESS-RESULTS-10-GROOVE.html
+
+      - name: Fetch controlled V17 repair scripts
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/maxess
+          curl -fsSL 'https://raw.githubusercontent.com/SoulSchoolAcademy/maxess/maxess-results-v16-updated-edited/scripts/maxess_v17_execute.py' -o /tmp/maxess/maxess_v17_execute.py
+          curl -fsSL 'https://raw.githubusercontent.com/SoulSchoolAcademy/maxess/maxess-results-v16-updated-edited/scripts/maxess_v17_browser_repair.py' -o /tmp/maxess/maxess_v17_browser_repair.py
+          python3 -m py_compile /tmp/maxess/maxess_v17_execute.py /tmp/maxess/maxess_v17_browser_repair.py
+
+      - name: Apply preservation-first finish
+        run: |
+          set -euo pipefail
+          cp /tmp/maxess/maxess_v17_execute.py ./maxess_v17_execute.py
+          cp /tmp/maxess/maxess_v17_browser_repair.py ./maxess_v17_browser_repair.py
+          python3 maxess_v17_execute.py
+          python3 maxess_v17_browser_repair.py
+
+      - name: Static verification
+        run: |
+          set -euo pipefail
+          grep -q 'MAXESS_RESULTS_V17_CLEAN_EXECUTION' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'MAXESS_RESULTS_V17_BROWSER_REPAIR' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'window.MAXESS_RESULT' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'v17-orbs' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'v17-naya-listen' MAXESS-RESULTS-10-GROOVE.html
+          python3 - <<'PY'
+          from pathlib import Path
+          s=Path('MAXESS-RESULTS-10-GROOVE.html').read_text(encoding='utf-8')
+          assert s.count('<html')==1 and s.count('</html>')==1
+          assert s.count('<body')==1 and s.count('</body>')==1
+          assert s.count('<script')==s.count('</script>')
+          assert s.count('<style')==s.count('</style>')
+          assert len(s)>100000
+          print('MAXESS V18 static structure: PASS', len(s), 'bytes')
+          PY
+
+      - name: Browser QA
+        run: |
+          set -euo pipefail
+          npm init -y >/dev/null 2>&1
+          npm install --no-save playwright@1.55.0 >/dev/null 2>&1
+          npx playwright install --with-deps chromium >/dev/null 2>&1
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/maxess-http.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID || true' EXIT
+          node <<'NODE'
+          const { chromium } = require('playwright');
+          (async()=>{
+            const browser=await chromium.launch({headless:true});
+            for(const width of [390,1440]){
+              const page=await browser.newPage({viewport:{width,height:1200},deviceScaleFactor:1});
+              await page.goto('http://127.0.0.1:4173/MAXESS-RESULTS-10-GROOVE.html?fixture=demo',{waitUntil:'networkidle'});
+              await page.waitForTimeout(800);
+              const qa=await page.evaluate(()=>{
+                const root=document.querySelector('#maxess-results-10');
+                const visible=e=>!!e&&getComputedStyle(e).display!=='none'&&e.getBoundingClientRect().height>0;
+                return {
+                  root:!!root,
+                  naya:!!root?.querySelector('.v17-naya-top'),
+                  hero:!!root?.querySelector('.v17-hero'),
+                  dims:!!root?.querySelector('.v17-dims'),
+                  score:root?.querySelector('.v17-hero .mx-score strong')?.textContent.trim(),
+                  miniOrbs:[...root?.querySelectorAll('.v17-orb')||[]].filter(visible).length,
+                  listen:[...root?.querySelectorAll('.v17-naya-listen')||[]].filter(visible).length,
+                  overflow:document.documentElement.scrollWidth>window.innerWidth+1
+                };
+              });
+              console.log(width,JSON.stringify(qa));
+              if(!qa.root||!qa.naya||!qa.hero||!qa.dims) throw new Error('Required V17 structures missing at '+width);
+              if(qa.score!=='82') throw new Error('Expected demo score 82 at '+width+'; got '+qa.score);
+              if(qa.miniOrbs!==5) throw new Error('Expected 5 dimension orbs at '+width+'; got '+qa.miniOrbs);
+              if(qa.listen!==1) throw new Error('Expected one Listen button at '+width+'; got '+qa.listen);
+              if(qa.overflow) throw new Error('Horizontal overflow at '+width);
+            }
+            await browser.close();
+          })().catch(e=>{console.error(e);process.exit(1)});
+          NODE
+
+      - name: Commit finished authoritative artifact
+        run: |
+          set -euo pipefail
+          rm -f maxess_v17_execute.py maxess_v17_browser_repair.py
+          git config user.name 'Naya Master'
+          git config user.email 'naya-master@users.noreply.github.com'
+          git add MAXESS-RESULTS-10-GROOVE.html .github/workflows/v18-preservation-finish.yml
+          if git diff --cached --quiet; then
+            echo 'No changes to commit.'
+            exit 0
+          fi
+          git commit -m 'feat(results): finish MAXESS Groove preservation pass V18'
+          git push origin HEAD:maxess-results-v18-preservation-finish
+
+      - name: Final evidence
+        run: |
+          echo 'MAXESS V18 PRESERVATION FINISH: PASS'
+          echo 'Canonical artifact: MAXESS-RESULTS-10-GROOVE.html'
+          echo 'Data source: window.MAXESS_RESULT'
+          echo 'Hero order: Naya > Score > Five dimensions'
+          echo 'QA: 390px + 1440px'
