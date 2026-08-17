@@ -1,54 +1,60 @@
 # LIVE RESULTS DEPLOYMENT — SOURCE OF TRUTH
 
-## MAXESS V13 execution — 2026-08-16
+## Current production model — 2026-08-17
 
-The authoritative MAXESS Results artifact on `main` contains the V13 Results implementation and the V13 execution patch.
+### Authoritative production source
 
-### V13 execution scope
+The single production Groove embed artifact is:
 
-- Score-first hero hierarchy.
-- `YOUR AI SCORE` as the primary hero message.
-- Score-reactive Orb/color system.
-- Naya introduced as the user's report guide rather than an advertisement.
-- Naya profile imagery integrated into report moments.
-- Personal-report chapter hierarchy.
-- Five-dimension visual treatment and score-driven presentation.
-- Pattern/relationship storytelling.
-- Strengths, Biggest Lever, and Next Move progression.
-- Naya Masters presented as specialist pathways.
-- Commercial/conversion material deferred until after the personal report.
-- Print / Save PDF control and print-safe black-on-white report treatment.
-- Responsive and reduced-motion safeguards.
-- `window.MAXESS_RESULT` remains authoritative.
+`MAXESS-RESULTS-AAA-GROOVE-EMBED.html`
 
-### Execution artifact
+on the repository default branch:
 
-`MAXESS-LIVING-SIGNATURE-10-PATCH.js` is now the V13 execution patch and was committed to `main`.
+`main`
 
-`FINAL_RELEASE_TRIGGER.txt` is now marked `MAXESS_V13_RESULTS_RELEASE`.
+Current main baseline: `33537b05a8ec6bea65004ee7f7ed3d3b33b13f2e`
 
-### Live verification boundary
+### Critical deployment fact
 
-The public URL `https://results.nayanet.xyz/` has historically served a materially different Groove-hosted Results artifact from the GitHub master artifact. Therefore GitHub changes must not be described as live until the public URL is opened and visibly matches the authoritative artifact.
+GitHub and Groove are NOT connected and must not be treated as connected.
 
-### Required live gate
+GitHub is the engineering/source repository.
+Groove is the production publishing environment.
 
-After Groove consumes the V13 artifact, verify the public URL for:
+The only valid deployment flow is:
 
-1. `YOUR AI SCORE` at the top.
-2. Score Orb immediately visible and dominant.
-3. Score-reactive Orb colors.
-4. Naya introduction immediately after the score.
-5. Personal report sequence.
-6. Five dimensions.
-7. Pattern / interpretation.
-8. Strengths.
-9. Biggest Lever.
-10. Next Move.
-11. 18 Naya Masters.
-12. Existing video / solution architecture preserved.
-13. Commercial material appears after the report story.
-14. Print / Save PDF produces readable black-on-white output.
-15. `MAXESS_RESULT` remains authoritative.
+1. Build and verify the artifact in GitHub.
+2. Retrieve the complete `MAXESS-RESULTS-AAA-GROOVE-EMBED.html` from `main`.
+3. Replace the existing MAXESS Results code/embed element in Groove.
+4. Publish the Groove page.
+5. Open `https://results.nayanet.xyz/`.
+6. Verify the public page visibly matches the new artifact.
 
-**LIVE-VERIFIED is true only after the public URL visibly passes this gate.**
+### Branch rule
+
+Production work must be based on the current `main` branch. Candidate branches are not production unless they have been explicitly reconciled with current `main` and promoted.
+
+The previous `maxess-results-v16-updated-edited` branch is not the production source. It diverged from `main` and must not be used as an implicit production baseline.
+
+### Artifact rule
+
+Do not assume similarly named files are interchangeable.
+
+`MAXESS-RESULTS-10-GROOVE.html`
+`MAXESS-RESULTS-V17-CLEAN-REBUILD-GROOVE.html`
+`MAXESS-RESULTS-FINAL-GROOVE-EMBED.html`
+`RESULTS PAGE CODE`
+and other historical/candidate artifacts are not production source by default.
+
+### Live gate
+
+The public URL is not considered updated until the following visible fingerprint is confirmed after Groove publication:
+
+- Naya introduction at the top.
+- One intended primary Listen to Naya control.
+- Real AI Score displayed inside the central orb.
+- No competing standalone `AI Score 0` presentation.
+- Exactly five mini dimension orbs.
+- Existing report narrative remains intact.
+
+`LIVE-VERIFIED` is true only after this public-page test passes.
