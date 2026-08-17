@@ -1,6 +1,4 @@
-<!doctype html>
-<html lang="en">
-<head>
+<html lang="en"><head>
 <!-- MAXESS_RESULT_10_10_BOOTSTRAP -->
 <script>
 (function () {
@@ -1991,86 +1989,364 @@ transition:none}
   #maxess-results-10 .v13-orb-wrap .mx-score-orb{animation:none!important}
 }
 </style>
-</head>
+<style id="maxessNayaAudioStyles">
+      #maxessNayaAudio{position:relative;padding:clamp(60px,8vw,105px) 0 40px;background:radial-gradient(ellipse 75% 65% at 50% 35%,rgba(168,76,255,.18),transparent 72%);overflow:hidden}
+      #maxessNayaAudio .mna-wrap{width:min(1050px,calc(100% - 30px));margin:auto}
+      #maxessNayaAudio .mna-card{position:relative;border:1px solid rgba(201,145,255,.34);border-radius:34px;padding:clamp(28px,5vw,68px);background:linear-gradient(145deg,rgba(255,255,255,.075),rgba(255,255,255,.018));box-shadow:0 30px 100px rgba(0,0,0,.48),0 0 90px rgba(132,51,227,.13);overflow:hidden}
+      #maxessNayaAudio .mna-card:before{content:"";position:absolute;width:620px;height:420px;left:50%;top:-220px;transform:translateX(-50%);background:radial-gradient(circle,rgba(194,92,255,.25),transparent 68%);filter:blur(14px);pointer-events:none}
+      #maxessNayaAudio .mna-content{position:relative;z-index:1;text-align:center}
+      #maxessNayaAudio .mna-eyebrow{color:#d8a9ff;font-size:10px;font-weight:950;letter-spacing:.2em;text-transform:uppercase}
+      #maxessNayaAudio h2{font-size:clamp(38px,5.8vw,76px);line-height:.94;letter-spacing:-.06em;margin:12px 0 16px}
+      #maxessNayaAudio .mna-intro{max-width:720px;margin:auto;color:rgba(255,255,255,.68);font-size:17px;line-height:1.65}
+      #maxessNayaAudio .mna-band{display:inline-flex;align-items:center;gap:9px;margin-top:24px;padding:10px 15px;border-radius:999px;border:1px solid rgba(202,153,255,.35);background:rgba(169,92,255,.10);color:#ead5ff;font-size:11px;font-weight:900;letter-spacing:.15em}
+      #maxessNayaAudio .mna-dot{width:8px;height:8px;border-radius:50%;background:#c07aff;box-shadow:0 0 14px #b764ff}
+      #maxessNayaAudio .mna-player{margin:32px auto 0;max-width:760px;padding:18px;border-radius:23px;border:1px solid rgba(255,255,255,.11);background:rgba(0,0,0,.27)}
+      #maxessNayaAudio audio{display:none;width:100%}
+      #maxessNayaAudio .mna-play{width:78px;height:78px;margin:auto;border-radius:50%;border:1px solid rgba(255,255,255,.75);background:radial-gradient(circle at 30% 20%,#fff,#dfb3ff 22%,#9a45ff 53%,#35106f 100%);color:#fff;font-size:25px;font-weight:900;box-shadow:inset 0 2px 4px rgba(255,255,255,.9),0 0 34px rgba(170,80,255,.42);cursor:pointer;transition:transform .2s ease,filter .2s ease}
+      #maxessNayaAudio .mna-play:hover{transform:scale(1.05);filter:brightness(1.08)}
+      #maxessNayaAudio .mna-play:focus-visible{outline:3px solid #fff;outline-offset:5px}
+      #maxessNayaAudio .mna-label{margin-top:14px;font-weight:850;font-size:18px}
+      #maxessNayaAudio .mna-sub{margin-top:6px;color:rgba(255,255,255,.46);font-size:12px;line-height:1.5}
+      #maxessNayaAudio .mna-progress{height:5px;margin:22px auto 0;max-width:620px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden}
+      #maxessNayaAudio .mna-progress i{display:block;width:0;height:100%;border-radius:inherit;background:linear-gradient(90deg,#7c2be0,#f0d5ff,#8d43ff);transition:width .25s linear}
+      #maxessNayaAudio .mna-note{margin-top:18px;color:rgba(255,255,255,.38);font-size:10px;line-height:1.5}
+      @media(max-width:600px){#maxessNayaAudio{padding-top:50px}.mna-card{border-radius:26px!important}.mna-play{width:70px!important;height:70px!important}}
+      @media(prefers-reduced-motion:reduce){#maxessNayaAudio .mna-play{transition:none}}
+    </style><style id="maxessLivingSignatureStyles">
+      #maxess-results-10 .mx-hero-grid{position:relative}
+      #maxess-results-10 .mx-ls-stage{
+        position:relative;
+        width:min(620px,92vw);
+        aspect-ratio:1;
+        margin:auto;
+        display:grid;
+        place-items:center;
+        isolation:isolate;
+      }
+      #maxess-results-10 .mx-ls-stage::before{
+        content:"";
+        position:absolute;
+        inset:8%;
+        border-radius:50%;
+        background:radial-gradient(circle,rgba(176,86,255,.24),rgba(96,42,168,.08) 35%,transparent 70%);
+        filter:blur(24px);
+        z-index:-3;
+        opacity:calc(.35 + var(--mx-energy, .6) * .65);
+      }
+      #maxess-results-10 .mx-ls-stage::after{
+        content:"";
+        position:absolute;
+        inset:2%;
+        border-radius:50%;
+        border:1px solid rgba(255,255,255,.035);
+        box-shadow:0 0 80px rgba(142,64,255,.08), inset 0 0 80px rgba(110,50,210,.05);
+        pointer-events:none;
+      }
+      #maxess-results-10 .mx-ls-svg{
+        position:absolute;
+        inset:0;
+        width:100%;
+        height:100%;
+        overflow:visible;
+      }
+      #maxess-results-10 .mx-ls-path{
+        fill:none;
+        stroke-linecap:round;
+        vector-effect:non-scaling-stroke;
+        transform-origin:50% 50%;
+        transition:opacity .7s ease,filter .7s ease;
+      }
+      #maxess-results-10 .mx-ls-orbit{
+        fill:none;
+        stroke:rgba(225,199,255,.13);
+        stroke-width:1;
+        stroke-dasharray:2 12;
+        transform-origin:50% 50%;
+      }
+      #maxess-results-10 .mx-ls-node{
+        fill:#fff;
+        stroke:rgba(224,193,255,.9);
+        stroke-width:1;
+        filter:drop-shadow(0 0 7px rgba(191,106,255,.8));
+      }
+      #maxess-results-10 .mx-ls-label{
+        position:absolute;
+        left:50%;
+        top:50%;
+        min-width:72px;
+        padding:7px 10px;
+        border:1px solid rgba(255,255,255,.12);
+        border-radius:999px;
+        background:rgba(5,3,9,.68);
+        backdrop-filter:blur(12px);
+        -webkit-backdrop-filter:blur(12px);
+        color:rgba(255,255,255,.76);
+        font-size:9px;
+        font-weight:900;
+        letter-spacing:.13em;
+        text-align:center;
+        text-transform:uppercase;
+        opacity:0;
+        transform:translate(-50%,-50%) scale(.92);
+        pointer-events:none;
+        transition:opacity .35s ease,transform .35s ease;
+      }
+      #maxess-results-10 .mx-ls-stage:hover .mx-ls-label,
+      #maxess-results-10 .mx-ls-stage:focus-within .mx-ls-label,
+      #maxess-results-10 .mx-ls-stage.mx-ls-open .mx-ls-label{
+        opacity:1;
+        transform:translate(-50%,-50%) scale(1);
+      }
+      #maxess-results-10 .mx-ls-core{
+        position:relative;
+        width:min(235px,38vw);
+        aspect-ratio:1;
+        border-radius:50%;
+        display:grid;
+        place-items:center;
+        cursor:pointer;
+        outline:none;
+        transform:scale(calc(.94 + var(--mx-energy,.6) * .07));
+        transition:transform .5s cubic-bezier(.2,.8,.2,1),filter .5s ease;
+      }
+      #maxess-results-10 .mx-ls-core:hover{filter:brightness(1.08)}
+      #maxess-results-10 .mx-ls-core:focus-visible{box-shadow:0 0 0 4px rgba(220,188,255,.35),0 0 60px rgba(170,80,255,.35)}
+      #maxess-results-10 .mx-ls-core::before{
+        content:"";
+        position:absolute;
+        inset:7%;
+        border-radius:50%;
+        background:
+          radial-gradient(circle at 31% 22%,rgba(255,255,255,.72) 0,rgba(255,255,255,.18) 7%,transparent 18%),
+          radial-gradient(circle at 50% 47%,rgba(207,150,255,.85) 0,rgba(126,48,220,.48) 31%,rgba(36,11,66,.94) 69%,#050208 100%);
+        box-shadow:
+          inset 0 4px 18px rgba(255,255,255,.14),
+          inset 0 -30px 55px rgba(12,2,25,.8),
+          0 0 0 1px rgba(255,255,255,.2),
+          0 0 40px rgba(168,83,255,.38),
+          0 0 95px rgba(132,52,225,.22);
+      }
+      #maxess-results-10 .mx-ls-core::after{
+        content:"";
+        position:absolute;
+        inset:0;
+        border-radius:50%;
+        border:1px solid rgba(225,197,255,.24);
+        box-shadow:inset 0 0 28px rgba(185,105,255,.16);
+        animation:mxLsBreathe 4.2s ease-in-out infinite;
+      }
+      #maxess-results-10 .mx-ls-core-copy{
+        position:relative;
+        z-index:3;
+        text-align:center;
+        pointer-events:none;
+      }
+      #maxess-results-10 .mx-ls-score{
+        display:block;
+        font-size:clamp(60px,8vw,104px);
+        line-height:.8;
+        letter-spacing:-.085em;
+        font-weight:850;
+        text-shadow:0 4px 22px rgba(0,0,0,.62),0 0 34px rgba(198,135,255,.18);
+      }
+      #maxess-results-10 .mx-ls-core-label{
+        display:block;
+        margin-top:22px;
+        color:rgba(235,214,255,.82);
+        font-size:9px;
+        font-weight:900;
+        letter-spacing:.22em;
+        text-transform:uppercase;
+      }
+      #maxess-results-10 .mx-ls-ripple{
+        position:absolute;
+        inset:7%;
+        border-radius:50%;
+        border:1px solid rgba(215,170,255,0);
+        pointer-events:none;
+        opacity:0;
+      }
+      #maxess-results-10 .mx-ls-stage.mx-ls-speaking .mx-ls-ripple{animation:mxLsVoice 1.15s ease-out infinite}
+      #maxess-results-10 .mx-ls-stage.mx-ls-speaking .mx-ls-core::after{animation:mxLsSpeak .72s ease-in-out infinite}
+      #maxess-results-10 .mx-ls-stage.mx-ls-excited .mx-ls-core{filter:brightness(1.16)}
+      #maxess-results-10 .mx-ls-stage.mx-ls-excited .mx-ls-ripple{animation:mxLsVoice .72s ease-out 2}
+      #maxess-results-10 .mx-ls-hint{
+        position:absolute;
+        left:50%;
+        bottom:2%;
+        transform:translateX(-50%);
+        color:rgba(255,255,255,.36);
+        font-size:9px;
+        font-weight:700;
+        letter-spacing:.11em;
+        text-transform:uppercase;
+        white-space:nowrap;
+      }
+      @keyframes mxLsBreathe{0%,100%{transform:scale(.985);opacity:.62}50%{transform:scale(1.018);opacity:1}}
+      @keyframes mxLsSpeak{0%,100%{transform:scale(.985);opacity:.5}45%{transform:scale(1.065);opacity:1}70%{transform:scale(1.025);opacity:.8}}
+      @keyframes mxLsVoice{0%{transform:scale(.72);opacity:.75}100%{transform:scale(1.22);opacity:0}}
+      @media(max-width:900px){
+        #maxess-results-10 .mx-hero-grid{grid-template-columns:1fr;}
+        #maxess-results-10 .mx-ls-stage{order:-1;width:min(620px,94vw);}
+        #maxess-results-10 .mx-hero-copy{text-align:center;margin:auto;}
+        #maxess-results-10 .mx-hero-copy .mx-eyebrow{justify-content:center;}
+        #maxess-results-10 .mx-hero-copy .mx-copy{margin-left:auto;margin-right:auto;}
+        #maxess-results-10 .mx-hero-actions,#maxess-results-10 .mx-proof{justify-content:center;}
+      }
+      @media(max-width:600px){
+        #maxess-results-10 .mx-ls-stage{width:96vw;}
+        #maxess-results-10 .mx-ls-core{width:min(205px,43vw);}
+        #maxess-results-10 .mx-ls-score{font-size:clamp(54px,14vw,78px);}
+        #maxess-results-10 .mx-ls-label{font-size:8px;min-width:62px;padding:6px 8px;}
+        #maxess-results-10 .mx-ls-hint{bottom:0;font-size:8px;}
+      }
+      @media(prefers-reduced-motion:reduce){
+        #maxess-results-10 .mx-ls-core::after,#maxess-results-10 .mx-ls-stage.mx-ls-speaking .mx-ls-ripple{animation:none!important}
+        #maxess-results-10 .mx-ls-path{transition:none!important}
+      }
+    </style><style id="mxLsDynamicKeyframes">@keyframes mxLsOrbit0{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}@keyframes mxLsOrbit1{from{transform:rotate(0deg)}to{transform:rotate(-360deg)}}@keyframes mxLsOrbit2{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}@keyframes mxLsOrbit3{from{transform:rotate(0deg)}to{transform:rotate(-360deg)}}@keyframes mxLsOrbit4{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}</style></head>
 <body>
-<main id="maxess-results-10" data-contract="MAXESS-RESULTS-CONTRACT-1" data-mode="result-contract" data-fixture-available="true">
-<section class="mx-section mx-hero">
-<div class="mx-wide mx-hero-grid">
-<div>
-<span class="mx-eyebrow">MAXESS AI MASTERY ASSESSMENT</span>
-<h1 class="mx-title">Your AI capability<br>
-<em>has a shape.</em>
-</h1>
-<p class="mx-copy">You didn't just receive a number. You created a picture of how you currently think, direct, evaluate, iterate, and build with AI.</p>
-<div class="mx-hero-actions">
-<a class="mx-cta mx-cta-primary" href="#your-fingerprint">Explore Your Results <span aria-hidden="true">↓</span>
-</a>
-<a class="mx-cta mx-cta-ghost" href="#naya-report">Meet Naya <span aria-hidden="true">→</span>
-</a>
-</div>
-<div class="mx-proof">
-<div>
-<b>5 dimensions</b>
-<span>Your capability fingerprint</span>
-</div>
-<div>
-<b>18 pathways</b>
-<span>Where you can grow</span>
-</div>
-<div>
-<b>1 next move</b>
-<span>Turn insight into action</span>
-</div>
-</div>
-</div>
-<div class="mx-score-orb mx-reveal">
-<div class="mx-score">
-<strong>82</strong>
-<span>MAXESS SCORE</span>
-<div class="mx-band">Advancing</div>
-</div>
-</div>
-</div>
-</section>
-<div class="mx-divider">
-</div>
-<section class="mx-section mx-insight">
-<div class="mx-reading">
-<span class="mx-eyebrow">THE SHORT VERSION</span>
-<div class="mx-insight-card mx-reveal">
-<p class="mx-quote">You already have a meaningful AI foundation. <strong>Your next leap is leverage.</strong>
-</p>
-<p class="mx-note">The highest-value move is not simply learning more tools. It is becoming better at directing the work, judging the result, and turning what works into a repeatable system.</p>
-</div>
-</div>
-</section>
-<section class="mx-section" id="your-fingerprint">
+<main id="maxess-results-10" data-contract="MAXESS-RESULTS-CONTRACT-1" data-mode="result-contract" data-fixture-available="true" data-naya-law-aaa-pass2="1" data-naya-experience-applied="1" style="--score-color: rgb(44,208,171); --mx-score: 82; --nl-score: 82; --mx-energy: 0.82;" data-naya-experience-fix-applied="1" data-naya-experience-v3-applied="1" data-results-refinement="v4" data-v11-full-upgrade="1" data-v12="1" class="v12-results v13-active mx-v13-active v15-results v20-live v18-preservation" data-v13="1" data-v15-reconstructed="1" data-maxess-visual-pass="10.3" data-v11-result-score="82" data-v11-band="Advancing" data-v12-score="82" data-v13-built="1" data-v13-applied="true" data-results-version="18-preservation" data-execution-status="material-change-applied" data-v15-state="verified-runtime-data" data-v15-ready="1" data-v20-done="1" data-result-state="ready" data-fixture-active="0" data-section-flow="10.5" data-v15-polished="1" data-v18-preservation="1" data-results-data-source="window.MAXESS_RESULT" data-v18-score="82" data-v18-dimension-count="5" data-v18-strength="verified">
+<div class="v13-shell v20-hidden"><section id="v15-personal-profile" class="mx-section" aria-label="Your MAXESS personal profile"><div class="v15-profile"><div class="v15-profile-head"><div><span class="v15-profile-kicker">YOUR MAXESS PROFILE</span><h2>Here is your AI profile.</h2><p class="v15-profile-sub">This is your personal reading of the assessment — built from the result you actually submitted, not a generic template.</p></div><div class="v15-profile-score"><strong>82</strong><span>/ 100</span></div></div><div class="v15-profile-grid"><div class="v15-profile-cell"><span>LEVEL</span><b>Advancing</b><small>Your current MAXESS mastery range.</small></div><div class="v15-profile-cell"><span>STRONGEST SIGNAL</span><b>Communication</b><small>91 / 100</small></div><div class="v15-profile-cell"><span>BIGGEST LEVER</span><b>Systems Thinking</b><small>68 / 100</small></div><div class="v15-profile-cell"><span>PROFILE CONTEXT</span><b>Assessment profile</b><small>Core score and dimension data currently available.</small></div></div><span class="v15-profile-badge"><i aria-hidden="true"></i>PERSONALIZATION-READY RESULT CONTRACT</span></div></section><section class="v13-dimensions v18-hidden" id="v13-dimensions"><div class="v13-wrap"><div class="v13-dim-head"><div><div class="v13-chapter"><i>03</i> YOUR FIVE DIMENSIONS</div><h2 class="v13-h2">YOUR FIVE DIMENSIONS</h2></div><p>Five capabilities show where your AI practice is strong, developing, and ready for leverage. Scan the circles first. Read the detail second.</p></div><div class="v13-dim-grid"><article class="v13-dim" aria-label="Direction, score 86 out of 100" style="--score: 86; --g: #ff9d3d;"><div class="v15-dim-inner"><strong class="v15-dim-score">86</strong><span class="v15-dim-name">Direction</span></div><p class="v15-dim-copy">A strength you can compound.</p><div class="v15-dim-lever">COMPOUND IT</div></article><article class="v13-dim" aria-label="Communication, score 91 out of 100" style="--score: 91; --g: #ffd84a;"><div class="v15-dim-inner"><strong class="v15-dim-score">91</strong><span class="v15-dim-name">Communication</span></div><p class="v15-dim-copy">A strength you can compound.</p><div class="v15-dim-lever">COMPOUND IT</div></article><article class="v13-dim" aria-label="Evaluation, score 79 out of 100" style="--score: 79; --g: #39df91;"><div class="v15-dim-inner"><strong class="v15-dim-score">79</strong><span class="v15-dim-name">Evaluation</span></div><p class="v15-dim-copy">A capable area ready to sharpen.</p><div class="v15-dim-lever">SHARPEN IT</div></article><article class="v13-dim" aria-label="Iteration, score 74 out of 100" style="--score: 74; --g: #4c9dff;"><div class="v15-dim-inner"><strong class="v15-dim-score">74</strong><span class="v15-dim-name">Iteration</span></div><p class="v15-dim-copy">A capable area ready to sharpen.</p><div class="v15-dim-lever">SHARPEN IT</div></article><article class="v13-dim" aria-label="Systems Thinking, score 68 out of 100" style="--score: 68; --g: #965dff;"><div class="v15-dim-inner"><strong class="v15-dim-score">68</strong><span class="v15-dim-name">Systems Thinking</span></div><p class="v15-dim-copy">A high-value area for focused improvement.</p><div class="v15-dim-lever">FOCUS HERE</div></article></div></div></section><div class="v18-flow"><section class="v18-naya-top"><div class="v18-naya-inner"><img class="v18-naya-avatar" src="https://raw.githubusercontent.com/SoulSchoolAcademy/maxess/main/Naya%20Profile%20Black.jpg" alt="Naya, your AI guide"><div class="v18-naya-kicker">NAYA · YOUR GUIDE</div><h2 class="v18-naya-title">Hi. I’ve looked at your results.</h2><p class="v18-naya-copy">This isn’t your judgment. <strong>It’s your map.</strong> I’m here to help you understand what you already do well, where your biggest opportunity is, and what to do next.</p><button class="v18-listen" type="button" aria-label="Listen to Naya walk through your MAXESS results">Listen to Naya <span aria-hidden="true">▶</span></button></div></section><section class="v13-hero v18-score-section" id="v13-score"><div class="v13-hero-tools"><button class="v13-tool" id="v13-print" type="button">Print / Save PDF</button></div><div class="v13-wrap v13-hero-inner"><div class="v13-overline v18-hidden">MAXESS AI MASTERY ASSESSMENT</div><div class="v13-score-label">YOUR AI SCORE</div><div class="v13-band v18-hidden">Advancing</div><div class="v13-hero-actions v18-hidden"><a class="v13-btn v13-btn-primary" href="#v13-report">See Your Results ↓</a></div></div><div class="v15-print"><button type="button" aria-label="Print or save this MAXESS report as PDF">Print / Save PDF</button></div></section><section class="v18-dim-section"><div class="v18-section-head"><div><span style="display:block;color:#6637a8;font-size:10px;font-weight:950;letter-spacing:.18em;text-transform:uppercase">YOUR FIVE DIMENSIONS</span><h2>See the shape of your capability.</h2></div><p>These are the five real dimensions from your MAXESS result. Tap one to explore what it means and where its leverage lives.</p></div><div class="v18-orbs" role="list" aria-label="Your five MAXESS dimensions"><button type="button" class="v18-dim-orb" role="listitem" aria-label="Direction score 86 out of 100" style="--dim-color: #ff9d3d;"><span class="v18-dim-score">86</span><span class="v18-dim-name">Direction</span></button><button type="button" class="v18-dim-orb" role="listitem" aria-label="Communication score 91 out of 100" style="--dim-color: #ffd84a;"><span class="v18-dim-score">91</span><span class="v18-dim-name">Communication</span></button><button type="button" class="v18-dim-orb" role="listitem" aria-label="Evaluation score 79 out of 100" style="--dim-color: #39df91;"><span class="v18-dim-score">79</span><span class="v18-dim-name">Evaluation</span></button><button type="button" class="v18-dim-orb" role="listitem" aria-label="Iteration score 74 out of 100" style="--dim-color: #4c9dff;"><span class="v18-dim-score">74</span><span class="v18-dim-name">Iteration</span></button><button type="button" class="v18-dim-orb" role="listitem" aria-label="Systems Thinking score 68 out of 100" style="--dim-color: #965dff;"><span class="v18-dim-score">68</span><span class="v18-dim-name">Systems Thinking</span></button></div><div class="v18-dim-detail" id="v18-dimension-detail"><b>SELECT A DIMENSION</b><p>Choose one of the five orbs to see its score, meaning, and next lever.</p></div></section><section class="v18-strength-section"><div class="v18-strength-wrap"><div class="v18-strength-kicker">YOUR STRENGTH</div><h2>Recognize what is already working.</h2><div class="v18-strength-card"><div class="v18-strength-score">91<small>STRONGEST SIGNAL</small></div><div><h3>Communication</h3><p>You already have meaningful capability here. Use Communication as a foundation, then compound it through deliberate practice rather than trying to improve everything at once.</p></div></div></div></section><section class="v13-insight v18-existing-section" id="v13-lever"><div class="v13-wrap"><div class="v13-chapter"><i>06</i> YOUR BIGGEST LEVER</div><div class="v15-lever-layout"><div><div class="v15-lever-score">68<small>Systems Thinking</small></div></div><div><h3>If I were helping you improve one thing first, I’d start here.</h3><p>Your biggest visible opportunity is Systems Thinking. This is not a verdict about you. It is a high-leverage place to focus because it currently sits furthest below the rest of your five-dimension profile.</p><div class="v15-lever-why"><div><b>WHY THIS ONE</b><span>It creates a focused target instead of asking you to improve everything at once.</span></div><div><b>HOW TO USE IT</b><span>Choose one real AI workflow, measure the result, improve it, and repeat.</span></div></div></div></div></div></section><section class="mx-section mx-naya-playground v13-original v18-existing-section" id="naya-playground" style="order: 10;">
 <div class="mx-wide">
-<div class="mx-section-head">
+<div class="mx-naya-playground-head">
+<div>
+<span class="mx-eyebrow">YOUR AI PLAYGROUND</span>
+<h2>Don't learn AI.<br>
+<em style="font-style:normal;background:linear-gradient(110deg,#fff,#d7b2ff,#63d9ff);-webkit-background-clip:text;background-clip:text;color:transparent">Learn what AI can do for you.</em>
+</h2>
+</div>
+<p>These aren't random tools. They're doors into what your capability can become when Naya helps you turn thinking into action.</p>
+</div>
+<div class="mx-naya-doors">
+<a class="mx-naya-door mx-reveal" href="#naya-writer" aria-label="Open Naya Writer" style="transition-delay: 280ms; --naya-index: 19;" tabindex="0">
+<span class="mx-naya-icon" aria-hidden="true">✍️</span>
+<h3>Naya Writer</h3>
+<p>Turn thoughts, rough ideas, and half-finished sentences into clear words that sound like you.</p>
+<span class="mx-naya-open">Open Naya Writer <span aria-hidden="true">↗</span>
+</span>
+</a>
+<a class="mx-naya-door mx-reveal" href="#naya-brainstormer" aria-label="Open Naya Brainstormer" style="transition-delay: 280ms; --naya-index: 20;" tabindex="0">
+<span class="mx-naya-icon" aria-hidden="true">💡</span>
+<h3>Naya Brainstormer</h3>
+<p>Turn one thought into possibilities, angles, strategies, names, stories, and next moves.</p>
+<span class="mx-naya-open">Open Naya Brainstormer <span aria-hidden="true">↗</span>
+</span>
+</a>
+<a class="mx-naya-door mx-reveal" href="#naya" aria-label="Talk to Naya" style="transition-delay: 280ms; --naya-index: 21;" tabindex="0">
+<span class="mx-naya-icon" aria-hidden="true">✦</span>
+<h3>Naya</h3>
+<p>Ask anything. Build anything. Think out loud with an AI companion designed around what you want to accomplish.</p>
+<span class="mx-naya-open">Talk to Naya <span aria-hidden="true">↗</span>
+</span>
+</a>
+</div>
+<p class="mx-naya-note">These are doors, not products. The goal is simple: make AI useful to you.</p>
+</div>
+</section><section class="v13-final v18-existing-section" id="v13-final"><div class="v13-wrap"><div class="v13-chapter" style="justify-content:center;color:#777"><i>10</i> YOUR NEXT CHAPTER</div><h2>YOUR NEXT CHAPTER</h2><p>You now know where you are, what is working, where the greatest return may be, and what to do next. Choose the chapter you want to build.</p><p class="v15-final-note">Your score is not the destination. It is your starting point.</p><div class="v13-preserved-cta">
+<div class="mx-wide">
+<div class="mx-naya-playground-head">
+<div>
+<span class="mx-eyebrow">YOUR AI PLAYGROUND</span>
+<h2>Don't learn AI.<br>
+<em style="font-style:normal;background:linear-gradient(110deg,#fff,#d7b2ff,#63d9ff);-webkit-background-clip:text;background-clip:text;color:transparent">Learn what AI can do for you.</em>
+</h2>
+</div>
+<p>These aren't random tools. They're doors into what your capability can become when Naya helps you turn thinking into action.</p>
+</div>
+<div class="mx-naya-doors">
+<a class="mx-naya-door mx-reveal" href="#naya-writer" aria-label="Open Naya Writer" style="transition-delay: 280ms; --naya-index: 19;" tabindex="0">
+<span class="mx-naya-icon" aria-hidden="true">✍️</span>
+<h3>Naya Writer</h3>
+<p>Turn thoughts, rough ideas, and half-finished sentences into clear words that sound like you.</p>
+<span class="mx-naya-open">Open Naya Writer <span aria-hidden="true">↗</span>
+</span>
+</a>
+<a class="mx-naya-door mx-reveal" href="#naya-brainstormer" aria-label="Open Naya Brainstormer" style="transition-delay: 280ms; --naya-index: 20;" tabindex="0">
+<span class="mx-naya-icon" aria-hidden="true">💡</span>
+<h3>Naya Brainstormer</h3>
+<p>Turn one thought into possibilities, angles, strategies, names, stories, and next moves.</p>
+<span class="mx-naya-open">Open Naya Brainstormer <span aria-hidden="true">↗</span>
+</span>
+</a>
+<a class="mx-naya-door mx-reveal" href="#naya" aria-label="Talk to Naya" style="transition-delay: 280ms; --naya-index: 21;" tabindex="0">
+<span class="mx-naya-icon" aria-hidden="true">✦</span>
+<h3>Naya</h3>
+<p>Ask anything. Build anything. Think out loud with an AI companion designed around what you want to accomplish.</p>
+<span class="mx-naya-open">Talk to Naya <span aria-hidden="true">↗</span>
+</span>
+</a>
+</div>
+<p class="mx-naya-note">These are doors, not products. The goal is simple: make AI useful to you.</p>
+</div>
+</div></div></section></div></div>
+<div class="mx-divider v13-original v20-hidden">
+</div>
+
+
+
+
+
+
+
+<div class="mx-divider v13-original v20-hidden">
+</div>
+
+<div class="mx-divider v13-original v20-hidden">
+</div>
+
+<section class="mx-section mx-final v13-original v13-final-report v20-hidden">
+
+<div id="nayanet-foundation-anchor">
+</div>
+</section>
+<section class="mx-section naya-human-bridge v13-original v20-hidden"><div class="mx-wide naya-human-grid"><div class="naya-human-image"><img src="https://i.postimg.cc/d1nncN9F/Naya-and-shawn-ok-44-a.png" alt="Shawn and Naya" loading="lazy"></div><div><span class="mx-eyebrow">HUMAN + AI</span><h2>Technology should amplify the human.</h2><p>The goal is not to become more machine-like. It is to become more capable — with Naya helping you turn your own strengths into exceptional results.</p><div class="naya-brand-mark"><img src="https://i.postimg.cc/Twqw14vv/ICON-LOGO.png" alt="MAXESS / Human Maximus mark" loading="lazy"><span>THE HUMAN + AI SYSTEM</span></div></div></div></section><section id="v11-pattern" class="mx-section v13-original v20-hidden"><div class="mx-wide"><div class="mx-section-head"><div><div class="v11-chapter"><span class="v11-chapter-num">04</span><div><span class="v11-chapter-label">YOUR PATTERN</span><span class="v11-chapter-sub">How your dimensions work together</span></div></div><h2>SEE THE PATTERN.</h2></div><p>Your five dimensions are not five separate scores. Together they form your AI working signature.</p></div><div class="v11-pattern-visual"><div class="v11-pattern-node"><span class="dot" aria-hidden="true"></span><b>Direction</b><strong>86</strong><small>Direct</small></div><div class="v11-pattern-node"><span class="dot" aria-hidden="true"></span><b>Communication</b><strong>91</strong><small>Express</small></div><div class="v11-pattern-node"><span class="dot" aria-hidden="true"></span><b>Evaluation</b><strong>79</strong><small>Judge</small></div><div class="v11-pattern-node"><span class="dot" aria-hidden="true"></span><b>Iteration</b><strong>74</strong><small>Improve</small></div><div class="v11-pattern-node"><span class="dot" aria-hidden="true"></span><b>Systems Thinking</b><strong>68</strong><small>Connect</small></div></div></div></section><section id="v11-human" class="mx-section v13-original v20-hidden"><div class="mx-wide v11-human-grid"><div class="v11-human-image"><img src="https://i.postimg.cc/d1nncN9F/Naya-and-shawn-ok-44-a.png" alt="Shawn and Naya" loading="lazy"></div><div class="v11-human-copy"><span class="mx-eyebrow">HUMAN + AI</span><h2>Technology should amplify the human.</h2><p>The goal is not to become more machine-like. It is to become more capable — with Naya helping you turn your own strengths into exceptional results.</p></div></div></section><section class="mx-section mx-naya-bridge v11-white-chapter v12-light v13-original v20-hidden" id="v12-report">
+<div class="mx-reading">
+<div class="mx-bridge-card mx-reveal" style="transition-delay: 280ms;">
+<span class="mx-audio-label">PERSONALIZED REPORT</span>
+<h2>You've seen the pattern.<br>
+<em>Now hear what it means.</em>
+</h2>
+<p>Naya is the next layer: turning your result into a practical conversation about where you are, where you can go, and what to do next.</p>
+<button class="mx-cta mx-cta-primary v20-hidden v18-listen-secondary" type="button" id="mx-naya-listen" aria-label="Listen to your results with Naya">Listen to your results <span aria-hidden="true">▶</span></button>
+<div class="mx-key" aria-label="AI Master Key">
+<div>KNOW</div>
+<div>TELL</div>
+<div>ASK</div>
+<div>CREATE</div>
+<div>SCORE</div>
+<div>IMPROVE</div>
+<div>REPEAT</div>
+</div>
+</div>
+</div>
+</section><section id="v12-pattern" class="mx-section v12-pattern v13-original v20-hidden"><div class="mx-wide"><div class="mx-section-head"><div><div class="v12-chapter"><b>05</b><div><span>YOUR PATTERN</span><small>How your dimensions work together</small></div></div><h2>SEE THE PATTERN.</h2></div><p>Your scores are not five separate boxes. Together they form the shape of your AI working style.</p></div><div class="v12-pattern-grid"><div class="v12-pattern-node"><b>Direction</b><strong>86</strong><small>Direct</small></div><div class="v12-pattern-node"><b>Communication</b><strong>91</strong><small>Express</small></div><div class="v12-pattern-node"><b>Evaluation</b><strong>79</strong><small>Judge</small></div><div class="v12-pattern-node"><b>Iteration</b><strong>74</strong><small>Improve</small></div><div class="v12-pattern-node"><b>Systems Thinking</b><strong>68</strong><small>Connect</small></div></div></div></section><section class="mx-section v13-original v20-hidden" id="v12-dimensions">
+<div class="mx-wide">
+<div class="mx-section-head"><div class="v11-chapter"><span class="v11-chapter-num">03</span><div><span class="v11-chapter-label">YOUR FINGERPRINT</span><span class="v11-chapter-sub">The shape of your current capability</span></div></div><div class="naya-chapter"><span>03</span><div><b>YOUR FIVE DIMENSIONS</b><small>Your capability profile</small></div></div>
 <div>
 <span class="mx-eyebrow">01 · YOUR FINGERPRINT</span>
-<h2>See the pattern,<br>not just the score.</h2>
+<h2>SEE THE PATTERN,<br>NOT JUST THE SCORE.</h2>
 </div>
-<p>Five dimensions show where your current capability is strong, where it is developing, and where a small improvement can create disproportionate upside.</p>
+<p>Your score tells you where you are. Your pattern shows how your strengths work together.</p>
 </div>
 <div class="mx-fingerprint">
-<div class="mx-radar mx-reveal">
+<div class="mx-radar mx-reveal" style="transition-delay: 70ms;">
 <svg viewBox="0 0 500 500" role="img" aria-label="Five-dimension capability fingerprint">
-<polygon points="250.0,207.5 290.4,236.9 275.0,284.4 225.0,284.4 209.6,236.9" fill="none" stroke="rgba(255,255,255,.09)" stroke-width="1"/>
-<polygon points="250.0,165.0 330.8,223.7 300.0,318.8 200.0,318.8 169.2,223.7" fill="none" stroke="rgba(255,255,255,.09)" stroke-width="1"/>
-<polygon points="250.0,122.5 371.3,210.6 324.9,353.1 175.1,353.1 128.7,210.6" fill="none" stroke="rgba(255,255,255,.09)" stroke-width="1"/>
-<polygon points="250.0,80.0 411.7,197.5 349.9,387.5 150.1,387.5 88.3,197.5" fill="none" stroke="rgba(255,255,255,.09)" stroke-width="1"/>
-<line x1="250" y1="250" x2="250.0" y2="80.0" stroke="rgba(255,255,255,.08)"/>
-<line x1="250" y1="250" x2="411.67960777017606" y2="197.46711095625895" stroke="rgba(255,255,255,.08)"/>
-<line x1="250" y1="250" x2="349.9234928897204" y2="387.5328890437411" stroke="rgba(255,255,255,.08)"/>
-<line x1="250" y1="250" x2="150.07650711027958" y2="387.5328890437411" stroke="rgba(255,255,255,.08)"/>
-<line x1="250" y1="250" x2="88.32039222982388" y2="197.46711095625898" stroke="rgba(255,255,255,.08)"/>
-<polygon points="250.0,103.8 397.1,202.2 328.9,358.7 176.1,351.8 140.1,214.3" fill="rgba(166,108,255,.2)" stroke="#cda5ff" stroke-width="3" stroke-linejoin="round"/>
-<circle cx="250.0" cy="103.8" r="5" fill="#fff" stroke="#a66cff" stroke-width="3"/>
-<circle cx="397.1" cy="202.2" r="5" fill="#fff" stroke="#a66cff" stroke-width="3"/>
-<circle cx="328.9" cy="358.7" r="5" fill="#fff" stroke="#a66cff" stroke-width="3"/>
-<circle cx="176.1" cy="351.8" r="5" fill="#fff" stroke="#a66cff" stroke-width="3"/>
-<circle cx="140.1" cy="214.3" r="5" fill="#fff" stroke="#a66cff" stroke-width="3"/>
+<polygon points="250.0,207.5 290.4,236.9 275.0,284.4 225.0,284.4 209.6,236.9" fill="none" stroke="rgba(255,255,255,.09)" stroke-width="1"></polygon>
+<polygon points="250.0,165.0 330.8,223.7 300.0,318.8 200.0,318.8 169.2,223.7" fill="none" stroke="rgba(255,255,255,.09)" stroke-width="1"></polygon>
+<polygon points="250.0,122.5 371.3,210.6 324.9,353.1 175.1,353.1 128.7,210.6" fill="none" stroke="rgba(255,255,255,.09)" stroke-width="1"></polygon>
+<polygon points="250.0,80.0 411.7,197.5 349.9,387.5 150.1,387.5 88.3,197.5" fill="none" stroke="rgba(255,255,255,.09)" stroke-width="1"></polygon>
+<line x1="250" y1="250" x2="250.0" y2="80.0" stroke="rgba(255,255,255,.08)"></line>
+<line x1="250" y1="250" x2="411.67960777017606" y2="197.46711095625895" stroke="rgba(255,255,255,.08)"></line>
+<line x1="250" y1="250" x2="349.9234928897204" y2="387.5328890437411" stroke="rgba(255,255,255,.08)"></line>
+<line x1="250" y1="250" x2="150.07650711027958" y2="387.5328890437411" stroke="rgba(255,255,255,.08)"></line>
+<line x1="250" y1="250" x2="88.32039222982388" y2="197.46711095625898" stroke="rgba(255,255,255,.08)"></line>
+<polygon points="250.0,103.8 397.1,202.2 328.9,358.7 176.1,351.8 140.1,214.3" fill="rgba(166,108,255,.2)" stroke="#cda5ff" stroke-width="3" stroke-linejoin="round"></polygon>
+<circle cx="250.0" cy="103.8" r="5" fill="#fff" stroke="#a66cff" stroke-width="3"></circle>
+<circle cx="397.1" cy="202.2" r="5" fill="#fff" stroke="#a66cff" stroke-width="3"></circle>
+<circle cx="328.9" cy="358.7" r="5" fill="#fff" stroke="#a66cff" stroke-width="3"></circle>
+<circle cx="176.1" cy="351.8" r="5" fill="#fff" stroke="#a66cff" stroke-width="3"></circle>
+<circle cx="140.1" cy="214.3" r="5" fill="#fff" stroke="#a66cff" stroke-width="3"></circle>
 </svg>
 <div class="mx-radar-center">
 <b>82</b>
@@ -2126,8 +2402,37 @@ transition:none}
 </div>
 </div>
 </div>
-</section>
-<section class="mx-section">
+</section><section id="v12-strengths" class="mx-section v12-light v13-original v20-hidden"></section><main class="v20-stage" aria-label="MAXESS personalized results"><section class="v20-naya"><img class="v20-avatar" alt="Naya, your AI guide" src="https://i.postimg.cc/d1nncN9F/Naya-and-shawn-ok-44-a.png"><div>NAYA · YOUR GUIDE</div><h1>Hi. I’ve looked at your results.</h1><p>This isn’t your judgment. <strong>It’s your map.</strong></p><button type="button" class="v20-listen">Listen to Naya <span aria-hidden="true">▶</span></button></section><section class="v20-score"><div class="v20-score-label">YOUR AI SCORE</div><div class="v20-score-orb"><div class="v13-score-orb" style="--a:#36dd91;--b:#45a4ff" role="img" aria-label="Your AI score is 82 out of 100"><div class="v13-score-number">82</div><div class="v13-score-caption">OUT OF 100</div></div></div></section><section class="v20-dims"><h2>Your five dimensions.</h2><div class="v20-dim-orbs"><button type="button" class="v20-dim-orb"><strong>86</strong><span>Direction</span></button><button type="button" class="v20-dim-orb"><strong>91</strong><span>Communication</span></button><button type="button" class="v20-dim-orb"><strong>79</strong><span>Evaluation</span></button><button type="button" class="v20-dim-orb"><strong>74</strong><span>Iteration</span></button><button type="button" class="v20-dim-orb"><strong>68</strong><span>Systems Thinking</span></button></div><div class="v20-detail" aria-live="polite"><strong>Select a dimension.</strong><p>Explore how each part of your AI capability contributes to your overall score.</p></div></section><section class="v13-report" id="v13-report" style="order: 4;"><div class="v13-wrap"><div class="v13-report-head"><div><div class="v13-chapter"><i>02</i> YOUR REPORT</div><h2 class="v13-h2">YOUR REPORT</h2></div><p class="v13-sub">Listen to the result as a whole. Communication is your strongest visible signal. Your biggest lever is Systems Thinking.</p></div><div class="v13-report-quote"><em>91</em> <span>is the signal I would build around first — Communication.</span></div></div></section><section class="v13-pattern v15-pattern" id="v15-pattern" style="order: 5;"><div class="v13-wrap"><div class="v13-chapter"><i>04</i> SEE THE PATTERN</div><div class="v13-report-head"><h2 class="v13-h2">SEE THE PATTERN</h2><p class="v13-sub">Your dimensions are not five separate scores. Together they reveal how your AI practice is shaped.</p></div><div class="v15-pattern-stage"><svg viewBox="0 0 900 560" role="img" aria-labelledby="v15-pattern-title v15-pattern-desc"><title id="v15-pattern-title">Your five-dimension AI mastery pattern</title><desc id="v15-pattern-desc">A connected visual showing the five MAXESS dimensions and their scores.</desc><polygon points="450,237.5 495.17518452401976,270.32169276719003 477.91979948389246,323.42830723280997 422.08020051610754,323.42830723280997 404.8248154759802,270.32169276719003" fill="none" stroke="rgba(255,255,255,.10)" stroke-width="1"></polygon><polygon points="450,190 540.3503690480395,255.64338553438 505.8395989677849,361.85661446562 394.1604010322151,361.85661446562 359.6496309519604,255.64338553438" fill="none" stroke="rgba(255,255,255,.10)" stroke-width="1"></polygon><polygon points="450,142.5 585.5255535720594,240.96507830157 533.7593984516774,400.28492169843 366.2406015483226,400.28492169843 314.4744464279406,240.96507830157" fill="none" stroke="rgba(255,255,255,.10)" stroke-width="1"></polygon><polygon points="450,95 630.7007380960791,226.28677106876 561.6791979355698,438.71322893124 338.32080206443015,438.71322893124 269.2992619039208,226.28677106876" fill="none" stroke="rgba(255,255,255,.10)" stroke-width="1"></polygon><line x1="450" y1="285" x2="450" y2="95" stroke="rgba(255,255,255,.08)"></line><line x1="450" y1="285" x2="630.7007380960791" y2="226.28677106876" stroke="rgba(255,255,255,.08)"></line><line x1="450" y1="285" x2="561.6791979355698" y2="438.71322893124" stroke="rgba(255,255,255,.08)"></line><line x1="450" y1="285" x2="338.32080206443015" y2="438.71322893124" stroke="rgba(255,255,255,.08)"></line><line x1="450" y1="285" x2="269.2992619039208" y2="226.28677106876" stroke="rgba(255,255,255,.08)"></line><polygon points="450,95 630.7007380960791,226.28677106876 561.6791979355698,438.71322893124 338.32080206443015,438.71322893124 269.2992619039208,226.28677106876" fill="rgba(150,93,255,.05)" stroke="rgba(255,255,255,.18)" stroke-width="1"></polygon><polygon points="450,121.6 614.437671667432,231.5709616725716 538.2265663691002,406.4334508556796 367.3573935276783,398.7477894091176 327.12349809466616,245.0750043267568" fill="rgba(150,93,255,.20)" stroke="#cdb1ff" stroke-width="3"></polygon><g><circle cx="450" cy="95" r="36" fill="rgba(8,7,12,.94)" stroke="#ff9d3d" stroke-width="2"></circle><text x="450" y="92" text-anchor="middle" class="v15-pattern-label">Direction</text><text x="450" y="123" text-anchor="middle" class="v15-pattern-score">86</text></g><g><circle cx="630.7007380960791" cy="226.28677106876" r="36" fill="rgba(8,7,12,.94)" stroke="#ffd84a" stroke-width="2"></circle><text x="630.7007380960791" y="223.28677106876" text-anchor="middle" class="v15-pattern-label">Communication</text><text x="630.7007380960791" y="254.28677106876" text-anchor="middle" class="v15-pattern-score">91</text></g><g><circle cx="561.6791979355698" cy="438.71322893124" r="36" fill="rgba(8,7,12,.94)" stroke="#39df91" stroke-width="2"></circle><text x="561.6791979355698" y="435.71322893124" text-anchor="middle" class="v15-pattern-label">Evaluation</text><text x="561.6791979355698" y="466.71322893124" text-anchor="middle" class="v15-pattern-score">79</text></g><g><circle cx="338.32080206443015" cy="438.71322893124" r="36" fill="rgba(8,7,12,.94)" stroke="#4c9dff" stroke-width="2"></circle><text x="338.32080206443015" y="435.71322893124" text-anchor="middle" class="v15-pattern-label">Iteration</text><text x="338.32080206443015" y="466.71322893124" text-anchor="middle" class="v15-pattern-score">74</text></g><g><circle cx="269.2992619039208" cy="226.28677106876" r="36" fill="rgba(8,7,12,.94)" stroke="#965dff" stroke-width="2"></circle><text x="269.2992619039208" y="223.28677106876" text-anchor="middle" class="v15-pattern-label">Systems Thinking</text><text x="269.2992619039208" y="254.28677106876" text-anchor="middle" class="v15-pattern-score">68</text></g><circle cx="450" cy="285" r="42" fill="#08070d" stroke="rgba(255,255,255,.18)"></circle><text x="450" y="282" text-anchor="middle" fill="#fff" font-size="30" font-weight="900">82</text><text x="450" y="303" text-anchor="middle" fill="rgba(255,255,255,.45)" font-size="8" letter-spacing="2">MAXESS SCORE</text></svg><p class="v15-pattern-help">The center is your overall result. The shape around it shows how your five dimensions work together.</p></div></div></section><section class="v13-report" id="v13-strengths" style="order: 6;"><div class="v13-wrap"><div class="v13-chapter"><i>05</i> YOUR STRENGTHS</div><div class="v13-report-head"><div><h2 class="v13-h2">YOUR STRENGTHS</h2></div><p class="v13-sub">Recognition first. Then use what is already working to create more leverage.</p></div><div class="v15-strength-card"><div class="v15-strength-score">91<small>STRONGEST SIGNAL</small></div><div><h3>Communication</h3><p>You already have meaningful capability here. Use Communication as the foundation you build the rest of your AI practice on.</p></div></div></div></section><section class="v13-next" id="v13-next" style="order: 8;"><div class="v13-wrap"><div class="v13-chapter"><i>07</i> YOUR NEXT MOVE</div><h2 class="v13-h2">YOUR NEXT MOVE</h2><p class="v15-next-intro">Start with Systems Thinking. Give yourself one focused improvement target, then use the MAXESS process to turn it into a repeatable advantage.</p><div class="v13-steps"><div class="v13-step"><b>01 · KNOW</b><h3>Know the outcome</h3><p>Decide what “better” actually means before asking AI to act.</p></div><div class="v13-step"><b>02 · TELL</b><h3>Give it the context</h3><p>Share the information, constraints and standards that matter.</p></div><div class="v13-step"><b>03 · CREATE</b><h3>Make the first version</h3><p>Let AI produce something real enough to judge.</p></div><div class="v13-step"><b>04 · SCORE</b><h3>Verify the outcome</h3><p>Check the actual result. Improve it. Repeat until it earns the score.</p></div></div></div></section><section class="v13-masters" id="v13-masters" style="order: 9;"><div class="v13-wrap"><div class="v13-chapter"><i>08</i> 18 NAYA MASTERS</div><div class="v13-report-head"><h2 class="v13-h2">18 NAYA MASTERS</h2><p class="v13-sub">Specialist intelligences become useful once you know what you want to improve. Your pathway fit is a recommendation signal, not another assessment score.</p></div><div class="v13-master-grid"><article class="v13-master" style="--g: #ff9d3d;" aria-label="Writing &amp; Communication, pathway fit 82 percent"><b>01</b><strong>Naya Writing &amp; Communication</strong><span>Write clearly.</span><div class="v15-master-relevance"><span><b>PATHWAY FIT</b><em>82%</em></span><i><em style="--rw:82%"></em></i></div><span class="v15-master-icon" aria-hidden="true">✎</span></article><article class="v13-master" style="--g: #ffd84a;" aria-label="Research &amp; Information, pathway fit 35 percent"><b>02</b><strong>Naya Research &amp; Information</strong><span>Find the signal.</span><div class="v15-master-relevance"><span><b>PATHWAY FIT</b><em>35%</em></span><i><em style="--rw:35%"></em></i></div><span class="v15-master-icon" aria-hidden="true">◌</span></article><article class="v13-master" style="--g: #39df91;" aria-label="Brainstorming &amp; Ideas, pathway fit 35 percent"><b>03</b><strong>Naya Brainstorming &amp; Ideas</strong><span>Generate better possibilities.</span><div class="v15-master-relevance"><span><b>PATHWAY FIT</b><em>35%</em></span><i><em style="--rw:35%"></em></i></div><span class="v15-master-icon" aria-hidden="true">✦</span></article><article class="v13-master" style="--g: #4c9dff;" aria-label="Content Creation, pathway fit 35 percent"><b>04</b><strong>Naya Content Creation</strong><span>Create content faster.</span><div class="v15-master-relevance"><span><b>PATHWAY FIT</b><em>35%</em></span><i><em style="--rw:35%"></em></i></div><span class="v15-master-icon" aria-hidden="true">▣</span></article><article class="v13-master" style="--g: #965dff;" aria-label="Business &amp; Strategy, pathway fit 96 percent"><b>05</b><strong>Naya Business &amp; Strategy</strong><span>Think strategically.</span><div class="v15-master-relevance"><span><b>PATHWAY FIT</b><em>96%</em></span><i><em style="--rw:96%"></em></i><span class="v15-master-focus">Recommended focus</span></div><span class="v15-master-icon" aria-hidden="true">◈</span></article><article class="v13-master" style="--g: #ff9d3d;" aria-label="Marketing &amp; Sales, pathway fit 35 percent"><b>06</b><strong>Naya Marketing &amp; Sales</strong><span>Turn value into action.</span><div class="v15-master-relevance"><span><b>PATHWAY FIT</b><em>35%</em></span><i><em style="--rw:35%"></em></i></div><span class="v15-master-icon" aria-hidden="true">↗</span></article><article class="v13-master" style="--g: #ffd84a;" aria-label="Learning &amp; Education, pathway fit 35 percent"><b>07</b><strong>Naya Learning &amp; Education</strong><span>Learn intelligently.</span><div class="v15-master-relevance"><span><b>PATHWAY FIT</b><em>35%</em></span><i><em style="--rw:35%"></em></i></div><span class="v15-master-icon" aria-hidden="true">⌘</span></article><article class="v13-master" style="--g: #39df91;" aria-label="Coding &amp; Software, pathway fit 35 percent"><b>08</b><strong>Naya Coding &amp; Software</strong><span>Build and debug.</span><div class="v15-master-relevance"><span><b>PATHWAY FIT</b><em>35%</em></span><i><em style="--rw:35%"></em></i></div><span class="v15-master-icon" aria-hidden="true">&lt;/&gt;</span></article><article class="v13-master" style="--g: #4c9dff;" aria-label="Images &amp; Visual Creation, pathway fit 35 percent"><b>09</b><strong>Naya Images &amp; Visual Creation</strong><span>Make ideas visible.</span><div class="v15-master-relevance"><span><b>PATHWAY FIT</b><em>35%</em></span><i><em style="--rw:35%"></em></i></div><span class="v15-master-icon" aria-hidden="true">◉</span></article><article class="v13-master" style="--g: #965dff;" aria-label="Video &amp; Media, pathway fit 35 percent"><b>10</b><strong>Naya Video &amp; Media</strong><span>Create media.</span><div class="v15-master-relevance"><span><b>PATHWAY FIT</b><em>35%</em></span><i><em style="--rw:35%"></em></i></div><span class="v15-master-icon" aria-hidden="true">▶</span></article><article class="v13-master" style="--g: #ff9d3d;" aria-label="Audio &amp; Music, pathway fit 35 percent"><b>11</b><strong>Naya Audio &amp; Music</strong><span>Shape sound.</span><div class="v15-master-relevance"><span><b>PATHWAY FIT</b><em>35%</em></span><i><em style="--rw:35%"></em></i></div><span class="v15-master-icon" aria-hidden="true">∿</span></article><article class="v13-master" style="--g: #ffd84a;" aria-label="Data &amp; Analysis, pathway fit 35 percent"><b>12</b><strong>Naya Data &amp; Analysis</strong><span>Work with evidence.</span><div class="v15-master-relevance"><span><b>PATHWAY FIT</b><em>35%</em></span><i><em style="--rw:35%"></em></i></div><span class="v15-master-icon" aria-hidden="true">◫</span></article><article class="v13-master" style="--g: #39df91;" aria-label="Productivity &amp; Organization, pathway fit 96 percent"><b>13</b><strong>Naya Productivity &amp; Organization</strong><span>Organize execution.</span><div class="v15-master-relevance"><span><b>PATHWAY FIT</b><em>96%</em></span><i><em style="--rw:96%"></em></i><span class="v15-master-focus">Recommended focus</span></div><span class="v15-master-icon" aria-hidden="true">≡</span></article><article class="v13-master" style="--g: #4c9dff;" aria-label="Career &amp; Professional Growth, pathway fit 35 percent"><b>14</b><strong>Naya Career &amp; Professional Growth</strong><span>Build capability.</span><div class="v15-master-relevance"><span><b>PATHWAY FIT</b><em>35%</em></span><i><em style="--rw:35%"></em></i></div><span class="v15-master-icon" aria-hidden="true">◎</span></article><article class="v13-master" style="--g: #965dff;" aria-label="Decision Making, pathway fit 35 percent"><b>15</b><strong>Naya Decision Making</strong><span>Choose with clarity.</span><div class="v15-master-relevance"><span><b>PATHWAY FIT</b><em>35%</em></span><i><em style="--rw:35%"></em></i></div><span class="v15-master-icon" aria-hidden="true">◇</span></article><article class="v13-master" style="--g: #ff9d3d;" aria-label="Creative Development, pathway fit 35 percent"><b>16</b><strong>Naya Creative Development</strong><span>Create original work.</span><div class="v15-master-relevance"><span><b>PATHWAY FIT</b><em>35%</em></span><i><em style="--rw:35%"></em></i></div><span class="v15-master-icon" aria-hidden="true">✧</span></article><article class="v13-master" style="--g: #ffd84a;" aria-label="Systems &amp; Automation, pathway fit 96 percent"><b>17</b><strong>Naya Systems &amp; Automation</strong><span>Build reusable systems.</span><div class="v15-master-relevance"><span><b>PATHWAY FIT</b><em>96%</em></span><i><em style="--rw:96%"></em></i><span class="v15-master-focus">Recommended focus</span></div><span class="v15-master-icon" aria-hidden="true">∞</span></article><article class="v13-master" style="--g: #39df91;" aria-label="AI Orchestration, pathway fit 96 percent"><b>18</b><strong>Naya AI Orchestration</strong><span>Coordinate AI at scale.</span><div class="v15-master-relevance"><span><b>PATHWAY FIT</b><em>96%</em></span><i><em style="--rw:96%"></em></i><span class="v15-master-focus">Recommended focus</span></div><span class="v15-master-icon" aria-hidden="true">✺</span></article></div></div></section><section class="v20-fallback"><h2>Your Biggest Lever</h2><p>Your lowest current dimension is Systems Thinking. Strengthening your lowest dimension can create disproportionate gains across your overall AI mastery.</p></section></main><section class="mx-section mx-hero v13-original v13-hero v20-hidden">
+<div class="mx-wide mx-hero-grid mx-hero-centered v13-hero-grid"><div class="v13-score-label">YOUR AI SCORE</div><div class="v13-score-value" aria-label="Your AI score is 82 out of 100">82</div><div class="v13-score-caption">AI MASTERY · Advancing</div>
+<div class="v13-hide-report-noise"><span class="mx-eyebrow">MAXESS AI MASTERY ASSESSMENT</span><h1 class="mx-title">YOUR AI SCORE</h1></div>
+<div class="v13-orb-wrap"><div class="mx-ls-stage" id="maxessLivingSignature" tabindex="0" role="button" aria-label="MAXESS Living Signature. Tap or hover to reveal the five dimensions.">
+        <svg class="mx-ls-svg" viewBox="0 0 600 600" aria-hidden="true">
+          <defs>
+            <radialGradient id="mxLsField" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#d9b4ff" stop-opacity=".22"></stop>
+              <stop offset="35%" stop-color="#7e36d7" stop-opacity=".08"></stop>
+              <stop offset="100%" stop-color="#000" stop-opacity="0"></stop>
+            </radialGradient>
+            <filter id="mxLsGlow"><feGaussianBlur stdDeviation="5" result="b"></feGaussianBlur><feMerge><feMergeNode in="b"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge></filter>
+          </defs>
+          <circle cx="300" cy="300" r="238" fill="url(#mxLsField)"></circle>
+          <circle class="mx-ls-orbit" cx="300" cy="300" r="207"></circle>
+          <circle class="mx-ls-orbit" cx="300" cy="300" r="185" opacity=".55"></circle>
+          <g filter="url(#mxLsGlow)"><path class="mx-ls-path" data-index="0" d="M 300.00 184.19 Q 300.00 182.77 308.3922007531112 177.63842542144084 Q 316.78 172.51 326.1872451418242 169.84289683312028 Q 335.59 167.18 345.03595627694415 167.82261128640147 Q 354.48 168.47 363.0029245969689 172.2929980755642 Q 371.52 176.12 378.64243262463026 182.1755257750658 Q 385.76 188.23 391.6603424302303 195.33722625318575 Q 397.56 202.44 402.82758225735375 209.74784952774206 Q 408.10 217.06 413.1861339950068 224.3841580132292 Q 418.28 231.71 423.0321744749309 239.39074878860671 Q 427.79 247.07 431.32264674039845 255.46683105162302 Q 434.86 263.86 435.9263164628419 272.9146184026881 Q 436.99 281.96 434.6516988074276 290.9821501685224 Q 432.31 300.00 426.51401433835395 307.94650334654585 Q 420.72 315.89 412.52839721633393 321.9250675274574 Q 404.34 327.96 395.546579471423 331.94626530208313 Q 386.76 335.94 379.1658021777456 338.6298747075106 Q 371.58 341.32 366.2447222999248 344.03248887353925 Q 360.91 346.74 357.7757160028599 350.6892434364821 Q 354.64 354.64 352.66602580465735 360.35190894165106 Q 350.69 366.07 348.4858318322866 373.1104440096095 Q 346.28 380.15 342.7312192336133 387.3779063617231 Q 339.18 394.60 333.9101198723281 400.73458372061555 Q 328.64 406.87 321.9154799936072 411.14550433463364 Q 315.20 415.42 307.59784517798136 417.86451787634275 Q 300.00 420.31 291.9191674408922 421.53317126292836 Q 283.84 422.76 275.28526473359324 423.4585871768837 Q 266.73 424.16 257.4964592780943 424.5334009803435 Q 248.26 424.91 238.329447585757 424.4638336461404 Q 228.40 424.02 218.33330419312506 421.7824527726961 Q 208.27 419.55 199.2546213198936 414.6530473479697 Q 190.24 409.76 183.7089129811713 402.00229072693685 Q 177.18 394.25 174.1718270386059 384.3136828488023 Q 171.17 374.38 171.80247139704798 363.60988057386504 Q 172.44 352.84 175.76477049751733 342.6175945816573 Q 179.09 332.40 183.4776562880768 323.5801903180943 Q 187.86 314.76 191.72558317001756 307.38148691556887 Q 195.59 300.00 198.0802681516924 293.4551232336497 Q 200.57 286.91 201.90049979170576 280.49007316121265 Q 203.23 274.07 204.39988060149588 267.47831478088403 Q 205.57 260.89 207.7799075462143 254.4590239485284 Q 209.99 248.03 213.93154372425641 242.50748063031818 Q 217.88 236.98 223.42697081172219 232.98104997428544 Q 228.98 228.98 235.3343373108386 226.49383457830422 Q 241.69 224.01 247.90557982803767 222.27217633386692 Q 254.12 220.54 259.6911414479819 218.3342993262509 Q 265.26 216.13 270.4096479890989 212.45725223170604 Q 275.56 208.78 281.06885834283617 203.4221079343501 Q 286.58 198.06 293.2898808453456 191.84149550358984 Q 300.00 185.62 300 184.19342947613228 Z" stroke="hsla(274,92%,76%,0.52)" stroke-width="3.26" style="filter:drop-shadow(0 0 10px hsla(274,90%,70%,.34));stroke-dasharray:469;stroke-dashoffset:0;animation:mxLsOrbit0 13.27s linear infinite"></path><path class="mx-ls-path" data-index="1" d="M 300.00 169.88 Q 300.00 154.77 309.76519272392795 153.2134105327421 Q 319.53 151.65 329.5382746966511 152.03185066124348 Q 339.55 152.41 348.9147601868222 155.8516186807824 Q 358.28 159.29 365.8014989623931 166.14909309279653 Q 373.32 173.01 378.0702437238107 182.53621394580728 Q 382.82 192.07 384.762386915757 202.68092213797993 Q 386.70 213.30 386.82103236275384 223.29304671686103 Q 386.94 233.29 386.8186721569473 241.61710527176245 Q 386.70 249.94 387.7440388078887 256.58331751334424 Q 388.79 263.22 391.4954814341256 268.9905355636806 Q 394.20 274.76 397.9356285121109 280.68681296094866 Q 401.67 286.62 405.05518567038087 293.30750029595123 Q 408.44 300.00 410.149862818507 307.363226675001 Q 411.86 314.73 411.32043980854803 322.2052487601892 Q 410.78 329.68 408.4221223776142 336.80815743259495 Q 406.06 343.93 402.92823301360676 350.7743498217908 Q 399.79 357.62 396.8299386251739 364.82090150324393 Q 393.87 372.03 391.2701447308887 380.350184279549 Q 388.67 388.67 385.7578200632971 398.3175128913532 Q 382.84 407.96 378.44291056925755 418.10501866285864 Q 374.05 428.25 367.2791172331258 437.1707268346447 Q 360.51 446.09 351.36227781722835 451.81344895189966 Q 342.21 457.54 331.6329235938608 458.7295598636284 Q 321.05 459.92 310.5271752531087 456.5406026273471 Q 300.00 453.16 290.8014339322606 446.44881394337403 Q 281.60 439.74 274.24671769114184 431.6530881569467 Q 266.89 423.57 261.049511016888 415.8512204102866 Q 255.21 408.14 250.13061573865156 401.6538693124785 Q 245.05 395.17 240.17419613982202 389.74788894453195 Q 235.30 384.32 230.63647088571003 379.1735346990664 Q 225.98 374.02 222.06165584409788 368.41573407522367 Q 218.15 362.81 215.5050130288226 356.5583820453651 Q 212.86 350.31 211.4679858235397 343.7786976888543 Q 210.07 337.25 209.100916504393 330.93297220439877 Q 208.13 324.62 206.29395217571835 318.59743057874084 Q 204.46 312.58 200.72902343559812 306.28917131958787 Q 197.00 300.00 191.33980800668132 292.47471501880915 Q 185.68 284.95 179.31402940844225 275.4530399340506 Q 172.95 265.96 167.9794826402385 254.606865910519 Q 163.01 243.26 161.5322257042642 231.22960299851206 Q 160.05 219.20 163.23012213251917 208.3460250178572 Q 166.41 197.49 173.9910927846339 189.53292048451476 Q 181.58 181.58 192.11346657107856 177.35412592043002 Q 202.65 173.13 214.20797411113813 172.27671199605868 Q 225.76 171.42 236.77040700033098 172.67045895722163 Q 247.78 173.92 257.51783311150706 175.86583735031513 Q 267.26 177.81 275.82659751190613 179.63402241356766 Q 284.39 181.46 292.19670639077844 183.22553492153574 Q 300.00 184.99 300 169.88484777365372 Z" stroke="hsla(252,92%,76%,0.54)" stroke-width="3.38" style="filter:drop-shadow(0 0 11px hsla(252,90%,70%,.34));stroke-dasharray:459;stroke-dashoffset:0;animation:mxLsOrbit1 13.70s linear infinite"></path><path class="mx-ls-path" data-index="2" d="M 300.00 158.93 Q 300.00 162.74 308.2751058791107 168.51524863283674 Q 316.55 174.29 323.78813985815697 179.24889949616605 Q 331.03 184.21 337.68537917992217 188.57579251708438 Q 344.34 192.94 350.470285338258 197.45775343893908 Q 356.60 201.97 361.90062877840376 207.19465349984915 Q 367.21 212.42 371.5243562293633 218.286455978996 Q 375.84 224.16 379.5788364049765 230.11366253585885 Q 383.31 236.07 387.47453164601893 241.58266336109688 Q 391.63 247.09 397.33974404092135 252.2060641733209 Q 403.04 257.32 410.7540507163418 262.787652926265 Q 418.46 268.26 427.412181348295 275.1527873188579 Q 436.36 282.05 444.61652074267244 291.02386532901744 Q 452.87 300.00 458.0646892208625 310.74661963911234 Q 463.26 321.49 463.6311560796669 332.7191167958175 Q 464.00 343.94 459.2173832254407 353.9559590471083 Q 454.43 363.97 445.6630955645657 371.50204171381256 Q 436.90 379.04 426.23434371028736 383.85945655695116 Q 415.57 388.68 405.01446332990275 391.5691844502686 Q 394.46 394.46 385.12473528187286 396.61589365966404 Q 375.79 398.78 367.73108238261784 401.06272391307795 Q 359.67 403.35 352.2529197769137 405.79761728009885 Q 344.84 408.24 337.4381854625908 410.1775857533554 Q 330.04 412.11 322.4846649120452 412.7554694877132 Q 314.93 413.40 307.46474440889625 412.5574065831417 Q 300.00 411.71 292.86991871447276 410.01538778743395 Q 285.74 408.32 278.74150566310357 406.88629958663716 Q 271.74 405.46 264.1531149004511 405.1609851107655 Q 256.56 404.87 247.55802053904665 405.6477055983794 Q 238.55 406.43 227.88321576123954 407.1594444503089 Q 217.21 407.89 205.67209935788173 406.87939244079746 Q 194.13 405.87 183.4522170736894 401.7467175919716 Q 172.77 397.62 164.93922293342584 390.0623952359224 Q 157.10 382.50 153.41706695836052 372.37236798156636 Q 149.73 362.24 150.1881188623451 351.13159208875686 Q 150.65 340.02 153.99775792571887 329.39972895766147 Q 157.35 318.78 161.78164445924295 309.3902033903887 Q 166.21 300.00 170.30077118476652 291.73136092029006 Q 174.39 283.46 177.70921922804425 275.79260913401475 Q 181.03 268.12 184.16814880917872 260.721299920242 Q 187.30 253.32 191.22972133371889 246.39381544948196 Q 195.15 239.47 200.47652564858296 233.59203693046214 Q 205.80 227.72 212.33371205112527 223.29280063897136 Q 218.87 218.87 225.8072159356302 215.61056186359122 Q 232.75 212.35 239.2615631051878 209.21818780537382 Q 245.78 206.08 251.65786049505743 201.78595114739537 Q 257.54 197.49 263.37725292934033 191.30106838804025 Q 269.22 185.11 276.0436308362541 177.50239984898008 Q 282.87 169.89 291.43536378093984 162.50824698419382 Q 300.00 155.13 300 158.9340359164426 Z" stroke="hsla(218,92%,76%,0.49)" stroke-width="3.10" style="filter:drop-shadow(0 0 10px hsla(218,90%,70%,.34));stroke-dasharray:484;stroke-dashoffset:0;animation:mxLsOrbit2 15.06s linear infinite"></path><path class="mx-ls-path" data-index="3" d="M 300.00 180.26 Q 300.00 183.09 306.8424147796503 189.56974624567243 Q 313.68 196.05 319.8670598126698 199.41806278272153 Q 326.05 202.78 333.1506513050174 202.8028856879583 Q 340.25 202.82 349.26188712454524 200.94669674185144 Q 358.27 199.07 368.9939554618704 197.59111989664711 Q 379.72 196.11 390.89356308395475 197.0204573819007 Q 402.07 197.93 412.1140002575845 202.09732104871773 Q 422.16 206.27 429.9756802803523 213.3550107449728 Q 437.79 220.44 443.1943833763058 229.4472871722323 Q 448.59 238.45 452.0220167302557 248.3987880626708 Q 455.45 258.35 457.33015433984826 268.69345863562603 Q 459.21 279.04 459.406040735681 289.51975652356407 Q 459.60 300.00 457.4131368641941 310.21787270430303 Q 455.22 320.44 449.9694888756608 329.60588320831425 Q 444.71 338.78 436.4655151942743 345.9426102854029 Q 428.22 353.11 418.1603364738036 357.76145659065924 Q 408.10 362.41 398.17826092546443 365.0662339414706 Q 388.25 367.72 380.23586920399475 369.9688469489115 Q 372.22 372.22 366.7940674289881 376.098415980454 Q 361.37 379.98 357.7624333928586 386.88913349471477 Q 354.16 393.80 350.5824119950194 403.64525400570346 Q 347.01 413.49 341.6693736357968 424.53701356043194 Q 336.33 435.58 328.35518147850416 445.1955984980276 Q 320.38 454.81 310.19038405714787 460.6367200520964 Q 300.00 466.47 288.9128084223832 467.44864946402083 Q 277.83 468.43 267.25514018889885 465.0430992450885 Q 256.68 461.66 247.46578105550753 455.37010570665063 Q 238.25 449.09 230.49884264211346 441.4423686205724 Q 222.75 433.80 216.26661419174673 425.68668667575037 Q 209.78 417.57 204.55696131023078 409.1211650693888 Q 199.33 400.67 195.7608793067701 391.6969142834317 Q 192.19 382.73 190.74898670068944 373.31677058848646 Q 189.31 363.91 189.93314355445065 354.62017370170406 Q 190.56 345.33 192.24310295027945 336.8770628821965 Q 193.93 328.42 194.92511597134109 321.0620286934512 Q 195.92 313.70 194.57288087271402 306.85102367950964 Q 193.22 300.00 188.94856384397372 292.40852093643343 Q 184.67 284.82 178.52482388511868 275.3101021081816 Q 172.38 265.80 166.7279751930435 254.1303663573672 Q 161.08 242.46 158.59281317046742 229.68997494731525 Q 156.11 216.92 158.4971002347973 205.0893237774898 Q 160.89 193.26 168.2120089062548 184.39571286854667 Q 175.54 175.54 186.3151354817619 170.71344915700215 Q 197.10 165.89 209.18927906622034 164.77533386710127 Q 221.28 163.66 232.90631946842515 164.8702775577254 Q 244.53 166.08 254.85723584985783 168.07565764035093 Q 265.19 170.07 274.2879403463322 171.95439606947207 Q 283.39 173.84 291.69530152768806 175.63769560323237 Q 300.00 177.44 300 180.26118962841065 Z" stroke="hsla(300,92%,76%,0.47)" stroke-width="2.98" style="filter:drop-shadow(0 0 10px hsla(300,90%,70%,.34));stroke-dasharray:495;stroke-dashoffset:0;animation:mxLsOrbit3 16.03s linear infinite"></path><path class="mx-ls-path" data-index="4" d="M 300.00 150.49 Q 300.00 171.37 308.3930890031884 171.9352334120843 Q 316.79 172.50 325.5279920005813 172.29983111652888 Q 334.27 172.10 344.11591145798457 170.9137548789018 Q 353.96 169.72 365.29804624670186 168.495027206857 Q 376.63 167.27 388.8121556474849 167.82642495737002 Q 400.99 168.39 412.22165447238774 172.46694458743627 Q 423.45 176.55 431.49074744324935 184.74150162235793 Q 439.53 192.94 442.82204285390026 204.28807924925283 Q 446.12 215.64 444.74257859330737 228.12724677062891 Q 443.37 240.61 439.1216358582793 252.23754573032596 Q 434.87 263.86 430.38754486631206 273.64272894375057 Q 425.90 283.42 423.32195837425957 291.7123889681717 Q 420.74 300.00 420.70996060186405 307.94373500139966 Q 420.68 315.89 422.20507116557803 324.5207904993655 Q 423.73 333.15 424.9769867755749 342.7183109365451 Q 426.22 352.28 425.58607971760125 362.2115058188293 Q 424.95 372.14 421.8268031662686 381.61210223704063 Q 418.70 391.08 413.4482612241432 399.638816214989 Q 408.19 408.19 401.5306651138794 415.913766710759 Q 394.87 423.63 387.2292884139257 430.74478209370136 Q 379.59 437.86 370.93778065654794 444.1118844396849 Q 362.28 450.37 352.4662172091889 454.766246475398 Q 342.65 459.16 331.95542697561086 460.33586305105337 Q 321.26 461.51 310.6314027647253 458.59879118684853 Q 300.00 455.69 290.61157319578655 449.1574514227721 Q 281.22 442.62 273.7295523336936 434.3167411018919 Q 266.24 426.01 260.1774811609057 418.38782093543784 Q 254.12 410.77 248.03394829979788 405.6569951100729 Q 241.95 400.55 234.21222723740738 398.18319038048526 Q 226.48 395.82 216.37834334034517 394.76889423434454 Q 206.28 393.72 194.6488612614006 391.7416984611617 Q 183.02 389.76 171.93096722188523 385.0527520041676 Q 160.85 380.34 152.60994751796835 372.40157545299763 Q 144.37 364.46 140.3596193793178 354.15673965124637 Q 136.34 343.85 136.41753910923222 332.68887911508483 Q 136.49 321.53 139.34069376009722 310.76322375356716 Q 142.19 300.00 146.26820078905746 290.1487998488497 Q 150.35 280.30 154.7502226177724 271.27915231456996 Q 159.16 262.26 163.91481737494018 253.9319718710613 Q 168.67 245.60 174.30757714474095 238.14344235491922 Q 179.94 230.68 186.72457674233345 224.4849605693319 Q 193.51 218.29 201.05409276507538 213.44293009344742 Q 208.60 208.60 216.06055558761716 204.46544872567347 Q 223.52 200.33 230.26987737851096 195.62184218289931 Q 237.02 190.91 243.23470681427932 184.4383686834421 Q 249.45 177.96 256.12899175497535 169.57872373856463 Q 262.81 161.19 271.09376072715736 152.28706211510604 Q 279.38 143.38 289.6903615218738 136.48876066267187 Q 300.00 129.60 300 150.4853132601288 Z" stroke="hsla(186,92%,76%,0.45)" stroke-width="2.83" style="filter:drop-shadow(0 0 9px hsla(186,90%,70%,.34));stroke-dasharray:507;stroke-dashoffset:0;animation:mxLsOrbit4 17.06s linear infinite"></path></g>
+          <circle class="mx-ls-node" cx="300.0" cy="129.0" r="4.9" opacity="0.89"></circle><circle class="mx-ls-node" cx="462.6" cy="247.2" r="5.0" opacity="0.92"></circle><circle class="mx-ls-node" cx="400.5" cy="438.3" r="4.7" opacity="0.84"></circle><circle class="mx-ls-node" cx="199.5" cy="438.3" r="4.5" opacity="0.81"></circle><circle class="mx-ls-node" cx="137.4" cy="247.2" r="4.3" opacity="0.77"></circle>
+        </svg>
+        <span class="mx-ls-label" style="left:50%;top:10%">Direction</span><span class="mx-ls-label" style="left:88%;top:34%">Communication</span><span class="mx-ls-label" style="left:76%;top:83%">Evaluation</span><span class="mx-ls-label" style="left:24%;top:83%">Iteration</span><span class="mx-ls-label" style="left:12%;top:34%">Systems Thinking</span>
+        <div class="mx-ls-core" id="mxLsCore" tabindex="0" aria-label="Overall MAXESS score 82 out of 100">
+          <div class="mx-ls-ripple"></div>
+          <div class="mx-ls-core-copy">
+            <strong class="mx-ls-score">82</strong>
+            <span class="mx-ls-core-label">MAXESS SCORE</span>
+          </div>
+        </div>
+        <div class="mx-ls-hint">Your intelligence signature · hover or tap</div>
+      </div></div>
+<div class="mx-hero-actions v13-hero-actions"><a class="mx-cta mx-cta-primary" href="#v12-report">See Your Results ↓</a></div></div>
+<div class="v12-print"><button type="button" aria-label="Print or save this report as PDF">Print / Save PDF</button></div></section><section id="naya-report" class="mx-section naya-report-section v13-original v13-hide-report-noise v20-hidden"><div class="mx-wide"><div class="mx-section-head"><div><div class="naya-chapter"><span>02</span><div><b>YOUR REPORT</b><small>MAXESS PERSONAL REPORT</small></div></div><h2>YOUR REPORT</h2></div><p>Naya turns your assessment into a practical conversation about where you are, what is working, and what to do next.</p></div><aside class="naya-presence naya-dark"><div class="naya-avatar-wrap"><img class="naya-avatar" src="https://i.postimg.cc/dVXw7sRN/grok-image-f75a6f12-4e3a-4c99-a334-5684ba0f7401.jpg" alt="Naya" loading="lazy"><span class="naya-live-dot" aria-hidden="true"></span></div><div class="naya-presence-copy"><span class="naya-name">NAYA</span><p>I've looked at your results. Let's make sense of what they reveal about you.</p></div></aside></div></section><section class="mx-section v13-original v13-dimension-section v13-chapter-anchor v20-hidden">
 <div class="mx-wide">
 <div class="mx-section-head">
 <div>
@@ -2136,452 +2441,30 @@ transition:none}
 </div>
 <p>A result becomes useful when you know what it means and what to do with it. These are your current strengths and levers.</p>
 </div>
-<div class="mx-dim-grid">
-<article class="mx-dim mx-reveal" data-score="86">
-<div class="mx-dim-head">
-<span class="mx-kicker">01</span>
-<h3>Direction</h3>
-<strong>86<small>/100</small>
-</strong>
+<div class="mx-dim-grid"><article class="mx-dim mx-reveal v11-dimension-card is-visible" data-score="86" style="transition-delay: 105ms; --dim-score: 86; --score: 86; --g: #ff9d3d; --v11-g: #ff9d3d; --v11-score: 86;" tabindex="0" data-dimension-node="1" role="article"><div class="v11-dimension-head"><span class="v11-dimension-name">Direction</span><strong class="v11-dimension-number">86</strong></div><div class="mx-track"><span style="--w:86%"></span></div><p class="v11-dimension-copy">You usually know what you want AI to help you accomplish.</p><div class="v11-dimension-lever"><span>LEVER</span><b>Define the outcome and success test before asking AI to work.</b></div></article><article class="mx-dim mx-reveal v11-dimension-card is-visible" data-score="91" style="transition-delay: 140ms; --dim-score: 91; --score: 91; --g: #ffd84a; --v11-g: #ffd84a; --v11-score: 91;" tabindex="0" data-dimension-node="2" role="article"><div class="v11-dimension-head"><span class="v11-dimension-name">Communication</span><strong class="v11-dimension-number">91</strong></div><div class="mx-track"><span style="--w:91%"></span></div><p class="v11-dimension-copy">You can express context, intent and the human outcome behind a request.</p><div class="v11-dimension-lever"><span>LEVER</span><b>Turn your strength into reusable briefs, instructions and decision frameworks.</b></div></article><article class="mx-dim mx-reveal v11-dimension-card is-visible" data-score="79" style="transition-delay: 175ms; --dim-score: 79; --score: 79; --g: #38df91; --v11-g: #39df91; --v11-score: 79;" tabindex="0" data-dimension-node="3" role="article"><div class="v11-dimension-head"><span class="v11-dimension-name">Evaluation</span><strong class="v11-dimension-number">79</strong></div><div class="mx-track"><span style="--w:79%"></span></div><p class="v11-dimension-copy">You can recognize useful work and are ready to make judgment more deliberate.</p><div class="v11-dimension-lever"><span>LEVER</span><b>Score meaningful AI output before accepting it.</b></div></article><article class="mx-dim mx-reveal v11-dimension-card" data-score="74" style="transition-delay: 210ms; --dim-score: 74; --score: 74; --g: #3c9cff; --v11-g: #4c9dff; --v11-score: 74;" tabindex="0" data-dimension-node="4" role="article"><div class="v11-dimension-head"><span class="v11-dimension-name">Iteration</span><strong class="v11-dimension-number">74</strong></div><div class="mx-track"><span style="--w:74%"></span></div><p class="v11-dimension-copy">You understand that quality improves through refinement rather than one-shot prompting.</p><div class="v11-dimension-lever"><span>LEVER</span><b>Make the improvement loop explicit: create, score, improve, repeat.</b></div></article><article class="mx-dim mx-reveal v11-dimension-card" data-score="68" style="transition-delay: 245ms; --dim-score: 68; --score: 68; --g: #965dff; --v11-g: #965dff; --v11-score: 68;" tabindex="0" data-dimension-node="5" role="article"><div class="v11-dimension-head"><span class="v11-dimension-name">Systems Thinking</span><strong class="v11-dimension-number">68</strong></div><div class="mx-track"><span style="--w:68%"></span></div><p class="v11-dimension-copy">You can see the bigger system and can turn repeated work into leverage.</p><div class="v11-dimension-lever"><span>LEVER</span><b>Turn one repeated workflow into a reusable system.</b></div></article></div>
 </div>
-<div class="mx-track">
-<span style="--w:86%">
-</span>
-</div>
-<p>You usually know what you want AI to help you accomplish.</p>
-<div class="mx-lever">
-<span>LEVER</span>
-<b>Define the outcome and success test before asking AI to work.</b>
-</div>
-</article>
-<article class="mx-dim mx-reveal" data-score="91">
-<div class="mx-dim-head">
-<span class="mx-kicker">02</span>
-<h3>Communication</h3>
-<strong>91<small>/100</small>
-</strong>
-</div>
-<div class="mx-track">
-<span style="--w:91%">
-</span>
-</div>
-<p>You are strong at expressing context, intent, and the human outcome behind a request.</p>
-<div class="mx-lever">
-<span>LEVER</span>
-<b>Turn that strength into reusable instructions, briefs, and decision frameworks.</b>
-</div>
-</article>
-<article class="mx-dim mx-reveal" data-score="79">
-<div class="mx-dim-head">
-<span class="mx-kicker">03</span>
-<h3>Evaluation</h3>
-<strong>79<small>/100</small>
-</strong>
-</div>
-<div class="mx-track">
-<span style="--w:79%">
-</span>
-</div>
-<p>You can recognize useful work, with a major opportunity in deliberate judgment.</p>
-<div class="mx-lever">
-<span>LEVER</span>
-<b>Use a visible scorecard before accepting an answer or artifact.</b>
-</div>
-</article>
-<article class="mx-dim mx-reveal" data-score="74">
-<div class="mx-dim-head">
-<span class="mx-kicker">04</span>
-<h3>Iteration</h3>
-<strong>74<small>/100</small>
-</strong>
-</div>
-<div class="mx-track">
-<span style="--w:74%">
-</span>
-</div>
-<p>You understand that quality improves through refinement rather than one-shot prompting.</p>
-<div class="mx-lever">
-<span>LEVER</span>
-<b>Make improvement loops explicit: create, score, improve, repeat.</b>
-</div>
-</article>
-<article class="mx-dim mx-reveal" data-score="68">
-<div class="mx-dim-head">
-<span class="mx-kicker">05</span>
-<h3>Systems Thinking</h3>
-<strong>68<small>/100</small>
-</strong>
-</div>
-<div class="mx-track">
-<span style="--w:68%">
-</span>
-</div>
-<p>You can see the bigger system, with an opportunity to connect repeated work.</p>
-<div class="mx-lever">
-<span>LEVER</span>
-<b>Turn repeated work into reusable systems, components, and operating rules.</b>
-</div>
-</article>
-</div>
-</div>
-</section>
-<section class="mx-section">
-<div class="mx-wide">
-<div class="mx-section-head">
+</section><section class="mx-section naya-strengths-section naya-lever-section v13-original v13-story-section v13-chapter-anchor v20-hidden" id="v11-lever">
+<div class="mx-wide"><aside class="naya-presence naya-light"><div class="naya-avatar-wrap"><img class="naya-avatar" src="https://i.postimg.cc/RF3XFWJ7/grok-image-c6a924fd-1f75-4ac8-840d-35b224fb3e52.jpg" alt="Naya" loading="lazy"><span class="naya-live-dot" aria-hidden="true"></span></div><div class="naya-presence-copy"><span class="naya-name">NAYA</span><p>If I were helping you improve one thing first, this is where I'd start.</p></div></aside>
+<div class="mx-section-head"><div class="v11-chapter"><span class="v11-chapter-num">06</span><div><span class="v11-chapter-label">YOUR STRENGTHS</span><span class="v11-chapter-sub">What you already have working for you</span></div></div>
 <div>
 <span class="mx-eyebrow">03 · YOUR ADVANTAGE</span>
-<h2>What you already<br>have working for you.</h2>
+<h2>YOUR BIGGEST<br>LEVER</h2>
 </div>
 </div>
 <div class="mx-contrast">
-<article class="mx-panel mx-panel-power mx-reveal">
+<article class="mx-panel mx-panel-power mx-reveal v11-story-card v11-lever-accent" style="transition-delay: 280ms;">
 <span class="mx-eyebrow">NATURAL ADVANTAGE</span>
-<h3>Communication</h3>
+<h3 class="v11-story-title">Communication</h3>
 <p>Your strongest dimension is the ability to express context, intent, and the human outcome behind a request. That's a powerful directing skill.</p>
 </article>
-<article class="mx-panel mx-panel-lever mx-reveal">
+<article class="mx-panel mx-panel-lever mx-reveal v11-story-card v11-lever-accent" style="transition-delay: 280ms;">
 <span class="mx-eyebrow">HIGHEST-LEVERAGE OPPORTUNITY</span>
-<h3>Systems Thinking</h3>
+<h3 class="v11-story-title">Systems Thinking</h3>
 <p>Your largest upside is turning good individual interactions into connected, reusable systems that keep producing value after the first conversation.</p>
 </article>
 </div>
 </div>
-</section>
-<section class="mx-section">
-<div class="mx-wide">
-<div class="mx-section-head">
-<div>
-<span class="mx-eyebrow">04 · YOUR NEXT CHAPTER</span>
-<h2>From capability<br>to compounding.</h2>
-</div>
-<p>Mastery is not a finish line. It is the ability to make your strengths repeatable, measurable, and increasingly valuable.</p>
-</div>
-<div class="mx-path">
-<article class="mx-step mx-reveal">
-<strong>01 · DIRECT</strong>
-<h3>Know the outcome</h3>
-<p>Define what success looks like before AI begins.</p>
-</article>
-<article class="mx-step mx-reveal">
-<strong>02 · CREATE</strong>
-<h3>Build the first version</h3>
-<p>Give AI enough context and direction to do useful work.</p>
-</article>
-<article class="mx-step mx-reveal">
-<strong>03 · SCORE</strong>
-<h3>Judge the work</h3>
-<p>Use criteria instead of accepting the first answer.</p>
-</article>
-<article class="mx-step mx-reveal">
-<strong>04 · COMPOUND</strong>
-<h3>Make it reusable</h3>
-<p>Turn successful work into a system you can repeat.</p>
-</article>
-</div>
-</div>
-</section>
-<section class="mx-section">
-<div class="mx-wide">
-<div class="mx-section-head">
-<div>
-<span class="mx-eyebrow">05 · YOUR 18 AI PATHWAYS</span>
-<h2>Don't learn AI.<br>Learn what AI can do for you.</h2>
-</div>
-<p>These are 18 capability doors. Explore the ones that matter most to your goals, then build depth instead of collecting tools.</p>
-</div>
-<div class="mx-areas">
-<article class="mx-area mx-reveal" data-index="1" data-name="Writing &amp; Communication">
-<div class="mx-area-num">01</div>
-<div class="mx-area-main">
-<h3>Writing &amp; Communication</h3>
-<p>Turn ideas into clear instructions, messages, stories, and decisions.</p>
-</div>
-<div class="mx-area-relevance">
-<span>PATHWAY</span>
-<i>
-<em style="--w:86%">
-</em>
-</i>
-</div>
-<button class="mx-mini" type="button" data-area="Writing &amp; Communication">Explore <span aria-hidden="true">↗</span>
-</button>
-</article>
-<article class="mx-area mx-reveal" data-index="2" data-name="Research &amp; Information">
-<div class="mx-area-num">02</div>
-<div class="mx-area-main">
-<h3>Research &amp; Information</h3>
-<p>Find, compare, synthesize, and explain useful information.</p>
-</div>
-<div class="mx-area-relevance">
-<span>PATHWAY</span>
-<i>
-<em style="--w:84%">
-</em>
-</i>
-</div>
-<button class="mx-mini" type="button" data-area="Research &amp; Information">Explore <span aria-hidden="true">↗</span>
-</button>
-</article>
-<article class="mx-area mx-reveal" data-index="3" data-name="Brainstorming &amp; Ideas">
-<div class="mx-area-num">03</div>
-<div class="mx-area-main">
-<h3>Brainstorming &amp; Ideas</h3>
-<p>Expand possibilities without losing the goal.</p>
-</div>
-<div class="mx-area-relevance">
-<span>PATHWAY</span>
-<i>
-<em style="--w:82%">
-</em>
-</i>
-</div>
-<button class="mx-mini" type="button" data-area="Brainstorming &amp; Ideas">Explore <span aria-hidden="true">↗</span>
-</button>
-</article>
-<article class="mx-area mx-reveal" data-index="4" data-name="Content Creation">
-<div class="mx-area-num">04</div>
-<div class="mx-area-main">
-<h3>Content Creation</h3>
-<p>Create useful, human content faster and better.</p>
-</div>
-<div class="mx-area-relevance">
-<span>PATHWAY</span>
-<i>
-<em style="--w:79%">
-</em>
-</i>
-</div>
-<button class="mx-mini" type="button" data-area="Content Creation">Explore <span aria-hidden="true">↗</span>
-</button>
-</article>
-<article class="mx-area mx-reveal" data-index="5" data-name="Business &amp; Strategy">
-<div class="mx-area-num">05</div>
-<div class="mx-area-main">
-<h3>Business &amp; Strategy</h3>
-<p>Turn insight into positioning, offers, decisions, and plans.</p>
-</div>
-<div class="mx-area-relevance">
-<span>PATHWAY</span>
-<i>
-<em style="--w:91%">
-</em>
-</i>
-</div>
-<button class="mx-mini" type="button" data-area="Business &amp; Strategy">Explore <span aria-hidden="true">↗</span>
-</button>
-</article>
-<article class="mx-area mx-reveal" data-index="6" data-name="Marketing &amp; Sales">
-<div class="mx-area-num">06</div>
-<div class="mx-area-main">
-<h3>Marketing &amp; Sales</h3>
-<p>Make value understandable and action easier.</p>
-</div>
-<div class="mx-area-relevance">
-<span>PATHWAY</span>
-<i>
-<em style="--w:86%">
-</em>
-</i>
-</div>
-<button class="mx-mini" type="button" data-area="Marketing &amp; Sales">Explore <span aria-hidden="true">↗</span>
-</button>
-</article>
-<article class="mx-area mx-reveal" data-index="7" data-name="Learning &amp; Education">
-<div class="mx-area-num">07</div>
-<div class="mx-area-main">
-<h3>Learning &amp; Education</h3>
-<p>Use AI as a tutor, curriculum designer, and thinking partner.</p>
-</div>
-<div class="mx-area-relevance">
-<span>PATHWAY</span>
-<i>
-<em style="--w:84%">
-</em>
-</i>
-</div>
-<button class="mx-mini" type="button" data-area="Learning &amp; Education">Explore <span aria-hidden="true">↗</span>
-</button>
-</article>
-<article class="mx-area mx-reveal" data-index="8" data-name="Coding &amp; Software">
-<div class="mx-area-num">08</div>
-<div class="mx-area-main">
-<h3>Coding &amp; Software</h3>
-<p>Build, debug, explain, and improve software with AI.</p>
-</div>
-<div class="mx-area-relevance">
-<span>PATHWAY</span>
-<i>
-<em style="--w:82%">
-</em>
-</i>
-</div>
-<button class="mx-mini" type="button" data-area="Coding &amp; Software">Explore <span aria-hidden="true">↗</span>
-</button>
-</article>
-<article class="mx-area mx-reveal" data-index="9" data-name="Images &amp; Visual Creation">
-<div class="mx-area-num">09</div>
-<div class="mx-area-main">
-<h3>Images &amp; Visual Creation</h3>
-<p>Turn concepts into visual communication and creative assets.</p>
-</div>
-<div class="mx-area-relevance">
-<span>PATHWAY</span>
-<i>
-<em style="--w:79%">
-</em>
-</i>
-</div>
-<button class="mx-mini" type="button" data-area="Images &amp; Visual Creation">Explore <span aria-hidden="true">↗</span>
-</button>
-</article>
-<article class="mx-area mx-reveal" data-index="10" data-name="Video &amp; Media">
-<div class="mx-area-num">10</div>
-<div class="mx-area-main">
-<h3>Video &amp; Media</h3>
-<p>Plan, script, edit, package, and distribute media.</p>
-</div>
-<div class="mx-area-relevance">
-<span>PATHWAY</span>
-<i>
-<em style="--w:91%">
-</em>
-</i>
-</div>
-<button class="mx-mini" type="button" data-area="Video &amp; Media">Explore <span aria-hidden="true">↗</span>
-</button>
-</article>
-<article class="mx-area mx-reveal" data-index="11" data-name="Documents &amp; Presentations">
-<div class="mx-area-num">11</div>
-<div class="mx-area-main">
-<h3>Documents &amp; Presentations</h3>
-<p>Transform raw thinking into polished deliverables.</p>
-</div>
-<div class="mx-area-relevance">
-<span>PATHWAY</span>
-<i>
-<em style="--w:86%">
-</em>
-</i>
-</div>
-<button class="mx-mini" type="button" data-area="Documents &amp; Presentations">Explore <span aria-hidden="true">↗</span>
-</button>
-</article>
-<article class="mx-area mx-reveal" data-index="12" data-name="Data &amp; Analysis">
-<div class="mx-area-num">12</div>
-<div class="mx-area-main">
-<h3>Data &amp; Analysis</h3>
-<p>Use evidence, structure, and models to make better decisions.</p>
-</div>
-<div class="mx-area-relevance">
-<span>PATHWAY</span>
-<i>
-<em style="--w:84%">
-</em>
-</i>
-</div>
-<button class="mx-mini" type="button" data-area="Data &amp; Analysis">Explore <span aria-hidden="true">↗</span>
-</button>
-</article>
-<article class="mx-area mx-reveal" data-index="13" data-name="Productivity &amp; Planning">
-<div class="mx-area-num">13</div>
-<div class="mx-area-main">
-<h3>Productivity &amp; Planning</h3>
-<p>Turn intention into organized execution.</p>
-</div>
-<div class="mx-area-relevance">
-<span>PATHWAY</span>
-<i>
-<em style="--w:82%">
-</em>
-</i>
-</div>
-<button class="mx-mini" type="button" data-area="Productivity &amp; Planning">Explore <span aria-hidden="true">↗</span>
-</button>
-</article>
-<article class="mx-area mx-reveal" data-index="14" data-name="Career &amp; Professional Development">
-<div class="mx-area-num">14</div>
-<div class="mx-area-main">
-<h3>Career &amp; Professional Development</h3>
-<p>Build skills, positioning, confidence, and opportunity.</p>
-</div>
-<div class="mx-area-relevance">
-<span>PATHWAY</span>
-<i>
-<em style="--w:79%">
-</em>
-</i>
-</div>
-<button class="mx-mini" type="button" data-area="Career &amp; Professional Development">Explore <span aria-hidden="true">↗</span>
-</button>
-</article>
-<article class="mx-area mx-reveal" data-index="15" data-name="Personal Decision-Making">
-<div class="mx-area-num">15</div>
-<div class="mx-area-main">
-<h3>Personal Decision-Making</h3>
-<p>Think through choices with more clarity and less noise.</p>
-</div>
-<div class="mx-area-relevance">
-<span>PATHWAY</span>
-<i>
-<em style="--w:91%">
-</em>
-</i>
-</div>
-<button class="mx-mini" type="button" data-area="Personal Decision-Making">Explore <span aria-hidden="true">↗</span>
-</button>
-</article>
-<article class="mx-area mx-reveal" data-index="16" data-name="Creative Work">
-<div class="mx-area-num">16</div>
-<div class="mx-area-main">
-<h3>Creative Work</h3>
-<p>Explore, shape, and finish original creative work.</p>
-</div>
-<div class="mx-area-relevance">
-<span>PATHWAY</span>
-<i>
-<em style="--w:86%">
-</em>
-</i>
-</div>
-<button class="mx-mini" type="button" data-area="Creative Work">Explore <span aria-hidden="true">↗</span>
-</button>
-</article>
-<article class="mx-area mx-reveal" data-index="17" data-name="Automation &amp; Systems">
-<div class="mx-area-num">17</div>
-<div class="mx-area-main">
-<h3>Automation &amp; Systems</h3>
-<p>Connect repeatable work into reliable systems.</p>
-</div>
-<div class="mx-area-relevance">
-<span>PATHWAY</span>
-<i>
-<em style="--w:84%">
-</em>
-</i>
-</div>
-<button class="mx-mini" type="button" data-area="Automation &amp; Systems">Explore <span aria-hidden="true">↗</span>
-</button>
-</article>
-<article class="mx-area mx-reveal" data-index="18" data-name="Advanced AI Work">
-<div class="mx-area-num">18</div>
-<div class="mx-area-main">
-<h3>Advanced AI Work</h3>
-<p>Orchestrate models, agents, tools, context, and evaluation.</p>
-</div>
-<div class="mx-area-relevance">
-<span>PATHWAY</span>
-<i>
-<em style="--w:82%">
-</em>
-</i>
-</div>
-<button class="mx-mini" type="button" data-area="Advanced AI Work">Explore <span aria-hidden="true">↗</span>
-</button>
-</article>
-</div>
-</div>
-</section>
-<section class="mx-section mx-growth" id="growth-scorecard">
+</section><section class="mx-section mx-growth v13-original v20-hidden" id="growth-scorecard">
 <div class="mx-wide">
 <div class="mx-section-head">
 <div>
@@ -2591,7 +2474,7 @@ transition:none}
 <p>A useful assessment should not leave you staring at a score. This chapter turns the result into practical direction: protect the strength, build the lever, and make progress repeatable.</p>
 </div>
 <div class="mx-growth-grid">
-<article class="mx-growth-card mx-reveal">
+<article class="mx-growth-card mx-reveal" style="transition-delay: 280ms;">
 <span class="mx-eyebrow">YOUR SCORECARD</span>
 <h3>Strong enough to leverage.<br>Honest enough to improve.</h3>
 <p>Your profile is not a judgment. It is a starting position. Make your strongest capability more useful and your biggest gap less limiting.</p>
@@ -2638,7 +2521,7 @@ transition:none}
 </div>
 </div>
 </article>
-<article class="mx-growth-card mx-reveal">
+<article class="mx-growth-card mx-reveal" style="transition-delay: 280ms;">
 <span class="mx-eyebrow">YOUR MASTERY RANGE</span>
 <h3>You're in<br>Advancing.</h3>
 <p>The next jump is not about collecting more AI tools. It is about directing better work, evaluating it deliberately, and turning wins into systems.</p>
@@ -2660,103 +2543,77 @@ transition:none}
 <span>91–100</span>
 </div>
 </div>
-<div class="mx-growth-cta">
+<div class="mx-growth-cta v13-hide-report-noise">
 <a class="mx-cta mx-cta-primary" href="https://takeyourpowerback.xyz/services">Start Free <span aria-hidden="true">→</span>
 </a>
 <a class="mx-cta mx-cta-ghost" href="#naya-report">Listen with Naya <span aria-hidden="true">↓</span>
 </a>
 </div>
-<p class="mx-micro">Zero Cost Start / Free Trial · Continue into the NayaNET experience.</p>
+<p class="mx-micro v13-hide-report-noise">Zero Cost Start / Free Trial · Continue into the NayaNET experience.</p>
 </article>
 </div>
 <div class="mx-plan">
-<div class="mx-reveal">
+<div class="mx-reveal" style="transition-delay: 280ms;">
 <b>NEXT 01</b>
 <h4>Protect your strength</h4>
 <p>Use Communication as your directing advantage.</p>
 </div>
-<div class="mx-reveal">
+<div class="mx-reveal" style="transition-delay: 280ms;">
 <b>NEXT 02</b>
 <h4>Build your lever</h4>
 <p>Practice Systems Thinking on one repeated workflow.</p>
 </div>
-<div class="mx-reveal">
+<div class="mx-reveal" style="transition-delay: 280ms;">
 <b>NEXT 03</b>
 <h4>Make quality visible</h4>
 <p>Score every meaningful AI output before accepting it.</p>
 </div>
 </div>
 </div>
-</section>
-<div class="mx-divider">
-</div>
-<section class="mx-section mx-naya-playground" id="naya-playground">
+</section><section class="mx-section v12-dark v13-original v13-next-section v13-chapter-anchor v20-hidden" id="v12-next">
 <div class="mx-wide">
-<div class="mx-naya-playground-head">
+<div class="mx-section-head"><div class="v12-chapter"><b>08</b><div><span>YOUR NEXT MOVE</span><small>Turn insight into one concrete action</small></div></div><div class="v11-chapter"><span class="v11-chapter-num">08</span><div><span class="v11-chapter-label">YOUR NEXT MOVE</span><span class="v11-chapter-sub">Turn insight into one concrete action</span></div></div>
 <div>
-<span class="mx-eyebrow">YOUR AI PLAYGROUND</span>
-<h2>Don't learn AI.<br>
-<em style="font-style:normal;background:linear-gradient(110deg,#fff,#d7b2ff,#63d9ff);-webkit-background-clip:text;background-clip:text;color:transparent">Learn what AI can do for you.</em>
-</h2>
+<span class="mx-eyebrow">04 · YOUR NEXT CHAPTER</span>
+<h2>YOUR<br>NEXT MOVE</h2>
 </div>
-<p>These aren't random tools. They're doors into what your capability can become when Naya helps you turn thinking into action.</p>
+<p>One focused move beats ten scattered improvements. Start where your leverage is highest.</p>
 </div>
-<div class="mx-naya-doors">
-<a class="mx-naya-door mx-reveal" href="#naya-writer" aria-label="Open Naya Writer">
-<span class="mx-naya-icon" aria-hidden="true">✍️</span>
-<h3>Naya Writer</h3>
-<p>Turn thoughts, rough ideas, and half-finished sentences into clear words that sound like you.</p>
-<span class="mx-naya-open">Open Naya Writer <span aria-hidden="true">↗</span>
-</span>
-</a>
-<a class="mx-naya-door mx-reveal" href="#naya-brainstormer" aria-label="Open Naya Brainstormer">
-<span class="mx-naya-icon" aria-hidden="true">💡</span>
-<h3>Naya Brainstormer</h3>
-<p>Turn one thought into possibilities, angles, strategies, names, stories, and next moves.</p>
-<span class="mx-naya-open">Open Naya Brainstormer <span aria-hidden="true">↗</span>
-</span>
-</a>
-<a class="mx-naya-door mx-reveal" href="#naya" aria-label="Talk to Naya">
-<span class="mx-naya-icon" aria-hidden="true">✦</span>
-<h3>Naya</h3>
-<p>Ask anything. Build anything. Think out loud with an AI companion designed around what you want to accomplish.</p>
-<span class="mx-naya-open">Talk to Naya <span aria-hidden="true">↗</span>
-</span>
-</a>
-</div>
-<p class="mx-naya-note">These are doors, not products. The goal is simple: make AI useful to you.</p>
-</div>
-</section>
-<div class="mx-divider">
-</div>
-<section class="mx-section mx-naya-bridge" id="naya-report">
-<div class="mx-reading">
-<div class="mx-bridge-card mx-reveal">
-<span class="mx-audio-label">PERSONALIZED REPORT</span>
-<h2>You've seen the pattern.<br>
-<em>Now hear what it means.</em>
-</h2>
-<p>Naya is the next layer: turning your result into a practical conversation about where you are, where you can go, and what to do next.</p>
-<button class="mx-cta mx-cta-primary" type="button" id="mx-naya-listen">Naya — Listen to Your Report <span aria-hidden="true">▶</span>
-</button>
-<div class="mx-key" aria-label="AI Master Key">
-<div>KNOW</div>
-<div>TELL</div>
-<div>ASK</div>
-<div>CREATE</div>
-<div>SCORE</div>
-<div>IMPROVE</div>
-<div>REPEAT</div>
+<div class="mx-path v11-next-grid v12-next-grid">
+<article class="mx-step mx-reveal v11-next-step v12-next-step" style="transition-delay: 280ms;"><b>01</b>
+<strong class="v11-next-num">01 · DIRECT</strong>
+<h3>Direct with intention</h3>
+<p>Define what success looks like before AI begins.</p>
+</article>
+<article class="mx-step mx-reveal v11-next-step v12-next-step" style="transition-delay: 280ms;"><b>02</b>
+<strong class="v11-next-num">02 · CREATE</strong>
+<h3>Build the first version</h3>
+<p>Give AI enough context and direction to do useful work.</p>
+</article>
+<article class="mx-step mx-reveal v11-next-step v12-next-step" style="transition-delay: 280ms;"><b>03</b>
+<strong class="v11-next-num">03 · SCORE</strong>
+<h3>Score the result</h3>
+<p>Use criteria instead of accepting the first answer.</p>
+</article>
+<article class="mx-step mx-reveal v11-next-step v12-next-step" style="transition-delay: 280ms;"><b>04</b>
+<strong class="v11-next-num">04 · COMPOUND</strong>
+<h3>Make the win reusable</h3>
+<p>Turn successful work into a system you can repeat.</p>
+</article>
 </div>
 </div>
+</section><section class="mx-section naya-masters-section v12-dark v13-original v13-pathways-section v13-chapter-anchor v20-hidden" id="v12-masters">
+<div class="mx-wide"><aside class="naya-presence naya-dark"><div class="naya-avatar-wrap"><img class="naya-avatar" src="https://i.postimg.cc/dVXw7sRN/grok-image-f75a6f12-4e3a-4c99-a334-5684ba0f7401.jpg" alt="Naya" loading="lazy"><span class="naya-live-dot" aria-hidden="true"></span></div><div class="naya-presence-copy"><span class="naya-name">NAYA</span><p>You do not need to master every part of AI yourself. These are the specialists you can call on when you need them.</p></div></aside>
+<div class="mx-section-head"><div class="v12-chapter"><b>09</b><div><span>YOUR NAYA MASTERS</span><small>18 specialist pathways</small></div></div><div class="v11-chapter"><span class="v11-chapter-num">09</span><div><span class="v11-chapter-label">YOUR NAYA MASTERS</span><span class="v11-chapter-sub">18 specialist pathways</span></div></div>
+<div>
+<span class="mx-eyebrow">05 · YOUR 18 AI PATHWAYS</span>
+<h2>18 NAYA<br>MASTERS</h2>
 </div>
-</section>
-<section class="mx-section mx-final">
-<p class="mx-final-note">The Results chapter is complete. The next chapter is NayaNET.</p>
-<div id="nayanet-foundation-anchor">
+<p>Specialist AI Masters designed to help you turn a capability into an exceptional result.</p>
 </div>
-</section>
-</main>
+<div class="v11-masters-grid"><article class="v11-master"><span class="v11-master-num">01</span><span class="v11-master-name">Naya Writing &amp; Communication</span><span class="v11-master-benefit">Turn thoughts into clear words.</span></article><article class="v11-master"><span class="v11-master-num">02</span><span class="v11-master-name">Naya Research &amp; Information</span><span class="v11-master-benefit">Find and synthesize useful information.</span></article><article class="v11-master"><span class="v11-master-num">03</span><span class="v11-master-name">Naya Brainstorming &amp; Ideas</span><span class="v11-master-benefit">Expand ideas without losing the goal.</span></article><article class="v11-master"><span class="v11-master-num">04</span><span class="v11-master-name">Naya Content Creation</span><span class="v11-master-benefit">Create useful human content faster.</span></article><article class="v11-master"><span class="v11-master-num">05</span><span class="v11-master-name">Naya Business &amp; Strategy</span><span class="v11-master-benefit">Turn insight into strategy and decisions.</span></article><article class="v11-master"><span class="v11-master-num">06</span><span class="v11-master-name">Naya Marketing &amp; Sales</span><span class="v11-master-benefit">Make value understandable and actionable.</span></article><article class="v11-master"><span class="v11-master-num">07</span><span class="v11-master-name">Naya Learning &amp; Education</span><span class="v11-master-benefit">Learn with an always-available thinking partner.</span></article><article class="v11-master"><span class="v11-master-num">08</span><span class="v11-master-name">Naya Coding &amp; Software</span><span class="v11-master-benefit">Build, debug and improve software.</span></article><article class="v11-master"><span class="v11-master-num">09</span><span class="v11-master-name">Naya Images &amp; Visual Creation</span><span class="v11-master-benefit">Turn concepts into visual communication.</span></article><article class="v11-master"><span class="v11-master-num">10</span><span class="v11-master-name">Naya Video &amp; Media</span><span class="v11-master-benefit">Plan and produce video and media.</span></article><article class="v11-master"><span class="v11-master-num">11</span><span class="v11-master-name">Naya Documents &amp; Presentations</span><span class="v11-master-benefit">Create polished deliverables from rough thinking.</span></article><article class="v11-master"><span class="v11-master-num">12</span><span class="v11-master-name">Naya Data &amp; Analysis</span><span class="v11-master-benefit">Use evidence to make better decisions.</span></article><article class="v11-master"><span class="v11-master-num">13</span><span class="v11-master-name">Naya Productivity &amp; Planning</span><span class="v11-master-benefit">Turn intention into organized execution.</span></article><article class="v11-master"><span class="v11-master-num">14</span><span class="v11-master-name">Naya Career &amp; Professional Development</span><span class="v11-master-benefit">Build skills, positioning and opportunity.</span></article><article class="v11-master"><span class="v11-master-num">15</span><span class="v11-master-name">Naya Personal Decision-Making</span><span class="v11-master-benefit">Think through choices with more clarity.</span></article><article class="v11-master"><span class="v11-master-num">16</span><span class="v11-master-name">Naya Creative Work</span><span class="v11-master-benefit">Explore and finish original creative work.</span></article><article class="v11-master"><span class="v11-master-num">17</span><span class="v11-master-name">Naya Automation &amp; Systems</span><span class="v11-master-benefit">Connect repeated work into reliable systems.</span></article><article class="v11-master"><span class="v11-master-num">18</span><span class="v11-master-name">Naya Advanced AI Work</span><span class="v11-master-benefit">Orchestrate models, tools, context and evaluation.</span></article></div>
+</div>
+</section></main>
 <!-- ============================================================
      NAYANET — ICONIC CINEMATIC CONVERSION PAGE
      
@@ -4275,17 +4132,10 @@ body::before {
 <!-- ========================================================
          CINEMATIC VIDEO
          ======================================================== -->
-<section
-        class="ny-theater"
-        aria-label="NayaNET cinematic introduction"
-    >
+<section class="ny-theater" aria-label="NayaNET cinematic introduction">
 <div class="ny-screen-frame">
 <div class="ny-screen">
-<iframe
-                    id="ny-youtube-player"
-                    src="https://www.youtube-nocookie.com/embed/8tApdV0UpRs?rel=0&modestbranding=1&playsinline=1&enablejsapi=1&vq=hd1080"
-                    title="NayaNET — The Network of Human Potential and AI Mastery"
-                    allow="
+<iframe id="ny-youtube-player" src="https://www.youtube-nocookie.com/embed/8tApdV0UpRs?rel=0&amp;modestbranding=1&amp;playsinline=1&amp;enablejsapi=1&amp;vq=hd1080" title="NayaNET — The Network of Human Potential and AI Mastery" allow="
                         accelerometer;
                         autoplay;
                         clipboard-write;
@@ -4294,11 +4144,7 @@ body::before {
                         picture-in-picture;
                         web-share;
                         fullscreen
-                    "
-                    allowfullscreen
-                    loading="eager"
-                    referrerpolicy="strict-origin-when-cross-origin"
-                >
+                    " allowfullscreen="" loading="eager" referrerpolicy="strict-origin-when-cross-origin">
 </iframe>
 </div>
 </div>
@@ -4306,25 +4152,12 @@ body::before {
 <!-- ========================================================
          PRIMARY CTA
          ======================================================== -->
-<section
-        class="ny-primary-zone"
-        aria-label="Primary action"
-    >
-<a
-            class="ny-button ny-primary"
-            href="https://takeyourpowerback.xyz/services"
-            aria-label="Start your free trial"
-        >
-<span
-                class="ny-button-face"
-                aria-hidden="true"
-            >
+<section class="ny-primary-zone" aria-label="Primary action">
+<a class="ny-button ny-primary" href="https://takeyourpowerback.xyz/services" aria-label="Start your free trial">
+<span class="ny-button-face" aria-hidden="true">
 </span>
 <span class="ny-button-content">
-<span
-                    class="ny-icon"
-                    aria-hidden="true"
-                >
+<span class="ny-icon" aria-hidden="true">
                     ★
                 </span>
 <span class="ny-copy">
@@ -4341,28 +4174,15 @@ body::before {
 <!-- ========================================================
          DESTINATION PORTALS
          ======================================================== -->
-<nav
-        class="ny-secondary-grid"
-        aria-label="NayaNET destinations"
-    >
+<nav class="ny-secondary-grid" aria-label="NayaNET destinations">
 <!-- ====================================================
              FREE GIFTS
              ==================================================== -->
-<a
-            class="ny-button ny-secondary"
-            href="https://d4caeb1f.sibforms.com/serve/MUIFAHZEqs40zTV64qB6TJ3trIfgjO-7ifv_cwA8Ua9BM_ZWkkGMHIqLouO50nmRIpU7PfCmTRRO4O0s0nGQfi7t6ToHyQzbMT7iUzmDHZtsD5tx6jc73HxU-foqyiPhBEP8x3cPoVDmowa6zho13-C2BMEL97y1KYyYPYlNelzoBgNwtrgGW5ieJ_v_i_eKEGWIvxw1NNUVnKpa"
-            aria-label="Free Gifts"
-        >
-<span
-                class="ny-button-face"
-                aria-hidden="true"
-            >
+<a class="ny-button ny-secondary" href="https://d4caeb1f.sibforms.com/serve/MUIFAHZEqs40zTV64qB6TJ3trIfgjO-7ifv_cwA8Ua9BM_ZWkkGMHIqLouO50nmRIpU7PfCmTRRO4O0s0nGQfi7t6ToHyQzbMT7iUzmDHZtsD5tx6jc73HxU-foqyiPhBEP8x3cPoVDmowa6zho13-C2BMEL97y1KYyYPYlNelzoBgNwtrgGW5ieJ_v_i_eKEGWIvxw1NNUVnKpa" aria-label="Free Gifts">
+<span class="ny-button-face" aria-hidden="true">
 </span>
 <span class="ny-button-content">
-<span
-                    class="ny-icon"
-                    aria-hidden="true"
-                >
+<span class="ny-icon" aria-hidden="true">
 <span class="ny-gift-symbol">
 </span>
 </span>
@@ -4379,21 +4199,11 @@ body::before {
 <!-- ====================================================
              PROMAX PLAYER
              ==================================================== -->
-<a
-            class="ny-button ny-secondary"
-            href="https://promaxplayer.takeyourpowerback.xyz/"
-            aria-label="ProMax Player"
-        >
-<span
-                class="ny-button-face"
-                aria-hidden="true"
-            >
+<a class="ny-button ny-secondary" href="https://promaxplayer.takeyourpowerback.xyz/" aria-label="ProMax Player">
+<span class="ny-button-face" aria-hidden="true">
 </span>
 <span class="ny-button-content">
-<span
-                    class="ny-icon"
-                    aria-hidden="true"
-                >
+<span class="ny-icon" aria-hidden="true">
 <span class="ny-play-symbol">
 </span>
 </span>
@@ -4410,21 +4220,11 @@ body::before {
 <!-- ====================================================
              AI MASTERCLASS
              ==================================================== -->
-<a
-            class="ny-button ny-secondary"
-            href="https://aimasterclass.takeyourpowerback.xyz/"
-            aria-label="AI Masterclass"
-        >
-<span
-                class="ny-button-face"
-                aria-hidden="true"
-            >
+<a class="ny-button ny-secondary" href="https://aimasterclass.takeyourpowerback.xyz/" aria-label="AI Masterclass">
+<span class="ny-button-face" aria-hidden="true">
 </span>
 <span class="ny-button-content">
-<span
-                    class="ny-icon"
-                    aria-hidden="true"
-                >
+<span class="ny-icon" aria-hidden="true">
 <span class="ny-ai-symbol">
 <span class="ny-ai-node n1">
 </span>
@@ -4449,21 +4249,11 @@ body::before {
 <!-- ====================================================
              TAKE YOUR POWER BACK
              ==================================================== -->
-<a
-            class="ny-button ny-secondary"
-            href="https://takeyourpowerback.xyz/"
-            aria-label="Take Your Power Back"
-        >
-<span
-                class="ny-button-face"
-                aria-hidden="true"
-            >
+<a class="ny-button ny-secondary" href="https://takeyourpowerback.xyz/" aria-label="Take Your Power Back">
+<span class="ny-button-face" aria-hidden="true">
 </span>
 <span class="ny-button-content">
-<span
-                    class="ny-icon"
-                    aria-hidden="true"
-                >
+<span class="ny-icon" aria-hidden="true">
 <span class="ny-power-symbol">
 </span>
 </span>
@@ -4481,10 +4271,7 @@ body::before {
 <!-- ========================================================
          MEMBERSHIP / BRAND SEAL
          ======================================================== -->
-<section
-        class="ny-membership"
-        aria-label="NayaNET membership statement"
-    >
+<section class="ny-membership" aria-label="NayaNET membership statement">
 <div class="ny-membership-inner">
 <div class="ny-membership-kicker">
                 ONE MEMBERSHIP
@@ -7817,8 +7604,65 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 })();
 </script>
 
-</body>
-<!-- MAXESS_RESULTS_V11_FULL_UPGRADE_EXECUTED -->
-<!-- MAXESS_RESULTS_V12_SECTION_EXECUTION -->
-<!-- MAXESS_RESULTS_V13_VISIBLE_EXECUTION -->
-</html>
+
+
+
+
+
+<style id="maxess-v20-css">
+#maxess-results-10.v20-live{background:#050408!important;color:#fff!important}
+#maxess-results-10.v20-live .v20-stage{display:flex!important;flex-direction:column!important;width:100%!important}
+#maxess-results-10.v20-live .v20-naya{order:1!important;display:flex!important;flex-direction:column!important;align-items:center!important;text-align:center!important;padding:42px 18px 30px!important;background:radial-gradient(circle at 50% 0,rgba(166,108,255,.24),transparent 62%),#07050a!important}
+#maxess-results-10.v20-live .v20-avatar{width:88px!important;height:88px!important;object-fit:cover!important;border-radius:50%!important;display:block!important}
+#maxess-results-10.v20-live .v20-naya h1{margin:10px 0 0!important;font-size:clamp(30px,4.5vw,56px)!important;line-height:1!important;letter-spacing:-.05em!important;color:#fff!important}
+#maxess-results-10.v20-live .v20-naya p{max-width:700px!important;margin:14px auto 0!important;color:rgba(255,255,255,.72)!important;font-size:clamp(15px,1.5vw,19px)!important}
+#maxess-results-10.v20-live .v20-listen{margin-top:20px!important;min-height:52px!important;padding:0 25px!important;border-radius:999px!important;border:1px solid rgba(255,255,255,.25)!important;background:linear-gradient(135deg,#d8b8ff,#7540d2 55%,#35105f)!important;color:#fff!important;font-weight:900!important;cursor:pointer!important}
+#maxess-results-10.v20-live .v20-score{order:2!important;display:flex!important;flex-direction:column!important;align-items:center!important;text-align:center!important;padding:30px 16px 62px!important;background:#030305!important}
+#maxess-results-10.v20-live .v20-score-label{margin-bottom:18px!important;color:#fff!important;font-size:clamp(15px,2vw,24px)!important;font-weight:950!important;letter-spacing:.22em!important;text-transform:uppercase!important}
+#maxess-results-10.v20-live .v20-score-orb{width:min(540px,80vw)!important;min-height:300px!important;display:flex!important;align-items:center!important;justify-content:center!important;position:relative!important}
+#maxess-results-10.v20-live .v20-score-orb .v13-score-number{font-size:clamp(72px,12vw,150px)!important;font-weight:1000!important;line-height:1!important;color:#fff!important;text-shadow:0 0 35px rgba(190,120,255,.45)!important}
+#maxess-results-10.v20-live .v20-score-orb svg,#maxess-results-10.v20-live .v20-score-orb canvas{max-width:100%!important}
+#maxess-results-10.v20-live .v20-dims{order:3!important;padding:58px clamp(16px,4vw,72px)!important;background:#fff!important;color:#111!important}
+#maxess-results-10.v20-live .v20-dims h2{margin:0!important;font-size:clamp(34px,5vw,68px)!important;line-height:.94!important;letter-spacing:-.055em!important}
+#maxess-results-10.v20-live .v20-dim-orbs{display:grid!important;grid-template-columns:repeat(5,minmax(120px,1fr))!important;gap:18px!important;max-width:1400px!important;margin:30px auto 0!important}
+#maxess-results-10.v20-live .v20-dim-orb{aspect-ratio:1!important;border-radius:50%!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;text-align:center!important;cursor:pointer!important;background:radial-gradient(circle at 34% 25%,#fff,#f3edf9 45%,#ddd4e7)!important;border:1px solid rgba(0,0,0,.13)!important;box-shadow:0 22px 55px rgba(24,12,38,.12)!important;transition:transform .2s ease!important;color:#111!important}
+#maxess-results-10.v20-live .v20-dim-orb:hover{transform:translateY(-6px) scale(1.02)!important}
+#maxess-results-10.v20-live .v20-dim-orb strong{font-size:clamp(34px,4vw,56px)!important;line-height:1!important}
+#maxess-results-10.v20-live .v20-dim-orb span{max-width:105px!important;margin-top:8px!important;font-size:10px!important;font-weight:900!important;text-transform:uppercase!important;letter-spacing:.06em!important;color:#111!important}
+#maxess-results-10.v20-live .v20-detail{max-width:1400px!important;margin:22px auto 0!important;padding:20px 22px!important;border-radius:18px!important;background:#f5f3f8!important;border:1px solid rgba(0,0,0,.08)!important;color:#111!important}
+#maxess-results-10.v20-live .v20-detail p{margin:6px 0 0!important;color:#333!important}
+#maxess-results-10.v20-live .v20-fallback{order:7!important;padding:60px 18px!important;background:#0a0710!important;color:#fff!important;text-align:center!important}
+#maxess-results-10.v20-live .v20-fallback h2{font-size:clamp(34px,5vw,64px)!important;margin:0 0 14px!important}
+#maxess-results-10.v20-live .v20-fallback p{max-width:700px!important;margin:0 auto!important;color:rgba(255,255,255,.7)!important}
+#maxess-results-10.v20-live .v20-hidden{display:none!important}
+@media(max-width:900px){#maxess-results-10.v20-live .v20-dim-orbs{grid-template-columns:repeat(3,minmax(120px,1fr))!important}}
+@media(max-width:620px){#maxess-results-10.v20-live .v20-dim-orbs{grid-template-columns:repeat(2,minmax(120px,1fr))!important;gap:12px!important}}
+@media(max-width:390px){#maxess-results-10.v20-live .v20-dim-orbs{grid-template-columns:1fr!important}.v20-live .v20-dim-orb{width:min(220px,76vw)!important;margin:auto!important}}
+</style>
+<script id="maxess-v20-js">
+(function(){
+'use strict';
+function start(){
+  var root=document.getElementById('maxess-results-10'); if(!root||root.dataset.v20Done==='1')return; root.dataset.v20Done='1'; root.classList.add('v20-live');
+  var result=window.MAXESS_RESULT||{}; var dims=Array.isArray(result.dimensions)?result.dimensions.slice(0,5):[]; var score=Number(result.overallScore!=null?result.overallScore:result.score); if(!Number.isFinite(score))score=0; score=Math.round(Math.max(0,Math.min(100,score)));
+  var oldStage=root.querySelector('.v18-flow,.v19-stage'); var stage=document.createElement('main'); stage.className='v20-stage'; stage.setAttribute('aria-label','MAXESS personalized results'); root.appendChild(stage);
+  function first(sels){for(var i=0;i<sels.length;i++){var e=root.querySelector(sels[i]);if(e)return e}return null}
+  function heading(re){return [...root.querySelectorAll('section,article,div')].find(function(e){var h=e.querySelector('h1,h2,h3,.section-title,.eyebrow');return h&&re.test((h.textContent||'').trim())&&e.getBoundingClientRect().height>20})}
+  function move(e,order){if(e){e.classList.remove('v20-hidden');e.style.order=String(order);stage.appendChild(e)}}
+  var naya=document.createElement('section'); naya.className='v20-naya'; naya.innerHTML='<img class="v20-avatar" alt="Naya, your AI guide"><div>NAYA · YOUR GUIDE</div><h1>Hi. I’ve looked at your results.</h1><p>This isn’t your judgment. <strong>It’s your map.</strong></p><button type="button" class="v20-listen">Listen to Naya <span aria-hidden="true">▶</span></button>'; var av=first(['.v18-naya-avatar','img[src*="Naya"]']); if(av&&av.src)naya.querySelector('.v20-avatar').src=av.src; else naya.querySelector('.v20-avatar').src='https://raw.githubusercontent.com/SoulSchoolAcademy/maxess/main/Naya%20Profile%20Black.jpg'; stage.appendChild(naya);
+  var oldListen=first(['#mx-naya-listen','#v11-naya-listen','#v13-listen','.mx-naya-listen']); naya.querySelector('.v20-listen').addEventListener('click',function(){if(oldListen&&oldListen!==this)oldListen.click();else root.dispatchEvent(new CustomEvent('maxess:naya-listen',{bubbles:true,detail:{result:window.MAXESS_RESULT||null}}))});
+  var scoreSec=document.createElement('section'); scoreSec.className='v20-score'; scoreSec.innerHTML='<div class="v20-score-label">YOUR AI SCORE</div><div class="v20-score-orb"></div>'; var orb=first(['.v13-score-orb']); if(orb){scoreSec.querySelector('.v20-score-orb').appendChild(orb);var num=orb.querySelector('.v13-score-number');if(num)num.textContent=String(score)}else scoreSec.querySelector('.v20-score-orb').innerHTML='<div class="v13-score-number">'+score+'</div>'; stage.appendChild(scoreSec);
+  var dimSec=document.createElement('section'); dimSec.className='v20-dims'; dimSec.innerHTML='<h2>Your five dimensions.</h2><div class="v20-dim-orbs"></div><div class="v20-detail" aria-live="polite"><strong>Select a dimension.</strong><p>Explore how each part of your AI capability contributes to your overall score.</p></div>'; var grid=dimSec.querySelector('.v20-dim-orbs'), detail=dimSec.querySelector('.v20-detail'); dims.forEach(function(d,i){var b=document.createElement('button');b.type='button';b.className='v20-dim-orb';b.innerHTML='<strong>'+Math.round(Number(d.score)||0)+'</strong><span>'+String(d.name||('Dimension '+(i+1)))+'</span>';b.addEventListener('click',function(){detail.innerHTML='<strong>'+String(d.name||'Dimension')+' · '+Math.round(Number(d.score)||0)+'</strong><p>This is one of the five dimensions contributing to your MAXESS score. Use it as a signal for where to focus your next improvement.</p>'});grid.appendChild(b)}); stage.appendChild(dimSec);
+  var report=first(['.v13-report'])||heading(/report/i); var pattern=first(['.v13-pattern'])||heading(/pattern|fingerprint/i); var strength=first(['.v13-strengths','.v18-strength-section'])||heading(/strength|advantage/i); var lever=first(['.v13-lever','.v18-lever'])||heading(/biggest lever|your lever|lever/i); var next=first(['.v13-next'])||heading(/next move|next chapter/i); var masters=first(['.v13-masters'])||heading(/18 (naya )?masters|18 ai pathways|pathways/i); var playground=first(['.v13-playground','#naya-playground'])||heading(/playground/i);
+  move(report,4); move(pattern,5); move(strength,6); move(lever,7); move(next,8); move(masters,9); move(playground,10);
+  if(!lever){var fb=document.createElement('section');fb.className='v20-fallback';fb.innerHTML='<h2>Your Biggest Lever</h2><p>Your lowest current dimension is '+(dims.length?String(dims.reduce(function(a,b){return Number(b.score)<Number(a.score)?b:a}).name):'the area that needs the most attention')+'. Strengthening your lowest dimension can create disproportionate gains across your overall AI mastery.</p>';stage.appendChild(fb)}
+  if(!report){var x=document.createElement('section');x.className='v20-fallback';x.innerHTML='<h2>Your Report</h2><p>Your score is '+score+'. Your five dimensions show where your current AI capability is strongest and where the greatest opportunities remain.</p>';stage.appendChild(x)}
+  [...root.children].forEach(function(e){if(e!==stage&&!e.matches('style,script'))e.classList.add('v20-hidden')});
+  root.querySelectorAll('#mx-naya-listen,#v11-naya-listen,#v13-listen,.mx-naya-listen,.v18-listen-secondary').forEach(function(e){if(e!==naya.querySelector('.v20-listen'))e.classList.add('v20-hidden')});
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start(); window.addEventListener('maxess:profile-ready',start);
+})();
+</script>
+
+
+</body><!-- MAXESS_RESULTS_V11_FULL_UPGRADE_EXECUTED --><!-- MAXESS_RESULTS_V12_SECTION_EXECUTION --><!-- MAXESS_RESULTS_V13_VISIBLE_EXECUTION --><!-- MAXESS_RESULTS_V20_FULL_FINISH --></html>
