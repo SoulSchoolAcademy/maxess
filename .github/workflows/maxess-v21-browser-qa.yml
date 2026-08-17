@@ -29,45 +29,50 @@ jobs:
           SERVER_PID=$!
           trap 'kill $SERVER_PID || true' EXIT
           sleep 2
-          cat > /tmp/qa.mjs <<'JS'
+          cat > qa.mjs <<'JS'
           import { chromium } from 'playwright';
           const browser = await chromium.launch({headless:true});
-          const page = await browser.newPage({viewport:{width:1440,height:1100}, deviceScaleFactor:1});
           const url='http://127.0.0.1:4173/MAXESS-RESULTS-10-GROOVE.html?fixture=demo';
-          await page.goto(url,{waitUntil:'networkidle'});
-          await page.waitForTimeout(700);
-          const checks=await page.evaluate(()=>{
-            const root=document.querySelector('#maxess-results-10');
-            const stage=root?.querySelector('.v20-stage');
-            const orb=root?.querySelector('.v20-score-orb');
-            const num=root?.querySelector('.v20-score .v13-score-number');
-            const rb=orb?.getBoundingClientRect(); const nb=num?.getBoundingClientRect();
-            const centered=!!(rb&&nb)&&Math.abs((nb.left+nb.width/2)-(rb.left+rb.width/2))<18&&Math.abs((nb.top+nb.height/2)-(rb.top+rb.height/2))<28;
-            return {
-              canonical:root?.dataset.v21Canonical==='1',
-              resultSource:!!window.MAXESS_RESULT,
-              naya:root?.querySelectorAll('.v21-naya').length===1,
-              listen:root?.querySelectorAll('.v21-listen').length===1,
-              miniOrbs:root?.querySelectorAll('.v21-dim-orb').length===5,
-              report:root?.querySelectorAll('.v21-report').length===1,
-              printReport:root?.querySelectorAll('#maxess-v21-print-report').length===1,
-              oldDims:root?.querySelectorAll('.v20-dims').length===0,
-              oldReportHidden:root?.querySelector('#v13-report') ? getComputedStyle(root.querySelector('#v13-report')).display==='none' : true,
-              scoreCentered:centered,
-              scoreText:num?.textContent?.trim()==='82',
-              masters:root?.querySelectorAll('.v13-master').length===18,
-              playground:!!root?.querySelector('.mx-naya-playground-head'),
-              stageOrder:[...stage?.children||[]].slice(0,5).map(x=>x.className||x.id)
-            };
-          });
-          console.log('BROWSER CHECKS',JSON.stringify(checks,null,2));
-          const failed=Object.entries(checks).filter(([k,v])=>k!=='stageOrder'&&!v).map(([k])=>k);
-          if(failed.length) throw new Error('Browser gate failed: '+failed.join(', '));
-          await page.screenshot({path:'/tmp/maxess-v21.png',fullPage:true});
-          await page.pdf({path:'/tmp/maxess-v21.pdf',format:'Letter',printBackground:true,preferCSSPageSize:true});
+          async function inspect(page,label){
+            await page.goto(url,{waitUntil:'networkidle'});
+            await page.waitForTimeout(900);
+            const checks=await page.evaluate(()=>{
+              const root=document.querySelector('#maxess-results-10');
+              const stage=root?.querySelector('.v20-stage');
+              const orb=root?.querySelector('.v20-score-orb');
+              const num=root?.querySelector('.v20-score .v13-score-number');
+              const rb=orb?.getBoundingClientRect(); const nb=num?.getBoundingClientRect();
+              const centered=!!(rb&&nb)&&Math.abs((nb.left+nb.width/2)-(rb.left+rb.width/2))<18&&Math.abs((nb.top+nb.height/2)-(rb.top+rb.height/2))<28;
+              return {
+                canonical:root?.dataset.v21Canonical==='1', resultSource:!!window.MAXESS_RESULT,
+                naya:root?.querySelectorAll('.v21-naya').length===1,
+                listen:root?.querySelectorAll('.v21-listen').length===1,
+                miniOrbs:root?.querySelectorAll('.v21-dim-orb').length===5,
+                report:root?.querySelectorAll('.v21-report').length===1,
+                printReport:root?.querySelectorAll('#maxess-v21-print-report').length===1,
+                oldDims:root?.querySelectorAll('.v20-dims').length===0,
+                oldReportHidden:root?.querySelector('#v13-report') ? getComputedStyle(root.querySelector('#v13-report')).display==='none' : true,
+                scoreCentered:centered, scoreText:num?.textContent?.trim()==='82',
+                masters:root?.querySelectorAll('.v13-master').length===18,
+                playground:!!root?.querySelector('.mx-naya-playground-head'),
+                stageOrder:[...stage?.children||[]].slice(0,5).map(x=>x.className||x.id)
+              };
+            });
+            console.log(label,JSON.stringify(checks,null,2));
+            const failed=Object.entries(checks).filter(([k,v])=>k!=='stageOrder'&&!v).map(([k])=>k);
+            if(failed.length) throw new Error(label+' gate failed: '+failed.join(', '));
+            return checks;
+          }
+          const desktop=await browser.newPage({viewport:{width:1440,height:1100},deviceScaleFactor:1});
+          await inspect(desktop,'DESKTOP');
+          await desktop.screenshot({path:'/tmp/maxess-v21-desktop.png',fullPage:true});
+          const mobile=await browser.newPage({viewport:{width:390,height:844},deviceScaleFactor:1});
+          await inspect(mobile,'MOBILE');
+          await mobile.screenshot({path:'/tmp/maxess-v21-mobile.png',fullPage:true});
+          await desktop.pdf({path:'/tmp/maxess-v21.pdf',format:'Letter',printBackground:true,preferCSSPageSize:true});
           await browser.close();
           JS
-          node /tmp/qa.mjs
+          node qa.mjs
           test -s /tmp/maxess-v21.pdf
           pdfinfo /tmp/maxess-v21.pdf | tee /tmp/pdfinfo.txt
           PAGES=$(awk '/^Pages:/ {print $2}' /tmp/pdfinfo.txt)
@@ -78,7 +83,7 @@ jobs:
         run: |
           git config user.name 'MAXESS Release Bot'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          rm -f .github/workflows/maxess-v21-browser-qa.yml
-          git add .github/workflows/maxess-v21-browser-qa.yml
-          git commit -m 'MAXESS V21: complete browser and PDF QA; remove one-shot QA workflow'
+          rm -f .github/workflows/maxess-v21-browser-qa.yml qa.mjs package.json package-lock.json
+          git add .github/workflows/maxess-v21-browser-qa.yml qa.mjs package.json package-lock.json
+          git commit -m 'MAXESS V21: browser and PDF QA passed; remove one-shot QA tooling'
           git push origin HEAD:maxess-results-v21-complete
