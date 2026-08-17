@@ -28,8 +28,6 @@ jobs:
           s = p.read_text(encoding='utf-8')
 
           # Groove code elements are HTML fragments, not standalone documents.
-          # Preserve the application itself while removing document-shell tags
-          # that can be rejected by the Groove code element parser.
           s = re.sub(r'^\s*<!doctype[^>]*>', '', s, flags=re.I)
           s = re.sub(r'^\s*<html[^>]*>', '', s, count=1, flags=re.I)
           s = re.sub(r'</html>\s*$', '', s, count=1, flags=re.I)
@@ -40,16 +38,23 @@ jobs:
           s = re.sub(r'<meta\b[^>]*>', '', s, flags=re.I)
           s = re.sub(r'<title\b[^>]*>.*?</title>', '', s, flags=re.I | re.S)
 
-          # Normalize accidental JavaScript line-continuation corruption.
-          # A backslash immediately followed by a physical newline is a legal
-          # JS continuation, so removing it preserves the statement while also
-          # repairing the malformed blocks that were introduced into this file.
+          # Normalize accidental JS line-continuation corruption.
           def clean_script(m):
               attrs, body = m.group(1), m.group(2)
               body = body.replace('\\\r\n', '\r\n').replace('\\\n', '\n')
               return '<script' + attrs + '>' + body + '</script>'
-
           s = re.sub(r'<script([^>]*)>(.*?)</script>', clean_script, s, flags=re.I | re.S)
+
+          # Script 2 is the MAXESS result-contract guard. It contained one
+          # extra closing brace before the IIFE close, producing a fatal syntax
+          # error and preventing all later initialization scripts from running.
+          scripts = list(re.finditer(r'<script([^>]*)>(.*?)</script>', s, flags=re.I | re.S))
+          if len(scripts) >= 2:
+              m = scripts[1]
+              body = m.group(2)
+              body = re.sub(r'\n\}\n\}\)\(\);\s*$', '\n})();\n', body, count=1)
+              start, end = m.start(2), m.end(2)
+              s = s[:start] + body + s[end:]
 
           Path('MAXESS-RESULTS-10-GROOVE.html').write_text(s.strip() + '\n', encoding='utf-8')
 
