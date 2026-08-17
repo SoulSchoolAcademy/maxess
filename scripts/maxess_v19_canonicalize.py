@@ -9,6 +9,7 @@ layer=r'''<!-- MAXESS_RESULTS_V19_CANONICAL_HIERARCHY -->
 <style id="maxess-results-v19-css">
 #maxess-results-10.v19-canonical .v19-stage{display:flex!important;flex-direction:column!important;width:100%!important}
 #maxess-results-10.v19-canonical .v19-naya{order:1!important;display:flex!important;flex-direction:column!important;align-items:center!important;text-align:center!important;padding:42px 18px 30px!important;background:radial-gradient(circle at 50% 0,rgba(166,108,255,.24),transparent 62%),#07050a!important}
+#maxess-results-10.v19-canonical .v19-naya .v18-naya-avatar{width:88px!important;height:88px!important;object-fit:cover!important;border-radius:50%!important;display:block!important}
 #maxess-results-10.v19-canonical .v19-naya h1{margin:10px 0 0!important;font-size:clamp(30px,4.5vw,56px)!important;line-height:1!important;letter-spacing:-.05em!important;color:#fff!important}
 #maxess-results-10.v19-canonical .v19-naya p{max-width:700px!important;margin:14px auto 0!important;color:rgba(255,255,255,.72)!important;font-size:clamp(15px,1.5vw,19px)!important}
 #maxess-results-10.v19-canonical .v19-naya button{margin-top:20px!important;min-height:52px!important;padding:0 25px!important;border-radius:999px!important;border:1px solid rgba(255,255,255,.25)!important;background:linear-gradient(135deg,#d8b8ff,#7540d2 55%,#35105f)!important;color:#fff!important;font-weight:900!important;cursor:pointer!important}
@@ -41,26 +42,60 @@ function boot(){
  var score=Number(result.overallScore!=null?result.overallScore:result.score); if(!Number.isFinite(score))score=0; score=Math.round(Math.max(0,Math.min(100,score)));
  var shell=root.querySelector('.v13-shell')||root;
  var stage=shell.querySelector('.v18-flow');
- if(!stage){stage=document.createElement('div');stage.className='v19-stage';shell.appendChild(stage)} else {stage.classList.add('v19-stage')}
- function find(sel){return root.querySelector(sel)}
- var existingNaya=stage.querySelector('.v18-naya-top');
- if(!existingNaya){
-  existingNaya=document.createElement('section'); existingNaya.className='v19-naya';
-  existingNaya.innerHTML='<div class="v18-naya-inner"><img class="v18-naya-avatar" src="https://raw.githubusercontent.com/SoulSchoolAcademy/maxess/main/Naya%20Profile%20Black.jpg" alt="Naya, your AI guide"><div class="v18-naya-kicker">NAYA · YOUR GUIDE</div><h1>Hi. I’ve looked at your results.</h1><p>This isn’t your judgment. <strong>It’s your map.</strong></p><button type="button" class="v19-listen">Listen to Naya <span aria-hidden="true">▶</span></button></div>';
-  stage.prepend(existingNaya);
- } else { existingNaya.classList.add('v19-naya'); existingNaya.querySelector('.v18-naya-title')?.replaceWith(Object.assign(document.createElement('h1'),{className:'v19-title',textContent:'Hi. I’ve looked at your results.'})); var cp=existingNaya.querySelector('.v18-naya-copy'); if(cp)cp.innerHTML='This isn’t your judgment. <strong>It’s your map.</strong>'; }
- var listen=existingNaya.querySelector('.v19-listen')||existingNaya.querySelector('.v18-listen');
- if(listen&&!listen.dataset.bound){listen.dataset.bound='1';listen.addEventListener('click',function(){var c=[...root.querySelectorAll('#mx-naya-listen,#v11-naya-listen,#v13-listen,.mx-naya-listen')].find(e=>getComputedStyle(e).display!=='none');if(c)c.click();else root.dispatchEvent(new CustomEvent('maxess:naya-listen',{bubbles:true,detail:{result:window.MAXESS_RESULT||null}}));});}
- var scoreSec=stage.querySelector('.v18-score-section')||find('#v13-score')||find('#v13-hero')||find('.v13-hero');
- if(scoreSec){scoreSec.classList.add('v19-score'); var orb=scoreSec.querySelector('.v13-score-orb'); if(orb){var n=orb.querySelector('.v13-score-number');if(n)n.textContent=String(score);} var lbl=scoreSec.querySelector('.v18-score-label')||scoreSec.querySelector('.v13-score-label');if(lbl){lbl.textContent='YOUR AI SCORE';lbl.classList.add('v19-score-label');}else{var l=document.createElement('div');l.className='v19-score-label';l.textContent='YOUR AI SCORE';scoreSec.prepend(l);} }
- var dimSec=stage.querySelector('.v18-dim-section');
- if(dimSec){dimSec.classList.add('v19-dims'); var old=dimSec.querySelector('.v18-section-head'); if(old){var h=old.querySelector('h2');if(h)h.textContent='Your five dimensions.';} var orbs=dimSec.querySelector('.v18-orbs'); if(orbs){orbs.classList.add('v19-dim-orbs');[...orbs.querySelectorAll('.v18-dim-orb')].forEach((o,i)=>o.classList.add('v19-dim-orb'));} }
- // Guarantee downstream order inside the existing stage without deleting content.
- var selectors=['.v13-report','.v13-pattern','.v13-strengths','.v18-strength-section','.v13-lever','.v13-next','.v13-masters','.v13-playground','#naya-playground','.v13-video','.v13-final'];
- selectors.forEach(function(sel){var e=stage.querySelector(sel);if(e)e.style.order=String(4+selectors.indexOf(sel));});
- // Hide every competing old hero narrative while retaining its data-bearing orb.
- root.querySelectorAll('.mx-hero-copy,.v13-hero-copy,.v13-overline,.v13-hero-actions').forEach(function(e){e.classList.add('v19-old-hero-copy')});
- // Hide secondary listen controls; the canonical Naya button is the only visible one.
+ if(!stage){stage=document.createElement('div');stage.className='v19-stage';shell.appendChild(stage)} else stage.classList.add('v19-stage');
+ function visible(e){return e&&getComputedStyle(e).display!=='none'&&e.getBoundingClientRect().height>0;}
+ function headingMatch(re){
+  var nodes=[...root.querySelectorAll('section,article,div')];
+  return nodes.find(function(e){var h=e.querySelector('h1,h2,h3,.section-title,.eyebrow');return h&&re.test((h.textContent||'').trim())&&e.getBoundingClientRect().height>20;});
+ }
+ function findAny(sels){for(var i=0;i<sels.length;i++){var e=root.querySelector(sels[i]);if(e)return e;}return null;}
+ function move(e,order){if(e&&e!==stage){e.style.order=String(order);if(e.parentElement!==stage)stage.appendChild(e);}}
+ var naya=stage.querySelector('.v18-naya-top,.v19-naya');
+ if(!naya){
+  naya=document.createElement('section');naya.className='v19-naya';
+  naya.innerHTML='<img class="v18-naya-avatar" src="https://raw.githubusercontent.com/SoulSchoolAcademy/maxess/main/Naya%20Profile%20Black.jpg" alt="Naya, your AI guide"><div class="v18-naya-kicker">NAYA · YOUR GUIDE</div><h1>Hi. I’ve looked at your results.</h1><p>This isn’t your judgment. <strong>It’s your map.</strong></p><button type="button" class="v19-listen">Listen to Naya <span aria-hidden="true">▶</span></button>';
+  stage.prepend(naya);
+ } else {
+  naya.classList.add('v19-naya');
+  var oldTitle=naya.querySelector('h1');if(oldTitle)oldTitle.textContent='Hi. I’ve looked at your results.';
+  var oldCopy=naya.querySelector('p');if(oldCopy)oldCopy.innerHTML='This isn’t your judgment. <strong>It’s your map.</strong>';
+ }
+ naya.style.order='1';
+ var listen=naya.querySelector('.v19-listen');
+ if(!listen){listen=document.createElement('button');listen.type='button';listen.className='v19-listen';listen.innerHTML='Listen to Naya <span aria-hidden="true">▶</span>';naya.appendChild(listen);}
+ if(!listen.dataset.bound){listen.dataset.bound='1';listen.addEventListener('click',function(){var c=[...root.querySelectorAll('#mx-naya-listen,#v11-naya-listen,#v13-listen,.mx-naya-listen')].find(visible);if(c)c.click();else root.dispatchEvent(new CustomEvent('maxess:naya-listen',{bubbles:true,detail:{result:window.MAXESS_RESULT||null}}));});}
+ var scoreSec=findAny(['.v18-score-section','#v13-score','.v13-score-section','.v13-hero']);
+ var orb=findAny(['.v13-score-orb']);
+ if(!scoreSec&&orb){scoreSec=orb.closest('section,article')||orb.parentElement;}
+ if(scoreSec){
+  scoreSec.classList.add('v19-score');move(scoreSec,2);
+  var n=scoreSec.querySelector('.v13-score-number');if(n)n.textContent=String(score);
+  var lbl=scoreSec.querySelector('.v18-score-label,.v13-score-label,.v19-score-label');
+  if(!lbl){lbl=document.createElement('div');scoreSec.prepend(lbl);}lbl.textContent='YOUR AI SCORE';lbl.classList.add('v19-score-label');
+ }
+ var dimSec=findAny(['.v18-dim-section','.v18-dimensions','.v13-dimensions','.v13-fingerprint']);
+ if(!dimSec){dimSec=document.createElement('section');dimSec.className='v19-dims';}
+ else dimSec.classList.add('v19-dims');
+ var h=dimSec.querySelector('h2');
+ if(!h){h=document.createElement('h2');dimSec.prepend(h);}h.textContent='Your five dimensions.';
+ var grid=dimSec.querySelector('.v19-dim-orbs');
+ if(!grid){grid=document.createElement('div');grid.className='v19-dim-orbs';dimSec.appendChild(grid);}
+ grid.innerHTML='';
+ dims.forEach(function(d,i){
+  var o=document.createElement('button');o.type='button';o.className='v19-dim-orb';o.dataset.index=String(i);o.setAttribute('aria-label',d.name+' '+Math.round(Number(d.score)||0));
+  o.innerHTML='<strong>'+Math.round(Number(d.score)||0)+'</strong><span>'+String(d.name||('Dimension '+(i+1)))+'</span>';
+  o.addEventListener('click',function(){var targets=[...root.querySelectorAll('section,article,div')].filter(function(e){return e!==dimSec&&new RegExp(String(d.name||'').replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'i').test(e.textContent||'')&&e.getBoundingClientRect().height>80;});if(targets[0])targets[0].scrollIntoView({behavior:'smooth',block:'center'});});
+  grid.appendChild(o);
+ });
+ move(dimSec,3);
+ var report=findAny(['.v13-report'])||headingMatch(/report/i);move(report,4);
+ var pattern=findAny(['.v13-pattern'])||headingMatch(/pattern|fingerprint/i);move(pattern,5);
+ var strength=findAny(['.v13-strengths','.v18-strength-section'])||headingMatch(/strength|advantage/i);move(strength,6);
+ var lever=findAny(['.v13-lever','.v18-lever'])||headingMatch(/biggest lever|your lever|lever/i);move(lever,7);
+ var next=findAny(['.v13-next'])||headingMatch(/next move|next chapter/i);move(next,8);
+ var masters=findAny(['.v13-masters'])||headingMatch(/18 (naya )?masters|18 ai pathways|pathways/i);move(masters,9);
+ var playground=findAny(['.v13-playground','#naya-playground'])||headingMatch(/playground/i);move(playground,10);
+ root.querySelectorAll('.mx-hero-copy,.v13-hero-copy,.v13-overline,.v13-hero-actions').forEach(function(e){e.classList.add('v19-old-hero-copy');});
  root.querySelectorAll('#mx-naya-listen,#v11-naya-listen,#v13-listen,.mx-naya-listen,.v18-listen-secondary').forEach(function(e){if(e!==listen)e.style.display='none';});
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
@@ -72,4 +107,4 @@ idx=s.rfind('</html>')
 if idx<0: raise SystemExit('No closing html tag')
 s=s[:idx]+layer+'\n'+s[idx:]
 p.write_text(s,encoding='utf-8')
-print('V19 canonical hierarchy appended:',len(s),'bytes')
+print('V19 canonical hierarchy rebuilt:',len(s),'bytes')
