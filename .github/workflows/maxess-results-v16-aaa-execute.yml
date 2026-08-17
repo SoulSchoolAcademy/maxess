@@ -5,6 +5,7 @@ on:
     branches: [maxess-results-v16-updated-edited]
     paths:
       - 'tools/execute_maxess_results_v16_aaa.py'
+      - '.github/workflows/maxess-results-v16-aaa-execute.yml'
   workflow_dispatch:
 
 permissions:
