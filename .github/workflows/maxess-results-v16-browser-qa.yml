@@ -45,12 +45,19 @@ jobs:
             const page = await browser.newPage({viewport:{width:390,height:844},deviceScaleFactor:1});
             const url='http://127.0.0.1:8765/MAXESS-RESULTS-10-GROOVE.html?fixture=demo';
             await page.goto(url,{waitUntil:'networkidle'});
-            await page.waitForTimeout(500);
+            await page.waitForTimeout(700);
+
             const body=await page.locator('body').innerText();
+            const selectors=['.mx-score-orb','.v13-score-orb','.v15-score-orb','.v16-results .mx-score-orb'];
+            const counts={};
+            for(const selector of selectors) counts[selector]=await page.locator(selector).count();
+            const rootState=await page.locator('#maxess-results-10').evaluate(el=>({className:el.className,dataset:{...el.dataset}}));
+            console.log('V16 DOM DIAGNOSTICS',JSON.stringify({counts,rootState,hasScoreText:body.includes('YOUR AI SCORE'),has82:body.includes('82')},null,2));
+
             if(!body.includes('YOUR AI SCORE')) throw new Error('Missing YOUR AI SCORE');
             if(!body.includes('82')) throw new Error('Fixture score 82 not rendered');
             const orb=page.locator('.mx-score-orb');
-            if(await orb.count()!==1) throw new Error('Score Orb missing');
+            if(await orb.count()!==1) throw new Error('Score Orb missing: '+JSON.stringify(counts));
             const aria=await orb.getAttribute('aria-label');
             if(aria!=='Your AI score is 82 out of 100') throw new Error('Orb accessibility label incorrect: '+aria);
             const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>document.documentElement.clientWidth);
@@ -59,7 +66,7 @@ jobs:
 
             await page.setViewportSize({width:1440,height:900});
             await page.reload({waitUntil:'networkidle'});
-            await page.waitForTimeout(500);
+            await page.waitForTimeout(700);
             const desktopOverflow=await page.evaluate(()=>document.documentElement.scrollWidth>document.documentElement.clientWidth);
             if(desktopOverflow) throw new Error('Horizontal overflow detected at 1440px');
             await page.screenshot({path:'/tmp/maxess-v16-desktop.png',fullPage:true});
