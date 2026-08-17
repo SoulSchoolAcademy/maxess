@@ -74,10 +74,11 @@ jobs:
           JS
           node qa.mjs
           test -s /tmp/maxess-v21.pdf
-          pdfinfo /tmp/maxess-v21.pdf | tee /tmp/pdfinfo.txt
-          PAGES=$(awk '/^Pages:/ {print $2}' /tmp/pdfinfo.txt)
-          test "${PAGES:-0}" -ge 2
-          echo "PDF RELEASE GATE PASSED: ${PAGES} pages"
+          PDF_BYTES=$(stat -c %s /tmp/maxess-v21.pdf)
+          test "$PDF_BYTES" -gt 10000
+          PDF_PAGES=$(grep -a -o '/Type /Page[^s]' /tmp/maxess-v21.pdf | wc -l | tr -d ' ')
+          test "${PDF_PAGES:-0}" -ge 2
+          echo "PDF RELEASE GATE PASSED: ${PDF_PAGES} pages, ${PDF_BYTES} bytes"
 
       - name: Remove one-shot QA workflow after success
         run: |
