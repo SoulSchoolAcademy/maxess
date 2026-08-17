@@ -2,6 +2,10 @@ name: MAXESS AAA Final Build v2
 on:
   push:
     branches: [main]
+    paths:
+      - MAXESS-RESULTS-10-GROOVE.html
+      - scripts/maxess-v17-preservation-patch.py
+      - .github/workflows/maxess-aaa-final-v2.yml
   workflow_dispatch:
 permissions:
   contents: write
@@ -10,9 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Rebuild complete readable Groove artifact from preserved master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Rebuild canonical Groove artifact from preserved master
         run: |
           python3 - <<'PY'
           from pathlib import Path
@@ -26,16 +28,34 @@ jobs:
           idx=master.lower().rfind('</body>')
           if idx<0: raise SystemExit('master has no closing body tag')
           built=master[:idx]+'\n'+upgrade+'\n'+master[idx:]
-          out=Path('MAXESS-RESULTS-AAA-GROOVE-EMBED.html')
-          out.write_text(built,encoding='utf-8')
+          Path('MAXESS-RESULTS-AAA-GROOVE-EMBED.html').write_text(built,encoding='utf-8')
           checks={'doctype':'<!doctype html>' in built.lower(),'result_contract':'window.MAXESS_RESULT' in built,'five_dimensions':all(n in built for n in ['Direction','Communication','Evaluation','Iteration','Systems Thinking']),'18_pathways':built.count('class="mx-area')>=18,'video_system':'ny-screen-frame' in built,'aaa_marker':marker in built,'master_key_freeze':'FREEZE' in built,'complete_body':built.lower().count('</html>')>=1}
           failed=[k for k,v in checks.items() if not v]
           if failed: raise SystemExit('FAILED BUILD GATES: '+', '.join(failed))
-          sha=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
-          Path('.naya/MAXESS-AAA-DELIVERY-MANIFEST.md').write_text(f'''# MAXESS AAA DELIVERY MANIFEST\n\n- Preserved source master: `MAXESS-RESULTS-10-GROOVE.html`\n- Source commit: `{sha}`\n- Complete delivery: `MAXESS-RESULTS-AAA-GROOVE-EMBED.html`\n- Upgrade layer: `MAXESS-AAA-10.4-UPGRADE`\n- Architecture: additive; source master preserved\n- Production data boundary: `window.MAXESS_RESULT`\n- Structural build gates: PASS\n''',encoding='utf-8')
-          subprocess.run(['git','config','user.name','MAXESS Naya Builder'],check=True)
-          subprocess.run(['git','config','user.email','noreply@maxess.local'],check=True)
-          subprocess.run(['git','add','MAXESS-RESULTS-AAA-GROOVE-EMBED.html','.naya/MAXESS-AAA-DELIVERY-MANIFEST.md'],check=True)
-          subprocess.run(['git','commit','-m','MAXESS AAA final v2: preserve master and rebuild complete embed'],check=True)
-          subprocess.run(['git','push'],check=True)
           PY
+      - name: Apply preservation-first V17 repair to canonical artifact
+        run: python3 scripts/maxess-v17-preservation-patch.py
+      - name: Validate canonical artifact after repair
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          s=Path('MAXESS-RESULTS-AAA-GROOVE-EMBED.html').read_text(encoding='utf-8')
+          required=['MAXESS-V17-PRESERVATION-PATCH:START','v17-hero-naya','v17-mini-orbs','window.MAXESS_RESULT','mx-score-orb']
+          missing=[x for x in required if x not in s]
+          if missing: raise SystemExit('V17 VALIDATION FAILED: '+', '.join(missing))
+          if s.count('MAXESS-V17-PRESERVATION-PATCH:START')!=1: raise SystemExit('V17 patch marker count is not exactly 1')
+          if s.lower().count('</html>')<1: raise SystemExit('Missing closing html tag')
+          print('V17 canonical preservation validation: PASS')
+          PY
+      - name: Commit only if canonical output changed
+        run: |
+          git config user.name "MAXESS Naya Builder"
+          git config user.email "noreply@maxess.local"
+          git add MAXESS-RESULTS-AAA-GROOVE-EMBED.html
+          if git diff --cached --quiet; then
+            echo "Canonical output already matches the current production build."
+            exit 0
+          fi
+          git commit -m "MAXESS AAA final: preserve Groove and apply V17 hero repair"
+          git push
