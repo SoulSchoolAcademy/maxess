@@ -1,53 +1,48 @@
-name: MAXESS V17 Execute
+name: MAXESS V18 Groove Safe Execute
 on: push
 permissions:
   contents: write
-# RELEASE CONTRACT: this workflow must modify the actual working Groove artifact.
-# No script-only success is valid.
+# RELEASE CONTRACT: the actual working Groove artifact must change and contain the V18 CSS-first presentation layer.
 jobs:
-  v17:
+  v18:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           ref: maxess-results-v16-updated-edited
           fetch-depth: 1
-      - name: Execute transformation directly against working Groove file
-        run: python3 scripts/maxess_v17_transform.py
-      - name: Finalize working-file order directly in Groove file
-        run: python3 scripts/maxess_v17_finalize.py
-      - name: Force visual pass directly into working Groove file
-        run: python3 scripts/maxess_v17_force_visual.py
-      - name: Execute exact top-to-bottom contract against actual Groove file
-        run: python3 scripts/maxess_v17_exact_finalize.py
-      - name: Verify actual working Groove artifact
+      - name: Preserve existing V17 foundation
+        run: |
+          test -f MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'window.MAXESS_RESULT' MAXESS-RESULTS-10-GROOVE.html
+      - name: Execute Groove-safe V18 transformation against the actual working file
+        run: python3 scripts/maxess_v18_groove_safe.py
+      - name: Verify the actual working Groove artifact
         run: |
           python3 - <<'PY'
           from pathlib import Path
           text = Path('MAXESS-RESULTS-10-GROOVE.html').read_text(encoding='utf-8')
           required = [
-            'MAXESS_RESULTS_V17_EXECUTION',
-            'MAXESS_RESULTS_V17_FINALIZE',
-            'MAXESS_RESULTS_V17_FORCE_VISUAL',
+            'MAXESS_RESULTS_V16_AAA_EXECUTION',
+            'window.MAXESS_RESULT',
             'MAXESS_RESULTS_V17_EXACT_EXECUTION',
-            'maxess-results-v17-force-css',
+            'MAXESS_RESULTS_V18_GROOVE_SAFE',
+            'maxess-results-v18-groove-safe',
+            'id="v18-listen-static"',
             'YOUR AI SCORE',
-            'LISTEN TO NAYA',
-            'INCLUDES EVERYTHING',
             'AI PROFILE',
-            'Technology should amplify the human.',
-            'NAYA>SCORE>DIMENSIONS>LISTEN>PATTERN>MEANING>STRENGTH>LEVER>ACTION>VIDEO/TRIAL>MASTERS>PLAYGROUND>PHILOSOPHY',
-            'window.MAXESS_RESULT'
+            'Technology should amplify the human.'
           ]
           missing = [x for x in required if x not in text]
           if missing:
             raise SystemExit('ACTUAL WORKING FILE VERIFICATION FAILED: ' + ', '.join(missing))
-          marker = '<script id="MAXESS_RESULTS_V17_EXACT_EXECUTION">'
-          if text.count(marker) != 1:
-            raise SystemExit('ACTUAL WORKING FILE VERIFICATION FAILED: exact execution script count is not 1')
-          if text.count('MAXESS_RESULTS_V17_EXACT_EXECUTION') < 2:
-            raise SystemExit('ACTUAL WORKING FILE VERIFICATION FAILED: exact execution marker missing from script')
-          print('ACTUAL WORKING GROOVE FILE: EXACT CONTRACT EMBEDDED')
+          if text.count('MAXESS_RESULTS_V18_GROOVE_SAFE') != 2:
+            raise SystemExit('ACTUAL WORKING FILE VERIFICATION FAILED: V18 marker must exist in script and marker comment')
+          if text.count('maxess-results-v18-groove-safe') != 1:
+            raise SystemExit('ACTUAL WORKING FILE VERIFICATION FAILED: V18 style must exist exactly once')
+          if text.find('id="v18-listen-static"') > text.find('</body>'):
+            raise SystemExit('ACTUAL WORKING FILE VERIFICATION FAILED: V18 layer is outside body')
+          print('ACTUAL WORKING GROOVE FILE: V18 CSS-FIRST LAYER VERIFIED')
           PY
       - name: Commit actual updated Groove file
         run: |
@@ -58,5 +53,5 @@ jobs:
             echo 'ERROR: actual working Groove file did not change. Refusing false success.'
             exit 1
           fi
-          git commit -m 'Apply MAXESS V17 exact execution contract to working Groove artifact'
+          git commit -m 'Apply MAXESS V18 Groove-safe results presentation'
           git push origin maxess-results-v16-updated-edited
