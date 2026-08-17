@@ -12,12 +12,14 @@ jobs:
           fetch-depth: 1
       - name: Execute transformation
         run: python3 scripts/maxess_v17_transform.py
+      - name: Correct V17 order and Everything Included seal
+        run: python3 scripts/maxess_v17_order_fix.py
       - name: Verify artifact
         run: |
           python3 - <<'PY'
           from pathlib import Path
           text = Path('MAXESS-RESULTS-10-GROOVE.html').read_text(encoding='utf-8')
-          for token in ['MAXESS_RESULTS_V17_EXECUTION','maxess-results-v17-css','YOUR AI SCORE','v17-naya-banner','v17-mini-orb-grid','YOUR MOVE','INCLUDES EVERYTHING','AI PROFILE','Technology should amplify the human.']:
+          for token in ['MAXESS_RESULTS_V17_EXECUTION','maxess-results-v17-css','YOUR AI SCORE','v17-naya-banner','v17-mini-orb-grid','Listen to Naya','YOUR MOVE','INCLUDES EVERYTHING','AI PROFILE','Learn what AI can do for you.','Technology should amplify the human.']:
               assert token in text, token
           assert text.count('MAXESS_RESULTS_V17_EXECUTION') == 1
           assert 'window.MAXESS_RESULT' in text
@@ -28,4 +30,4 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add MAXESS-RESULTS-10-GROOVE.html
-          git diff --cached --quiet || (git commit -m 'Execute MAXESS V17 personal report experience' && git push origin maxess-results-v16-updated-edited)
+          git diff --cached --quiet || (git commit -m 'Execute MAXESS V17 order and experience correction' && git push origin maxess-results-v16-updated-edited)
