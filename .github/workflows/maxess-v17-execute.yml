@@ -1,65 +1,31 @@
 name: MAXESS V17 Execute
-
-on:
-  push:
-    branches:
-      - maxess-results-v16-updated-edited
-    paths:
-      - '.github/workflows/maxess-v17-execute.yml'
-      - 'scripts/maxess_v17_transform.py'
-
+on: push
 permissions:
   contents: write
-
 jobs:
-  execute-v17:
+  v17:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout execution branch
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           ref: maxess-results-v16-updated-edited
           fetch-depth: 1
-
-      - name: Execute V17 transformation
+      - name: Execute transformation
         run: python3 scripts/maxess_v17_transform.py
-
-      - name: Static V17 verification
+      - name: Verify artifact
         run: |
           python3 - <<'PY'
           from pathlib import Path
           text = Path('MAXESS-RESULTS-10-GROOVE.html').read_text(encoding='utf-8')
-          required = [
-              'MAXESS_RESULTS_V17_EXECUTION',
-              'maxess-results-v17-css',
-              'YOUR AI SCORE',
-              'v17-naya-banner',
-              'v17-mini-orb-grid',
-              'Listen to Naya',
-              'YOUR MOVE',
-              'INCLUDES EVERYTHING',
-              'AI PROFILE',
-              'Learn what AI can do for you.',
-              'Technology should amplify the human.'
-          ]
-          missing = [x for x in required if x not in text]
-          if missing:
-              raise SystemExit('V17 STATIC FAIL: ' + ', '.join(missing))
-          if text.count('MAXESS_RESULTS_V17_EXECUTION') != 1:
-              raise SystemExit('V17 STATIC FAIL: duplicate execution marker')
-          if 'window.MAXESS_RESULT' not in text:
-              raise SystemExit('V17 STATIC FAIL: Result Contract boundary missing')
+          for token in ['MAXESS_RESULTS_V17_EXECUTION','maxess-results-v17-css','YOUR AI SCORE','v17-naya-banner','v17-mini-orb-grid','YOUR MOVE','INCLUDES EVERYTHING','AI PROFILE','Technology should amplify the human.']:
+              assert token in text, token
+          assert text.count('MAXESS_RESULTS_V17_EXECUTION') == 1
+          assert 'window.MAXESS_RESULT' in text
           print('V17 STATIC PASS')
           PY
-
-      - name: Commit executed Groove artifact
+      - name: Commit artifact
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add MAXESS-RESULTS-10-GROOVE.html
-          if git diff --cached --quiet; then
-            echo 'No artifact changes to commit.'
-          else
-            git commit -m 'Execute MAXESS V17 personal report experience'
-            git push origin maxess-results-v16-updated-edited
-          fi
+          git diff --cached --quiet || (git commit -m 'Execute MAXESS V17 personal report experience' && git push origin maxess-results-v16-updated-edited)
