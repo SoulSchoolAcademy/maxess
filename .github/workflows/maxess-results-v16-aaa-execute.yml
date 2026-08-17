@@ -1,0 +1,60 @@
+name: MAXESS Results V16 — AAA execution
+
+on:
+  push:
+    branches: [maxess-results-v16-updated-edited]
+    paths:
+      - 'tools/execute_maxess_results_v16_aaa.py'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  execute:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact execution branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Baseline proof
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'window.MAXESS_RESULT' MAXESS-RESULTS-10-GROOVE.html
+          test "$(wc -c < MAXESS-RESULTS-10-GROOVE.html)" -gt 250000
+          python3 -m py_compile tools/execute_maxess_results_v16_aaa.py
+
+      - name: Execute V16
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/execute_maxess_results_v16_aaa.py
+
+      - name: Structural proof
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q 'MAXESS_RESULTS_V16_AAA_EXECUTION' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'maxess-results-v16-aaa-css' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'maxess-results-v16-aaa-js' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'YOUR AI SCORE' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'window.MAXESS_RESULT' MAXESS-RESULTS-10-GROOVE.html
+          test "$(wc -c < MAXESS-RESULTS-10-GROOVE.html)" -gt 300000
+
+      - name: Commit executed artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'Naya Master'
+          git config user.email 'naya-master@users.noreply.github.com'
+          git add MAXESS-RESULTS-10-GROOVE.html
+          if git diff --cached --quiet; then
+            echo 'BLOCKED — ZERO-CHANGE EXECUTION'
+            exit 1
+          fi
+          git commit -m 'feat(results): execute V16 AAA visual refinement'
+          git push origin HEAD:maxess-results-v16-updated-edited
