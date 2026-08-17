@@ -1,0 +1,25 @@
+name: MAXESS V17 Preservation Patch
+on:
+  push:
+    branches: [main]
+    paths:
+      - scripts/maxess-v17-preservation-patch.py
+      - .github/workflows/maxess-v17-preservation-patch.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply preservation-first patch
+        run: python3 scripts/maxess-v17-preservation-patch.py
+      - name: Commit canonical Groove artifact
+        run: |
+          git config user.name "MAXESS AI Craftsmanship"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add MAXESS-RESULTS-AAA-GROOVE-EMBED.html
+          if git diff --cached --quiet; then echo "No canonical changes needed."; exit 0; fi
+          git commit -m "MAXESS V17: finish Groove page with preservation-first hero repair"
+          git push
