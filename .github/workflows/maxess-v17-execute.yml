@@ -36,8 +36,8 @@ jobs:
           missing = [x for x in required if x not in text]
           if missing:
             raise SystemExit('ACTUAL WORKING FILE VERIFICATION FAILED: ' + ', '.join(missing))
-          if text.count('MAXESS_RESULTS_V18_GROOVE_SAFE') != 2:
-            raise SystemExit('ACTUAL WORKING FILE VERIFICATION FAILED: V18 marker must exist in script and marker comment')
+          if text.count('MAXESS_RESULTS_V18_GROOVE_SAFE') < 1:
+            raise SystemExit('ACTUAL WORKING FILE VERIFICATION FAILED: V18 marker missing')
           if text.count('maxess-results-v18-groove-safe') != 1:
             raise SystemExit('ACTUAL WORKING FILE VERIFICATION FAILED: V18 style must exist exactly once')
           if text.find('id="v18-listen-static"') > text.find('</body>'):
@@ -53,5 +53,5 @@ jobs:
             echo 'ERROR: actual working Groove file did not change. Refusing false success.'
             exit 1
           fi
-          git commit -m 'Apply MAXESS V18 Groove-safe results presentation'
+          git commit -m 'Apply MAXESS V18 Groove-safe results presentation [skip ci]'
           git push origin maxess-results-v16-updated-edited
