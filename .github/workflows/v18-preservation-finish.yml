@@ -28,19 +28,23 @@ jobs:
           test "$(grep -c 'id=\"maxess-results-10\"' MAXESS-RESULTS-10-GROOVE.html)" -eq 1
           grep -q 'window.MAXESS_RESULT' MAXESS-RESULTS-10-GROOVE.html
           test -f scripts/maxess_v18_preservation_execute.py
+          test -f scripts/maxess_v18_strength_repair.py
 
-      - name: Validate V18 transformation script
-        run: python3 -m py_compile scripts/maxess_v18_preservation_execute.py
+      - name: Validate V18 transformation scripts
+        run: |
+          python3 -m py_compile scripts/maxess_v18_preservation_execute.py
+          python3 -m py_compile scripts/maxess_v18_strength_repair.py
 
       - name: Apply V18 preservation transformation to the REAL Groove source
-        run: python3 scripts/maxess_v18_preservation_execute.py
+        run: |
+          python3 scripts/maxess_v18_preservation_execute.py
+          python3 scripts/maxess_v18_strength_repair.py
 
       - name: Static verification
         run: |
           set -euo pipefail
           grep -q 'MAXESS_RESULTS_V18_PRESERVATION_EXECUTION' MAXESS-RESULTS-10-GROOVE.html
-          grep -q 'maxess-results-v18-preservation-css' MAXESS-RESULTS-10-GROOVE.html
-          grep -q 'maxess-results-v18-preservation-js' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'MAXESS_RESULTS_V18_STRENGTH_REPAIR' MAXESS-RESULTS-10-GROOVE.html
           grep -q 'window.MAXESS_RESULT' MAXESS-RESULTS-10-GROOVE.html
           python3 - <<'PY'
           from pathlib import Path
@@ -69,7 +73,7 @@ jobs:
             for(const width of [390,768,1440]){
               const page=await browser.newPage({viewport:{width,height:1200},deviceScaleFactor:1});
               await page.goto('http://127.0.0.1:4173/MAXESS-RESULTS-10-GROOVE.html?fixture=demo',{waitUntil:'networkidle'});
-              await page.waitForTimeout(1300);
+              await page.waitForTimeout(1400);
               const qa=await page.evaluate(()=>{
                 const root=document.querySelector('#maxess-results-10');
                 const visible=e=>!!e&&getComputedStyle(e).display!=='none'&&e.getBoundingClientRect().height>0;
@@ -84,13 +88,14 @@ jobs:
                   dims:!!root?.querySelector('.v18-dim-section'),
                   miniOrbs:[...root?.querySelectorAll('.v18-dim-orb')||[]].filter(visible).length,
                   dimensionCount:root?.getAttribute('data-v18-dimension-count'),
-                  report:!!root?.querySelector('.v13-report'),
-                  pattern:!!root?.querySelector('.v13-pattern,#v15-pattern'),
-                  strengths:!!root?.querySelector('.v13-strengths'),
-                  lever:!!root?.querySelector('.v13-lever'),
-                  next:!!root?.querySelector('.v13-next'),
-                  masters:!!root?.querySelector('.v13-masters'),
+                  report:!!root?.querySelector('#v13-report'),
+                  pattern:!!root?.querySelector('#v15-pattern,#v13-pattern'),
+                  strengths:!!root?.querySelector('.v18-strength-section'),
+                  lever:!!root?.querySelector('#v13-lever'),
+                  next:!!root?.querySelector('#v13-next'),
+                  masters:!!root?.querySelector('#v13-masters'),
                   playground:!!root?.querySelector('#naya-playground'),
+                  downstreamOrder:(()=>{const f=root?.querySelector('.v18-flow');if(!f)return[];return [...f.children].map(e=>e.className||e.id||e.tagName)})(),
                   horizontalOverflow:document.documentElement.scrollWidth>window.innerWidth+1,
                   duplicateCriticalIds:[...root.querySelectorAll('[id]')].map(e=>e.id).filter((id,i,a)=>id&&a.indexOf(id)!==i)
                 };
@@ -103,7 +108,7 @@ jobs:
               if(qa.scoreOrbs!==1)throw new Error('Expected one visible score orb at '+width+'; got '+qa.scoreOrbs);
               if(qa.miniOrbs!==5)throw new Error('Expected exactly five visible dimension orbs at '+width+'; got '+qa.miniOrbs);
               if(qa.dimensionCount!=='5')throw new Error('Expected five result dimensions at '+width+'; got '+qa.dimensionCount);
-              if(qa.report===false||qa.pattern===false||qa.strengths===false||qa.lever===false||qa.next===false||qa.masters===false||qa.playground===false)throw new Error('A required downstream section is missing at '+width);
+              if(!qa.report||!qa.pattern||!qa.strengths||!qa.lever||!qa.next||!qa.masters||!qa.playground)throw new Error('A required downstream section is missing at '+width);
               if(qa.horizontalOverflow)throw new Error('Horizontal overflow at '+width);
               if(qa.duplicateCriticalIds.length)throw new Error('Duplicate IDs at '+width+': '+qa.duplicateCriticalIds.join(','));
             }
@@ -117,7 +122,7 @@ jobs:
           set -euo pipefail
           git config user.name 'Naya Master'
           git config user.email 'naya-master@users.noreply.github.com'
-          git add MAXESS-RESULTS-10-GROOVE.html scripts/maxess_v18_preservation_execute.py .github/workflows/v18-preservation-finish.yml
+          git add MAXESS-RESULTS-10-GROOVE.html scripts/maxess_v18_preservation_execute.py scripts/maxess_v18_strength_repair.py .github/workflows/v18-preservation-finish.yml
           if git diff --cached --quiet; then
             echo 'No artifact changes to commit.'
             exit 0
