@@ -53,9 +53,10 @@ jobs:
           grep -q 'YOUR AI SCORE' MAXESS-RESULTS-10-GROOVE.html
           grep -q 'v17-orbs' MAXESS-RESULTS-10-GROOVE.html
           grep -q 'v17-naya-listen' MAXESS-RESULTS-10-GROOVE.html
-          if grep -q 'MAXESS_RESULTS_V19B_EXECUTION' MAXESS-RESULTS-10-GROOVE.html; then echo 'FAIL: V19B tail remains'; exit 1; fi
-          if grep -q 'MAXESS_RESULTS_V19_EXACT_EXECUTION' MAXESS-RESULTS-10-GROOVE.html; then echo 'FAIL: V19 tail remains'; exit 1; fi
-          if grep -q 'MAXESS_RESULTS_V17_EXACT_EXECUTION' MAXESS-RESULTS-10-GROOVE.html; then echo 'FAIL: obsolete V17 tail remains'; exit 1; fi
+          # Check only real obsolete HTML marker comments, not the marker strings inside the QA scripts themselves.
+          if grep -q '<!-- MAXESS_RESULTS_V19B_EXECUTION -->' MAXESS-RESULTS-10-GROOVE.html; then echo 'FAIL: V19B tail remains'; exit 1; fi
+          if grep -q '<!-- MAXESS_RESULTS_V19_EXACT_EXECUTION -->' MAXESS-RESULTS-10-GROOVE.html; then echo 'FAIL: V19 tail remains'; exit 1; fi
+          if grep -q '<!-- MAXESS_RESULTS_V17_EXACT_EXECUTION -->' MAXESS-RESULTS-10-GROOVE.html; then echo 'FAIL: obsolete V17 tail remains'; exit 1; fi
           python3 - <<'PY'
           from pathlib import Path
           s=Path('MAXESS-RESULTS-10-GROOVE.html').read_text(encoding='utf-8')
