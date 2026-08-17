@@ -1,0 +1,143 @@
+name: MAXESS Results V17 — Clean Execution
+
+on:
+  push:
+    branches:
+      - maxess-results-v16-updated-edited
+    paths:
+      - 'scripts/maxess_v17_execute.py'
+      - 'scripts/maxess_v17_browser_repair.py'
+      - '.github/workflows/maxess-results-v17-execute.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: maxess-results-v17-clean-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  execute:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout execution branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify authoritative artifact
+        run: |
+          set -euo pipefail
+          test -f MAXESS-RESULTS-10-GROOVE.html
+          test "$(grep -c 'id=\"maxess-results-10\"' MAXESS-RESULTS-10-GROOVE.html)" -eq 1
+          grep -q 'window.MAXESS_RESULT' MAXESS-RESULTS-10-GROOVE.html
+          test "$(wc -c < MAXESS-RESULTS-10-GROOVE.html)" -gt 100000
+
+      - name: Execute clean V17 presentation
+        run: |
+          set -euo pipefail
+          python3 -m py_compile scripts/maxess_v17_execute.py
+          python3 -m py_compile scripts/maxess_v17_browser_repair.py
+          python3 scripts/maxess_v17_execute.py
+          python3 scripts/maxess_v17_browser_repair.py
+
+      - name: Static structural proof
+        run: |
+          set -euo pipefail
+          grep -q 'MAXESS_RESULTS_V17_CLEAN_EXECUTION' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'MAXESS_RESULTS_V17_BROWSER_REPAIR' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'window.MAXESS_RESULT' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'Hi. I’ve looked at your results.' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'This isn’t your judgment.' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'YOUR AI SCORE' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'v17-orbs' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'v17-naya-listen' MAXESS-RESULTS-10-GROOVE.html
+          if grep -q 'MAXESS_RESULTS_V19B_EXECUTION' MAXESS-RESULTS-10-GROOVE.html; then echo 'FAIL: V19B tail remains'; exit 1; fi
+          if grep -q 'MAXESS_RESULTS_V19_EXACT_EXECUTION' MAXESS-RESULTS-10-GROOVE.html; then echo 'FAIL: V19 tail remains'; exit 1; fi
+          if grep -q 'MAXESS_RESULTS_V17_EXACT_EXECUTION' MAXESS-RESULTS-10-GROOVE.html; then echo 'FAIL: obsolete V17 tail remains'; exit 1; fi
+          python3 - <<'PY'
+          from pathlib import Path
+          s=Path('MAXESS-RESULTS-10-GROOVE.html').read_text(encoding='utf-8')
+          assert s.count('<html')==1 and s.count('</html>')==1
+          assert s.count('<body')==1 and s.count('</body>')==1
+          assert s.count('<script')==s.count('</script>')
+          assert s.count('<style')==s.count('</style>')
+          print('HTML structure: PASS')
+          PY
+
+      - name: Install browser test runner
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --no-save playwright@1.55.0 >/dev/null 2>&1
+          npx playwright install --with-deps chromium >/dev/null 2>&1
+
+      - name: Rendered DOM QA at 390px and 1440px
+        run: |
+          set -euo pipefail
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/maxess-http.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID || true' EXIT
+          node <<'NODE'
+          const { chromium } = require('playwright');
+          (async()=>{
+            const browser=await chromium.launch({headless:true});
+            for (const width of [390,1440]) {
+              const page=await browser.newPage({viewport:{width,height:1200},deviceScaleFactor:1});
+              await page.goto('http://127.0.0.1:4173/MAXESS-RESULTS-10-GROOVE.html?fixture=demo',{waitUntil:'networkidle'});
+              await page.waitForTimeout(800);
+              const qa=await page.evaluate(()=>{
+                const root=document.querySelector('#maxess-results-10');
+                const kids=[...root.children].filter(e=>getComputedStyle(e).display!=='none');
+                const visible=e=>!!e && getComputedStyle(e).display!=='none' && e.getBoundingClientRect().height>0;
+                const hero=root.querySelector('.v17-hero');
+                const dims=root.querySelector('.v17-dims');
+                const naya=root.querySelector('.v17-naya-top');
+                const score=hero?.querySelector('.mx-score strong')?.textContent.trim();
+                const mini=[...root.querySelectorAll('.v17-orb')].filter(visible);
+                return {
+                  order:[kids[0]?.className||'',kids[1]?.className||'',kids[2]?.className||''],
+                  nayaFirst:kids[0]===naya,
+                  heroSecond:kids[1]===hero,
+                  dimsThird:kids[2]===dims,
+                  score,
+                  miniOrbs:mini.length,
+                  listenButtons:[...root.querySelectorAll('.v17-naya-listen')].filter(visible).length,
+                  legacyStatic:!!root.querySelector('#v18-listen-static'),
+                  widthOverflow:document.documentElement.scrollWidth>window.innerWidth+1,
+                  bodyOverflow:root.scrollWidth>root.clientWidth+1,
+                  pathways:root.querySelectorAll('.v13-master,.mx-area').length
+                };
+              });
+              console.log(JSON.stringify({width,qa},null,2));
+              if(!qa.nayaFirst||!qa.heroSecond||!qa.dimsThird) throw new Error(`Wrong hero order at ${width}`);
+              if(qa.score!=='82') throw new Error(`Expected orb score 82 at ${width}, got ${qa.score}`);
+              if(qa.miniOrbs!==5) throw new Error(`Expected 5 mini orbs at ${width}, got ${qa.miniOrbs}`);
+              if(qa.listenButtons!==1) throw new Error(`Expected 1 primary Listen to Naya at ${width}, got ${qa.listenButtons}`);
+              if(qa.legacyStatic) throw new Error(`Legacy duplicate Listen block remains at ${width}`);
+              if(qa.widthOverflow||qa.bodyOverflow) throw new Error(`Horizontal overflow at ${width}`);
+            }
+            await browser.close();
+          })().catch(e=>{console.error(e);process.exit(1)});
+          NODE
+
+      - name: Commit verified artifact
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- MAXESS-RESULTS-10-GROOVE.html; then
+            echo 'No authoritative artifact diff.'
+            exit 0
+          fi
+          git config user.name 'Naya Master'
+          git config user.email 'naya-master@users.noreply.github.com'
+          git add MAXESS-RESULTS-10-GROOVE.html
+          git commit -m 'feat(results): execute MAXESS V17 clean presentation [skip maxess v17]'
+          git push origin HEAD:maxess-results-v16-updated-edited
+
+      - name: Evidence
+        run: |
+          echo 'MAXESS V17 CLEAN EXECUTION: PASS'
+          echo 'Authoritative artifact: MAXESS-RESULTS-10-GROOVE.html'
+          echo 'Data boundary: window.MAXESS_RESULT'
+          echo 'Rendered QA: 390px + 1440px'
+          echo 'Required hero order: Naya > Score Orb > Five Mini-Orbs'
