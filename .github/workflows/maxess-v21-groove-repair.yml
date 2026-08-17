@@ -28,8 +28,8 @@ jobs:
           s = p.read_text(encoding='utf-8')
 
           # Groove code elements are HTML fragments, not standalone documents.
-          # Preserve all application CSS/HTML/JS, but remove document-shell tags
-          # that can cause Groove's sanitizer/parser to discard the fragment.
+          # Preserve the application itself while removing document-shell tags
+          # that can be rejected by the Groove code element parser.
           s = re.sub(r'^\s*<!doctype[^>]*>', '', s, flags=re.I)
           s = re.sub(r'^\s*<html[^>]*>', '', s, count=1, flags=re.I)
           s = re.sub(r'</html>\s*$', '', s, count=1, flags=re.I)
@@ -40,18 +40,16 @@ jobs:
           s = re.sub(r'<meta\b[^>]*>', '', s, flags=re.I)
           s = re.sub(r'<title\b[^>]*>.*?</title>', '', s, flags=re.I | re.S)
 
-          # A legacy live-bridge block was accidentally stored with a literal
-          # backslash at every physical line. In JavaScript that creates a
-          # syntax error and can stop the remaining Results initialization.
-          # Remove only those escaped line continuations inside that exact block.
-          marker = '<script id="maxess-result-live-bridge">'
-          start = s.find(marker)
-          if start >= 0:
-              end = s.find('</script>', start)
-              if end >= 0:
-                  block = s[start:end]
-                  block = block.replace('\\\n', '\n').replace('\\\r\n', '\r\n')
-                  s = s[:start] + block + s[end:]
+          # Normalize accidental JavaScript line-continuation corruption.
+          # A backslash immediately followed by a physical newline is a legal
+          # JS continuation, so removing it preserves the statement while also
+          # repairing the malformed blocks that were introduced into this file.
+          def clean_script(m):
+              attrs, body = m.group(1), m.group(2)
+              body = body.replace('\\\r\n', '\r\n').replace('\\\n', '\n')
+              return '<script' + attrs + '>' + body + '</script>'
+
+          s = re.sub(r'<script([^>]*)>(.*?)</script>', clean_script, s, flags=re.I | re.S)
 
           Path('MAXESS-RESULTS-10-GROOVE.html').write_text(s.strip() + '\n', encoding='utf-8')
 
@@ -63,10 +61,12 @@ jobs:
           scripts = re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>', s, flags=re.I|re.S)
           print(f'Found {len(scripts)} inline script blocks')
           for i, js in enumerate(scripts, 1):
-              pathlib.Path(f'/tmp/maxess-script-{i}.js').write_text(js, encoding='utf-8')
-              r = subprocess.run(['node','--check',f'/tmp/maxess-script-{i}.js'], text=True, capture_output=True)
+              path = pathlib.Path(f'/tmp/maxess-script-{i}.js')
+              path.write_text(js, encoding='utf-8')
+              r = subprocess.run(['node','--check',str(path)], text=True, capture_output=True)
               if r.returncode:
                   print(f'JS SYNTAX FAILURE in script {i}')
+                  print('\n'.join(js.splitlines()[:80]))
                   print(r.stderr)
                   sys.exit(1)
           print('All inline JavaScript blocks passed node --check')
