@@ -1,20 +1,16 @@
 from pathlib import Path
-
-path = Path('MAXESS-RESULTS-10-GROOVE.html')
-text = path.read_text(encoding='utf-8')
-marker = 'MAXESS_RESULTS_V18_GROOVE_SAFE'
+path=Path('MAXESS-RESULTS-10-GROOVE.html')
+text=path.read_text(encoding='utf-8')
+marker='MAXESS_RESULTS_V18_1_GROOVE_SAFE'
 if marker in text:
-    print('V18 already present; refusing duplicate insertion.')
     raise SystemExit(0)
-
-block = r'''<style id="maxess-results-v18-groove-safe">
-/* V18: Groove-safe presentation order. CSS-first so the intended hierarchy survives environments that suppress dynamic DOM reordering. */
+block=r'''<style id="maxess-results-v18-1-groove-safe">
 html,body{width:100%!important;margin:0!important;padding:0!important;overflow-x:hidden!important}
 #maxess-results-10{display:flex!important;flex-direction:column!important;width:100%!important}
 #maxess-results-10>#naya-report{order:1!important}
 #maxess-results-10>.mx-hero,#maxess-results-10>#v13-hero{order:2!important}
 #maxess-results-10>#v13-dimensions{order:3!important}
-#maxess-results-10>#v18-listen-static,#maxess-results-10>.v17-listen,#maxess-results-10>#v17-listen,#maxess-results-10>#v13-listen{order:4!important}
+#maxess-results-10>#v18-listen-static{order:4!important}
 #maxess-results-10>#v15-pattern,#maxess-results-10>#your-fingerprint{order:5!important}
 #maxess-results-10>#v13-report{order:6!important}
 #maxess-results-10>#v13-strengths{order:7!important}
@@ -43,21 +39,16 @@ html,body{width:100%!important;margin:0!important;padding:0!important;overflow-x
 #maxess-results-10>.mx-hero .mx-copy,#maxess-results-10>.mx-hero .mx-proof,#maxess-results-10>.mx-hero .mx-hero-actions{display:none!important}
 #maxess-results-10>.mx-hero .mx-score strong{font-size:clamp(110px,17vw,205px)!important;color:#fff!important;-webkit-text-fill-color:#fff!important}
 #maxess-results-10>#v13-dimensions .v13-dim-grid{grid-template-columns:repeat(5,minmax(0,1fr))!important}
-#maxess-results-10>#v13-dimensions .v13-dim{min-width:0!important}
 #maxess-results-10>#v13-masters .v13-master::before{content:'AI PROFILE';display:block;margin-bottom:7px;color:#cdb6ff;font-size:9px;font-weight:950;letter-spacing:.16em}
 @media(max-width:900px){#maxess-results-10>#v13-dimensions .v13-dim-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
 @media(max-width:520px){#maxess-results-10>#v13-dimensions .v13-dim-grid{grid-template-columns:1fr 1fr!important}}
 </style>
 <section id="v18-listen-static" aria-label="Listen to Naya" style="order:4!important;padding:28px 20px;text-align:center;background:linear-gradient(180deg,#050507,#09040f);">
 <div style="max-width:760px;margin:auto"><div style="font-size:clamp(28px,4vw,48px);font-weight:950;letter-spacing:-.045em;color:#fff">LISTEN TO NAYA</div><p style="margin:8px auto 16px;color:rgba(255,255,255,.58)">Let Naya walk you through your results.</p><button type="button" data-maxess-listen="1" style="min-width:min(360px,100%);padding:15px 22px;border-radius:999px;border:0;cursor:pointer;font-weight:900">Listen to Naya</button></div>
-</section>
-<script id="MAXESS_RESULTS_V18_GROOVE_SAFE">
-(function(){function run(){var r=document.getElementById('maxess-results-10');if(!r)return;var s=document.getElementById('v18-listen-static');if(s&&s.parentNode!==r)r.appendChild(s);var b=s&&s.querySelector('[data-maxess-listen]');if(b)b.onclick=function(){var x=r.querySelector('#mx-naya-listen,#v13-listen,#mx-listen,#mx-final-listen,.v17-listen button');if(x&&x!==b)x.click();else window.dispatchEvent(new CustomEvent('maxess:naya-listen',{detail:{result:window.MAXESS_RESULT||null}}))};var R=window.MAXESS_RESULT||{};var v=Number(R.overallScore??R.score??R.masterScore);if(Number.isFinite(v)){v=Math.round(Math.max(0,Math.min(100,v)));r.querySelectorAll('.mx-hero .mx-score strong,.mx-hero .v13-score-number').forEach(function(e){e.textContent=v})}}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run);else run();setTimeout(run,300);})();
-</script>
-'''
-
-if '</body>' not in text:
-    raise SystemExit('V18 BLOCKED: no closing body tag found')
-text = text.replace('</body>', block + '</body>', 1)
-path.write_text(text, encoding='utf-8')
-print('V18 GROOVE-SAFE BLOCK INSERTED INTO ACTUAL WORKING GROOVE FILE')
+</section>'''
+needle='<section id="v13-final"'
+if needle not in text:
+    raise SystemExit('V18.1 BLOCKED: v13-final anchor not found')
+text=text.replace(needle,block+'\n'+needle,1)
+path.write_text(text,encoding='utf-8')
+print('V18.1 inserted inside actual results root before v13-final')
