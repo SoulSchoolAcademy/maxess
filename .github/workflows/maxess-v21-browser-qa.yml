@@ -76,7 +76,12 @@ jobs:
           test -s /tmp/maxess-v21.pdf
           PDF_BYTES=$(stat -c %s /tmp/maxess-v21.pdf)
           test "$PDF_BYTES" -gt 10000
-          PDF_PAGES=$(grep -a -o '/Type /Page[^s]' /tmp/maxess-v21.pdf | wc -l | tr -d ' ')
+          PDF_PAGES=$(python3 - <<'PY'
+          from pathlib import Path
+          b=Path('/tmp/maxess-v21.pdf').read_bytes()
+          print(max(0,b.count(b'/Type /Page')-b.count(b'/Type /Pages')))
+          PY
+          )
           test "${PDF_PAGES:-0}" -ge 2
           echo "PDF RELEASE GATE PASSED: ${PDF_PAGES} pages, ${PDF_BYTES} bytes"
 
