@@ -37,11 +37,21 @@ jobs:
           s = re.sub(r'</head>', '', s, count=1, flags=re.I)
           s = re.sub(r'<body[^>]*>', '', s, count=1, flags=re.I)
           s = re.sub(r'</body>\s*$', '', s, count=1, flags=re.I)
-
-          # Metadata/title have no value inside a Groove code element and can be
-          # rejected by the host parser. Keep the actual page implementation.
           s = re.sub(r'<meta\b[^>]*>', '', s, flags=re.I)
           s = re.sub(r'<title\b[^>]*>.*?</title>', '', s, flags=re.I | re.S)
+
+          # A legacy live-bridge block was accidentally stored with a literal
+          # backslash at every physical line. In JavaScript that creates a
+          # syntax error and can stop the remaining Results initialization.
+          # Remove only those escaped line continuations inside that exact block.
+          marker = '<script id="maxess-result-live-bridge">'
+          start = s.find(marker)
+          if start >= 0:
+              end = s.find('</script>', start)
+              if end >= 0:
+                  block = s[start:end]
+                  block = block.replace('\\\n', '\n').replace('\\\r\n', '\r\n')
+                  s = s[:start] + block + s[end:]
 
           Path('MAXESS-RESULTS-10-GROOVE.html').write_text(s.strip() + '\n', encoding='utf-8')
 
@@ -67,6 +77,8 @@ jobs:
 
       - name: Browser smoke test
         run: |
+          npm init -y >/dev/null 2>&1
+          npm install --no-save playwright@1.55.0 >/dev/null 2>&1
           python -m http.server 4173 --directory . >/tmp/maxess-server.log 2>&1 &
           SERVER_PID=$!
           sleep 2
@@ -78,18 +90,19 @@ jobs:
             const errors=[];
             page.on('pageerror', e=>errors.push(String(e)));
             await page.goto('http://127.0.0.1:4173/MAXESS-RESULTS-10-GROOVE.html?fixture=demo', {waitUntil:'networkidle'});
-            await page.waitForTimeout(500);
+            await page.waitForTimeout(700);
             const state = await page.evaluate(()=>({
               root:!!document.querySelector('#maxess-results-10'),
               rootText:(document.querySelector('#maxess-results-10')?.innerText||'').trim().slice(0,500),
               naya:!!document.querySelector('.v21-naya'),
               score:(document.querySelector('.v20-score .v13-score-number')?.textContent||'').trim(),
               dims:document.querySelectorAll('.v21-dim-orb').length,
-              bodyHeight:document.body.scrollHeight
+              bodyHeight:document.body.scrollHeight,
+              visibleRoot:(()=>{const e=document.querySelector('#maxess-results-10'); if(!e)return false; const r=e.getBoundingClientRect(); return r.width>0&&r.height>500})()
             }));
             console.log(JSON.stringify(state,null,2));
             console.log('page errors:', errors);
-            if(!state.root || !state.rootText || !state.naya || state.dims !== 5 || state.bodyHeight < 500 || errors.length) process.exit(1);
+            if(!state.root || !state.rootText || !state.naya || state.dims !== 5 || !state.visibleRoot || errors.length) process.exit(1);
             await page.screenshot({path:'/tmp/maxess-v21.png',fullPage:true});
             await browser.close();
           })();
