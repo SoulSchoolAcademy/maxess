@@ -1,0 +1,112 @@
+name: MAXESS V21 Groove Repair
+
+on:
+  push:
+    branches: [maxess-results-v21-complete]
+
+permissions:
+  contents: write
+
+jobs:
+  repair-and-verify:
+    if: ${{ !contains(github.event.head_commit.message, '[v21-repair-complete]') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout V21 branch
+        uses: actions/checkout@v4
+        with:
+          ref: maxess-results-v21-complete
+          fetch-depth: 1
+
+      - name: Build Groove-safe V21 artifact
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+
+          p = Path('MAXESS-RESULTS-10-GROOVE.html')
+          s = p.read_text(encoding='utf-8')
+
+          # Groove code elements are HTML fragments, not standalone documents.
+          # Preserve all application CSS/HTML/JS, but remove document-shell tags
+          # that can cause Groove's sanitizer/parser to discard the fragment.
+          s = re.sub(r'^\s*<!doctype[^>]*>', '', s, flags=re.I)
+          s = re.sub(r'^\s*<html[^>]*>', '', s, count=1, flags=re.I)
+          s = re.sub(r'</html>\s*$', '', s, count=1, flags=re.I)
+          s = re.sub(r'<head[^>]*>', '', s, count=1, flags=re.I)
+          s = re.sub(r'</head>', '', s, count=1, flags=re.I)
+          s = re.sub(r'<body[^>]*>', '', s, count=1, flags=re.I)
+          s = re.sub(r'</body>\s*$', '', s, count=1, flags=re.I)
+
+          # Metadata/title have no value inside a Groove code element and can be
+          # rejected by the host parser. Keep the actual page implementation.
+          s = re.sub(r'<meta\b[^>]*>', '', s, flags=re.I)
+          s = re.sub(r'<title\b[^>]*>.*?</title>', '', s, flags=re.I | re.S)
+
+          Path('MAXESS-RESULTS-10-GROOVE.html').write_text(s.strip() + '\n', encoding='utf-8')
+
+      - name: Static JavaScript syntax gate
+        run: |
+          python - <<'PY'
+          import re, pathlib, subprocess, sys
+          s = pathlib.Path('MAXESS-RESULTS-10-GROOVE.html').read_text(encoding='utf-8')
+          scripts = re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>', s, flags=re.I|re.S)
+          print(f'Found {len(scripts)} inline script blocks')
+          for i, js in enumerate(scripts, 1):
+              pathlib.Path(f'/tmp/maxess-script-{i}.js').write_text(js, encoding='utf-8')
+              r = subprocess.run(['node','--check',f'/tmp/maxess-script-{i}.js'], text=True, capture_output=True)
+              if r.returncode:
+                  print(f'JS SYNTAX FAILURE in script {i}')
+                  print(r.stderr)
+                  sys.exit(1)
+          print('All inline JavaScript blocks passed node --check')
+          PY
+
+      - name: Install Chromium for smoke test
+        run: npx --yes playwright@1.55.0 install --with-deps chromium
+
+      - name: Browser smoke test
+        run: |
+          python -m http.server 4173 --directory . >/tmp/maxess-server.log 2>&1 &
+          SERVER_PID=$!
+          sleep 2
+          node <<'NODE'
+          const { chromium } = require('playwright');
+          (async()=>{
+            const browser = await chromium.launch({headless:true});
+            const page = await browser.newPage({ viewport:{width:1440,height:1000} });
+            const errors=[];
+            page.on('pageerror', e=>errors.push(String(e)));
+            await page.goto('http://127.0.0.1:4173/MAXESS-RESULTS-10-GROOVE.html?fixture=demo', {waitUntil:'networkidle'});
+            await page.waitForTimeout(500);
+            const state = await page.evaluate(()=>({
+              root:!!document.querySelector('#maxess-results-10'),
+              rootText:(document.querySelector('#maxess-results-10')?.innerText||'').trim().slice(0,500),
+              naya:!!document.querySelector('.v21-naya'),
+              score:(document.querySelector('.v20-score .v13-score-number')?.textContent||'').trim(),
+              dims:document.querySelectorAll('.v21-dim-orb').length,
+              bodyHeight:document.body.scrollHeight
+            }));
+            console.log(JSON.stringify(state,null,2));
+            console.log('page errors:', errors);
+            if(!state.root || !state.rootText || !state.naya || state.dims !== 5 || state.bodyHeight < 500 || errors.length) process.exit(1);
+            await page.screenshot({path:'/tmp/maxess-v21.png',fullPage:true});
+            await browser.close();
+          })();
+          NODE
+          kill $SERVER_PID || true
+
+      - name: Commit repaired artifact
+        run: |
+          git config user.name 'MAXESS V21 Repair'
+          git config user.email 'maxess-v21-repair@users.noreply.github.com'
+          git add MAXESS-RESULTS-10-GROOVE.html
+          git commit -m 'V21: make canonical Groove artifact host-safe [v21-repair-complete]' || echo 'No file change'
+          git push origin maxess-results-v21-complete
+
+      - name: Remove one-time repair workflow
+        if: success()
+        run: |
+          git rm .github/workflows/maxess-v21-groove-repair.yml
+          git commit -m 'V21: remove one-time repair workflow [v21-repair-complete]'
+          git push origin maxess-results-v21-complete
