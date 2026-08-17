@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - maxess-results-v18-preservation-finish
-    paths:
-      - '.github/workflows/v18-preservation-finish.yml'
   pull_request:
     types: [opened, synchronize]
   workflow_dispatch:
@@ -29,31 +27,21 @@ jobs:
           test "$(wc -c < MAXESS-RESULTS-10-GROOVE.html)" -gt 100000
           test "$(grep -c 'id=\"maxess-results-10\"' MAXESS-RESULTS-10-GROOVE.html)" -eq 1
           grep -q 'window.MAXESS_RESULT' MAXESS-RESULTS-10-GROOVE.html
+          test -f scripts/maxess_v18_preservation_execute.py
 
-      - name: Fetch controlled V17 repair scripts
-        run: |
-          set -euo pipefail
-          mkdir -p /tmp/maxess
-          curl -fsSL 'https://raw.githubusercontent.com/SoulSchoolAcademy/maxess/maxess-results-v16-updated-edited/scripts/maxess_v17_execute.py' -o /tmp/maxess/maxess_v17_execute.py
-          curl -fsSL 'https://raw.githubusercontent.com/SoulSchoolAcademy/maxess/maxess-results-v16-updated-edited/scripts/maxess_v17_browser_repair.py' -o /tmp/maxess/maxess_v17_browser_repair.py
-          python3 -m py_compile /tmp/maxess/maxess_v17_execute.py /tmp/maxess/maxess_v17_browser_repair.py
+      - name: Validate V18 transformation script
+        run: python3 -m py_compile scripts/maxess_v18_preservation_execute.py
 
-      - name: Apply preservation-first finish
-        run: |
-          set -euo pipefail
-          cp /tmp/maxess/maxess_v17_execute.py ./maxess_v17_execute.py
-          cp /tmp/maxess/maxess_v17_browser_repair.py ./maxess_v17_browser_repair.py
-          python3 maxess_v17_execute.py
-          python3 maxess_v17_browser_repair.py
+      - name: Apply V18 preservation transformation to the REAL Groove source
+        run: python3 scripts/maxess_v18_preservation_execute.py
 
       - name: Static verification
         run: |
           set -euo pipefail
-          grep -q 'MAXESS_RESULTS_V17_CLEAN_EXECUTION' MAXESS-RESULTS-10-GROOVE.html
-          grep -q 'MAXESS_RESULTS_V17_BROWSER_REPAIR' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'MAXESS_RESULTS_V18_PRESERVATION_EXECUTION' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'maxess-results-v18-preservation-css' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'maxess-results-v18-preservation-js' MAXESS-RESULTS-10-GROOVE.html
           grep -q 'window.MAXESS_RESULT' MAXESS-RESULTS-10-GROOVE.html
-          grep -q 'v17-orbs' MAXESS-RESULTS-10-GROOVE.html
-          grep -q 'v17-naya-listen' MAXESS-RESULTS-10-GROOVE.html
           python3 - <<'PY'
           from pathlib import Path
           s=Path('MAXESS-RESULTS-10-GROOVE.html').read_text(encoding='utf-8')
@@ -65,7 +53,7 @@ jobs:
           print('MAXESS V18 static structure: PASS', len(s), 'bytes')
           PY
 
-      - name: Browser QA
+      - name: Browser QA — desktop and mobile
         run: |
           set -euo pipefail
           npm init -y >/dev/null 2>&1
@@ -78,31 +66,70 @@ jobs:
           const { chromium } = require('playwright');
           (async()=>{
             const browser=await chromium.launch({headless:true});
-            for(const width of [390,1440]){
+            for(const width of [390,768,1440]){
               const page=await browser.newPage({viewport:{width,height:1200},deviceScaleFactor:1});
               await page.goto('http://127.0.0.1:4173/MAXESS-RESULTS-10-GROOVE.html?fixture=demo',{waitUntil:'networkidle'});
-              await page.waitForTimeout(800);
-              const qa=await page.evaluate(()=>{const root=document.querySelector('#maxess-results-10');const visible=e=>!!e&&getComputedStyle(e).display!=='none'&&e.getBoundingClientRect().height>0;return{root:!!root,naya:!!root?.querySelector('.v17-naya-top'),hero:!!root?.querySelector('.v17-hero'),dims:!!root?.querySelector('.v17-dims'),score:root?.querySelector('.v17-hero .mx-score strong')?.textContent.trim(),miniOrbs:[...root?.querySelectorAll('.v17-orb')||[]].filter(visible).length,listen:[...root?.querySelectorAll('.v17-naya-listen')||[]].filter(visible).length,overflow:document.documentElement.scrollWidth>window.innerWidth+1};});console.log(width,JSON.stringify(qa));if(!qa.root||!qa.naya||!qa.hero||!qa.dims)throw new Error('Required V17 structures missing at '+width);if(qa.score!=='82')throw new Error('Expected demo score 82 at '+width+'; got '+qa.score);if(qa.miniOrbs!==5)throw new Error('Expected 5 dimension orbs at '+width+'; got '+qa.miniOrbs);if(qa.listen!==1)throw new Error('Expected one Listen button at '+width+'; got '+qa.listen);if(qa.overflow)throw new Error('Horizontal overflow at '+width);}
+              await page.waitForTimeout(1300);
+              const qa=await page.evaluate(()=>{
+                const root=document.querySelector('#maxess-results-10');
+                const visible=e=>!!e&&getComputedStyle(e).display!=='none'&&e.getBoundingClientRect().height>0;
+                const text=e=>e?.textContent?.trim()||'';
+                return {
+                  root:!!root,
+                  naya:!!root?.querySelector('.v18-naya-top'),
+                  nayaTitle:text(root?.querySelector('.v18-naya-title')),
+                  listen:[...root?.querySelectorAll('.v18-listen')||[]].filter(visible).length,
+                  score:root?.getAttribute('data-v18-score'),
+                  scoreOrbs:[...root?.querySelectorAll('.v13-score-orb')||[]].filter(visible).length,
+                  dims:!!root?.querySelector('.v18-dim-section'),
+                  miniOrbs:[...root?.querySelectorAll('.v18-dim-orb')||[]].filter(visible).length,
+                  dimensionCount:root?.getAttribute('data-v18-dimension-count'),
+                  report:!!root?.querySelector('.v13-report'),
+                  pattern:!!root?.querySelector('.v13-pattern,#v15-pattern'),
+                  strengths:!!root?.querySelector('.v13-strengths'),
+                  lever:!!root?.querySelector('.v13-lever'),
+                  next:!!root?.querySelector('.v13-next'),
+                  masters:!!root?.querySelector('.v13-masters'),
+                  playground:!!root?.querySelector('#naya-playground'),
+                  horizontalOverflow:document.documentElement.scrollWidth>window.innerWidth+1,
+                  duplicateCriticalIds:[...root.querySelectorAll('[id]')].map(e=>e.id).filter((id,i,a)=>id&&a.indexOf(id)!==i)
+                };
+              });
+              console.log(width,JSON.stringify(qa));
+              if(!qa.root||!qa.naya||!qa.dims)throw new Error('Core V18 structures missing at '+width);
+              if(qa.nayaTitle!=='Hi. I’ve looked at your results.')throw new Error('Naya title incorrect at '+width);
+              if(qa.listen!==1)throw new Error('Expected exactly one visible Listen button at '+width+'; got '+qa.listen);
+              if(qa.score!=='82')throw new Error('Expected demo score 82 at '+width+'; got '+qa.score);
+              if(qa.scoreOrbs!==1)throw new Error('Expected one visible score orb at '+width+'; got '+qa.scoreOrbs);
+              if(qa.miniOrbs!==5)throw new Error('Expected exactly five visible dimension orbs at '+width+'; got '+qa.miniOrbs);
+              if(qa.dimensionCount!=='5')throw new Error('Expected five result dimensions at '+width+'; got '+qa.dimensionCount);
+              if(qa.report===false||qa.pattern===false||qa.strengths===false||qa.lever===false||qa.next===false||qa.masters===false||qa.playground===false)throw new Error('A required downstream section is missing at '+width);
+              if(qa.horizontalOverflow)throw new Error('Horizontal overflow at '+width);
+              if(qa.duplicateCriticalIds.length)throw new Error('Duplicate IDs at '+width+': '+qa.duplicateCriticalIds.join(','));
+            }
             await browser.close();
           })().catch(e=>{console.error(e);process.exit(1)});
           NODE
 
-      - name: Commit finished authoritative artifact
+      - name: Commit verified authoritative Groove artifact
         if: github.event_name == 'push'
         run: |
           set -euo pipefail
-          rm -f maxess_v17_execute.py maxess_v17_browser_repair.py
           git config user.name 'Naya Master'
           git config user.email 'naya-master@users.noreply.github.com'
-          git add MAXESS-RESULTS-10-GROOVE.html .github/workflows/v18-preservation-finish.yml
-          if git diff --cached --quiet; then echo 'No changes to commit.'; exit 0; fi
-          git commit -m 'feat(results): finish MAXESS Groove preservation pass V18'
+          git add MAXESS-RESULTS-10-GROOVE.html scripts/maxess_v18_preservation_execute.py .github/workflows/v18-preservation-finish.yml
+          if git diff --cached --quiet; then
+            echo 'No artifact changes to commit.'
+            exit 0
+          fi
+          git commit -m 'feat(results): apply verified MAXESS Groove V18 preservation finish'
           git push origin HEAD:maxess-results-v18-preservation-finish
 
       - name: Final evidence
         run: |
           echo 'MAXESS V18 PRESERVATION FINISH: PASS'
           echo 'Canonical artifact: MAXESS-RESULTS-10-GROOVE.html'
+          echo 'Source preserved: yes'
           echo 'Data source: window.MAXESS_RESULT'
-          echo 'Hero order: Naya > Score > Five dimensions'
-          echo 'QA: 390px + 1440px'
+          echo 'Hierarchy: Naya > Score > Five dimensions > Report > Pattern > Strength > Lever > Next Move > Masters > Playground'
+          echo 'QA: 390px + 768px + 1440px'
