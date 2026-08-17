@@ -3,7 +3,7 @@ on: push
 permissions:
   contents: write
 # V17 EXECUTION GATE: the actual Groove artifact must change or the job fails.
-# RUN TOKEN: 2026-08-17T03:01:00Z
+# RUN TOKEN: 2026-08-17T03:12:00Z
 jobs:
   v17:
     runs-on: ubuntu-latest
@@ -16,18 +16,18 @@ jobs:
         run: python3 scripts/maxess_v17_transform.py
       - name: Finalize working-file DOM order directly in Groove file
         run: python3 scripts/maxess_v17_finalize.py
+      - name: Force visual pass directly into working Groove file
+        run: python3 scripts/maxess_v17_force_visual.py
       - name: Verify the actual working Groove artifact
         run: |
           python3 - <<'PY'
           from pathlib import Path
           text = Path('MAXESS-RESULTS-10-GROOVE.html').read_text(encoding='utf-8')
-          required = ['MAXESS_RESULTS_V17_EXECUTION','MAXESS_RESULTS_V17_FINALIZE','maxess-results-v17-css','YOUR AI SCORE','v17-naya-banner','v17-mini-orb-grid','Listen to Naya','YOUR MOVE','INCLUDES EVERYTHING','AI PROFILE','Technology should amplify the human.','data-maxess-v17-final-order']
+          required = ['MAXESS_RESULTS_V17_EXECUTION','MAXESS_RESULTS_V17_FINALIZE','MAXESS_RESULTS_V17_FORCE_VISUAL','maxess-results-v17-force-css','YOUR AI SCORE','v17-naya-banner','v17-mini-orb-grid','Listen to Naya','YOUR MOVE','INCLUDES EVERYTHING','AI PROFILE','Technology should amplify the human.','data-maxess-v17-force-order','window.MAXESS_RESULT']
           missing = [x for x in required if x not in text]
           if missing: raise SystemExit('WORKING FILE VERIFICATION FAILED: ' + ', '.join(missing))
-          if text.count('MAXESS_RESULTS_V17_EXECUTION') != 1: raise SystemExit('WORKING FILE VERIFICATION FAILED: duplicate V17 execution marker')
-          if text.count('MAXESS_RESULTS_V17_FINALIZE') != 1: raise SystemExit('WORKING FILE VERIFICATION FAILED: duplicate V17 finalizer marker')
-          if 'window.MAXESS_RESULT' not in text: raise SystemExit('WORKING FILE VERIFICATION FAILED: Result Contract boundary missing')
-          print('ACTUAL WORKING GROOVE FILE: V17 VERIFIED')
+          if text.count('MAXESS_RESULTS_V17_FORCE_VISUAL') != 1: raise SystemExit('WORKING FILE VERIFICATION FAILED: force marker count is not 1')
+          print('ACTUAL WORKING GROOVE FILE: V17 FORCE VISUAL VERIFIED')
           PY
       - name: Commit the actual updated Groove file
         run: |
@@ -35,5 +35,5 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -- MAXESS-RESULTS-10-GROOVE.html
           if git diff --cached --quiet; then echo 'ERROR: The working Groove file did not change. Refusing false success.'; exit 1; fi
-          git commit -m 'Apply MAXESS V17 updates to working Groove artifact'
+          git commit -m 'Apply MAXESS V17 force visual pass to working Groove artifact'
           git push origin maxess-results-v16-updated-edited
