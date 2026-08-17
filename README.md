@@ -1,46 +1,46 @@
-# MAXESS
+# ⚠️ LEGACY MAXESS REPOSITORY — DO NOT USE FOR CURRENT RESULTS WORK
 
-MAXESS is the AI Mastery assessment and Results system.
+**This repository is historical/reference material. It is NOT the active MAXESS Results engineering repository.**
 
-## Start here
+## 🚫 Current MAXESS Results repository
 
-Before changing the project, read:
+All current MAXESS Results implementation, upgrades, QA, source selection, and delivery work belongs in:
 
-1. `.naya/NAYA-MASTER.md` or `NAYA-MASTER.md` when invoking the Master operating context.
-2. `.naya/NAYA-GOVERNANCE.md`
-3. `.naya/NAYA-LAW.md`
-4. `.naya/REPOSITORY-OPERATING-MAP.md`
-5. `.naya/RESULTS-SOURCE-REGISTRY.md` for Results work
+`https://github.com/SoulSchoolAcademy/MaxRESULTS`
 
-## Current Results source of truth
+Current working branch:
 
-`MAXESS-RESULTS-10-GROOVE.html`
+`maxess-results-v21-working`
 
-Public verification target:
+## Important
+
+This legacy repository contains historical builds, experiments, prototypes, deployment artifacts, and previous Results source states.
+
+Do **not** select an artifact from this repository for current Results work merely because it:
+
+- looks newer;
+- is larger;
+- has a newer timestamp;
+- is named FINAL, MASTER, 10/10, FULL BUILD, or similar;
+- was previously deployed; or
+- appears to match an earlier conversation.
+
+Historical files may be inspected only when explicitly needed for comparison, recovery, or lineage research.
+
+## Canonical execution rule
+
+For current MAXESS Results work:
+
+1. Open `SoulSchoolAcademy/MaxRESULTS`.
+2. Read `NAYA-REPO-LOCK.md`.
+3. Read `NAYA-OS.md`.
+4. Verify the current branch and working artifact.
+5. Work only from the verified canonical path.
+
+**If a current Results task starts here, stop and redirect to `SoulSchoolAcademy/MaxRESULTS`.**
+
+## Public Results target
 
 `https://results.nayanet.xyz/`
 
-The public target is currently blocked from release verification because it does not yet demonstrate parity with the authoritative GitHub artifact.
-
-## Architecture
-
-```text
-Assessment
-  → Result Contract
-  → Results renderer
-  → Groove deployment
-  → Public Results URL
-  → Live verification
-```
-
-The assessment owns response collection and scoring. Results owns presentation and interpretation. Results must not create a second scoring engine.
-
-## Important rule
-
-The repository contains historical builds, previews, prototypes, deployment artifacts, and duplicate files. A filename containing `FINAL`, `MASTER`, `10/10`, `FULL BUILD`, or similar language does not make a file authoritative.
-
-Use the registry and operating map to determine the correct path.
-
-## Working standard
-
-Understand first. Preserve what works. Change the authoritative path. Prove the change. Verify the live outcome. If the evidence is missing, it is not done.
+A public URL does not determine source authority. The current GitHub repository and explicit artifact state do.
