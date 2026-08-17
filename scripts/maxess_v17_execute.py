@@ -3,7 +3,7 @@ from pathlib import Path
 p = Path('MAXESS-RESULTS-10-GROOVE.html')
 s = p.read_text(encoding='utf-8')
 
-# Remove the failed V17/V18/V19 presentation tail while preserving the complete Groove foundation.
+# MAXESS V17 deterministic execution: remove obsolete presentation tails before installing the clean final layer.
 markers = [
     '<!-- MAXESS_RESULTS_V17_EXACT_EXECUTION -->',
     '<!-- MAXESS_RESULTS_V18_GROOVE_SAFE',
