@@ -1,0 +1,153 @@
+name: MAXESS V21 One-Shot Integration
+
+on:
+  push:
+    branches: [maxess-results-v21-complete]
+    paths:
+      - '.github/workflows/maxess-v21-one-shot.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  integrate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout V21 branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Integrate V21 into canonical Groove HTML
+        shell: bash
+        run: |
+          python3 <<'PY'
+          from pathlib import Path
+          html_path = Path('MAXESS-RESULTS-10-GROOVE.html')
+          pass_path = Path('MAXESS-RESULTS-V21-FINISH-PASS.js')
+          html = html_path.read_text(encoding='utf-8')
+          finish = pass_path.read_text(encoding='utf-8')
+
+          marker = '<!-- MAXESS-V21-CANONICAL-INTEGRATION -->'
+          if marker in html:
+              raise SystemExit('V21 integration marker already exists; refusing duplicate integration.')
+
+          controller = r'''<script id="maxess-v21-canonical-controller">
+          (function(){
+            'use strict';
+            function boot(){
+              var root=document.getElementById('maxess-results-10');
+              var stage=root&&root.querySelector('.v20-stage');
+              if(!root||!stage)return;
+              root.setAttribute('data-v21-canonical','1');
+              root.setAttribute('data-v21-release','complete-integration');
+
+              var css=document.createElement('style');
+              css.id='maxess-v21-canonical-css';
+              css.textContent=`
+                #maxess-results-10 .v20-stage{display:flex!important;flex-direction:column!important;width:100%!important}
+                #maxess-results-10 .v20-stage>.v21-naya{order:1!important}
+                #maxess-results-10 .v20-stage>.v20-score{order:2!important}
+                #maxess-results-10 .v20-stage>.v21-dimensions{order:3!important}
+                #maxess-results-10 .v20-stage>#v13-report{display:none!important}
+                #maxess-results-10 .v20-stage>.v13-pattern,#maxess-results-10 .v20-stage>#v15-pattern{order:5!important}
+                #maxess-results-10 .v20-stage>#v13-strengths{order:6!important}
+                #maxess-results-10 .v20-stage>#v13-lever{order:7!important}
+                #maxess-results-10 .v20-stage>#v13-next{order:8!important}
+                #maxess-results-10 .v20-stage>#v13-masters{order:9!important}
+                #maxess-results-10 .v20-stage>.v13-final{order:10!important}
+                #maxess-results-10 .v20-stage>.v21-report{order:4!important}
+                #maxess-results-10 .v20-dims,#maxess-results-10 .v18-dim-section,#maxess-results-10 #v13-dimensions{display:none!important}
+                #maxess-results-10 .v18-naya-top,#maxess-results-10 .v18-listen,#maxess-results-10 .v18-listen-secondary,#maxess-results-10 #mx-naya-listen,#maxess-results-10 #v13-print,#maxess-results-10 .v15-print{display:none!important}
+                #maxess-results-10 .v20-score .v13-score-caption{display:none!important}
+                #maxess-results-10 .v20-score .v13-score-number{position:relative!important;top:auto!important;left:auto!important;transform:none!important;margin:0!important}
+                #maxess-results-10 .v20-score-orb{display:grid!important;place-items:center!important}
+                #maxess-results-10 .v21-naya{order:1!important}
+                #maxess-results-10 .v21-naya .v21-listen{min-width:190px;min-height:58px;padding:0 22px;border-radius:18px}
+                @media(max-width:800px){#maxess-results-10 .v21-naya{margin-inline:0!important}.v21-naya .v21-listen{width:100%!important}}
+                @media(prefers-reduced-motion:reduce){#maxess-results-10 .v21-listen,#maxess-results-10 .v21-dim-orb{transition:none!important}}
+                @media print{#maxess-results-10 .v21-naya,#maxess-results-10 .v20-score,#maxess-results-10 .v21-dimensions,#maxess-results-10 .v21-report,#maxess-results-10 .v21-cta-strip{display:none!important}}
+              `;
+              document.head.appendChild(css);
+
+              var oldNaya=root.querySelector('.v20-naya'); if(oldNaya) oldNaya.remove();
+              var oldDims=root.querySelector('.v20-dims'); if(oldDims) oldDims.remove();
+              var oldListen=root.querySelectorAll('.v18-listen,.v18-listen-secondary,#mx-naya-listen,#v11-naya-listen,#v13-listen,.mx-naya-listen');
+              oldListen.forEach(function(el){el.setAttribute('aria-hidden','true');el.tabIndex=-1;});
+
+              var scoreEl=root.querySelector('.v20-score .v13-score-number');
+              if(scoreEl){
+                var r=window.MAXESS_RESULT||{};
+                var s=Number(r.overallScore!=null?r.overallScore:r.score);
+                if(Number.isFinite(s))scoreEl.textContent=String(Math.round(Math.max(0,Math.min(100,s))));
+              }
+
+              var v21n=root.querySelector('.v21-naya');
+              if(v21n){
+                var v21s=root.querySelector('.v20-score');
+                var v21d=root.querySelector('.v21-dimensions');
+                if(v21s)stage.insertBefore(v21s,v21n.nextSibling);
+                if(v21d)stage.insertBefore(v21d,v21s?v21s.nextSibling:null);
+                stage.appendChild(v21n);
+                stage.insertBefore(v21n,stage.firstElementChild);
+              }
+
+              var dims=root.querySelector('.v21-dimensions');
+              if(dims){
+                var card=dims.querySelector('.v21-detail');
+                if(card){card.style.background='#050509';card.style.color='#fff';card.style.borderColor='rgba(208,168,255,.25)';}
+              }
+
+              var print=root.querySelector('#maxess-v21-print-report');
+              if(print)print.setAttribute('aria-hidden','true');
+            }
+            if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(boot,40)},{once:true});else setTimeout(boot,40);
+          })();
+          </script>'''
+
+          payload = marker + '\n' + '\n<script id="maxess-v21-finish-pass">\n' + finish + '\n</script>\n' + controller + '\n'
+          if '</body>' not in html.lower():
+              html += '\n' + payload
+          else:
+              idx = html.lower().rfind('</body>')
+              html = html[:idx] + payload + html[idx:]
+          html_path.write_text(html, encoding='utf-8')
+          print('Integrated V21 into canonical HTML:', html_path)
+          print('Bytes:', html_path.stat().st_size)
+          print('Lines:', len(html.splitlines()))
+          PY
+
+      - name: Static release gate
+        shell: bash
+        run: |
+          python3 <<'PY'
+          from pathlib import Path
+          h=Path('MAXESS-RESULTS-10-GROOVE.html').read_text(encoding='utf-8')
+          checks={
+            'single V21 canonical marker': h.count('MAXESS-V21-CANONICAL-INTEGRATION')==1,
+            'authoritative result source': 'window.MAXESS_RESULT' in h,
+            'V21 finish pass': 'MAXESS RESULTS — V21 FINISH PASS' in h,
+            'personalized report': 'YOUR PERSONALIZED REPORT' in h,
+            'five dimensions': 'Your Five Dimensions' in h,
+            'Naya listen': 'LISTEN TO NAYA' in h,
+            'print report': 'maxess-v21-print-report' in h,
+            '18 Masters': '18 NAYA MASTERS' in h,
+            'Playground': 'YOUR AI PLAYGROUND' in h,
+            'no V21 hard-coded demo score': 'overallScore: 82' not in h.split('MAXESS-V21-CANONICAL-INTEGRATION',1)[1],
+            'full-size artifact': len(h.splitlines()) > 7000,
+          }
+          failed=[k for k,v in checks.items() if not v]
+          for k,v in checks.items(): print(('PASS ' if v else 'FAIL ')+k)
+          if failed: raise SystemExit('Release gate failed: '+', '.join(failed))
+          print('V21 static release gate PASSED')
+          PY
+
+      - name: Commit canonical V21 artifact and remove one-shot workflow
+        shell: bash
+        run: |
+          git config user.name 'MAXESS Release Bot'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          rm -f .github/workflows/maxess-v21-one-shot.yml
+          git add MAXESS-RESULTS-10-GROOVE.html .github/workflows/maxess-v21-one-shot.yml
+          git commit -m 'MAXESS V21: complete canonical Groove Results artifact' || exit 1
+          git push origin HEAD:maxess-results-v21-complete
