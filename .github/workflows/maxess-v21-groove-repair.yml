@@ -26,8 +26,6 @@ jobs:
 
           p = Path('MAXESS-RESULTS-10-GROOVE.html')
           s = p.read_text(encoding='utf-8')
-
-          # Groove code elements are HTML fragments, not standalone documents.
           s = re.sub(r'^\s*<!doctype[^>]*>', '', s, flags=re.I)
           s = re.sub(r'^\s*<html[^>]*>', '', s, count=1, flags=re.I)
           s = re.sub(r'</html>\s*$', '', s, count=1, flags=re.I)
@@ -38,23 +36,19 @@ jobs:
           s = re.sub(r'<meta\b[^>]*>', '', s, flags=re.I)
           s = re.sub(r'<title\b[^>]*>.*?</title>', '', s, flags=re.I | re.S)
 
-          # Normalize accidental JS line-continuation corruption.
+          # Remove accidental JavaScript line-continuation corruption.
           def clean_script(m):
               attrs, body = m.group(1), m.group(2)
               body = body.replace('\\\r\n', '\r\n').replace('\\\n', '\n')
               return '<script' + attrs + '>' + body + '</script>'
           s = re.sub(r'<script([^>]*)>(.*?)</script>', clean_script, s, flags=re.I | re.S)
 
-          # Script 2 is the MAXESS result-contract guard. It contained one
-          # extra closing brace before the IIFE close, producing a fatal syntax
-          # error and preventing all later initialization scripts from running.
+          # Fix the extra closing brace in the MAXESS Result Contract guard.
           scripts = list(re.finditer(r'<script([^>]*)>(.*?)</script>', s, flags=re.I | re.S))
           if len(scripts) >= 2:
               m = scripts[1]
-              body = m.group(2)
-              body = re.sub(r'\n\}\n\}\)\(\);\s*$', '\n})();\n', body, count=1)
-              start, end = m.start(2), m.end(2)
-              s = s[:start] + body + s[end:]
+              body = re.sub(r'\n\}\n\}\)\(\);\s*$', '\n})();\n', m.group(2), count=1)
+              s = s[:m.start(2)] + body + s[m.end(2):]
 
           Path('MAXESS-RESULTS-10-GROOVE.html').write_text(s.strip() + '\n', encoding='utf-8')
 
@@ -63,9 +57,14 @@ jobs:
           python - <<'PY'
           import re, pathlib, subprocess, sys
           s = pathlib.Path('MAXESS-RESULTS-10-GROOVE.html').read_text(encoding='utf-8')
-          scripts = re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>', s, flags=re.I|re.S)
-          print(f'Found {len(scripts)} inline script blocks')
-          for i, js in enumerate(scripts, 1):
+          blocks = re.findall(r'<script([^>]*)>(.*?)</script>', s, flags=re.I|re.S)
+          checked = 0
+          for i, (attrs, js) in enumerate(blocks, 1):
+              typ = re.search(r'\btype\s*=\s*["\']([^"\']+)', attrs, flags=re.I)
+              if typ and typ.group(1).lower() not in ('text/javascript','application/javascript','module'):
+                  print(f'Skip non-JS script {i}: {typ.group(1)}')
+                  continue
+              checked += 1
               path = pathlib.Path(f'/tmp/maxess-script-{i}.js')
               path.write_text(js, encoding='utf-8')
               r = subprocess.run(['node','--check',str(path)], text=True, capture_output=True)
@@ -74,7 +73,7 @@ jobs:
                   print('\n'.join(js.splitlines()[:80]))
                   print(r.stderr)
                   sys.exit(1)
-          print('All inline JavaScript blocks passed node --check')
+          print(f'All {checked} JavaScript blocks passed node --check')
           PY
 
       - name: Install Chromium for smoke test
