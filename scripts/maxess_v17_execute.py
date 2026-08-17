@@ -100,4 +100,4 @@ if body < 0:
     raise SystemExit('No closing body tag')
 s = s[:body] + layer + '\n' + s[body:]
 p.write_text(s, encoding='utf-8')
-print('MAXESS V17 clean presentation layer prepared')
+print('MAXESS V17 clean presentation layer prepared — final verification trigger')
