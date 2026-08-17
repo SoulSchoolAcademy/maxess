@@ -1,57 +1,135 @@
-name: MAXESS V18 Groove Safe Execute
-on: push
+name: MAXESS V17 Clean Execute
+
+on:
+  push:
+    branches:
+      - maxess-results-v16-updated-edited
+  workflow_dispatch:
+
 permissions:
   contents: write
-# RELEASE CONTRACT: the actual working Groove artifact must change and contain the V18 CSS-first presentation layer.
+
 jobs:
-  v18:
+  v17:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout execution branch
+        uses: actions/checkout@v4
         with:
           ref: maxess-results-v16-updated-edited
           fetch-depth: 1
-      - name: Preserve existing V17 foundation
+
+      - name: Verify authoritative artifact
         run: |
           test -f MAXESS-RESULTS-10-GROOVE.html
           grep -q 'window.MAXESS_RESULT' MAXESS-RESULTS-10-GROOVE.html
-      - name: Execute Groove-safe V18 transformation against the actual working file
-        run: python3 scripts/maxess_v18_groove_safe.py
-      - name: Verify the actual working Groove artifact
+          grep -q 'MAXESS_RESULTS_V16_AAA_EXECUTION' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'Technology should amplify the human.' MAXESS-RESULTS-10-GROOVE.html
+
+      - name: Execute deterministic V17 cleanup
+        run: python3 scripts/maxess_v17_execute.py
+
+      - name: Execute browser repair layer
+        run: python3 scripts/maxess_v17_browser_repair.py
+
+      - name: Static structural proof
         run: |
           python3 - <<'PY'
           from pathlib import Path
           text = Path('MAXESS-RESULTS-10-GROOVE.html').read_text(encoding='utf-8')
           required = [
-            'MAXESS_RESULTS_V16_AAA_EXECUTION',
-            'window.MAXESS_RESULT',
-            'MAXESS_RESULTS_V17_EXACT_EXECUTION',
-            'MAXESS_RESULTS_V18_GROOVE_SAFE',
-            'maxess-results-v18-groove-safe',
-            'id="v18-listen-static"',
-            'YOUR AI SCORE',
-            'AI PROFILE',
-            'Technology should amplify the human.'
+              'MAXESS_RESULTS_V17_CLEAN_EXECUTION',
+              'MAXESS_RESULTS_V17_BROWSER_REPAIR',
+              'window.MAXESS_RESULT',
+              'v17-naya-top',
+              'v17-naya-listen',
+              'v17-hero',
+              'v17-orbs',
+              'v17-orb',
+              'YOUR AI SCORE',
+              'Technology should amplify the human.'
           ]
           missing = [x for x in required if x not in text]
           if missing:
-            raise SystemExit('ACTUAL WORKING FILE VERIFICATION FAILED: ' + ', '.join(missing))
-          if text.count('MAXESS_RESULTS_V18_GROOVE_SAFE') < 1:
-            raise SystemExit('ACTUAL WORKING FILE VERIFICATION FAILED: V18 marker missing')
-          if text.count('maxess-results-v18-groove-safe') != 1:
-            raise SystemExit('ACTUAL WORKING FILE VERIFICATION FAILED: V18 style must exist exactly once')
-          if text.find('id="v18-listen-static"') > text.find('</body>'):
-            raise SystemExit('ACTUAL WORKING FILE VERIFICATION FAILED: V18 layer is outside body')
-          print('ACTUAL WORKING GROOVE FILE: V18 CSS-FIRST LAYER VERIFIED')
+              raise SystemExit('V17 STRUCTURAL PROOF FAILED: ' + ', '.join(missing))
+          if text.count('MAXESS_RESULTS_V17_CLEAN_EXECUTION') != 2:
+              raise SystemExit('V17 STRUCTURAL PROOF FAILED: clean marker must appear as script + generated artifact')
+          if 'MAXESS_RESULTS_V18_GROOVE_SAFE' in text or 'MAXESS_RESULTS_V19_EXACT_EXECUTION' in text or 'MAXESS_RESULTS_V19B_EXECUTION' in text:
+              raise SystemExit('V17 STRUCTURAL PROOF FAILED: obsolete presentation tail remains')
+          if text.count('id="v18-listen-static"'):
+              raise SystemExit('V17 STRUCTURAL PROOF FAILED: obsolete V18 static Listen block remains')
+          if text.lower().count('ai score 0'):
+              raise SystemExit('V17 STRUCTURAL PROOF FAILED: competing AI Score 0 text remains')
+          print('V17 STATIC STRUCTURAL PROOF: PASS')
           PY
-      - name: Commit actual updated Groove file
+
+      - name: Install browser test runner
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+
+      - name: Rendered DOM QA at desktop and mobile
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          html = Path('MAXESS-RESULTS-10-GROOVE.html').resolve()
+          Path('/tmp/maxess_test.html').write_text(html.read_text(encoding='utf-8'), encoding='utf-8')
+          PY
+          cat > /tmp/maxess_v17_qa.js <<'JS'
+          const { chromium } = require('playwright');
+          const fs = require('fs');
+          (async()=>{
+            const browser = await chromium.launch({headless:true});
+            for (const viewport of [{width:390,height:844,name:'mobile'},{width:1440,height:1000,name:'desktop'}]) {
+              const page = await browser.newPage({viewport:{width:viewport.width,height:viewport.height}});
+              await page.goto('file:///tmp/maxess_test.html?fixture=demo', {waitUntil:'load'});
+              await page.waitForTimeout(800);
+              const result = await page.evaluate(() => ({
+                version: document.querySelector('#maxess-results-10')?.dataset.resultsVersion,
+                source: document.querySelector('#maxess-results-10')?.dataset.resultsDataSource,
+                naya: document.querySelectorAll('#maxess-results-10 > .v17-naya-top').length,
+                listen: document.querySelectorAll('#maxess-results-10 .v17-naya-listen').length,
+                orbs: document.querySelectorAll('#maxess-results-10 .v17-orb').length,
+                score: document.querySelector('#maxess-results-10 .v17-hero .mx-score strong')?.textContent?.trim(),
+                overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth
+              }));
+              console.log(viewport.name, JSON.stringify(result));
+              if(result.version !== '17-final') throw new Error('wrong V17 version');
+              if(result.source !== 'window.MAXESS_RESULT') throw new Error('wrong data source');
+              if(result.naya !== 1) throw new Error('Naya count != 1');
+              if(result.listen !== 1) throw new Error('Listen count != 1');
+              if(result.orbs !== 5) throw new Error('orb count != 5');
+              if(result.score !== '82') throw new Error('score != 82');
+              if(result.overflow) throw new Error('horizontal overflow');
+              await page.screenshot({path:`/tmp/maxess-v17-${viewport.name}.png`, fullPage:true});
+              await page.close();
+            }
+            await browser.close();
+          })();
+          JS
+          node /tmp/maxess_v17_qa.js
+
+      - name: Commit verified Groove artifact
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -- MAXESS-RESULTS-10-GROOVE.html
           if git diff --cached --quiet; then
-            echo 'ERROR: actual working Groove file did not change. Refusing false success.'
+            echo 'ERROR: verified Groove artifact did not change'
             exit 1
           fi
-          git commit -m 'Apply MAXESS V18 Groove-safe results presentation [skip ci]'
+          git commit -m 'Execute and verify MAXESS V17 results experience [skip ci]'
           git push origin maxess-results-v16-updated-edited
+
+      - name: Final evidence
+        run: |
+          echo 'V17 VERIFIED SOURCE COMMIT:'
+          git rev-parse HEAD
+          echo 'V17 artifact:'
+          echo 'MAXESS-RESULTS-10-GROOVE.html'
+          echo 'QA: desktop 1440x1000 PASS'
+          echo 'QA: mobile 390x844 PASS'
+          echo 'QA: score 82 PASS'
+          echo 'QA: five orbs PASS'
+          echo 'QA: one Naya PASS'
+          echo 'QA: one Listen to Naya PASS'
