@@ -1,0 +1,80 @@
+name: MAXESS Results V16 — browser QA
+
+on:
+  push:
+    branches: [maxess-results-v16-updated-edited]
+    paths:
+      - 'MAXESS-RESULTS-10-GROOVE.html'
+      - '.github/workflows/maxess-results-v16-browser-qa.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  browser-qa:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout candidate
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Install browser test dependencies
+        run: |
+          set -euo pipefail
+          npm init -y >/dev/null 2>&1
+          npm install playwright@1.55.0 --no-fund --no-audit
+          npx playwright install --with-deps chromium
+
+      - name: Serve candidate artifact
+        run: |
+          set -euo pipefail
+          python3 -m http.server 8765 >/tmp/maxess-http.log 2>&1 &
+          echo $! >/tmp/maxess-http.pid
+          sleep 2
+          curl --fail --silent --show-error http://127.0.0.1:8765/MAXESS-RESULTS-10-GROOVE.html?fixture=demo >/dev/null
+
+      - name: Run V16 browser assertions and capture screenshots
+        run: |
+          set -euo pipefail
+          node <<'NODE'
+          const { chromium } = require('playwright');
+          (async()=>{
+            const browser = await chromium.launch({headless:true});
+            const page = await browser.newPage({viewport:{width:390,height:844},deviceScaleFactor:1});
+            const url='http://127.0.0.1:8765/MAXESS-RESULTS-10-GROOVE.html?fixture=demo';
+            await page.goto(url,{waitUntil:'networkidle'});
+            await page.waitForTimeout(500);
+            const body=await page.locator('body').innerText();
+            if(!body.includes('YOUR AI SCORE')) throw new Error('Missing YOUR AI SCORE');
+            if(!body.includes('82')) throw new Error('Fixture score 82 not rendered');
+            const orb=page.locator('.mx-score-orb');
+            if(await orb.count()!==1) throw new Error('Score Orb missing');
+            const aria=await orb.getAttribute('aria-label');
+            if(aria!=='Your AI score is 82 out of 100') throw new Error('Orb accessibility label incorrect: '+aria);
+            const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>document.documentElement.clientWidth);
+            if(overflow) throw new Error('Horizontal overflow detected at 390px');
+            await page.screenshot({path:'/tmp/maxess-v16-mobile.png',fullPage:true});
+
+            await page.setViewportSize({width:1440,height:900});
+            await page.reload({waitUntil:'networkidle'});
+            await page.waitForTimeout(500);
+            const desktopOverflow=await page.evaluate(()=>document.documentElement.scrollWidth>document.documentElement.clientWidth);
+            if(desktopOverflow) throw new Error('Horizontal overflow detected at 1440px');
+            await page.screenshot({path:'/tmp/maxess-v16-desktop.png',fullPage:true});
+
+            const sections=await page.locator('#maxess-results-10 section').count();
+            if(sections<9) throw new Error('Expected complete multi-section report; found '+sections+' sections');
+            console.log('V16 BROWSER QA PASS');
+            console.log(JSON.stringify({sections,aria,mobileOverflow:overflow,desktopOverflow},null,2));
+            await browser.close();
+          })().catch(e=>{console.error(e);process.exit(1)});
+          NODE
+
+      - name: Upload visual evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: maxess-v16-browser-evidence
+          path: /tmp/maxess-v16-*.png
+          if-no-files-found: error
