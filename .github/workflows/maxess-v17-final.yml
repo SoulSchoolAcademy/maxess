@@ -1,0 +1,119 @@
+name: MAXESS V17 Final Verification
+
+on:
+  push:
+    branches:
+      - maxess-results-v16-updated-edited
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout execution branch
+        uses: actions/checkout@v4
+        with:
+          ref: maxess-results-v16-updated-edited
+          fetch-depth: 1
+
+      - name: Verify source contract
+        run: |
+          test -f MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'window.MAXESS_RESULT' MAXESS-RESULTS-10-GROOVE.html
+          grep -q 'MAXESS_RESULTS_V16_AAA_EXECUTION' MAXESS-RESULTS-10-GROOVE.html
+
+      - name: Execute V17 clean transformation
+        run: |
+          python3 scripts/maxess_v17_execute.py
+          python3 scripts/maxess_v17_browser_repair.py
+
+      - name: Static source proof
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          text=Path('MAXESS-RESULTS-10-GROOVE.html').read_text(encoding='utf-8')
+          for x in ['MAXESS_RESULTS_V17_CLEAN_EXECUTION','MAXESS_RESULTS_V17_BROWSER_REPAIR','window.MAXESS_RESULT','v17-naya-top','v17-naya-listen','v17-hero','v17-orbs','v17-orb','YOUR AI SCORE']:
+              assert x in text, x
+          assert 'MAXESS_RESULTS_V18_GROOVE_SAFE' not in text
+          assert 'MAXESS_RESULTS_V19_EXACT_EXECUTION' not in text
+          assert 'MAXESS_RESULTS_V19B_EXECUTION' not in text
+          markup=re.sub(r'<script\\b[^>]*>.*?</script>','',text,flags=re.I|re.S)
+          markup=re.sub(r'<style\\b[^>]*>.*?</style>','',markup,flags=re.I|re.S)
+          assert markup.count('id="maxess-results-10"')==1
+          print('STATIC SOURCE PROOF: PASS')
+          PY
+
+      - name: Install Chromium test environment
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+
+      - name: Full rendered QA — desktop and mobile
+        run: |
+          cp MAXESS-RESULTS-10-GROOVE.html /tmp/maxess.html
+          cat >/tmp/qa.js <<'JS'
+          const { chromium } = require('playwright');
+          (async()=>{
+            const browser=await chromium.launch({headless:true});
+            const cases=[{name:'mobile',width:390,height:844},{name:'desktop',width:1440,height:1000}];
+            for(const c of cases){
+              const page=await browser.newPage({viewport:{width:c.width,height:c.height}});
+              const errors=[];
+              page.on('pageerror',e=>errors.push(String(e)));
+              await page.goto('file:///tmp/maxess.html?fixture=demo',{waitUntil:'load'});
+              await page.waitForTimeout(1000);
+              const r=await page.evaluate(()=>{
+                const root=document.querySelector('#maxess-results-10');
+                const text=root?.innerText||'';
+                return {
+                  version:root?.dataset.resultsVersion,
+                  source:root?.dataset.resultsDataSource,
+                  naya:root?.querySelectorAll(':scope > .v17-naya-top').length,
+                  listen:root?.querySelectorAll('.v17-naya-listen').length,
+                  legacyListen:root?.querySelectorAll('#v18-listen-static').length,
+                  orbs:root?.querySelectorAll('.v17-orb').length,
+                  score:root?.querySelector('.v17-hero .mx-score strong')?.textContent.trim(),
+                  hasScoreZero:/AI\\s*SCORE\\s*0/i.test(text),
+                  hasNayaIntro:text.includes('Hi. I’ve looked at your results.'),
+                  hasMap:text.includes('This isn’t your judgment.'),
+                  hasFiveDims:root?.querySelectorAll('.v17-orb').length===5,
+                  overflow:document.documentElement.scrollWidth>document.documentElement.clientWidth,
+                  height:document.documentElement.scrollHeight
+                };
+              });
+              console.log(c.name,JSON.stringify({...r,errors}));
+              if(errors.length) throw new Error('page errors: '+errors.join(' | '));
+              if(r.version!=='17-final') throw new Error('version');
+              if(r.source!=='window.MAXESS_RESULT') throw new Error('data source');
+              if(r.naya!==1) throw new Error('Naya count');
+              if(r.listen!==1) throw new Error('Listen count');
+              if(r.legacyListen!==0) throw new Error('legacy Listen rendered');
+              if(r.orbs!==5) throw new Error('five-orb count');
+              if(r.score!=='82') throw new Error('real score');
+              if(r.hasScoreZero) throw new Error('AI Score 0');
+              if(!r.hasNayaIntro||!r.hasMap) throw new Error('Naya copy');
+              if(r.overflow) throw new Error('horizontal overflow');
+              await page.screenshot({path:`/tmp/maxess-v17-${c.name}.png`,fullPage:true});
+              await page.close();
+            }
+            await browser.close();
+          })();
+          JS
+          node /tmp/qa.js
+
+      - name: Commit verified Results artifact
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add MAXESS-RESULTS-10-GROOVE.html
+          git commit -m 'Publish verified MAXESS V17 Results artifact [skip ci]' || echo 'No artifact delta to commit'
+          git push origin maxess-results-v16-updated-edited
+
+      - name: Final evidence
+        run: |
+          echo "VERIFIED COMMIT: $(git rev-parse HEAD)"
+          echo 'V17 FINAL QA: PASS'
