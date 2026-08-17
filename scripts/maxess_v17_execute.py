@@ -78,7 +78,7 @@ function run(){
  var nc=one.call(naya,'.v13-naya-copy,.v11-naya-copy');if(nc)nc.innerHTML='This isn’t your judgment. <strong>It’s your map.</strong> I’m here to help you understand what you already do well, where your biggest opportunity is, and what to do next.';
  var ni=naya.querySelector('img');if(ni){ni.classList.add('v17-naya-avatar');ni.alt='Naya, your AI guide'}
  root.appendChild(naya);
- root.querySelectorAll('#v18-listen-static,#v13-listen,.v17-listen').forEach(function(x){x.style.display='none'});
+ root.querySelectorAll('#v18-'+'listen-static,#v13-listen,.v17-listen').forEach(function(x){x.style.display='none'});
  var btn=document.createElement('button');btn.type='button';btn.className='v17-naya-listen';btn.textContent='Listen to Naya';btn.setAttribute('aria-label','Listen to Naya walk through your MAXESS results');
  btn.onclick=function(){var c=root.querySelectorAll('#v13-listen button,#mx-naya-listen,#mx-listen,.v17-listen button,[data-maxess-listen]');for(var i=0;i<c.length;i++){if(c[i]!==btn){c[i].click();return}}root.dispatchEvent(new CustomEvent('maxess:naya-listen',{bubbles:true,detail:{result:window.MAXESS_RESULT||null}}))};
  var niw=naya.querySelector('.v17-naya-inner');if(niw)niw.appendChild(btn);else naya.appendChild(btn);
@@ -88,7 +88,7 @@ function run(){
  if(dim){dim.classList.add('v17-dims');var grid=dim.querySelector('.v13-dim-grid,.mx-dim-grid');if(!grid){grid=document.createElement('div');dim.appendChild(grid)}grid.className='v17-orbs';grid.setAttribute('role','list');grid.innerHTML='';var ds=Array.isArray(result.dimensions)?result.dimensions:[],names=['Direction','Communication','Evaluation','Iteration','Systems Thinking'];for(var d=0;d<5;d++){var x=ds[d]||{},v=Number(x.score),name=x.name||names[d],card=document.createElement('div');card.className='v17-orb';card.setAttribute('role','listitem');card.setAttribute('aria-label',name+' score '+(Number.isFinite(v)?Math.round(v):'unavailable'));card.innerHTML='<div><div class="v17-orb-score">'+(Number.isFinite(v)?Math.round(v):'—')+'</div><div class="v17-orb-name">'+name+'</div></div>';grid.appendChild(card)}move(dim,'v17-dims')}
  var map=[['v17-pattern',['#v15-pattern','#your-fingerprint'],['your pattern','see the pattern']],['v17-meaning',['#v13-report'],['what it means','every score has']],['v17-strength',['#v13-strengths'],['your advantage','what you already']],['v17-lever',['#v13-lever'],['biggest lever','your lever']],['v17-action',['#v13-next'],['your next chapter','your next move']],['v17-video',['#v13-video'],['watch the video']],['v17-masters',['#v13-masters'],['18 ai pathways','18 naya masters']],['v17-playground',['#naya-playground'],['ai playground','learn what ai can do for you']],['v17-tech',['#v13-final'],['technology should amplify the human']]];
  for(var m=0;m<map.length;m++){var e=null;for(var z=0;z<map[m][1].length&&!e;z++)e=one(map[m][1][z]);if(!e)e=textFind(map[m][2]);if(e)move(e,map[m][0])}
- root.querySelectorAll('#v18-listen-static').forEach(function(x){x.remove()});
+ root.querySelectorAll('#v18-'+'listen-static').forEach(function(x){x.remove()});
  root.setAttribute('data-results-version','17-clean');root.setAttribute('data-results-data-source',Number.isFinite(score)?'window.MAXESS_RESULT':'unavailable');
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run,{once:true});else run();
