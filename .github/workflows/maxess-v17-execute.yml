@@ -42,8 +42,11 @@ jobs:
           missing = [x for x in required if x not in text]
           if missing:
             raise SystemExit('ACTUAL WORKING FILE VERIFICATION FAILED: ' + ', '.join(missing))
-          if text.count('MAXESS_RESULTS_V17_EXACT_EXECUTION') != 1:
-            raise SystemExit('ACTUAL WORKING FILE VERIFICATION FAILED: exact marker count is not 1')
+          marker = '<script id="MAXESS_RESULTS_V17_EXACT_EXECUTION">'
+          if text.count(marker) != 1:
+            raise SystemExit('ACTUAL WORKING FILE VERIFICATION FAILED: exact execution script count is not 1')
+          if text.count('MAXESS_RESULTS_V17_EXACT_EXECUTION') < 2:
+            raise SystemExit('ACTUAL WORKING FILE VERIFICATION FAILED: exact execution marker missing from script')
           print('ACTUAL WORKING GROOVE FILE: EXACT CONTRACT EMBEDDED')
           PY
       - name: Commit actual updated Groove file
